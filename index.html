@@ -131,5 +131,128 @@
         </a>
     </div>
 </div>
+    <div class="netscape-player">
+    <div class="player-header">
+        <span class="gold-text">◀ SOUND ▶</span>
+    </div>
+
+    <div class="visualizer">
+        <div class="v-bar red"></div><div class="v-bar orange"></div>
+        <div class="v-bar yellow"></div><div class="v-bar green"></div>
+        <div class="v-bar cyan"></div><div class="v-bar blue"></div>
+        <div class="v-bar purple"></div><div class="v-bar red"></div>
+        <div class="v-bar yellow"></div><div class="v-bar green"></div>
+    </div>
+
+    <div class="control-deck">
+        <div class="button-row">
+            <button class="win95-btn" onclick="stopAudio()">■</button>
+            <button class="win95-btn" onclick="playAudio()">▶</button>
+            <button class="win95-btn" onclick="pauseAudio()">II</button>
+        </div>
+        <div class="volume-track">
+            <div class="volume-knob"></div>
+        </div>
+    </div>
+    
+    <p class="track-info">NOW PLAYING: Pilotredsun - Fat Cat</p>
+</div>
+
+<audio id="main-theme" loop>
+    <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+</audio>
+
+<style>
+    .netscape-player {
+        background: #000;
+        border: 2px solid #777;
+        padding: 10px;
+        width: 240px;
+        text-align: center;
+        image-rendering: pixelated;
+        font-family: 'VT323', monospace;
+    }
+
+    .player-header {
+        background: #000;
+        border-bottom: 2px solid #444;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
+
+    .gold-text {
+        color: #d4af37; 
+        font-size: 20px;
+        letter-spacing: 3px;
+    }
+
+    .visualizer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 2px;
+        height: 50px;
+        background: #111;
+        margin-bottom: 10px;
+        border: 1px inset #555;
+    }
+
+    .v-bar { width: 15px; height: 100%; border-top: 2px solid #000; }
+    .red { background: #ff0000; height: 70%; }
+    .orange { background: #ff7700; height: 40%; }
+    .yellow { background: #ffff00; height: 90%; }
+    .green { background: #00ff00; height: 60%; }
+    .cyan { background: #00ffff; height: 80%; }
+    .blue { background: #0000ff; height: 50%; }
+    .purple { background: #aa00ff; height: 30%; }
+
+    .control-deck {
+        background: #333;
+        border: 2px inset #555;
+        padding: 5px;
+    }
+
+    .win95-btn {
+        background: #c0c0c0;
+        border: 2px outset #fff;
+        width: 40px;
+        height: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 0 2px;
+    }
+
+    .win95-btn:active { border: 2px inset #fff; }
+
+    .volume-track {
+        height: 4px;
+        background: #000;
+        margin-top: 10px;
+        position: relative;
+    }
+
+    .volume-knob {
+        width: 10px;
+        height: 14px;
+        background: #c0c0c0;
+        border: 1px solid #000;
+        position: absolute;
+        top: -5px;
+        left: 50%;
+    }
+
+    .track-info {
+        font-size: 12px;
+        color: #00ff00;
+        margin-top: 10px;
+    }
+</style>
+
+<script>
+    const fatCat = document.getElementById("main-theme");
+    function playAudio() { fatCat.play(); }
+    function pauseAudio() { fatCat.pause(); }
+    function stopAudio() { fatCat.pause(); fatCat.currentTime = 0; }
+</script>
 </body>
 </html>
