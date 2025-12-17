@@ -230,46 +230,48 @@
     </div>
 
     <script>
-      function summonBonzi() {
+    // --- THE SUMMONING RITUAL ---
+    function summonBonzi() {
         const bonzi = document.getElementById("bonzi-surfer");
         
-        // The Archivist chooses a random flight path
+        // Randomize the height so he doesn't become predictable
         const randomTop = Math.floor(Math.random() * 70 + 10) + "%";
         bonzi.style.top = randomTop;
 
-        // Trigger the flight
+        // Execute the flight across the Static Realm
         bonzi.style.animation = "flyAcross 8s linear forwards";
 
-        // After the flight, reset and wait for a long interval
+        // Reset and schedule the next arrival
         setTimeout(() => {
             bonzi.style.animation = "none";
             
-            // RANDOM INTERVAL: 50 seconds to 90 seconds (Approx. 1 minute)
-            const nextArrival = Math.random() * (90000 - 50000) + 50000;
-            
-            console.log("Next anomaly scheduled in: " + (nextArrival/1000) + "s");
-            setTimeout(summonBonzi, nextArrival);
-        }, 8500);
+            // Re-summon in exactly 30 seconds
+            console.log("Anomaly reset. Re-summoning in 30s...");
+            setTimeout(summonBonzi, 30000); 
+        }, 8500); // Wait for the 8s animation to finish
     }
 
-    // First arrival after 45 seconds of viewing the manifesto
-    setTimeout(summonBonzi, 45000);
-        const fatCat = document.getElementById("main-theme");
-        const bars = document.querySelectorAll(".v-bar");
+    // First arrival: 30 seconds after page load
+    console.log("Ritual started. Waiting 30s for first appearance...");
+    setTimeout(summonBonzi, 30000);
 
-        function playAudio() { 
-            fatCat.play().catch(e => console.log("Blocked"));
-            bars.forEach(bar => bar.classList.add("visualizing"));
-        }
-        function pauseAudio() { 
-            fatCat.pause();
-            bars.forEach(bar => bar.classList.remove("visualizing"));
-        }
-        function stopAudio() { 
-            fatCat.pause(); 
-            fatCat.currentTime = 0; 
-            bars.forEach(bar => bar.classList.remove("visualizing"));
-        }
-    </script>
+    // --- AUDIO PLAYER LOGIC ---
+    const fatCat = document.getElementById("main-theme");
+    const bars = document.querySelectorAll(".v-bar");
+
+    function playAudio() { 
+        fatCat.play().catch(e => console.log("Audio Blocked"));
+        bars.forEach(bar => bar.classList.add("visualizing"));
+    }
+    function pauseAudio() { 
+        fatCat.pause();
+        bars.forEach(bar => bar.classList.remove("visualizing"));
+    }
+    function stopAudio() { 
+        fatCat.pause(); 
+        fatCat.currentTime = 0; 
+        bars.forEach(bar => bar.classList.remove("visualizing"));
+    }
+</script>
 </body>
 </html>
