@@ -17,13 +17,13 @@
             filter: drop-shadow(0 0 15px #aa00ff);
         }
 
-        /* Flight: Left to Right */
+        /* Flight: Left to Right (Face Right) */
         @keyframes flyRight {
-            from { transform: translate(-200px, 100vh) rotate(15deg); }
-            to { transform: translate(120vw, -300px) rotate(-15deg); }
+            from { transform: translate(-200px, 100vh) rotate(15deg) scaleX(1); }
+            to { transform: translate(120vw, -300px) rotate(-15deg) scaleX(1); }
         }
 
-        /* Flight: Right to Left (Includes the flip scaleX) */
+        /* Flight: Right to Left (Face Left) */
         @keyframes flyLeft {
             from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(-1); }
             to { transform: translate(-300px, -300px) rotate(15deg) scaleX(-1); }
@@ -145,8 +145,7 @@
         }
         .content {
             background: #ffffff;
-            color: #000000;
-            padding: 15px;
+            color: #000000;            padding: 15px;
             border: 2px inset #808080;
             margin: 4px;
             line-height: 1.4;
@@ -169,7 +168,7 @@
 </head>
 <body>
     <img id="bonzi-surfer" src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349" alt="Surfer">
-    
+
     <h1>gamma correction</h1>
 
     <div class="station-container">
@@ -238,7 +237,6 @@
     </div>
 
     <script>
-        // --- THE SUMMONING RITUAL ---
         function summonBonzi() {
             const bonzi = document.getElementById("bonzi-surfer");
             const direction = Math.floor(Math.random() * 2);
@@ -258,7 +256,6 @@
         }
         setTimeout(summonBonzi, 30000);
 
-        // --- AUDIO PLAYER LOGIC ---
         const fatCat = document.getElementById("main-theme");
         const bars = document.querySelectorAll(".v-bar");
 
