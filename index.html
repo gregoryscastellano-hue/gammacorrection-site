@@ -31,7 +31,6 @@
             border: 2px double #00FF00;
         }
 
-        /* --- THE CREATOR STATION (GIF + PLAYER) --- */
         .station-container {
             display: flex;
             align-items: center;
@@ -73,24 +72,20 @@
             border: 1px inset #555;
         }
 
-        .v-bar { width: 10px; height: 30%; } /* Default height */
+        .v-bar { width: 10px; height: 30%; transition: height 0.1s; } 
         .v-red { background: #ff0000; }
         .v-orange { background: #ff7700; }
         .v-yellow { background: #ffff00; }
         .v-green { background: #00ff00; }
         .v-blue { background: #0000ff; }
 
-        /* --- VISUALIZER ANIMATION CODE --- */
         @keyframes barJump {
             0% { height: 30%; }
             50% { height: 100%; }
             100% { height: 30%; }
         }
 
-        .visualizing {
-            animation: barJump 0.5s infinite alternate;
-        }
-
+        .visualizing { animation: barJump 0.5s infinite alternate; }
         .v-bar:nth-child(1) { animation-duration: 0.4s; }
         .v-bar:nth-child(2) { animation-duration: 0.7s; }
         .v-bar:nth-child(3) { animation-duration: 0.5s; }
@@ -107,7 +102,6 @@
         }
         .win95-btn-small:active { border: 2px inset #fff; }
 
-        /* --- THE WINDOW & BADGES --- */
         .window {
             background: #c0c0c0;
             border: 3px outset #ffffff;
@@ -136,7 +130,6 @@
         }
         .badge-bar img { height: 35px; margin: 0 3px; }
 
-        /* --- PORTALS --- */
         .portal { position: absolute; text-align: center; width: 120px; }
         .portal-text {
             font-family: 'Comic Sans MS';
@@ -166,3 +159,76 @@
                 <div class="v-bar v-orange"></div>
                 <div class="v-bar v-yellow"></div>
                 <div class="v-bar v-green"></div>
+                <div class="v-bar v-blue"></div>
+            </div>
+            <div class="control-deck-small">
+                <button class="win95-btn-small" onclick="stopAudio()">■</button>
+                <button class="win95-btn-small" onclick="playAudio()">▶</button>
+                <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+            </div>
+            <audio id="main-theme" loop>
+                <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
+
+    <div class="window">
+        <div class="title-bar"><span>Gammacorrection.exe - VOLUME_I_MANIFESTO</span><span>[?] [X]</span></div>
+        <div class="content">
+            <b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b>
+            <p>My work lives on the razor's edge between the Sacred and the Profane. I create sacred texts about pathetic characters, and I build grand mythologies out of profane jokes.</p>
+        </div>
+    </div>
+
+    <div class="badge-bar">
+        <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
+    </div>
+
+    <div id="portal-monkey" class="portal">
+        <a href="penismonkey.html">
+            <p class="portal-text" style="color: #FFFF00; border: 1px solid #FFFF00;">to penis monkey</p>
+            <img src="https://blob.gifcities.org/gifcities/6CEJ746XO75YZZ5THHAXSCNHTD6I2DZW.gif" style="width: 70px; filter: drop-shadow(0 0 10px #FFFF00);">
+        </a>
+    </div>
+
+    <div id="portal-reticulated" class="portal">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+            <p class="portal-text" style="color: #FF00FF; border: 1px solid #FF00FF;">to reticulated</p>
+            <img src="https://blob.gifcities.org/gifcities/BNH6ILJYUWNIH47AFGB2SI7BX3TRP345.gif" style="width: 80px; filter: drop-shadow(0 0 10px #FF00FF);">
+        </a>
+    </div>
+
+    <div id="portal-tribbleton" class="portal">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+            <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">to tribbleton state</p>
+            <img src="https://blob.gifcities.org/gifcities/AZW26QJV5X7REPJUUBC6CKSGVEKPZVY6.gif" style="width: 80px; filter: drop-shadow(0 0 10px #00FF00);">
+        </a>
+    </div>
+
+    <script>
+        const fatCat = document.getElementById("main-theme");
+        const bars = document.querySelectorAll(".v-bar");
+
+        function playAudio() { 
+            fatCat.play().catch(e => console.log("Blocked"));
+            bars.forEach(bar => bar.classList.add("visualizing"));
+        }
+        function pauseAudio() { 
+            fatCat.pause();
+            bars.forEach(bar => bar.classList.remove("visualizing"));
+        }
+        function stopAudio() { 
+            fatCat.pause(); 
+            fatCat.currentTime = 0; 
+            bars.forEach(bar => bar.classList.remove("visualizing"));
+        }
+    </script>
+</body>
+</html>
