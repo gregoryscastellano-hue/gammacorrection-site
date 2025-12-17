@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>~ GAMMA CORRECTION ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
     <style>
         body {
             background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
@@ -12,15 +14,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Centers everything vertically */
-            height: 100vh; /* Locks height to the screen */
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden; /* Prevents the viewer from scrolling */
+            padding-top: 20px;
+            overflow-x: hidden;
         }
 
         h1 {
             font-family: "Comic Sans MS", cursive;
-            font-size: 42px; /* Slightly smaller to save space */
+            font-size: 42px;
             color: #00FF00;
             text-shadow: 3px 3px #ff00ff;
             margin: 10px 0;
@@ -29,19 +31,86 @@
             border: 2px double #00FF00;
         }
 
+        /* --- THE CREATOR STATION (GIF + PLAYER) --- */
+        .station-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; 
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
         .creator-station {
             border: 2px double #00FF00;
             padding: 5px;
             background-color: #000;
         }
 
+        .creator-station img {
+            height: 100px;
+            width: auto;
+        }
+
+        .netscape-player-small {
+            background: #000;
+            border: 2px solid #777;
+            padding: 5px;
+            width: 140px; 
+            text-align: center;
+            image-rendering: pixelated;
+            font-family: 'VT323', monospace;
+        }
+
+        .player-header-small {
+            border-bottom: 1px solid #444;
+            margin-bottom: 5px;
+        }
+
+        .gold-text-small {
+            color: #d4af37; 
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .visualizer-small {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 1px;
+            height: 30px;
+            background: #111;
+            margin-bottom: 5px;
+            border: 1px inset #555;
+        }
+
+        .v-bar { width: 10px; height: 100%; }
+        .v-red { background: #ff0000; height: 70%; }
+        .v-orange { background: #ff7700; height: 40%; }
+        .v-yellow { background: #ffff00; height: 90%; }
+        .v-green { background: #00ff00; height: 60%; }
+        .v-blue { background: #0000ff; height: 50%; }
+
+        .win95-btn-small {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .win95-btn-small:active { border: 2px inset #fff; }
+
+        /* --- THE WINDOW --- */
         .window {
             background: #c0c0c0;
             border: 3px outset #ffffff;
             width: 85%;
-            max-width: 700px;
+            max-width: 600px;
             box-shadow: 6px 6px 0px #000000;
             margin-bottom: 20px;
+            z-index: 5;
         }
 
         .title-bar {
@@ -64,99 +133,58 @@
             font-size: 14px;
         }
 
-        .badge-bar {
-            margin-top: 10px;
+        /* --- PORTALS & BADGES --- */
+        .badge-bar { margin-top: 10px; }
+        .badge-bar img { height: 35px; margin: 0 3px; }
+
+        .portal {
+            position: absolute;
+            text-align: center;
+            width: 120px;
+            transition: transform 0.2s;
+        }
+        .portal:hover { transform: scale(1.1); }
+        .portal-text {
+            font-family: 'Comic Sans MS';
+            font-size: 12px;
+            margin-bottom: 5px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px;
         }
 
-        .badge-bar img {
-            height: 35px; /* Shrinks badges slightly to ensure they fit on one line */
-            margin: 0 3px;
-        }
+        /* Portal Locations */
+        #portal-monkey { right: 5%; top: 25%; }
+        #portal-reticulated { left: 5%; top: 20%; }
+        #portal-tribbleton { right: 10%; bottom: 15%; }
+
     </style>
 </head>
 <body>
 
-    <div class="station-container">
-    
-    <div class="creator-station">
-        <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="Gamma Correction Station">
-    </div>
-
-    <div class="netscape-player-small">
-        <div class="player-header-small">
-            <span class="gold-text-small">◀ SOUND ▶</span>
-        </div>
-
-        <div class="visualizer-small">
-            <div class="v-bar red"></div><div class="v-bar orange"></div>
-            <div class="v-bar yellow"></div><div class="v-bar green"></div>
-            <div class="v-bar blue"></div>
-        </div>
-
-        <div class="control-deck-small">
-            <button class="win95-btn-small" onclick="stopAudio()">■</button>
-            <button class="win95-btn-small" onclick="playAudio()">▶</button>
-            <button class="win95-btn-small" onclick="pauseAudio()">II</button>
-        </div>
-        
-        <audio id="main-theme" loop>
-            <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-</div>
-
-<style>
-    /* Aligning the Signal and the Station */
-    .station-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px; 
-        margin-top: 30px;
-        flex-wrap: wrap; /* Ensures it looks good on mobile too */
-    }
-
-    .creator-station img {
-        height: 100px; /* Adjusting height to match the player scale */
-        width: auto;
-    }
-
-    .netscape-player-small {
-        background: #000;
-        border: 2px solid #777;
-        padding: 5px;
-        width: 130px; 
-        text-align: center;
-        image-rendering: pixelated;
-        font-family: 'VT323', monospace;
-    }
-
-    .player-header-small {
-        border-bottom: 1px solid #444;
-        margin-bottom: 5px;
-    }
-
-    .gold-text-small {
-        color: #d4af37; 
-        font-size: 14px;
-        letter-spacing: 1px;
-    }
-
-    .visualizer-small {
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 1px;
-        height: 30px;
-        background: #111;
-        margin-bottom: 5px;
-        border: 1px inset #555;
-    }
-
-    .v-bar { width: 12px; height: 100%;
-
     <h1>gamma correction</h1>
+
+    <div class="station-container">
+        <div class="creator-station">
+            <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="Station">
+        </div>
+
+        <div class="netscape-player-small">
+            <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
+            <div class="visualizer-small">
+                <div class="v-bar v-red"></div><div class="v-bar v-orange"></div>
+                <div class="v-bar v-yellow"></div><div class="v-bar v-green"></div>
+                <div class="v-bar v-blue"></div>
+            </div>
+            <div class="control-deck-small">
+                <button class="win95-btn-small" onclick="stopAudio()">■</button>
+                <button class="win95-btn-small" onclick="playAudio()">▶</button>
+                <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+            </div>
+            <audio id="main-theme" loop>
+                <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
 
     <div class="window">
         <div class="title-bar">
@@ -170,165 +198,43 @@
     </div>
 
     <div class="badge-bar">
-        <center>
-            <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif" alt="badge1">
-            <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif" alt="badge2">
-            <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif" alt="badge3">
-            <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif" alt="badge4">
-            <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif" alt="badge5">
-            <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif" alt="badge6">
-            <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif" alt="badge7">
-            <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif" alt="badge8">
-        </center>
+        <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
     </div>
-<div style="position: absolute; right: 5%; top: 25%; text-align: center; width: 120px;">
+
+    <div id="portal-monkey" class="portal">
         <a href="penismonkey.html" style="text-decoration: none;">
-            <p style="color: #FFFF00; font-family: 'Comic Sans MS'; font-size: 12px; margin-bottom: 5px; background: rgba(0,0,0,0.7); border: 1px solid #FFFF00;">
-                to penis monkey
-            </p>
-            <img src="https://blob.gifcities.org/gifcities/6CEJ746XO75YZZ5THHAXSCNHTD6I2DZW.gif" alt="Penis Monkey Portal" style="width: 70px; filter: drop-shadow(0 0 10px #FFFF00);">
+            <p class="portal-text" style="color: #FFFF00; border: 1px solid #FFFF00;">to penis monkey</p>
+            <img src="https://blob.gifcities.org/gifcities/6CEJ746XO75YZZ5THHAXSCNHTD6I2DZW.gif" style="width: 70px; filter: drop-shadow(0 0 10px #FFFF00);">
         </a>
-</div>
-    <div style="position: absolute; left: 8%; top: 15%; text-align: center; width: 120px;">
+    </div>
+
+    <div id="portal-reticulated" class="portal">
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" style="text-decoration: none;">
-            <p style="color: #FF00FF; font-family: 'Comic Sans MS'; font-size: 12px; margin-bottom: 5px; background: rgba(0,0,0,0.7); border: 1px solid #FF00FF;">
-                to reticulated
-            </p>
-            <img src="https://blob.gifcities.org/gifcities/BNH6ILJYUWNIH47AFGB2SI7BX3TRP345.gif" alt="Reticulated" style="width: 80px; filter: drop-shadow(0 0 10px #FF00FF);">
+            <p class="portal-text" style="color: #FF00FF; border: 1px solid #FF00FF;">to reticulated</p>
+            <img src="https://blob.gifcities.org/gifcities/BNH6ILJYUWNIH47AFGB2SI7BX3TRP345.gif" style="width: 80px; filter: drop-shadow(0 0 10px #FF00FF);">
         </a>
     </div>
 
-    <div style="position: absolute; right: 12%; bottom: 20%; text-align: center; width: 120px;">
+    <div id="portal-tribbleton" class="portal">
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" style="text-decoration: none;">
-            <p style="color: #00FF00; font-family: 'Comic Sans MS'; font-size: 12px; margin-bottom: 5px; background: rgba(0,0,0,0.7); border: 1px solid #00FF00;">
-                to tribbleton state
-            </p>
-            <img src="https://blob.gifcities.org/gifcities/AZW26QJV5X7REPJUUBC6CKSGVEKPZVY6.gif" alt="Tribbleton Planet" style="width: 80px; filter: drop-shadow(0 0 10px #00FF00);">
+            <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">to tribbleton state</p>
+            <img src="https://blob.gifcities.org/gifcities/AZW26QJV5X7REPJUUBC6CKSGVEKPZVY6.gif" style="width: 80px; filter: drop-shadow(0 0 10px #00FF00);">
         </a>
     </div>
-</div>
-    <div class="netscape-player">
-    <div class="player-header">
-        <span class="gold-text">◀ SOUND ▶</span>
-    </div>
 
-    <div class="visualizer">
-        <div class="v-bar red"></div><div class="v-bar orange"></div>
-        <div class="v-bar yellow"></div><div class="v-bar green"></div>
-        <div class="v-bar cyan"></div><div class="v-bar blue"></div>
-        <div class="v-bar purple"></div><div class="v-bar red"></div>
-        <div class="v-bar yellow"></div><div class="v-bar green"></div>
-    </div>
+    <script>
+        const fatCat = document.getElementById("main-theme");
+        function playAudio() { fatCat.play(); }
+        function pauseAudio() { fatCat.pause(); }
+        function stopAudio() { fatCat.pause(); fatCat.currentTime = 0; }
+    </script>
 
-    <div class="control-deck">
-        <div class="button-row">
-            <button class="win95-btn" onclick="stopAudio()">■</button>
-            <button class="win95-btn" onclick="playAudio()">▶</button>
-            <button class="win95-btn" onclick="pauseAudio()">II</button>
-        </div>
-        <div class="volume-track">
-            <div class="volume-knob"></div>
-        </div>
-    </div>
-    
-    <p class="track-info">NOW PLAYING: Pilotredsun - Fat Cat</p>
-</div>
-
-<audio id="main-theme" loop>
-    <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
-</audio>
-
-<style>
-    .netscape-player {
-        background: #000;
-        border: 2px solid #777;
-        padding: 10px;
-        width: 240px;
-        text-align: center;
-        image-rendering: pixelated;
-        font-family: 'VT323', monospace;
-    }
-
-    .player-header {
-        background: #000;
-        border-bottom: 2px solid #444;
-        margin-bottom: 10px;
-        padding-bottom: 5px;
-    }
-
-    .gold-text {
-        color: #d4af37; 
-        font-size: 20px;
-        letter-spacing: 3px;
-    }
-
-    .visualizer {
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 2px;
-        height: 50px;
-        background: #111;
-        margin-bottom: 10px;
-        border: 1px inset #555;
-    }
-
-    .v-bar { width: 15px; height: 100%; border-top: 2px solid #000; }
-    .red { background: #ff0000; height: 70%; }
-    .orange { background: #ff7700; height: 40%; }
-    .yellow { background: #ffff00; height: 90%; }
-    .green { background: #00ff00; height: 60%; }
-    .cyan { background: #00ffff; height: 80%; }
-    .blue { background: #0000ff; height: 50%; }
-    .purple { background: #aa00ff; height: 30%; }
-
-    .control-deck {
-        background: #333;
-        border: 2px inset #555;
-        padding: 5px;
-    }
-
-    .win95-btn {
-        background: #c0c0c0;
-        border: 2px outset #fff;
-        width: 40px;
-        height: 25px;
-        cursor: pointer;
-        font-weight: bold;
-        margin: 0 2px;
-    }
-
-    .win95-btn:active { border: 2px inset #fff; }
-
-    .volume-track {
-        height: 4px;
-        background: #000;
-        margin-top: 10px;
-        position: relative;
-    }
-
-    .volume-knob {
-        width: 10px;
-        height: 14px;
-        background: #c0c0c0;
-        border: 1px solid #000;
-        position: absolute;
-        top: -5px;
-        left: 50%;
-    }
-
-    .track-info {
-        font-size: 12px;
-        color: #00ff00;
-        margin-top: 10px;
-    }
-</style>
-
-<script>
-    const fatCat = document.getElementById("main-theme");
-    function playAudio() { fatCat.play(); }
-    function pauseAudio() { fatCat.pause(); }
-    function stopAudio() { fatCat.pause(); fatCat.currentTime = 0; }
-</script>
 </body>
 </html>
