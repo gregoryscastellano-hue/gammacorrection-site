@@ -227,7 +227,49 @@
     <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif">
     <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
   </div>
+<div class="planet-relic-container">
+    <div class="planet-relic" onclick="alert('find my key')">
+        <p class="relic-text">???</p>
+        <img src="https://blob.gifcities.org/gifcities/PESGQAISPMZ4KGWZDTHQVKXMS6GM5WQI.gif" alt="Static Relic">
+    </div>
+</div>
 
+<style>
+    /* Position the planet below the badge bar */
+    .planet-relic-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    .planet-relic {
+        cursor: help;
+        text-align: center;
+        transition: filter 0.3s;
+    }
+
+    /* Keep it static and glowing */
+    .planet-relic img {
+        width: 100px;
+        filter: drop-shadow(0 0 15px #00ffff) grayscale(1); /* Grayscale helps it look 'static' */
+        image-rendering: pixelated;
+    }
+
+    .planet-relic:hover img {
+        filter: drop-shadow(0 0 20px #00ffff) grayscale(0); /* Reveals color on hover */
+    }
+
+    .relic-text {
+        color: #00ffff;
+        font-family: 'VT323', monospace;
+        font-size: 14px;
+        margin-bottom: 5px;
+        background: rgba(0,0,0,0.8);
+        border: 1px solid #00ffff;
+        padding: 2px;
+    }
+</style>
   <div id="portal-monkey" class="portal">
     <a href="penismonkey.html">
       <p class="portal-text" style="color: #FFFF00; border: 1px solid #FFFF00;">to penis monkey</p>
