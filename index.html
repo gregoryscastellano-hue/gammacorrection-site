@@ -4,55 +4,52 @@
     <title>~ GAMMA CORRECTION ~</title>
     <style>
         body {
-    background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
-    background-repeat: repeat;
-    background-attachment: fixed;
-    color: #ffffff;
-    font-family: "Courier New", monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px 20px;
-    margin: 0;
-    /* CHANGE THESE TWO LINES BELOW */
-    height: auto; 
-    min-height: 100vh;
-}
+            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
+            background-repeat: repeat;
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: "Courier New", monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Centers everything vertically */
+            height: 100vh; /* Locks height to the screen */
+            margin: 0;
+            overflow: hidden; /* Prevents the viewer from scrolling */
         }
 
         h1 {
             font-family: "Comic Sans MS", cursive;
-            font-size: 64px;
-            color: #00FF00; /* The Prime Frequency */
-            text-shadow: 4px 4px #ff00ff; /* Glitch offset */
-            margin: 20px 0;
-            background: rgba(0, 0, 0, 0.7); /* Dark box so the text is readable over the static */
-            padding: 10px 20px;
-            border: 2px solid #ff00ff;
+            font-size: 42px; /* Slightly smaller to save space */
+            color: #00FF00;
+            text-shadow: 3px 3px #ff00ff;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 20px;
+            border: 2px double #00FF00;
         }
 
         .creator-station {
-            border: 3px double #00FF00;
-            padding: 10px;
+            border: 2px double #00FF00;
+            padding: 5px;
             background-color: #000;
-            box-shadow: 0 0 20px #00FF00;
         }
 
         .window {
             background: #c0c0c0;
-            border: 4px outset #ffffff;
-            width: 90%;
-            max-width: 800px;
-            box-shadow: 10px 10px 0px #000000;
-            margin-top: 30px;
+            border: 3px outset #ffffff;
+            width: 85%;
+            max-width: 700px;
+            box-shadow: 6px 6px 0px #000000;
+            margin-bottom: 20px;
         }
 
         .title-bar {
             background: linear-gradient(90deg, #000080, #1084d0);
             color: white;
-            padding: 4px 10px;
+            padding: 2px 8px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             display: flex;
             justify-content: space-between;
         }
@@ -60,19 +57,27 @@
         .content {
             background: #ffffff;
             color: #000000;
-            padding: 20px;
+            padding: 15px;
             border: 2px inset #808080;
-            margin: 5px;
-            line-height: 1.5;
-            height: 300px;
-            overflow-y: scroll;
+            margin: 4px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .badge-bar {
+            margin-top: 10px;
+        }
+
+        .badge-bar img {
+            height: 35px; /* Shrinks badges slightly to ensure they fit on one line */
+            margin: 0 3px;
         }
     </style>
 </head>
 <body>
 
     <div class="creator-station">
-        <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="The Archivist">
+        <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="The Archivist" width="80">
     </div>
 
     <h1>gamma correction</h1>
@@ -83,29 +88,23 @@
             <span>[?] [X]</span>
         </div>
         <div class="content">
-            <p><b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b></p>
+            <b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b>
             <p>My work lives on the razor's edge between the Sacred and the Profane. I create sacred texts about pathetic characters, and I build grand mythologies out of profane jokes.</p>
         </div>
     </div>
-<div style="background: rgba(0,0,0,0.8); border-top: 2px solid #00FF00; width: 100%; padding: 20px 0; margin-top: 60px;">
-        <center>
-            <p style="color: #00FF00; font-family: 'Comic Sans MS'; font-size: 14px; margin-bottom: 15px;">
-                *** MULTIVERSE CLEARANCE GRANTED ***
-            </p>
-            
-            <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif" alt="badge1" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif" alt="badge2" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif" alt="badge3" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif" alt="badge4" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif" alt="badge5" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif" alt="badge6" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif" alt="badge7" style="margin: 5px;">
-            <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif" alt="badge8" style="margin: 5px;">
 
-            <p style="color: #444; font-size: 10px; margin-top: 15px;">
-                RECEPTION OF PRIME FREQUENCY: STABLE
-            </p>
+    <div class="badge-bar">
+        <center>
+            <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif" alt="badge1">
+            <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif" alt="badge2">
+            <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif" alt="badge3">
+            <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif" alt="badge4">
+            <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif" alt="badge5">
+            <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif" alt="badge6">
+            <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif" alt="badge7">
+            <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif" alt="badge8">
         </center>
-</div>
+    </div>
+
 </body>
 </html>
