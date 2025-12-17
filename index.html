@@ -18,12 +18,11 @@
       will-change: transform, top;
     }
 
-    /* Flip is now a stable state (NOT inside keyframes) */
+    /* flipped = FACE RIGHT */
     #bonzi-surfer.flipped {
       transform: scaleX(-1);
     }
 
-    /* Movement keyframes: NO scaleX here */
     @keyframes flyRight {
       from { transform: translate(-200px, 100vh) rotate(15deg); }
       to   { transform: translate(120vw, -300px) rotate(-15deg); }
@@ -62,20 +61,28 @@
 
     .station-container {
       display: flex;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
+      margin: 30px 0;
+      width: 100%;
+      flex-wrap: nowrap;
     }
 
+    /* SINGLE green border lives HERE */
     .creator-station {
       border: 2px double #00FF00;
       padding: 5px;
       background-color: #000;
     }
 
-    .creator-station img { height: 100px; width: auto; }
+    /* NO border here anymore */
+    .creator-station img {
+      height: 100px;
+      width: auto;
+      cursor: pointer;
+    }
 
     .netscape-player-small {
       background: #000;
@@ -115,11 +122,6 @@
     }
 
     .visualizing { animation: barJump 0.5s infinite alternate; }
-    .v-bar:nth-child(1) { animation-duration: 0.4s; }
-    .v-bar:nth-child(2) { animation-duration: 0.7s; }
-    .v-bar:nth-child(3) { animation-duration: 0.5s; }
-    .v-bar:nth-child(4) { animation-duration: 0.9s; }
-    .v-bar:nth-child(5) { animation-duration: 0.6s; }
 
     .win95-btn-small {
       background: #c0c0c0;
@@ -130,50 +132,11 @@
       font-size: 10px;
     }
     .win95-btn-small:active { border: 2px inset #fff; }
-
-    .window {
-      background: #c0c0c0;
-      border: 3px outset #ffffff;
-      width: 85%;
-      max-width: 600px;
-      box-shadow: 6px 6px 0px #000000;
-      margin-bottom: 20px;
-    }
-    .title-bar {
-      background: linear-gradient(90deg, #000080, #1084d0);
-      color: white;
-      padding: 2px 8px;
-      font-weight: bold;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .content {
-      background: #ffffff;
-      color: #000000;
-      padding: 15px;
-      border: 2px inset #808080;
-      margin: 4px;
-      line-height: 1.4;
-      font-size: 14px;
-    }
-    .badge-bar img { height: 35px; margin: 0 3px; }
-
-    .portal { position: absolute; text-align: center; width: 120px; }
-    .portal-text {
-      font-family: 'Comic Sans MS';
-      font-size: 12px;
-      margin-bottom: 5px;
-      background: rgba(0,0,0,0.7);
-      padding: 2px;
-    }
-    #portal-monkey { right: 5%; top: 25%; }
-    #portal-reticulated { left: 5%; top: 20%; }
-    #portal-tribbleton { right: 10%; bottom: 15%; }
   </style>
 </head>
 
 <body>
+
   <img
     id="bonzi-surfer"
     src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349"
@@ -182,214 +145,69 @@
 
   <h1>gamma correction</h1>
 
-<style>
-    /* Forces the Archivist and the Player to stay side-by-side */
-    .station-container {
-        display: flex;
-        flex-direction: row; /* This is the fix */
-        align-items: center;
-        justify-content: center;
-        gap: 15px; 
-        margin-top: 30px;
-        margin-bottom: 30px;
-        width: 100%;
-        flex-wrap: nowrap; /* Prevents them from stacking on top of each other */
-    }
-
-    .creator-station img {
-        height: 100px;
-        width: auto;
-        border: 2px double #00FF00;
-        padding: 5px;
-        background-color: #000;
-        cursor: pointer; /* Tells the visitor they can interact */
-    }
-</style>
-
-<div class="station-container">
+  <div class="station-container">
     <div class="creator-station">
-        <img id="archivist-img" 
-             src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
-             onclick="handleComputerClick()" 
-             alt="Gamma Correction Station">
+      <img
+        id="archivist-img"
+        src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif"
+        onclick="handleComputerClick()"
+        alt="Gamma Correction Station"
+      >
     </div>
 
     <div class="netscape-player-small">
-        <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
-        <div class="visualizer-small">
-            <div class="v-bar v-red"></div><div class="v-bar v-orange"></div>
-            <div class="v-bar v-yellow"></div><div class="v-bar v-green"></div>
-            <div class="v-bar v-blue"></div>
-        </div>
-        <div class="control-deck-small">
-            <button class="win95-btn-small" onclick="stopAudio()">■</button>
-            <button class="win95-btn-small" onclick="playAudio()">▶</button>
-            <button class="win95-btn-small" onclick="pauseAudio()">II</button>
-        </div>
-        <audio id="main-theme" loop>
-            <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
-        </audio>
+      <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
+      <div class="visualizer-small">
+        <div class="v-bar v-red"></div>
+        <div class="v-bar v-orange"></div>
+        <div class="v-bar v-yellow"></div>
+        <div class="v-bar v-green"></div>
+        <div class="v-bar v-blue"></div>
+      </div>
+      <div class="control-deck-small">
+        <button class="win95-btn-small" onclick="stopAudio()">■</button>
+        <button class="win95-btn-small" onclick="playAudio()">▶</button>
+        <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+      </div>
+      <audio id="main-theme" loop>
+        <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+      </audio>
     </div>
-</div>
-  <div class="window">
-    <div class="title-bar">
-      <span>Gammacorrection.exe - VOLUME_I_MANIFESTO</span><span>[?] [X]</span>
-    </div>
-    <div class="content">
-      <b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b>
-      <p>My work lives on the razor's edge between the Sacred and the Profane. I create sacred texts about pathetic characters, and I build grand mythologies out of profane jokes.</p>
-    </div>
-  </div>
-
-  <div class="badge-bar">
-    <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif">
-    <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
-  </div>
-<div class="planet-relic-container">
-    <div class="planet-relic" onclick="handlePlanetClick()">
-        <p id="relic-label" class="relic-text">???</p>
-        <img src="https://blob.gifcities.org/gifcities/PESGQAISPMZ4KGWZDTHQVKXMS6GM5WQI.gif" alt="Static Relic">
-    </div>
-</div>
-
-<style>
-    /* Position the planet below the badge bar */
-    .planet-relic-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-        margin-bottom: 40px;
-    }
-
-    .planet-relic {
-        cursor: help;
-        text-align: center;
-        transition: filter 0.3s;
-    }
-
-    /* Keep it static and glowing */
-    .planet-relic img {
-        width: 100px;
-        filter: drop-shadow(0 0 15px #00ffff) grayscale(1); /* Grayscale helps it look 'static' */
-        image-rendering: pixelated;
-    }
-
-    .planet-relic:hover img {
-        filter: drop-shadow(0 0 20px #00ffff) grayscale(0); /* Reveals color on hover */
-    }
-
-    .relic-text {
-        color: #00ffff;
-        font-family: 'VT323', monospace;
-        font-size: 14px;
-        margin-bottom: 5px;
-        background: rgba(0,0,0,0.8);
-        border: 1px solid #00ffff;
-        padding: 2px;
-    }
-</style>
-  <div id="portal-monkey" class="portal">
-    <a href="penismonkey.html">
-      <p class="portal-text" style="color: #FFFF00; border: 1px solid #FFFF00;">to penis monkey</p>
-      <img src="https://blob.gifcities.org/gifcities/6CEJ746XO75YZZ5THHAXSCNHTD6I2DZW.gif"
-           style="width: 70px; filter: drop-shadow(0 0 10px #FFFF00);">
-    </a>
-  </div>
-
-  <div id="portal-reticulated" class="portal">
-    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-      <p class="portal-text" style="color: #FF00FF; border: 1px solid #FF00FF;">to reticulated</p>
-      <img src="https://blob.gifcities.org/gifcities/BNH6ILJYUWNIH47AFGB2SI7BX3TRP345.gif"
-           style="width: 80px; filter: drop-shadow(0 0 10px #FF00FF);">
-    </a>
-  </div>
-
-  <div id="portal-tribbleton" class="portal">
-    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-      <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">to tribbleton state</p>
-      <img src="https://blob.gifcities.org/gifcities/AZW26QJV5X7REPJUUBC6CKSGVEKPZVY6.gif"
-           style="width: 80px; filter: drop-shadow(0 0 10px #00FF00);">
-    </a>
   </div>
 
   <script>
-  // --- QUEST STATE ---
-   let computerState = 0; 
-
-    function handleComputerClick() {
-        const archivist = document.getElementById("archivist-img");
-        
-        if (computerState === 0) {
-            // First click reveals the key
-            archivist.src = "https://blob.gifcities.org/gifcities/DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif";
-            computerState = 1;
-        } else if (computerState === 1) {
-            // Second click collects the key
-            alert("key added to inventory");
-            document.getElementById("relic-label").innerText = "tomodachi saga";
-            computerState = 2;
-        }
-    }
-    function handlePlanetClick() {
-        if (computerState < 2) {
-            alert('find my key'); // Standard 'Sacred Requirement'
-        } else {
-            // This is where you can add a link to the tomodachi saga
-            window.location.href = "#"; // Replace with actual link later
-        }
-    }
-    
-    // ----- BONZI (fixed flip + reliable restart) -----
+    // ----- BONZI -----
     const bonzi = document.getElementById("bonzi-surfer");
 
-    function scheduleNextBonzi() {
-      // RANDOM INTERVAL: 50s to 90s
-      const nextArrival = Math.random() * (90000 - 50000) + 50000;
-      console.log("Next anomaly scheduled in: " + (nextArrival / 1000).toFixed(1) + "s");
-      setTimeout(summonBonzi, nextArrival);
-    }
-
     function summonBonzi() {
-      // Pick direction
       const goingLeft = Math.random() < 0.5;
 
-      // Random vertical lane
       bonzi.style.top = Math.floor(Math.random() * 70 + 10) + "%";
 
-      // Apply flip as a stable class
-      bonzi.classList.toggle("flipped", goingLeft);
+      /* FIX: flip only when going RIGHT */
+      bonzi.classList.toggle("flipped", !goingLeft);
 
-      // Reset animation cleanly
       bonzi.style.animation = "none";
-      bonzi.offsetHeight; // force reflow so next animation always starts
+      bonzi.offsetHeight;
 
-      // Start correct animation
       bonzi.style.animation = goingLeft
         ? "flyLeft 8s linear forwards"
         : "flyRight 8s linear forwards";
     }
 
-    // When the animation finishes, stop it and schedule the next one
     bonzi.addEventListener("animationend", () => {
       bonzi.style.animation = "none";
-      scheduleNextBonzi();
+      setTimeout(summonBonzi, Math.random() * (90000 - 50000) + 50000);
     });
 
-    // First arrival after 30 seconds
     setTimeout(summonBonzi, 30000);
 
-    // ----- AUDIO / VISUALIZER (unchanged) -----
+    // ----- AUDIO -----
     const fatCat = document.getElementById("main-theme");
     const bars = document.querySelectorAll(".v-bar");
 
     function playAudio() {
-      fatCat.play().catch(() => console.log("Blocked"));
+      fatCat.play().catch(() => {});
       bars.forEach(bar => bar.classList.add("visualizing"));
     }
     function pauseAudio() {
@@ -401,6 +219,11 @@
       fatCat.currentTime = 0;
       bars.forEach(bar => bar.classList.remove("visualizing"));
     }
+
+    function handleComputerClick() {
+      alert("computer clicked");
+    }
   </script>
+
 </body>
 </html>
