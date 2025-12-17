@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>SAGA_OF_THE_MONKEY</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
     <style>
         body {
-            background-color: #1a0000; 
+            background-color: #1a0000; /* The Hell Frequency Red */
             color: #ff0000; 
             font-family: 'VT323', monospace; 
             font-size: 24px;
@@ -23,6 +24,7 @@
         .main-title-img {
             max-width: 80%;
             height: auto;
+            /* Logo.png glow effect */
             filter: drop-shadow(0 0 15px #ff0000); 
             margin-bottom: 20px;
         }
@@ -32,22 +34,21 @@
             padding: 25px;
             box-shadow: 0 0 30px #4a0000;
             max-width: 600px;
-            border: none;
+            border: none; /* No red border as requested */
         }
 
         .schmeagle-head {
-            width: 100px;
+            width: 100px; /* Smaller size for the pathetic protagonist */
             height: auto;
             margin-bottom: 15px;
             animation: float 3s ease-in-out infinite;
-            cursor: pointer; /* Shows the viewer he can be clicked */
+            cursor: pointer;
             transition: transform 0.1s;
         }
 
-        /* Makes him 'react' visually when clicked */
+        /* Subtle visual feedback when clicking the relic */
         .schmeagle-head:active {
-            transform: scale(1.2);
-            filter: brightness(1.5);
+            transform: scale(0.95);
         }
 
         @keyframes float {
@@ -56,22 +57,31 @@
             100% { transform: translateY(0px); }
         }
 
-        a { color: #ffffff; text-decoration: underline; }
-        a:hover { color: #ffff00; }
+        a { 
+            color: #ffffff; 
+            text-decoration: underline; 
+        }
+
+        a:hover {
+            color: #ffff00;
+        }
     </style>
 </head>
 <body>
 
-<audio id="schmeagle-audio" src="subway surfahs.mp3" preload="auto" crossorigin="anonymous"></audio>
+    <audio id="schmeagle-audio" preload="auto">
+        <source src="subway surfahs.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="title-container">
         <img src="logo.png" alt="PENIS MONKEY SAGA" class="main-title-img">
     </div>
 
     <div class="download-box">
-        <img src="schmeagle head.png" 
+        <img src="schmeagle.png" 
              alt="Schmeagle" 
              class="schmeagle-head" 
-             onclick="playSound()">
+             onclick="playSignal()">
         
         <p>FREQUENCY: CRITICAL</p>
         <p>THE FIRST SIGNAL - BRAINROT EPIC</p>
@@ -82,10 +92,17 @@
     </div>
 
     <script>
-        function playSound() {
-            var audio = document.getElementById("schmeagle-audio");
-            audio.currentTime = 0; // Rewinds so you can spam-click him
-            audio.play();
+        function playSignal() {
+            const audio = document.getElementById("schmeagle-audio");
+            
+            // Reset and play to allow for spam-clicking the brainrot
+            audio.currentTime = 0;
+            
+            audio.play().catch(error => {
+                console.error("Signal blocked by browser Order: ", error);
+                // Alert helps troubleshoot on mobile/desktop
+                alert("The browser is blocking the audio. Click anywhere on the page first!");
+            });
         }
     </script>
 
