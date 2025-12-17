@@ -1,39 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GAMMA CORRECTION</title>
+    <title>~ GAMMA CORRECTION ~</title>
     <style>
         body {
-            background-color: #000000; /* Starting with the void of Purgatory */
+            /* This is your Static Realm background */
+            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
+            background-repeat: repeat;
+            background-attachment: fixed;
             color: #ffffff;
+            font-family: "Courier New", monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            padding: 50px 20px;
             margin: 0;
         }
 
         h1 {
-            font-family: "Comic Sans MS", "Comic Sans", cursive;
-            font-size: 48px;
-            color: #00FF00; /* The Prime Frequency Green */
-            text-shadow: 3px 3px #ff00ff; /* A slight glitch/static offset */
+            font-family: "Comic Sans MS", cursive;
+            font-size: 64px;
+            color: #00FF00; /* The Prime Frequency */
+            text-shadow: 4px 4px #ff00ff; /* Glitch offset */
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.7); /* Dark box so the text is readable over the static */
+            padding: 10px 20px;
+            border: 2px solid #ff00ff;
         }
 
-        .creator-gif {
-            border: 1px solid #444;
+        .creator-station {
+            border: 3px double #00FF00;
             padding: 10px;
+            background-color: #000;
+            box-shadow: 0 0 20px #00FF00;
+        }
+
+        .window {
+            background: #c0c0c0;
+            border: 4px outset #ffffff;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 10px 10px 0px #000000;
+            margin-top: 30px;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content {
+            background: #ffffff;
+            color: #000000;
+            padding: 20px;
+            border: 2px inset #808080;
+            margin: 5px;
+            line-height: 1.5;
+            height: 300px;
+            overflow-y: scroll;
         }
     </style>
 </head>
 <body>
 
-    <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
-         alt="The Creator" 
-         class="creator-gif">
+    <div class="creator-station">
+        <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="The Archivist">
+    </div>
 
     <h1>gamma correction</h1>
+
+    <div class="window">
+        <div class="title-bar">
+            <span>Gammacorrection.exe - VOLUME_I_MANIFESTO</span>
+            <span>[?] [X]</span>
+        </div>
+        <div class="content">
+            <p><b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b></p>
+            <p>My work lives on the razor's edge between the Sacred and the Profane. I create sacred texts about pathetic characters, and I build grand mythologies out of profane jokes.</p>
+        </div>
+    </div>
 
 </body>
 </html>
