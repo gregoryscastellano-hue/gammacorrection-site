@@ -76,9 +76,85 @@
 </head>
 <body>
 
+    <div class="station-container">
+    
     <div class="creator-station">
-        <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="The Archivist" width="80">
+        <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="Gamma Correction Station">
     </div>
+
+    <div class="netscape-player-small">
+        <div class="player-header-small">
+            <span class="gold-text-small">◀ SOUND ▶</span>
+        </div>
+
+        <div class="visualizer-small">
+            <div class="v-bar red"></div><div class="v-bar orange"></div>
+            <div class="v-bar yellow"></div><div class="v-bar green"></div>
+            <div class="v-bar blue"></div>
+        </div>
+
+        <div class="control-deck-small">
+            <button class="win95-btn-small" onclick="stopAudio()">■</button>
+            <button class="win95-btn-small" onclick="playAudio()">▶</button>
+            <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+        </div>
+        
+        <audio id="main-theme" loop>
+            <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+</div>
+
+<style>
+    /* Aligning the Signal and the Station */
+    .station-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px; 
+        margin-top: 30px;
+        flex-wrap: wrap; /* Ensures it looks good on mobile too */
+    }
+
+    .creator-station img {
+        height: 100px; /* Adjusting height to match the player scale */
+        width: auto;
+    }
+
+    .netscape-player-small {
+        background: #000;
+        border: 2px solid #777;
+        padding: 5px;
+        width: 130px; 
+        text-align: center;
+        image-rendering: pixelated;
+        font-family: 'VT323', monospace;
+    }
+
+    .player-header-small {
+        border-bottom: 1px solid #444;
+        margin-bottom: 5px;
+    }
+
+    .gold-text-small {
+        color: #d4af37; 
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .visualizer-small {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 1px;
+        height: 30px;
+        background: #111;
+        margin-bottom: 5px;
+        border: 1px inset #555;
+    }
+
+    .v-bar { width: 12px; height: 100%;
 
     <h1>gamma correction</h1>
 
