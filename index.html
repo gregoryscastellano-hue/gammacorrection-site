@@ -5,6 +5,23 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
     <style>
+       /* --- THE BONZI ANOMALY --- */
+        #bonzi-surfer {
+            position: fixed;
+            top: -300px; 
+            left: -300px;
+            width: 180px; /* Slightly larger for impact */
+            z-index: 10000; 
+            pointer-events: none; 
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 15px #aa00ff); /* Purple glow of the void */
+        }
+
+        @keyframes flyAcross {
+            from { transform: translate(-200px, 100vh) rotate(15deg); }
+            to { transform: translate(120vw, -300px) rotate(-15deg); }
+        }
+        
         body {
             background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
             background-repeat: repeat;
@@ -144,7 +161,7 @@
     </style>
 </head>
 <body>
-
+<img id="bonzi-surfer" src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349" alt="Surfing Anomaly">
     <h1>gamma correction</h1>
 
     <div class="station-container">
@@ -213,6 +230,30 @@
     </div>
 
     <script>
+      function summonBonzi() {
+        const bonzi = document.getElementById("bonzi-surfer");
+        
+        // The Archivist chooses a random flight path
+        const randomTop = Math.floor(Math.random() * 70 + 10) + "%";
+        bonzi.style.top = randomTop;
+
+        // Trigger the flight
+        bonzi.style.animation = "flyAcross 8s linear forwards";
+
+        // After the flight, reset and wait for a long interval
+        setTimeout(() => {
+            bonzi.style.animation = "none";
+            
+            // RANDOM INTERVAL: 50 seconds to 90 seconds (Approx. 1 minute)
+            const nextArrival = Math.random() * (90000 - 50000) + 50000;
+            
+            console.log("Next anomaly scheduled in: " + (nextArrival/1000) + "s");
+            setTimeout(summonBonzi, nextArrival);
+        }, 8500);
+    }
+
+    // First arrival after 45 seconds of viewing the manifesto
+    setTimeout(summonBonzi, 45000);
         const fatCat = document.getElementById("main-theme");
         const bars = document.querySelectorAll(".v-bar");
 
