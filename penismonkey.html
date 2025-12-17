@@ -32,15 +32,22 @@
             padding: 25px;
             box-shadow: 0 0 30px #4a0000;
             max-width: 600px;
-            border: none; /* No red border */
+            border: none;
         }
 
-        /* --- SCHMEAGLE ANIMATION --- */
         .schmeagle-head {
-            width: 100px; /* Smaller size */
+            width: 100px;
             height: auto;
             margin-bottom: 15px;
-            animation: float 3s ease-in-out infinite; /* This triggers the floating */
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer; /* Shows the viewer he can be clicked */
+            transition: transform 0.1s;
+        }
+
+        /* Makes him 'react' visually when clicked */
+        .schmeagle-head:active {
+            transform: scale(1.2);
+            filter: brightness(1.5);
         }
 
         @keyframes float {
@@ -48,26 +55,24 @@
             50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
-        /* --------------------------- */
 
-        a { 
-            color: #ffffff; 
-            text-decoration: underline; 
-        }
-
-        a:hover {
-            color: #ffff00;
-        }
+        a { color: #ffffff; text-decoration: underline; }
+        a:hover { color: #ffff00; }
     </style>
 </head>
 <body>
+
+    <audio id="schmeagle-audio" src="YOUR_SOUND_FILE.mp3"></audio>
 
     <div class="title-container">
         <img src="logo.png" alt="PENIS MONKEY SAGA" class="main-title-img">
     </div>
 
     <div class="download-box">
-        <img src="schmeagle head.png" alt="Schmeagle" class="schmeagle-head">
+        <img src="schmeagle.png" 
+             alt="Schmeagle" 
+             class="schmeagle-head" 
+             onclick="playSound()">
         
         <p>FREQUENCY: CRITICAL</p>
         <p>THE FIRST SIGNAL - BRAINROT EPIC</p>
@@ -76,6 +81,14 @@
         <br><br>
         <a href="index.html" style="font-size: 18px;">-- RETURN TO ARCHIVE --</a>
     </div>
+
+    <script>
+        function playSound() {
+            var audio = document.getElementById("subway surfahs.mp3");
+            audio.currentTime = 0; // Rewinds so you can spam-click him
+            audio.play();
+        }
+    </script>
 
 </body>
 </html>
