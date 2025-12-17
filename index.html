@@ -17,9 +17,17 @@
             filter: drop-shadow(0 0 15px #aa00ff); /* Purple glow of the void */
         }
 
-        @keyframes flyAcross {
+       /* Flight: Left to Right */
+        @keyframes flyRight {
             from { transform: translate(-200px, 100vh) rotate(15deg); }
             to { transform: translate(120vw, -300px) rotate(-15deg); }
+        }
+
+        /* Flight: Right to Left (includes a horizontal flip) */
+        @keyframes flyLeft {
+            from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(-1); }
+            to { transform: translate(-300px, -300px) rotate(15deg) scaleX(-1); }
+        }
         }
         
         body {
@@ -234,23 +242,28 @@
     function summonBonzi() {
         const bonzi = document.getElementById("bonzi-surfer");
         
-        // Randomize the height so he doesn't become predictable
+        // Decide direction: 0 for Right, 1 for Left
+        const direction = Math.floor(Math.random() * 2);
+        
+        // Randomize the height for variety
         const randomTop = Math.floor(Math.random() * 70 + 10) + "%";
         bonzi.style.top = randomTop;
 
-        // Execute the flight across the Static Realm
-        bonzi.style.animation = "flyAcross 8s linear forwards";
+        if (direction === 0) {
+            // Fly Left to Right
+            bonzi.style.animation = "flyRight 8s linear forwards";
+        } else {
+            // Fly Right to Left
+            bonzi.style.animation = "flyLeft 8s linear forwards";
+        }
 
         // Reset and schedule the next arrival
         setTimeout(() => {
             bonzi.style.animation = "none";
-            
-            // Re-summon in exactly 30 seconds
-            console.log("Anomaly reset. Re-summoning in 30s...");
+            // Re-summon in 30 seconds
             setTimeout(summonBonzi, 30000); 
-        }, 8500); // Wait for the 8s animation to finish
+        }, 8500); 
     }
-
     // First arrival: 30 seconds after page load
     console.log("Ritual started. Waiting 30s for first appearance...");
     setTimeout(summonBonzi, 30000);
