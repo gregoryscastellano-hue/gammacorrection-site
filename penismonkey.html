@@ -27,21 +27,28 @@
             margin-bottom: 20px;
         }
 
-        /* Removed the red border and made the box cleaner */
         .download-box {
             background: #000;
             padding: 25px;
-            box-shadow: 0 0 30px #4a0000; /* Darker, subtler glow */
+            box-shadow: 0 0 30px #4a0000;
             max-width: 600px;
-            border: none; /* This removes the red border */
+            border: none; /* No red border */
         }
 
-        /* This controls the size of Schmeagle's head */
+        /* --- SCHMEAGLE ANIMATION --- */
         .schmeagle-head {
-            width: 100px; /* Adjust this number to make him bigger or smaller */
+            width: 100px; /* Smaller size */
             height: auto;
             margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite; /* This triggers the floating */
         }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        /* --------------------------- */
 
         a { 
             color: #ffffff; 
