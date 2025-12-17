@@ -182,10 +182,12 @@
 
   <h1>gamma correction</h1>
 
-  <div class="station-container">
-    <div class="creator-station">
-      <img src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif">
-    </div>
+  <div class="creator-station">
+    <img id="archivist-img" 
+         src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
+         onclick="handleComputerClick()" 
+         alt="Archivist Station">
+</div>
 
     <div class="netscape-player-small">
       <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
@@ -228,8 +230,8 @@
     <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
   </div>
 <div class="planet-relic-container">
-    <div class="planet-relic" onclick="alert('find my key')">
-        <p class="relic-text">???</p>
+    <div class="planet-relic" onclick="handlePlanetClick()">
+        <p id="relic-label" class="relic-text">???</p>
         <img src="https://blob.gifcities.org/gifcities/PESGQAISPMZ4KGWZDTHQVKXMS6GM5WQI.gif" alt="Static Relic">
     </div>
 </div>
@@ -295,6 +297,37 @@
   </div>
 
   <script>
+  // --- QUEST STATE ---
+    let computerState = 0; // 0: Normal, 1: Key Visible, 2: Key Taken
+
+    function handleComputerClick() {
+        const archivist = document.getElementById("archivist-img");
+        
+        if (computerState === 0) {
+            // Step 1: Reveal the Key
+            archivist.src = "https://blob.gifcities.org/gifcities/DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif";
+            computerState = 1;
+        } else if (computerState === 1) {
+            // Step 2: Add to Inventory
+            alert("key added to inventory");
+            
+            // Step 3: Update the Planet Relic
+            document.getElementById("relic-label").innerText = "tomodachi saga";
+            
+            // Optional: Revert computer back or keep as static key
+            computerState = 2;
+        }
+    }
+
+    function handlePlanetClick() {
+        if (computerState < 2) {
+            alert('find my key'); // Standard 'Sacred Requirement'
+        } else {
+            // This is where you can add a link to the tomodachi saga
+            window.location.href = "#"; // Replace with actual link later
+        }
+    }
+    
     // ----- BONZI (fixed flip + reliable restart) -----
     const bonzi = document.getElementById("bonzi-surfer");
 
