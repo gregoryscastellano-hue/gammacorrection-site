@@ -182,33 +182,55 @@
 
   <h1>gamma correction</h1>
 
-  <div class="creator-station">
-    <img id="archivist-img" 
-         src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
-         onclick="handleComputerClick()" 
-         alt="Archivist Station">
-</div>
+<style>
+    /* Forces the Archivist and the Player to stay side-by-side */
+    .station-container {
+        display: flex;
+        flex-direction: row; /* This is the fix */
+        align-items: center;
+        justify-content: center;
+        gap: 15px; 
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 100%;
+        flex-wrap: nowrap; /* Prevents them from stacking on top of each other */
+    }
+
+    .creator-station img {
+        height: 100px;
+        width: auto;
+        border: 2px double #00FF00;
+        padding: 5px;
+        background-color: #000;
+        cursor: pointer; /* Tells the visitor they can interact */
+    }
+</style>
+
+<div class="station-container">
+    <div class="creator-station">
+        <img id="archivist-img" 
+             src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
+             onclick="handleComputerClick()" 
+             alt="Gamma Correction Station">
+    </div>
 
     <div class="netscape-player-small">
-      <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
-      <div class="visualizer-small">
-        <div class="v-bar v-red"></div>
-        <div class="v-bar v-orange"></div>
-        <div class="v-bar v-yellow"></div>
-        <div class="v-bar v-green"></div>
-        <div class="v-bar v-blue"></div>
-      </div>
-      <div class="control-deck-small">
-        <button class="win95-btn-small" onclick="stopAudio()">■</button>
-        <button class="win95-btn-small" onclick="playAudio()">▶</button>
-        <button class="win95-btn-small" onclick="pauseAudio()">II</button>
-      </div>
-      <audio id="main-theme" loop>
-        <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
-      </audio>
+        <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
+        <div class="visualizer-small">
+            <div class="v-bar v-red"></div><div class="v-bar v-orange"></div>
+            <div class="v-bar v-yellow"></div><div class="v-bar v-green"></div>
+            <div class="v-bar v-blue"></div>
+        </div>
+        <div class="control-deck-small">
+            <button class="win95-btn-small" onclick="stopAudio()">■</button>
+            <button class="win95-btn-small" onclick="playAudio()">▶</button>
+            <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+        </div>
+        <audio id="main-theme" loop>
+            <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+        </audio>
     </div>
-  </div>
-
+</div>
   <div class="window">
     <div class="title-bar">
       <span>Gammacorrection.exe - VOLUME_I_MANIFESTO</span><span>[?] [X]</span>
@@ -298,27 +320,22 @@
 
   <script>
   // --- QUEST STATE ---
-    let computerState = 0; // 0: Normal, 1: Key Visible, 2: Key Taken
+   let computerState = 0; 
 
     function handleComputerClick() {
         const archivist = document.getElementById("archivist-img");
         
         if (computerState === 0) {
-            // Step 1: Reveal the Key
+            // First click reveals the key
             archivist.src = "https://blob.gifcities.org/gifcities/DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif";
             computerState = 1;
         } else if (computerState === 1) {
-            // Step 2: Add to Inventory
+            // Second click collects the key
             alert("key added to inventory");
-            
-            // Step 3: Update the Planet Relic
             document.getElementById("relic-label").innerText = "tomodachi saga";
-            
-            // Optional: Revert computer back or keep as static key
             computerState = 2;
         }
     }
-
     function handlePlanetClick() {
         if (computerState < 2) {
             alert('find my key'); // Standard 'Sacred Requirement'
