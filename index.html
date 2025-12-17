@@ -5,29 +5,28 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
     <style>
-       /* --- THE BONZI ANOMALY --- */
+        /* --- THE BONZI ANOMALY --- */
         #bonzi-surfer {
             position: fixed;
             top: -300px; 
             left: -300px;
-            width: 180px; /* Slightly larger for impact */
+            width: 180px;
             z-index: 10000; 
             pointer-events: none; 
             image-rendering: pixelated;
-            filter: drop-shadow(0 0 15px #aa00ff); /* Purple glow of the void */
+            filter: drop-shadow(0 0 15px #aa00ff);
         }
 
-       /* Flight: Left to Right */
+        /* Flight: Left to Right */
         @keyframes flyRight {
             from { transform: translate(-200px, 100vh) rotate(15deg); }
             to { transform: translate(120vw, -300px) rotate(-15deg); }
         }
 
-        /* Flight: Right to Left (includes a horizontal flip) */
+        /* Flight: Right to Left (Includes the flip scaleX) */
         @keyframes flyLeft {
             from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(-1); }
             to { transform: translate(-300px, -300px) rotate(15deg) scaleX(-1); }
-        }
         }
         
         body {
@@ -169,7 +168,8 @@
     </style>
 </head>
 <body>
-<img id="bonzi-surfer" src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349" alt="Surfing Anomaly">
+    <img id="bonzi-surfer" src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349" alt="Surfer">
+    
     <h1>gamma correction</h1>
 
     <div class="station-container">
@@ -238,53 +238,43 @@
     </div>
 
     <script>
-    // --- THE SUMMONING RITUAL ---
-    function summonBonzi() {
-        const bonzi = document.getElementById("bonzi-surfer");
-        
-        // Decide direction: 0 for Right, 1 for Left
-        const direction = Math.floor(Math.random() * 2);
-        
-        // Randomize the height for variety
-        const randomTop = Math.floor(Math.random() * 70 + 10) + "%";
-        bonzi.style.top = randomTop;
+        // --- THE SUMMONING RITUAL ---
+        function summonBonzi() {
+            const bonzi = document.getElementById("bonzi-surfer");
+            const direction = Math.floor(Math.random() * 2);
+            const randomTop = Math.floor(Math.random() * 70 + 10) + "%";
+            bonzi.style.top = randomTop;
 
-        if (direction === 0) {
-            // Fly Left to Right
-            bonzi.style.animation = "flyRight 8s linear forwards";
-        } else {
-            // Fly Right to Left
-            bonzi.style.animation = "flyLeft 8s linear forwards";
+            if (direction === 0) {
+                bonzi.style.animation = "flyRight 8s linear forwards";
+            } else {
+                bonzi.style.animation = "flyLeft 8s linear forwards";
+            }
+
+            setTimeout(() => {
+                bonzi.style.animation = "none";
+                setTimeout(summonBonzi, 30000); 
+            }, 8500); 
         }
+        setTimeout(summonBonzi, 30000);
 
-        // Reset and schedule the next arrival
-        setTimeout(() => {
-            bonzi.style.animation = "none";
-            // Re-summon in 30 seconds
-            setTimeout(summonBonzi, 30000); 
-        }, 8500); 
-    }
-    // First arrival: 30 seconds after page load
-    console.log("Ritual started. Waiting 30s for first appearance...");
-    setTimeout(summonBonzi, 30000);
+        // --- AUDIO PLAYER LOGIC ---
+        const fatCat = document.getElementById("main-theme");
+        const bars = document.querySelectorAll(".v-bar");
 
-    // --- AUDIO PLAYER LOGIC ---
-    const fatCat = document.getElementById("main-theme");
-    const bars = document.querySelectorAll(".v-bar");
-
-    function playAudio() { 
-        fatCat.play().catch(e => console.log("Audio Blocked"));
-        bars.forEach(bar => bar.classList.add("visualizing"));
-    }
-    function pauseAudio() { 
-        fatCat.pause();
-        bars.forEach(bar => bar.classList.remove("visualizing"));
-    }
-    function stopAudio() { 
-        fatCat.pause(); 
-        fatCat.currentTime = 0; 
-        bars.forEach(bar => bar.classList.remove("visualizing"));
-    }
-</script>
+        function playAudio() { 
+            fatCat.play().catch(e => console.log("Blocked"));
+            bars.forEach(bar => bar.classList.add("visualizing"));
+        }
+        function pauseAudio() { 
+            fatCat.pause();
+            bars.forEach(bar => bar.classList.remove("visualizing"));
+        }
+        function stopAudio() { 
+            fatCat.pause(); 
+            fatCat.currentTime = 0; 
+            bars.forEach(bar => bar.classList.remove("visualizing"));
+        }
+    </script>
 </body>
 </html>
