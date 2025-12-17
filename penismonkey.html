@@ -6,7 +6,7 @@
     
     <style>
         body {
-            background-color: #1a0000; /* The Hell Frequency Red */
+            background-color: #1a0000; 
             color: #ff0000; 
             font-family: 'VT323', monospace; 
             font-size: 24px;
@@ -23,17 +23,24 @@
         .main-title-img {
             max-width: 80%;
             height: auto;
-            /* This makes your logo.gif glow red like a corrupted relic */
             filter: drop-shadow(0 0 15px #ff0000); 
             margin-bottom: 20px;
         }
 
+        /* Removed the red border and made the box cleaner */
         .download-box {
             background: #000;
-            border: 4px double #ff0000;
             padding: 25px;
-            box-shadow: 0 0 30px #7b0000;
+            box-shadow: 0 0 30px #4a0000; /* Darker, subtler glow */
             max-width: 600px;
+            border: none; /* This removes the red border */
+        }
+
+        /* This controls the size of Schmeagle's head */
+        .schmeagle-head {
+            width: 100px; /* Adjust this number to make him bigger or smaller */
+            height: auto;
+            margin-bottom: 15px;
         }
 
         a { 
@@ -42,22 +49,19 @@
         }
 
         a:hover {
-            color: #ffff00; /* Glows yellow when the Prophet hovers */
+            color: #ffff00;
         }
     </style>
 </head>
 <body>
-
-    <img src="logo.gif" alt="PENIS MONKEY SAGA" class="main-title-img">
-
-    <body>
 
     <div class="title-container">
         <img src="logo.png" alt="PENIS MONKEY SAGA" class="main-title-img">
     </div>
 
     <div class="download-box">
-        <img src="schmeagle head.png" alt="Monkey Icon">
+        <img src="schmeagle head.png" alt="Schmeagle" class="schmeagle-head">
+        
         <p>FREQUENCY: CRITICAL</p>
         <p>THE FIRST SIGNAL - BRAINROT EPIC</p>
         <br>
