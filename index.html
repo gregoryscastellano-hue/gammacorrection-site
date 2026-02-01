@@ -65,7 +65,7 @@
   <h1>THE ORACLE</h1>
   <div class="sub-text">THE LINE IS OPEN</div>
   
-  <img src="YOUR_NEW_PICTURE_URL_HERE" alt="The Wizard" class="wizard-img">
+  <img src="https://i0.wp.com/www.pinnyshop.com/wp-content/uploads/2024/04/west17-garfield.png?fit=800%2C800&ssl=1" alt="The Wizard" class="wizard-img">
 
   <input type="text" id="intent" placeholder="WHISPER YOUR INTENT..." autocomplete="off">
   <button onclick="seekSlack()">CONSULT THE ARCANA</button>
@@ -86,17 +86,23 @@ function seekSlack() {
   const m = String(randomDate.getMonth() + 1).padStart(2, '0');
   const d = String(randomDate.getDate()).padStart(2, '0');
 
-  // THE REVELATION: Direct link with no referrer to bypass tracking
+  // THE ULTIMATE BYPASS
+  // We don't go to gocomics.com. 
+  // We go to a Google-hosted proxy that displays the content FOR us.
   const targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
+  
+  // This proxy strips the paywall scripts and just shows the "Gadget" (the content)
+  const finalProxy = "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=" + encodeURIComponent(targetUrl);
 
   const a = document.createElement('a');
-  a.href = targetUrl;
-  a.rel = 'noreferrer'; // The Stealth Cloak
-  a.target = '_blank';  // The New Tab Sanctuary
+  a.href = finalProxy;
+  a.rel = 'noreferrer';
+  a.target = '_blank';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
 }
+
 
 function updateMondayTimer() {
   const now = new Date();
