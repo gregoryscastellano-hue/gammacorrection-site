@@ -1,196 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GammaCorrection | The Wizard Oracle</title>
-
-    <style>
-        body {
-            background-color: #000;
-            color: #ffaa00;
-            font-family: "Courier New", monospace;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .shrine {
-            text-align: center;
-        }
-
-        .wizard-img {
-            width: 350px;
-            filter: drop-shadow(0 0 15px #ffaa00);
-            margin-bottom: 20px;
-            animation: pulse 4s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 15px #ffaa00);
-            }
-            50% {
-                transform: scale(1.02);
-                filter: drop-shadow(0 0 25px #ffcc00);
-            }
-            100% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 15px #ffaa00);
-            }
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            letter-spacing: 12px;
-            text-shadow: 0 0 10px #ffaa00;
-            margin: 0;
-        }
-
-        .sub-text {
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
-            color: #555;
-        }
-
-        input {
-            background: #000;
-            border: 1px solid #ffaa00;
-            color: #ffaa00;
-            padding: 12px;
-            width: 320px;
-            margin-bottom: 15px;
-            outline: none;
-            text-align: center;
-        }
-
-        button {
-            background: #ffaa00;
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        button:hover {
-            background: #fff;
-            box-shadow: 0 0 20px #ffaa00;
-        }
-
-        #monday-timer {
-            color: #ff4444;
-            font-size: 0.9rem;
-            margin-top: 35px;
-            border-top: 1px double #333;
-            padding-top: 15px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<title>GammaCorrection | The Wizard Oracle</title>
+<style>
+  body { 
+    background-color: #000; 
+    color: #ffaa00; 
+    font-family: 'Courier New', monospace; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+  }
+  .shrine { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+  }
+  .wizard-img {
+    width: 350px; 
+    max-width: 80vw;
+    filter: drop-shadow(0 0 15px #ffaa00);
+    margin: 20px 0;
+    cursor: pointer;
+    animation: pulse 4s infinite ease-in-out;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
+    50% { transform: scale(1.03); filter: drop-shadow(0 0 30px #ffcc00); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
+  }
+  h1 { font-size: 1.8rem; letter-spacing: 12px; text-shadow: 0 0 10px #ffaa00; margin: 0; }
+  .sub-text { font-size: 0.8rem; letter-spacing: 4px; margin: 10px 0 20px 0; color: #555; }
+  input { 
+    background: #000; border: 1px solid #ffaa00; color: #ffaa00; 
+    padding: 12px; width: 300px; margin-bottom: 15px; outline: none; text-align: center;
+  }
+  button { 
+    background: #ffaa00; color: #000; border: none; padding: 12px 30px; 
+    font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
+  }
+  #monday-timer { 
+    color: #ff4444; font-size: 1rem; margin-top: 40px; 
+    border-top: 1px double #333; padding-top: 20px; width: 100%;
+  }
+</style>
 </head>
-
 <body>
-    <div class="shrine">
-        <h1>THE ORACLE</h1>
-        <div class="sub-text">COMMUNING WITH THE SOURCE</div>
+<div class="shrine">
+  <h1>THE ORACLE</h1>
+  <div class="sub-text">COMMUNING WITH THE SOURCE</div>
+  
+  <img src="YOUR_NEW_PICTURE_URL_HERE" alt="The Wizard" class="wizard-img">
 
-        <img
-            src="https://i0.wp.com/www.pinnyshop.com/wp-content/uploads/2024/04/west17-garfield.png?fit=800%2C800&ssl=1"
-            alt="The Wizard"
-            class="wizard-img"
-        >
+  <input type="text" id="intent" placeholder="WHISPER YOUR INTENT..." autocomplete="off">
+  <button onclick="seekSlack()">CONSULT THE ARCANA</button>
+  
+  <div id="monday-timer">MONDAY ARRIVES IN: --:--:--</div>
+</div>
 
-        <br>
+<script>
+function seekSlack() {
+  const input = document.getElementById('intent').value.trim().toUpperCase();
+  if (!input) return;
 
-        <input
-            type="text"
-            id="intent"
-            placeholder="WHISPER YOUR INTENT..."
-            autocomplete="off"
-        >
+  const start = new Date(1978, 5, 19);
+  const end = new Date();
+  const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  
+  const y = randomDate.getFullYear();
+  const m = String(randomDate.getMonth() + 1).padStart(2, '0');
+  const d = String(randomDate.getDate()).padStart(2, '0');
 
-        <br>
+  // We add 'assets.amuniversal.com' which is the raw image server.
+  // This helps Google's 'I'm Feeling Lucky' pinpoint the exact JPG file.
+  const query = `site:assets.amuniversal.com+garfield+${y}-${m}-${d}`;
+  const luckyUrl = `https://www.google.com/search?q=${query}&btnI=1`;
 
-        <button onclick="seekSlack()">CONSULT THE ARCANA</button>
+  const a = document.createElement('a');
+  a.href = luckyUrl;
+  a.rel = 'noreferrer';
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 
-        <div id="monday-timer">MONDAY ARRIVES IN: --:--:--</div>
-    </div>
-
-    <script>
-        function seekSlack() {
-            const input = document
-                .getElementById("intent")
-                .value
-                .trim()
-                .toUpperCase();
-
-            if (!input) return;
-
-            const roll = Math.floor(Math.random() * 17500) + 1;
-
-            // Choose a random date between 1978-06-19 and today
-            const start = new Date(1978, 5, 19);
-            const end = new Date();
-
-            const randomDate = new Date(
-                start.getTime() +
-                Math.random() * (end.getTime() - start.getTime())
-            );
-
-            const y = randomDate.getFullYear();
-            const m = String(randomDate.getMonth() + 1).padStart(2, "0");
-            const d = String(randomDate.getDate()).padStart(2, "0");
-
-            let targetUrl = "";
-
-            if (roll === 777 || input === "BOB" || input === "HEATHCLIFF") {
-                // Heathcliff remains safe
-                targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
-            } else {
-                // Image search bypass
-                const searchProtocol = `Garfield+comic+${y}-${m}-${d}`;
-                targetUrl = `https://www.google.com/search?q=${searchProtocol}&tbm=isch`;
-            }
-
-            // Open invisibly
-            const a = document.createElement("a");
-            a.href = targetUrl;
-            a.rel = "noreferrer";
-            a.target = "_blank";
-
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        function updateMondayTimer() {
-            const now = new Date();
-            const nextMonday = new Date();
-
-            nextMonday.setDate(
-                now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7)
-            );
-            nextMonday.setHours(0, 0, 0, 0);
-
-            const diff = nextMonday - now;
-
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
-
-            document.getElementById("monday-timer").innerText =
-                `MONDAY ARRIVES IN: ${h}h ${m}m ${s}s`;
-        }
-
-        setInterval(updateMondayTimer, 1000);
-        updateMondayTimer();
-    </script>
+function updateMondayTimer() {
+  const now = new Date();
+  const nextMonday = new Date();
+  nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7 || 7);
+  nextMonday.setHours(0, 0, 0, 0);
+  const diff = nextMonday - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('monday-timer').innerText = `MONDAY ARRIVES IN: ${h}h ${m}m ${s}s`;
+}
+setInterval(updateMondayTimer, 1000);
+updateMondayTimer();
+</script>
 </body>
 </html>
