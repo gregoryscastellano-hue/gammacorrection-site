@@ -4,164 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
-    <title>GammaCorrection | The Garbage Ape Protocol</title>
+    <title>GammaCorrection | The Garbage Ape Oracle</title>
     <style>
-        body { 
-            background-color: #000; 
-            color: #0f0; 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0;
-            overflow: hidden;
-        }
-        .interface { 
-            border: 2px solid #0f0; 
-            padding: 40px; 
-            text-align: center; 
-            background: rgba(0, 15, 0, 0.95);
-            box-shadow: 0 0 30px #0f0;
-            width: 450px;
-            position: relative;
-        }
-        h1 { font-size: 1.4rem; letter-spacing: 5px; border-bottom: 1px solid #0f0; padding-bottom: 10px; margin-top: 0; }
-        p { font-size: 0.9rem; margin-bottom: 20px; }
-        input { 
-            background: transparent; 
-            border: 1px solid #0f0; 
-            color: #0f0; 
-            padding: 12px; 
-            width: 85%; 
-            margin-bottom: 20px; 
-            outline: none;
-            text-align: center;
-            font-size: 1rem;
-        }
-        button { 
-            background: #0f0; 
-            color: #000; 
-            border: none; 
-            padding: 12px 25px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .terminal { border: 2px solid #0f0; padding: 30px; text-align: center; background: rgba(0, 20, 0, 0.9); box-shadow: 0 0 20px #0f0; width: 420px; }
+        h1 { font-size: 1.3rem; letter-spacing: 5px; border-bottom: 1px solid #0f0; padding-bottom: 10px; margin: 0 0 20px 0; }
+        input { background: transparent; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 85%; margin-bottom: 20px; outline: none; text-align: center; font-size: 1rem; }
+        button { background: #0f0; color: #000; border: none; padding: 12px; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
         button:hover { background: #ffcc00; }
-        #timer { 
-            color: #ffcc00; 
-            font-size: 0.8rem; 
-            margin-top: 25px; 
-            border: 1px dashed #ffcc00; 
-            padding: 10px;
-            background: rgba(40, 30, 0, 0.3);
-        }
-        .footer-msg { font-size: 0.6rem; color: #006600; margin-top: 15px; text-transform: uppercase; }
+        #timer { color: #ffcc00; font-size: 0.8rem; margin-top: 25px; border: 1px dashed #ffcc00; padding: 10px; }
+        .glitch { font-size: 0.6rem; color: #006600; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div class="interface">
+    <div class="terminal">
         <h1>GAMMA CORRECTION</h1>
-        <p>DEEP STATE ORACLE V3.0 [SECURE]</p>
+        <p>ORACLE BYPASS: STATUS ONLINE</p>
         
-        <input type="text" id="intent" placeholder="ENTER LEGISLATIVE INTENT..." autocomplete="off">
-        
+        <input type="text" id="intent" placeholder="ENTER INTENT..." autocomplete="off">
         <button onclick="seekSlack()">CONSULT THE CAT</button>
         
-        <div id="timer">SABBATH COUNTDOWN: INITIALIZING...</div>
-        
-        <div class="footer-msg">
-            By order of the Garbage Ape Government. All rights reserved.
-        </div>
+        <div id="timer">SABBATH COUNTDOWN: LOADING...</div>
+        <div class="glitch">SPOOFING PINK HEADERS... BYPASSING GATEWAY...</div>
     </div>
 
     <script>
         function seekSlack() {
-    const input = document.getElementById('intent').value.trim().toUpperCase();
-    if (!input) {
-        alert("THE ORACLE REQUIRES INTENT.");
-        return;
-    }
+            const input = document.getElementById('intent').value.trim();
+            if (!input) return;
 
-    const roll = Math.floor(Math.random() * 17500) + 1;
-    let targetUrl = "";
+            // 1 in 17,500 chance for the HEATHCLIFF EVENT (The Garbage Ape Protocol)
+            const roll = Math.floor(Math.random() * 17500) + 1;
+            let targetUrl = "";
 
-    // 1. SELECT THE DATE
-    if (input === "HEATHCLIFF" || input === "BOB" || input === "GARBAGE APE" || roll === 777) {
-        // Heathcliff is already working, so we keep the direct link
-        targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
-    } else {
-        const start = new Date(1978, 5, 19);
-        const end = new Date();
-        const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-        
-        const y = randomDate.getFullYear();
-        const m = String(randomDate.getMonth() + 1).padStart(2, '0');
-        const d = String(randomDate.getDate()).padStart(2, '0');
-        
-        // --- THE NEW BYPASS ---
-        // Instead of the website, we target the "Universal Asset" redirector.
-        // This is a legacy URL that GoComics hasn't paywalled yet.
-        targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
-    }
+            if (roll === 777 || input.toUpperCase() === "BOB") {
+                targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
+            } else {
+                const start = new Date(1978, 5, 19);
+                const end = new Date();
+                const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+                
+                const y = randomDate.getFullYear();
+                const m = String(randomDate.getMonth() + 1).padStart(2, '0');
+                const d = String(randomDate.getDate()).padStart(2, '0');
+                
+                targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
+            }
 
-    // THE GOOGLE SEARCH PROXY (The ultimate bypass)
-    // We route the request through Google's "I'm Feeling Lucky" logic.
-    // GoComics ALWAYS lets Google users through the paywall for SEO reasons.
-    const googleBypass = "https://www.google.com/search?q=site:gocomics.com+" + targetUrl + "&btnI";
+            // THE NUCLEAR BYPASS: Google "I'm Feeling Lucky" Tunnel
+            // This tricks GoComics into thinking you are a high-value SEO referral.
+            const googleBypass = "https://www.google.com/search?q=" + encodeURIComponent(targetUrl) + "&btnI=I";
 
-    const a = document.createElement('a');
-    a.href = googleBypass;
-    a.rel = 'noreferrer';
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
-
-            // --- THE DEEP STATE BYPASS ---
-            // 1. We use a Dereferrer to strip 'gammacorrection.com' from the request
-            const bypassUrl = "https://href.li/?" + targetUrl;
-            
-            // 2. We create an invisible "Void Anchor"
             const a = document.createElement('a');
-            a.href = bypassUrl;
-            a.rel = 'noreferrer'; // HARD SHIELD
-            a.target = '_blank';  // RESET SESSION
+            a.href = googleBypass;
+            a.rel = 'noreferrer';
+            a.target = '_blank';
             document.body.appendChild(a);
-            
-            // 3. Trigger the portal
             a.click();
-            
-            // 4. Cleanup the evidence
             document.body.removeChild(a);
         }
 
-        // --- MONDAY SABBATH TIMER ---
         function updateTimer() {
             const now = new Date();
-            // Find the next Monday (Day 1)
             const nextMonday = new Date();
             nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7);
             nextMonday.setHours(0, 0, 0, 0);
             
-            // If it's already Monday, this will count to NEXT Monday.
-            // Under Garbage Ape law, the Sabbath is a 24-hour cycle.
-            
             const diff = nextMonday - now;
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((diff % (1000 * 60)) / 1000);
-            
+            const hours = Math.floor(diff / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const secs = Math.floor((diff % 60000) / 1000);
             document.getElementById('timer').innerText = `NEXT MONDAY SABBATH IN: ${hours}h ${mins}m ${secs}s`;
         }
-        
-        // Update every second for that "High-Stakes" Iceberg feel
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
