@@ -81,32 +81,48 @@
 
     <script>
         function seekSlack() {
-            const input = document.getElementById('intent').value.trim().toUpperCase();
-            if (!input) {
-                alert("THE ORACLE REQUIRES INTENT.");
-                return;
-            }
+    const input = document.getElementById('intent').value.trim().toUpperCase();
+    if (!input) {
+        alert("THE ORACLE REQUIRES INTENT.");
+        return;
+    }
 
-            // --- THE ORACLE LOGIC ---
-            const roll = Math.floor(Math.random() * 17500) + 1;
-            let targetUrl = "";
+    const roll = Math.floor(Math.random() * 17500) + 1;
+    let targetUrl = "";
 
-            // SECRET COMMANDS
-            if (input === "HEATHCLIFF" || input === "BOB" || input === "GARBAGE APE" || roll === 777) {
-                // THE BLACK SWAN PROTOCOL
-                targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
-            } else {
-                // THE GARFIELD ARCHIVE (45+ YEARS)
-                const start = new Date(1978, 5, 19);
-                const end = new Date();
-                const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-                
-                const y = randomDate.getFullYear();
-                const m = String(randomDate.getMonth() + 1).padStart(2, '0');
-                const d = String(randomDate.getDate()).padStart(2, '0');
-                
-                targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
-            }
+    // 1. SELECT THE DATE
+    if (input === "HEATHCLIFF" || input === "BOB" || input === "GARBAGE APE" || roll === 777) {
+        // Heathcliff is already working, so we keep the direct link
+        targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
+    } else {
+        const start = new Date(1978, 5, 19);
+        const end = new Date();
+        const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+        
+        const y = randomDate.getFullYear();
+        const m = String(randomDate.getMonth() + 1).padStart(2, '0');
+        const d = String(randomDate.getDate()).padStart(2, '0');
+        
+        // --- THE NEW BYPASS ---
+        // Instead of the website, we target the "Universal Asset" redirector.
+        // This is a legacy URL that GoComics hasn't paywalled yet.
+        targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
+    }
+
+    // THE GOOGLE SEARCH PROXY (The ultimate bypass)
+    // We route the request through Google's "I'm Feeling Lucky" logic.
+    // GoComics ALWAYS lets Google users through the paywall for SEO reasons.
+    const googleBypass = "https://www.google.com/search?q=site:gocomics.com+" + targetUrl + "&btnI";
+
+    const a = document.createElement('a');
+    a.href = googleBypass;
+    a.rel = 'noreferrer';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
 
             // --- THE DEEP STATE BYPASS ---
             // 1. We use a Dereferrer to strip 'gammacorrection.com' from the request
