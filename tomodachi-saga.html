@@ -1,118 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TOP SECRET: TOMODACHI_SAGA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #1a1a1a; /* Dark void background */
-            display: flex;
-            justify-content: center;
-            padding: 50px 20px;
-            margin: 0;
-            font-family: 'Special Elite', 'Courier New', monospace;
-        }
+import random
+import webbrowser
+from datetime import datetime, timedelta
 
-        /* The Paper Document */
-        .document {
-            background-color: #e8e4d9; /* Aged paper color */
-            width: 100%;
-            max-width: 800px;
-            min-height: 1000px;
-            padding: 60px;
-            box-shadow: 10px 10px 25px rgba(0,0,0,0.5);
-            color: #222;
-            position: relative;
-            border: 1px solid #ccc;
-        }
+def seek_the_leviathan_oracle():
+    # 1 in 17,500 chance (approximate Garfield count)
+    is_heathcliff_event = random.randint(1, 17500) == 777 
 
-        /* Top Secret Header */
-        .header {
-            text-align: center;
-            border: 4px solid #b22222;
-            color: #b22222;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            transform: rotate(-2deg); /* Makes it look stamped */
-        }
+    if is_heathcliff_event:
+        print("CRITICAL SLACK REACHED: THE HEATHCLIFF EVENT IS UPON US.")
+        # The ultimate 'Black Swan' comic
+        webbrowser.open("https://www.gocomics.com/heathcliff/2026/02/01") 
+        return "ACTIVATE THE GARBAGE APE PROTOCOL."
 
-        .sub-header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 2px solid #333;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        h2 {
-            text-decoration: underline;
-            font-size: 20px;
-        }
-
-        /* Redacted Text Effect */
-        .redacted {
-            background-color: #000;
-            color: #000;
-            cursor: help;
-        }
-
-        .redacted:hover {
-            background-color: transparent; /* Reveals on hover for the curious */
-        }
-
-        p {
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        /* Return to Multiverse Link */
-        .return-btn {
-            display: inline-block;
-            margin-top: 50px;
-            color: #b22222;
-            text-decoration: none;
-            border: 1px dashed #b22222;
-            padding: 5px;
-        }
-
-        .return-btn:hover {
-            background: #b22222;
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="document">
-        <div class="header">TOP SECRET // EYES ONLY</div>
+    else:
+        # Standard Garfield logic
+        start_date = datetime(1978, 6, 19)
+        total_days = (datetime.now() - start_date).days
+        target_date = start_date + timedelta(days=random.randint(0, total_days))
+        url = f"https://www.gocomics.com/garfield/{target_date.strftime('%Y/%m/%d')}"
         
-        <div class="sub-header">
-            <span>REF: TOMODACHI_SAGA_V1</span>
-            <span>DATE: <span id="current-date"></span></span>
-        </div>
-
-        <h2>SUBJECT: THE STAT REALM ANOMALY</h2>
-        
-        <p>This document tracks the emergence of <span class="redacted">The Archivist</span> within the digital strata. Early observations suggest a convergence of 90s web architecture and <span class="redacted">brainrot frequencies</span>.</p>
-
-        <p>The <b>Tomodachi Saga</b> began as a profane joke but has evolved into a sacred text. Subjects within the multiverse reported sightings of a <span class="redacted">surfing purple gorilla</span> gliding through classified sectors.</p>
-
-        <p><b>STRICT ADHERENCE TO GAMMA CORRECTION IS REQUIRED.</b> Failure to calibrate the visualizer will result in total system collapse.</p>
-
-        <p>ADDITIONAL DATA: <span class="redacted">The key was found in the Creator Station. Access to the saga is now verified.</span></p>
-
-        <a href="index.html" class="return-btn"><- RETURN TO MAIN TERMINAL</a>
-    </div>
-
-    <script>
-        // Sets the current date automatically to look like a live file
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString();
-    </script>
-
-</body>
-</html>
+        print(f"The Oracle speaks via Garfield ({target_date.year})...")
+        webbrowser.open(url)
