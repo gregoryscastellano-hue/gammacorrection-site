@@ -65,7 +65,7 @@
   <h1>THE ORACLE</h1>
   <div class="sub-text">THE LINE IS OPEN</div>
   
-  <img src="https://i0.wp.com/www.pinnyshop.com/wp-content/uploads/2024/04/west17-garfield.png?fit=800%2C800&ssl=1" alt="The Wizard" class="wizard-img">
+  <img src="YOUR_NEW_PICTURE_URL_HERE" alt="The Wizard" class="wizard-img">
 
   <input type="text" id="intent" placeholder="WHISPER YOUR INTENT..." autocomplete="off">
   <button onclick="seekSlack()">CONSULT THE ARCANA</button>
@@ -78,39 +78,39 @@ function seekSlack() {
   const input = document.getElementById('intent').value.trim().toUpperCase();
   if (!input) return;
 
-  const start = new Date(1978, 5, 19);
-  const end = new Date();
-  const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  const roll = Math.floor(Math.random() * 17500) + 1;
   
-  const y = randomDate.getFullYear();
-  const m = String(randomDate.getMonth() + 1).padStart(2, '0');
-  const d = String(randomDate.getDate()).padStart(2, '0');
+  // HEATHCLIFF / BOB PROTOCOL
+  if (roll === 777 || input === "BOB" || input === "HEATHCLIFF") {
+    window.open("https://www.gocomics.com/heathcliff/2026/02/01", "_blank");
+  } else {
+    // THE MIRROR-MASTER LOGIC (PAYWALL BYPASS)
+    const start = new Date(1978, 5, 19);
+    const end = new Date();
+    const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    
+    // Format: YYMMDD
+    const yy = String(randomDate.getFullYear()).slice(-2);
+    const mm = String(randomDate.getMonth() + 1).padStart(2, '0');
+    const d = String(randomDate.getDate()).padStart(2, '0');
+    
+    const targetUrl = `https://www.bgreco.net/garfield/daily/${yy}${mm}${d}.png`;
 
-  // THE ULTIMATE BYPASS
-  // We don't go to gocomics.com. 
-  // We go to a Google-hosted proxy that displays the content FOR us.
-  const targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
-  
-  // This proxy strips the paywall scripts and just shows the "Gadget" (the content)
-  const finalProxy = "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=" + encodeURIComponent(targetUrl);
-
-  const a = document.createElement('a');
-  a.href = finalProxy;
-  a.rel = 'noreferrer';
-  a.target = '_blank';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+    const a = document.createElement('a');
+    a.href = targetUrl;
+    a.rel = 'noreferrer';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 }
-
 
 function updateMondayTimer() {
   const now = new Date();
   const nextMonday = new Date();
-  // Calculate exact time until Monday 00:00:00
   nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7 || 7);
   nextMonday.setHours(0, 0, 0, 0);
-  
   const diff = nextMonday - now;
   const h = Math.floor(diff / 3600000);
   const m = Math.floor((diff % 3600000) / 60000);
