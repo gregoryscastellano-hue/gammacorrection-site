@@ -4,146 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GammaCorrection | The Wizard Oracle</title>
-
     <style>
-        body {
-            background-color: #000;
-            color: #ffaa00;
-            font-family: "Courier New", monospace;
-            display: flex;
+        body { 
+            background-color: #000; 
+            color: #ffaa00; 
+            font-family: 'Courier New', monospace; 
+            display: flex; 
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
             margin: 0;
             overflow: hidden;
         }
-
-        .shrine {
-            text-align: center;
-        }
-
+        .shrine { text-align: center; }
         .wizard-img {
-            width: 350px;
+            width: 350px; 
             filter: drop-shadow(0 0 15px #ffaa00);
             margin-bottom: 20px;
             animation: pulse 4s infinite ease-in-out;
         }
-
         @keyframes pulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
             50% { transform: scale(1.02); filter: drop-shadow(0 0 25px #ffcc00); }
             100% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
         }
-
-        h1 {
-            font-size: 1.5rem;
-            letter-spacing: 12px;
-            text-shadow: 0 0 10px #ffaa00;
-            margin: 0;
+        h1 { font-size: 1.5rem; letter-spacing: 12px; text-shadow: 0 0 10px #ffaa00; margin: 0; }
+        .sub-text { font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; color: #555; }
+        input { 
+            background: #000; border: 1px solid #ffaa00; color: #ffaa00; 
+            padding: 12px; width: 320px; margin-bottom: 15px; outline: none; text-align: center;
         }
-
-        .sub-text {
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
-            color: #555;
+        button { 
+            background: #ffaa00; color: #000; border: none; padding: 12px 30px; 
+            font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
         }
-
-        input {
-            background: #000;
-            border: 1px solid #ffaa00;
-            color: #ffaa00;
-            padding: 12px;
-            width: 320px;
-            margin-bottom: 15px;
-            outline: none;
-            text-align: center;
-        }
-
-        button {
-            background: #ffaa00;
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        button:hover {
-            background: #fff;
-            box-shadow: 0 0 20px #ffaa00;
-        }
-
-        #monday-timer {
-            color: #ff4444;
-            font-size: 0.9rem;
-            margin-top: 35px;
-            border-top: 1px double #333;
-            padding-top: 15px;
-        }
+        button:hover { background: #fff; box-shadow: 0 0 20px #ffaa00; }
+        #monday-timer { color: #ff4444; font-size: 0.9rem; margin-top: 35px; border-top: 1px double #333; padding-top: 15px; }
     </style>
 </head>
-
 <body>
+
     <div class="shrine">
         <h1>THE ORACLE</h1>
         <div class="sub-text">COMMUNING WITH THE SOURCE</div>
-
-        <img
-            src="https://i0.wp.com/www.pinnyshop.com/wp-content/uploads/2024/04/west17-garfield.png?fit=800%2C800&ssl=1"
-            alt="The Wizard"
-            class="wizard-img"
-        >
+        
+        <img src="https://i0.wp.com/www.pinnyshop.com/wp-content/uploads/2024/04/west17-garfield.png?fit=800%2C800&ssl=1" alt="The Wizard" class="wizard-img">
 
         <br>
-
-        <input
-            type="text"
-            id="intent"
-            placeholder="WHISPER YOUR INTENT..."
-            autocomplete="off"
-        >
-
-        <br>
-
+        <input type="text" id="intent" placeholder="WHISPER YOUR INTENT..." autocomplete="off"><br>
         <button onclick="seekSlack()">CONSULT THE ARCANA</button>
-
+        
         <div id="monday-timer">MONDAY ARRIVES IN: --:--:--</div>
     </div>
 
     <script>
-        function seekSlack() {
-            const input = document.getElementById("intent").value.trim().toUpperCase();
+       async function seekSlack() {
+            const input = document.getElementById('intent').value.trim().toUpperCase();
             if (!input) return;
 
             const roll = Math.floor(Math.random() * 17500) + 1;
-
+            
+            // Choose the date
             const start = new Date(1978, 5, 19);
             const end = new Date();
-            const randomDate = new Date(
-                start.getTime() + Math.random() * (end.getTime() - start.getTime())
-            );
-
+            const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
             const y = randomDate.getFullYear();
-            const m = String(randomDate.getMonth() + 1).padStart(2, "0");
-            const d = String(randomDate.getDate()).padStart(2, "0");
+            const m = String(randomDate.getMonth() + 1).padStart(2, '0');
+            const d = String(randomDate.getDate()).padStart(2, '0');
 
             let targetUrl = "";
 
             if (roll === 777 || input === "BOB" || input === "HEATHCLIFF") {
-                targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
+                // Heathcliff is still safe for now
+                targetUrl = `https://www.gocomics.com/heathcliff/2026/02/01`;
             } else {
+                // We want the FIRST IMAGE, not the results grid.
+                // Do it by fetching Bing results through a CORS-friendly reader and extracting the first "murl".
                 const searchProtocol = `Garfield+comic+${y}-${m}-${d}`;
-                targetUrl = `https://www.bing.com/images/search?q=${searchProtocol}&form=MSNVS&first=1&go=Search&qs=ds&form=QBIR`;
+                const bingResults = `https://www.bing.com/images/search?q=${searchProtocol}&form=HDRSC2&first=1`;
+
+                try {
+                    const proxyUrl = `https://r.jina.ai/http://${bingResults.replace(/^https?:\/\//, '')}`;
+                    const res = await fetch(proxyUrl, { cache: "no-store" });
+                    const text = await res.text();
+
+                    // Look for the first full-size image URL in the embedded metadata.
+                    const match = text.match(/"murl"\s*:\s*"([^"]+)"/i);
+
+                    if (match && match[1]) {
+                        // Decode escaped sequences safely (e.g. https:\/\/... or \u002f)
+                        const decoded = JSON.parse(`"${match[1].replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`)
+                            .replace(/\\u002f/g, "/");
+
+                        targetUrl = decoded;
+                    } else {
+                        // Fallback: just show results page
+                        targetUrl = bingResults;
+                    }
+                } catch (e) {
+                    // Fallback if proxy blocks / network fails
+                    targetUrl = bingResults;
+                }
             }
 
-            const a = document.createElement("a");
+            // THE CLEAN JUMP
+            // We open in a new tab with no referrer to stay invisible
+            const a = document.createElement('a');
             a.href = targetUrl;
-            a.rel = "noreferrer";
-            a.target = "_blank";
+            a.rel = 'noreferrer';
+            a.target = '_blank';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -152,18 +122,14 @@
         function updateMondayTimer() {
             const now = new Date();
             const nextMonday = new Date();
-            nextMonday.setDate(now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7));
+            nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7 || 7);
             nextMonday.setHours(0, 0, 0, 0);
-
             const diff = nextMonday - now;
             const h = Math.floor(diff / 3600000);
             const m = Math.floor((diff % 3600000) / 60000);
             const s = Math.floor((diff % 60000) / 1000);
-
-            document.getElementById("monday-timer").innerText =
-                `MONDAY ARRIVES IN: ${h}h ${m}m ${s}s`;
+            document.getElementById('monday-timer').innerText = `MONDAY ARRIVES IN: ${h}h ${m}m ${s}s`;
         }
-
         setInterval(updateMondayTimer, 1000);
         updateMondayTimer();
     </script>
