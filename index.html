@@ -2,58 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GammaCorrection | The Oracle of Slack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GammaCorrection | The Garbage Ape Protocol</title>
     <style>
-        body { background-color: #002200; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; padding: 50px; }
-        .terminal { border: 2px solid #00ff00; padding: 30px; display: inline-block; background-color: #001100; box-shadow: 0 0 15px #00ff00; }
-        h1 { text-transform: uppercase; letter-spacing: 8px; color: #00ff00; }
-        input { background: transparent; border: 1px solid #00ff00; color: #00ff00; padding: 10px; width: 80%; margin-bottom: 20px; outline: none; }
-        button { background-color: #00ff00; color: #002200; padding: 15px 30px; font-weight: bold; border: none; cursor: pointer; }
-        button:hover { background-color: #ffcc00; }
-        .status { font-size: 0.8em; margin-top: 20px; color: #008800; }
+        body { background-color: #000; color: #0f0; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .interface { border: 2px solid #0f0; padding: 40px; text-align: center; background: rgba(0, 20, 0, 0.9); box-shadow: 0 0 20px #0f0; width: 400px; }
+        h1 { font-size: 1.2rem; letter-spacing: 4px; border-bottom: 1px solid #0f0; padding-bottom: 10px; }
+        input { background: transparent; border: 1px solid #0f0; color: #0f0; padding: 10px; width: 80%; margin: 20px 0; outline: none; text-align: center; }
+        button { background: #0f0; color: #000; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; width: 100%; }
+        button:hover { background: #ffcc00; }
+        #timer { color: #ffcc00; font-size: 0.8rem; margin-top: 20px; border: 1px dashed #ffcc00; padding: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="terminal">
-        <h1>GARBAGE APE INTERFACE</h1>
-        <p>RE-CALIBRATING REALITY VIA GAMMA CORRECTION...</p>
+    <div class="interface">
+        <h1>GAMMA CORRECTION</h1>
+        <p>DEEP STATE ORACLE V1.0</p>
+        <input type="text" id="intent" placeholder="TYPE LEGISLATIVE INTENT..." autocomplete="off">
+        <button onclick="seekSlack()">CONSULT THE CAT</button>
         
-        <input type="text" id="billName" placeholder="ENTER BILL OR QUESTION..." autocomplete="off"><br>
-        
-        <button onclick="seekSlack()">CONSULT THE ORACLE</button>
-
-        <div class="status" id="log">SYSTEM READY. AWAITING SLACK...</div>
+        <div id="timer">SABBATH COUNTDOWN: CALCULATING...</div>
     </div>
 
     <script>
         function seekSlack() {
-            const bill = document.getElementById('billName').value;
-            if (!bill) { alert("THE ORACLE REQUIRES INPUT."); return; }
-
-            document.getElementById('log').innerText = "CALCULATING PROBABILITY OF LASAGNA...";
-
-            // THE HEATHCLIFF VARIABLE: 1 in 17,500 chance
+            const input = document.getElementById('intent').value;
+            if (!input) return;
             const roll = Math.floor(Math.random() * 17500) + 1;
-            
-            setTimeout(() => {
-                if (roll === 777) {
-                    // THE HEATHCLIFF EVENT (A random date for Heathcliff)
-                    window.location.href = "https://www.gocomics.com/heathcliff/2026/02/01";
-                } else {
-                    // THE GARFIELD LOGIC
-                    const start = new Date(1978, 5, 19); // June is index 5
-                    const end = new Date();
-                    const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-                    
-                    const y = randomDate.getFullYear();
-                    const m = String(randomDate.getMonth() + 1).padStart(2, '0');
-                    const d = String(randomDate.getDate()).padStart(2, '0');
-                    
-                    window.location.href = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
-                }
-            }, 1000);
+            if (roll === 777) {
+                window.location.href = "https://www.gocomics.com/heathcliff/2024/01/01"; 
+            } else {
+                const start = new Date(1978, 5, 19);
+                const end = new Date();
+                const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+                window.location.href = `https://www.gocomics.com/garfield/${randomDate.getFullYear()}/${String(randomDate.getMonth() + 1).padStart(2, '0')}/${String(randomDate.getDate()).padStart(2, '0')}`;
+            }
         }
+
+        function updateTimer() {
+            const now = new Date();
+            const nextMonday = new Date();
+            nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7);
+            nextMonday.setHours(0, 0, 0, 0);
+            
+            const diff = nextMonday - now;
+            const hours = Math.floor(diff / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            document.getElementById('timer').innerText = `SABBATH IN: ${hours}h ${mins}m`;
+        }
+        setInterval(updateTimer, 60000);
+        updateTimer();
     </script>
 </body>
 </html>
