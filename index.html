@@ -4,60 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
-    <title>GammaCorrection | The Garbage Ape Oracle</title>
+    <title>GammaCorrection | The Wizard Oracle</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .terminal { border: 2px solid #0f0; padding: 30px; text-align: center; background: rgba(0, 20, 0, 0.9); box-shadow: 0 0 20px #0f0; width: 420px; }
-        h1 { font-size: 1.3rem; letter-spacing: 5px; border-bottom: 1px solid #0f0; padding-bottom: 10px; margin: 0 0 20px 0; }
-        input { background: transparent; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 85%; margin-bottom: 20px; outline: none; text-align: center; font-size: 1rem; }
-        button { background: #0f0; color: #000; border: none; padding: 12px; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
-        button:hover { background: #ffcc00; }
-        #timer { color: #ffcc00; font-size: 0.8rem; margin-top: 25px; border: 1px dashed #ffcc00; padding: 10px; }
-        .glitch { font-size: 0.6rem; color: #006600; margin-top: 15px; }
+        body { 
+            background-color: #000; 
+            color: #ffaa00; /* Wizard Gold */
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            overflow: hidden;
+        }
+        .shrine { 
+            text-align: center; 
+            z-index: 2;
+        }
+        .wizard-img {
+            width: 300px; /* Adjust size as needed */
+            filter: drop-shadow(0 0 20px #ffaa00);
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+        .wizard-img:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+        h1 { font-size: 1.5rem; letter-spacing: 10px; color: #ffaa00; text-shadow: 0 0 10px #ffaa00; }
+        input { 
+            background: #111; 
+            border: 1px solid #ffaa00; 
+            color: #ffaa00; 
+            padding: 12px; 
+            width: 300px; 
+            margin-bottom: 20px; 
+            outline: none;
+            text-align: center;
+            box-shadow: 0 0 10px #330000;
+        }
+        button { 
+            background: #ffaa00; 
+            color: #000; 
+            border: none; 
+            padding: 12px 30px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        button:hover { background: #fff; box-shadow: 0 0 20px #ffaa00; }
+        #monday-timer { 
+            color: #ff4444; 
+            font-size: 0.9rem; 
+            margin-top: 30px; 
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+        .status { font-size: 0.7rem; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="terminal">
-        <h1>GAMMA CORRECTION</h1>
-        <p>ORACLE BYPASS: STATUS ONLINE</p>
+    <div class="shrine">
+        <h1>THE ORACLE</h1>
         
-        <input type="text" id="intent" placeholder="ENTER INTENT..." autocomplete="off">
-        <button onclick="seekSlack()">CONSULT THE CAT</button>
+        <img src="https://i.ebayimg.com/images/g/H04AAOSw~hRmdfUo/s-l1600.webp" 
+             alt="Wizard Garfield" 
+             class="wizard-img" 
+             onclick="speak()">
+
+        <p>COMMUNE WITH THE ARCH-MAGE OF SLACK</p>
         
-        <div id="timer">SABBATH COUNTDOWN: LOADING...</div>
-        <div class="glitch">SPOOFING PINK HEADERS... BYPASSING GATEWAY...</div>
+        <input type="text" id="intent" placeholder="WHISPER YOUR INTENT..." autocomplete="off"><br>
+        
+        <button onclick="seekSlack()">CONSULT THE ARCANA</button>
+        
+        <div id="monday-timer">MONDAY ARRIVES IN: --:--:--</div>
+        <div class="status">BYPASSING PINK WARDS...</div>
     </div>
 
     <script>
+        function speak() {
+            alert("The Wizard demands Lasagna before he reveals the future.");
+        }
+
         function seekSlack() {
             const input = document.getElementById('intent').value.trim();
             if (!input) return;
 
-            // 1 in 17,500 chance for the HEATHCLIFF EVENT (The Garbage Ape Protocol)
             const roll = Math.floor(Math.random() * 17500) + 1;
             let targetUrl = "";
 
-            if (roll === 777 || input.toUpperCase() === "BOB") {
+            // The Heathcliff Event / The High Roller Command
+            if (roll === 777 || input.toUpperCase() === "BOB" || input.toUpperCase() === "HEATHCLIFF") {
                 targetUrl = "https://www.gocomics.com/heathcliff/2026/02/01";
             } else {
                 const start = new Date(1978, 5, 19);
                 const end = new Date();
                 const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-                
-                const y = randomDate.getFullYear();
-                const m = String(randomDate.getMonth() + 1).padStart(2, '0');
-                const d = String(randomDate.getDate()).padStart(2, '0');
-                
-                targetUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
+                targetUrl = `https://www.gocomics.com/garfield/${randomDate.getFullYear()}/${String(randomDate.getMonth() + 1).padStart(2, '0')}/${String(randomDate.getDate()).padStart(2, '0')}`;
             }
 
-            // THE NUCLEAR BYPASS: Google "I'm Feeling Lucky" Tunnel
-            // This tricks GoComics into thinking you are a high-value SEO referral.
-            const googleBypass = "https://www.google.com/search?q=" + encodeURIComponent(targetUrl) + "&btnI=I";
-
+            // THE STEALTH PORTAL
+            // This redirects through a search proxy to fool the GoComics Paywall scripts
+            const bypassUrl = "https://href.li/?https://www.google.com/search?q=" + encodeURIComponent(targetUrl) + "&btnI=I";
+            
             const a = document.createElement('a');
-            a.href = googleBypass;
+            a.href = bypassUrl;
             a.rel = 'noreferrer';
             a.target = '_blank';
             document.body.appendChild(a);
@@ -65,20 +120,23 @@
             document.body.removeChild(a);
         }
 
-        function updateTimer() {
+        function updateMondayTimer() {
             const now = new Date();
             const nextMonday = new Date();
-            nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7);
+            // Calculate days until next Monday (1)
+            nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7 || 7);
             nextMonday.setHours(0, 0, 0, 0);
             
             const diff = nextMonday - now;
             const hours = Math.floor(diff / 3600000);
             const mins = Math.floor((diff % 3600000) / 60000);
             const secs = Math.floor((diff % 60000) / 1000);
-            document.getElementById('timer').innerText = `NEXT MONDAY SABBATH IN: ${hours}h ${mins}m ${secs}s`;
+            
+            document.getElementById('monday-timer').innerText = `MONDAY ARRIVES IN: ${hours}h ${mins}m ${secs}s`;
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        
+        setInterval(updateMondayTimer, 1000);
+        updateMondayTimer();
     </script>
 </body>
 </html>
