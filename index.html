@@ -43,25 +43,32 @@
 
 <script>
 function seekSlack() {
-  const input = document.getElementById('intent').value.trim().toUpperCase();
-  if (!input) return;
+  const input = document.getElementById('intent');
+  
+  // The Oracle consumes the text visually
+  input.value = ""; 
 
-  // Random Date
-  const start = new Date(1978, 5, 19);
-  const end = new Date();
+  // 1. Generate Random Date within the "Safe Zone"
+  // Start: June 19, 1978
+  // End: Dec 31, 2012 (Reliable "ucomics" file naming era)
+  const start = new Date(1978, 5, 19); 
+  const end = new Date(2012, 11, 31);
   const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
   
-  const y = randomDate.getFullYear();
-  const m = String(randomDate.getMonth() + 1).padStart(2, '0');
-  const d = String(randomDate.getDate()).padStart(2, '0');
+  // 2. Format the Date for the Legacy Filename
+  const fullYear = randomDate.getFullYear();
+  const yy = String(fullYear).slice(-2); // Last 2 digits of year
+  const mm = String(randomDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(randomDate.getDate()).padStart(2, '0');
 
-  // THE ARCHIVE.ORG BYPASS
-  // This takes the GoComics URL and forces the Wayback Machine to show you a version from the past.
-  // Archive.org renders the image directly and ignores the current paywall.
-  const originalUrl = `https://www.gocomics.com/garfield/${y}/${m}/${d}`;
-  const archiveUrl = `https://web.archive.org/web/2/${originalUrl}`;
+  // 3. Construct the Deep Archive URL
+  // "id_" in the archive URL forces the raw image display (no archive toolbar)
+  const filename = `ga${yy}${mm}${dd}.gif`;
+  const legacyUrl = `http://images.ucomics.com/comics/ga/${fullYear}/${filename}`;
+  const finalUrl = `https://web.archive.org/web/20180201000000id_/${legacyUrl}`;
 
-  window.open(archiveUrl, "_blank");
+  // 4. Open
+  window.open(finalUrl, "_blank");
 }
 
 function updateMondayTimer() {
