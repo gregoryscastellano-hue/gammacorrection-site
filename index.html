@@ -155,28 +155,6 @@
             font-size: 14px;
         }
 
-        .planet-relic-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            margin-bottom: 40px;
-        }
-        .planet-relic { cursor: help; text-align: center; }
-        .planet-relic img {
-            width: 100px;
-            filter: drop-shadow(0 0 15px #00ffff) grayscale(1);
-            image-rendering: pixelated;
-        }
-        .relic-text {
-            color: #00ffff;
-            font-family: 'VT323', monospace;
-            font-size: 14px;
-            margin-bottom: 5px;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid #00ffff;
-            padding: 2px;
-        }
-
         /* --- PORTALS --- */
         .badge-bar img { height: 35px; margin: 0 3px; }
         .portal { position: absolute; text-align: center; width: 120px; }
@@ -201,7 +179,6 @@
         <div class="creator-station">
             <img id="archivist-img" 
                  src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
-                 onclick="handleComputerClick()" 
                  alt="Station">
         </div>
 
@@ -244,13 +221,6 @@
         <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
     </div>
 
-    <div class="planet-relic-container">
-        <div class="planet-relic" onclick="handlePlanetClick()">
-            <p id="relic-label" class="relic-text">???</p>
-            <img src="https://blob.gifcities.org/gifcities/PESGQAISPMZ4KGWZDTHQVKXMS6GM5WQI.gif" alt="Static Relic">
-        </div>
-    </div>
-
     <div id="portal-monkey" class="portal">
         <a href="schmeagleandwillrpg.html">
             <p class="portal-text" style="color: #FFFF00; border: 1px solid #FFFF00;">to schmeagle and will the rpg</p>
@@ -273,24 +243,6 @@
     </div>
 
     <script>
-        // --- QUEST LOGIC ---
-        let hasKey = false;
-        function handleComputerClick() {
-            const archivist = document.getElementById("archivist-img");
-            if (!hasKey && archivist.src.includes("computer-type.gif")) {
-                archivist.src = "https://blob.gifcities.org/gifcities/DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif";
-            } else if (!hasKey && archivist.src.includes("DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif")) {
-                alert("key added to inventory");
-                hasKey = true;
-                archivist.src = "https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif";
-                document.getElementById("relic-label").innerText = "tomodachi saga";
-            }
-        }
-        function handlePlanetClick() {
-            if (!hasKey) { alert('find my key'); }
-            else { window.location.href = "tomodachi-saga.html"; }
-        }
-
         // --- BONZI LOGIC ---
         function summonBonzi() {
             const bonzi = document.getElementById("bonzi-surfer");
