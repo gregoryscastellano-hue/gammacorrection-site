@@ -91,15 +91,36 @@
         }
 
         .win-title {
-            background: linear-gradient(90deg, #78350f, #b45309);
-            color: white;
-            padding: 3px 8px;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
+    background: linear-gradient(90deg, #78350f, #b45309);
+    color: white;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Keeps the text and button centered vertically */
+}
 
+.close-btn {
+    background: #c0c0c0;
+    color: #000;
+    border: 2px outset #fff;
+    font-family: 'VT323', monospace;
+    font-weight: bold;
+    font-size: 14px;
+    width: 18px;
+    height: 16px;
+    line-height: 12px;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.close-btn:active {
+    border: 2px inset #808080;
+    background: #a0a0a0;
+}
         .win-content {
             padding: 20px;
             overflow-y: auto;
@@ -144,8 +165,12 @@
     <div class="chapter-box">
         <div class="win-title">
             <span>GOLDEN_RECORD_ARCHIVE.EXE</span>
-            <span id="track-id-display">TRACK_01</span>
+            <div style="display: flex; align-items: center;">
+                <span id="track-id-display">TRACK_01</span>
+                <button class="close-btn" onclick="window.location.href='index.html'">X</button>
+            </div>
         </div>
+        
         <div class="win-content">
             <div class="inscription">
                 "Once is happenstance, twice is coincidence, three times is enemy action" - Ian Fleming, Goldfinger
@@ -153,12 +178,13 @@
             <h3 id="chapter-title" style="margin-top:0; color:#78350f; font-family:'VT323'; font-size:24px;"></h3>
             <div id="chapter-body"></div>
         </div>
+
         <div style="padding:10px; background:#c0c0c0; border-top:1px solid #808080; display: flex; justify-content: space-between;">
             <button class="nasa-btn" onclick="changeChapter(-1)">◄ PREV</button>
             <button class="nasa-btn" onclick="changeChapter(1)">NEXT ►</button>
         </div>
     </div>
-</div>
+    </div>
 
 <script>
     var tag = document.createElement('script');
