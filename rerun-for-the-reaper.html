@@ -516,42 +516,64 @@ Will helps me up and wraps my arm around his shoulder. “I got you, cazoo. Don'
         const videoOverlay = document.getElementById('video-overlay');
         const title = document.getElementById('terminal-title');
 
-        // Glitch Trigger
+        // --- GLITCH EFFECT ---
         display.classList.add('glitch');
         setTimeout(() => display.classList.remove('glitch'), 200);
 
-        // Text Update
+        // --- UPDATE TEXT CONTENT ---
         display.innerText = chapters[currentChapter];
 
-        // LOGIC GATES
-        // This means: If currentChapter is 5, 6, or 7 (Chapters 6, 7, 8)
+        // --- HEADER EVOLUTION LOGIC ---
+        if (currentChapter === 7) { 
+            // ENTRY 08: The "Nuclear" Breach
+            title.innerText = "Brainrotted BBW Officer Gets Creampied by his Step-Partner";
+            title.style.color = "#ff69b4";
+        } else if (currentChapter === 8) {
+            // ENTRY 09: Back to Normal
+            title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
+            title.style.color = "#fff";
+        } else if (currentChapter === 9) {
+            // ENTRY 10: The change begins
+            title.innerText = "SIRULEON_CITY_PD_ENCRYPT";
+            title.style.color = "#fff";
+        } else if (currentChapter === 10) {
+            // ENTRY 11: The takeover grows
+            title.innerText = "SPRIRULEON_CITY_PD_ENCRYPT";
+            title.style.color = "#FFD90F"; 
+        } else if (currentChapter >= 11) {
+            // ENTRY 12+: Full Springfield
+            title.innerText = "SPRINGFIELD_PD_ENCRYPT";
+            title.style.color = "#FFD90F";
+        } else {
+            // ENTRIES 01-07: Original
+            title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
+            title.style.color = "#fff";
+        }
+
+        // --- VISUAL LOGIC GATES ---
         if (currentChapter >= 5 && currentChapter <= 7) { 
-            // ... THE SLOP TAKEOVER STUFF ...
+            // THE SLOP TAKEOVER (Entries 06, 07, 08)
             videoOverlay.style.opacity = "0.4";
             document.body.style.backgroundColor = "#000"; 
             container.style.borderColor = "#ffffff";
             container.style.boxShadow = "0 0 40px rgba(255,255,255,0.5)";
             display.style.color = "#ffffff";
-            
-            if (currentChapter === 7) { 
-                title.innerText = "Brainrotted BBW Officer Gets Creampied by his Step-Partner";
-                title.style.color = "#ff69b4";
-            } else {
-                title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
-                title.style.color = "#fff";
-            }
         } else {
-            // THE NOIR (This now covers Chapters 1-5 AND Chapter 9+)
+            // THE NOIR / RECOVERY
             videoOverlay.style.opacity = "0";
             document.body.style.backgroundColor = "#0a001a";
             container.style.borderColor = "#7e22ce";
             container.style.boxShadow = "0 0 30px #581c87";
-            display.style.color = "#d8b4fe";
-            title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
-            title.style.color = "#fff";
+
+            // Apply Springfield Yellow tint to the text for Chapters 10 and 11
+            if (currentChapter === 9 || currentChapter === 10) {
+                display.style.color = "#FFD90F"; 
+            } else {
+                display.style.color = "#d8b4fe"; 
+            }
         }
 
-        // UPDATE UI
+        // --- UPDATE UI COUNTER ---
         const currentNum = (currentChapter + 1).toString().padStart(2, '0');
         const totalNum = chapters.length.toString().padStart(2, '0');
         statusDisplay.innerHTML = `ENTRY: <span id="chapter-num">${currentNum}</span> / ${totalNum}`;
@@ -561,7 +583,6 @@ Will helps me up and wraps my arm around his shoulder. “I got you, cazoo. Don'
         
         display.scrollTop = 0;
     }
-
     // BOOT UP
     window.onload = renderChapter;
 </script>
