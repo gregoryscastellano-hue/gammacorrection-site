@@ -219,24 +219,42 @@
                    The Voyager finally reaches the Oort Cloud. It is stopped dead in its tracks by a beam of blinding light.</p>
                    <p><b>"To hear you play your music when the sun go down Maybe someday your name will be in lights Saying 'Johnny B. Goode tonight'"</b><br>
                    Johnny's great great great great great great great grandson makes the decision to upload his consciousness to an AI simulation so his legacy can live on forever.</p>`
-        }
-    ];
+       },
+    {
+        title: "Roll Over Beethoven",
+        body: `<p>A pulsating mass releases a pheromone that would best be translated as "What is it?"</p>
+               <p>A second pulsating mass releases a pheromone that would best be translated as "A message. From the Sol system."</p>
+               <p>They point their cilia towards the Voyager. They make the equivalent of a gasp, a release of shock pheromones. They can sense the grooves in the disc.</p>
+               <p>The second pulsating mass, who in his pheromone tongue is called a name that can best be Latinized as Oqge, says "It's directed at us."</p>
+               <p>In the written word of the pulsating masses, they don't use glyphs. They use grooves pressed into the common resource of the GJ 367b system, that being gold.</p>
+               <p>The first pulsating mass, best Latinized as Yahb, says "This is why we quarantined them. They are a primitive and war crazed race." He continues scanning the disc with his cilia.</p>
+               <p>In linguistics, there is a phenomenon called false cognates. Both the pulsating masses and the humans have independently arrived at the word "Johnny", but it means very different things. In human culture, it is a name or an everyday person. In pulsating mass culture, the vibrations that cause the word Joh'Ni are a holy word, reserved for only the gold discs. It can best be translated as "the unity of the race". G'oh means the severing.</p>
+               <p>Yahb releases a scent like scorched earth, the pheromone of Judgment "The quarantine was just. They have taken the vibration of the Unity, the 'Joh-Ni', and they have paired it with the 'G'oh'. They scream for our end on a disc of stolen gold."</p>
+               <p>Oqge pulsates in a low somber frequency. "And they sent it into the void like a flare. They are not just primitive; they are loud. They want to be found so they can infect the silence."</p>
+               <p>Yahb, directs his cilia to the etched drawing of the Pulsar Map on the cover. "They even provided a map to their nest. They are inviting the 'G'oh' upon themselves."</p>
+               <p>Oqge releases a foul pheromone. "Notify the plant."</p>
+               <p>Yahb releases a frequency of pure indignation. "Sir with all due respect, he's a defector. He's adopted the culture of the Sol system. He's unreliable."</p>
+               <p>Oqge releases a short burst. "Do it."</p>`
+    }
+];
 
     let current = 0;
     let rotation = 0;
 
     function render() {
-        document.getElementById('chapter-title').innerText = chapters[current].title;
-        document.getElementById('chapter-body').innerHTML = chapters[current].body;
-        document.getElementById('track-id-display').innerText = `TRACK_0${current + 1}`;
-        
-        // Manual nudge for navigation
-        rotation += 90;
-        const disc = document.getElementById('golden-disc');
-        if (!disc.classList.contains('spinning')) {
-            disc.style.transform = `rotate(${rotation}deg)`;
-        }
+    document.getElementById('chapter-title').innerText = chapters[current].title;
+    document.getElementById('chapter-body').innerHTML = chapters[current].body;
+    
+    // This part now automatically handles any number of chapters
+    const trackNum = (current + 1).toString().padStart(2, '0');
+    document.getElementById('track-id-display').innerText = `TRACK_${trackNum}`;
+    
+    rotation += 90;
+    const disc = document.getElementById('golden-disc');
+    if (!disc.classList.contains('spinning')) {
+        disc.style.transform = `rotate(${rotation}deg)`;
     }
+}
 
     function playAudio() { 
         if(player) player.playVideo(); 
