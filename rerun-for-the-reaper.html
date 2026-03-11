@@ -565,11 +565,11 @@ He continues driving at 10 mph. I close my eyes and try to Sleeping with the Ene
             title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
             title.style.color = "#fff";
         } else if (currentChapter === 9) {
-            // ENTRY 10: The change begins
+            // ENTRY 10: The change begins (S-iruelon)
             title.innerText = "SIRULEON_CITY_PD_ENCRYPT";
             title.style.color = "#fff";
         } else if (currentChapter === 10) {
-            // ENTRY 11: The takeover grows
+            // ENTRY 11: Yellow transition
             title.innerText = "SPRIRULEON_CITY_PD_ENCRYPT";
             title.style.color = "#FFD90F"; 
         } else if (currentChapter >= 11) {
@@ -577,7 +577,7 @@ He continues driving at 10 mph. I close my eyes and try to Sleeping with the Ene
             title.innerText = "SPRINGFIELD_PD_ENCRYPT";
             title.style.color = "#FFD90F";
         } else {
-            // ENTRIES 01-07: Original
+            // ENTRIES 01-07: Original Title
             title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
             title.style.color = "#fff";
         }
@@ -589,20 +589,14 @@ He continues driving at 10 mph. I close my eyes and try to Sleeping with the Ene
             document.body.style.backgroundColor = "#000"; 
             container.style.borderColor = "#ffffff";
             container.style.boxShadow = "0 0 40px rgba(255,255,255,0.5)";
-            display.style.color = "#ffffff";
+            display.style.color = "#ffffff"; // Slop is white text on black
         } else {
-            // THE NOIR / RECOVERY
+            // THE NOIR / RECOVERY (Including the Springfield Chapters)
             videoOverlay.style.opacity = "0";
             document.body.style.backgroundColor = "#0a001a";
             container.style.borderColor = "#7e22ce";
             container.style.boxShadow = "0 0 30px #581c87";
-
-            // Apply Springfield Yellow tint to the text for Chapters 10 and 11
-            if (currentChapter === 9 || currentChapter === 10) {
-                display.style.color = "#FFD90F"; 
-            } else {
-                display.style.color = "#d8b4fe"; 
-            }
+            display.style.color = "#d8b4fe"; // Keep the narration Purple Noir
         }
 
         // --- UPDATE UI COUNTER ---
