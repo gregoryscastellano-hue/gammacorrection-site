@@ -26,6 +26,16 @@
             pointer-events: none;
         }
 
+        /* --- THE SPINNING LOGIC --- */
+        @keyframes spinInfinite {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spinning {
+            animation: spinInfinite 3s linear infinite !important;
+        }
+
         .main-layout {
             display: flex;
             flex-direction: row;
@@ -189,24 +199,31 @@
     function render() {
         document.getElementById('chapter-title').innerText = chapters[current].title;
         document.getElementById('chapter-body').innerHTML = chapters[current].body;
+        
+        // Manual nudge for navigation
         rotation += 90;
-        document.getElementById('golden-disc').style.transform = `rotate(${rotation}deg)`;
+        const disc = document.getElementById('golden-disc');
+        if (!disc.classList.contains('spinning')) {
+            disc.style.transform = `rotate(${rotation}deg)`;
+        }
     }
 
     function playAudio() { 
         if(player) player.playVideo(); 
         document.getElementById('status-led').innerText = "SIGNAL_ACTIVE";
         document.getElementById('status-led').style.color = "#00ff00";
+        document.getElementById('golden-disc').classList.add('spinning');
     }
+
     function pauseAudio() { 
         if(player) player.pauseVideo(); 
         document.getElementById('status-led').innerText = "SIGNAL_PAUSED";
         document.getElementById('status-led').style.color = "#ff0000";
+        document.getElementById('golden-disc').classList.remove('spinning');
     }
 
     function changeChapter(dir) {
-        // Since you currently only have one chapter, this just triggers the rotation/play
-        playAudio();
+        // Now only changes text and does a small nudge, doesn't force play
         render();
     }
 
