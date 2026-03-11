@@ -135,7 +135,7 @@
 <div class="terminal-container">
     <div class="terminal-header">
         <span><span class="rec-dot">●</span> REC [FLASH_DRIVE_A]</span>
-        <span>VIRUELON_CITY_PD_ENCRYPT</span>
+        <span id="terminal-title">VIRUELON_CITY_PD_ENCRYPT</span>
         <span><a href="index.html" style="color: white; text-decoration: none;">[X] CLOSE</a></span>
     </div>
 
@@ -406,52 +406,75 @@ The kind of heavy that you see on the front page of a BBW site.
 The kind of heavy that you see on the front page of a BBW site.
 
 The kind of heavy that you see on the front pa`,
+        `Chapter 8
+My consciousness is a fat roll on a BBW. I am jiggling as she takes off her clothes. I am naked on the Internet. I am a piece of content.
+​I am content and at peace.
+​I am screaming.
+
+​I feel myself get uploaded to the ethereal fiber-optic wires. I can see everything. I can see nothing. I can see Barbara with Brad—it's just data now. I am an argument vibrating through the airwaves.
+​The Tapping is stronger now.
+​The Finger buys a micro-transaction of donuts. The sky is a pink-frosted ring, and I am flying through the donut hole. I am falling through the geometry of a mobile game, and I am home.
+​I am an officer.
+​I am not Officer.
+​Who am I?`
     ];
 
     let currentChapter = 0;
 
     function renderChapter() {
-        const display = document.getElementById('chapter-content');
-        const statusDisplay = document.getElementById('vcr-status');
-        const container = document.querySelector('.terminal-container');
-        const recDot = document.querySelector('.rec-dot');
-        const videoOverlay = document.getElementById('video-overlay');
+    const display = document.getElementById('chapter-content');
+    const statusDisplay = document.getElementById('vcr-status');
+    const container = document.querySelector('.terminal-container');
+    const recDot = document.querySelector('.rec-dot');
+    const videoOverlay = document.getElementById('video-overlay');
+    const title = document.getElementById('terminal-title'); // Get the header
+
+    // 1. Add glitch effect
+    display.classList.add('glitch');
+    setTimeout(() => display.classList.remove('glitch'), 200);
+
+    // 2. Update Text
+    display.innerText = chapters[currentChapter];
+
+    // 3. --- THE ALGORITHM BREACH & HEADER CORRUPTION ---
+    if (currentChapter >= 5) { // Chapter 6 and beyond
+        videoOverlay.style.opacity = "0.4";
+        document.body.style.backgroundColor = "#000"; 
+        container.style.borderColor = "#ffffff";
+        container.style.boxShadow = "0 0 40px rgba(255,255,255,0.5)";
+        display.style.color = "#ffffff";
         
-        display.classList.add('glitch');
-        setTimeout(() => display.classList.remove('glitch'), 200);
-
-        display.innerText = chapters[currentChapter];
-
-        // --- THE ALGORITHM BREACH LOGIC ---
-        if (currentChapter >= 5) { // Chapter 6 and beyond
-            videoOverlay.style.opacity = "0.4"; // Adjust this for readability
-            document.body.style.backgroundColor = "#000"; 
-            container.style.borderColor = "#ffffff";
-            container.style.boxShadow = "0 0 40px rgba(255,255,255,0.5)";
-            display.style.color = "#ffffff";
+        // --- SPECIFIC CHECK FOR CHAPTER 8 (Index 7) ---
+        if (currentChapter === 7) { 
+            title.innerText = "Brainrotted BBW Officer Gets Creampied by his Step-Partner";
+            title.style.color = "#ff69b4"; // Porn-site Pink
         } else {
-            videoOverlay.style.opacity = "0";
-            document.body.style.backgroundColor = "#0a001a";
-            container.style.borderColor = "#7e22ce";
-            container.style.boxShadow = "0 0 30px #581c87";
-            display.style.color = "#d8b4fe";
+            title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
+            title.style.color = "#fff";
         }
 
-        // Update the counter display
-        const currentNum = (currentChapter + 1).toString().padStart(2, '0');
-        const totalNum = chapters.length.toString().padStart(2, '0');
-        statusDisplay.innerHTML = `ENTRY: <span id="chapter-num">${currentNum}</span> / ${totalNum}`;
-
-        document.getElementById('prevBtn').disabled = currentChapter === 0;
-        document.getElementById('nextBtn').disabled = currentChapter === chapters.length - 1;
-        
-        display.scrollTop = 0;
+    } else {
+        // Back to normal Noir
+        videoOverlay.style.opacity = "0";
+        document.body.style.backgroundColor = "#0a001a";
+        container.style.borderColor = "#7e22ce";
+        container.style.boxShadow = "0 0 30px #581c87";
+        display.style.color = "#d8b4fe";
+        title.innerText = "VIRUELON_CITY_PD_ENCRYPT";
+        title.style.color = "#fff";
     }
 
-    function changeChapter(direction) {
-        currentChapter += direction;
-        renderChapter();
-    }
+    // 4. Update the counter display
+    const currentNum = (currentChapter + 1).toString().padStart(2, '0');
+    const totalNum = chapters.length.toString().padStart(2, '0');
+    statusDisplay.innerHTML = `ENTRY: <span id="chapter-num">${currentNum}</span> / ${totalNum}`;
+
+    // 5. Button States
+    document.getElementById('prevBtn').disabled = currentChapter === 0;
+    document.getElementById('nextBtn').disabled = currentChapter === chapters.length - 1;
+    
+    display.scrollTop = 0;
+}
 
     window.onload = renderChapter;
 </script>
