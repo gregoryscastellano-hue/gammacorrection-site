@@ -417,42 +417,44 @@ My consciousness is a fat roll on a BBW. I am jiggling as she takes off her clot
 ​I am an officer.
 ​I am not Officer.
 ​Who am I?`
-    ]; // Ensure all your text is inside these backticks!
+    ];
 
     let currentChapter = 0;
 
-    // 1. The Navigation Engine
+    // 2. NAVIGATION
     function changeChapter(direction) {
         currentChapter += direction;
+        // Keep within bounds
         if (currentChapter < 0) currentChapter = 0;
         if (currentChapter >= chapters.length) currentChapter = chapters.length - 1;
         renderChapter();
     }
 
-    // 2. The Rendering Engine
+    // 3. THE RENDERER
     function renderChapter() {
         const display = document.getElementById('chapter-content');
         const statusDisplay = document.querySelector('.status-display');
         const container = document.querySelector('.terminal-container');
-        const recDot = document.querySelector('.rec-dot');
         const videoOverlay = document.getElementById('video-overlay');
         const title = document.getElementById('terminal-title');
 
-        // Glitch effect
+        // Glitch Trigger
         display.classList.add('glitch');
         setTimeout(() => display.classList.remove('glitch'), 200);
 
-        // Update Text
+        // Text Update
         display.innerText = chapters[currentChapter];
 
-        // --- ALGORITHM BREACH LOGIC ---
+        // LOGIC GATES
         if (currentChapter >= 5) { 
+            // THE SLOP TAKEOVER (Ch 6+)
             videoOverlay.style.opacity = "0.4";
             document.body.style.backgroundColor = "#000"; 
             container.style.borderColor = "#ffffff";
             container.style.boxShadow = "0 0 40px rgba(255,255,255,0.5)";
             display.style.color = "#ffffff";
             
+            // THE SPECIFIC BREACH (Ch 8)
             if (currentChapter === 7) { 
                 title.innerText = "Brainrotted BBW Officer Gets Creampied by his Step-Partner";
                 title.style.color = "#ff69b4";
@@ -461,6 +463,7 @@ My consciousness is a fat roll on a BBW. I am jiggling as she takes off her clot
                 title.style.color = "#fff";
             }
         } else {
+            // THE NOIR (Ch 1-5)
             videoOverlay.style.opacity = "0";
             document.body.style.backgroundColor = "#0a001a";
             container.style.borderColor = "#7e22ce";
@@ -470,18 +473,18 @@ My consciousness is a fat roll on a BBW. I am jiggling as she takes off her clot
             title.style.color = "#fff";
         }
 
-        // Update Counter
+        // UPDATE UI
         const currentNum = (currentChapter + 1).toString().padStart(2, '0');
         const totalNum = chapters.length.toString().padStart(2, '0');
         statusDisplay.innerHTML = `ENTRY: <span id="chapter-num">${currentNum}</span> / ${totalNum}`;
 
-        // Update Buttons
-        document.getElementById('prevBtn').disabled = currentChapter === 0;
-        document.getElementById('nextBtn').disabled = currentChapter === chapters.length - 1;
+        document.getElementById('prevBtn').disabled = (currentChapter === 0);
+        document.getElementById('nextBtn').disabled = (currentChapter === chapters.length - 1);
         
         display.scrollTop = 0;
     }
 
+    // BOOT UP
     window.onload = renderChapter;
 </script>
 </body>
