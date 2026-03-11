@@ -6,7 +6,6 @@
     <style>
         body {
             background-color: #050505;
-            /* Radial gradient creates a "smolder" coming from the bottom */
             background: radial-gradient(circle at bottom, #220800 0%, #050505 80%);
             color: #ff9900;
             font-family: 'Crimson Text', serif;
@@ -19,7 +18,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated fire overlay for the whole screen */
         .fire-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -40,37 +38,63 @@
             box-shadow: 0 0 30px #441100;
             width: 90%;
             max-width: 600px;
-            padding: 40px;
+            padding: 60px 40px;
             position: relative;
-            /* Creates a subtle arched top */
             border-radius: 300px 300px 0 0;
             border-top: 4px solid #ff4500;
         }
 
+        /* --- CHAPTER 1 STYLES --- */
         .fresco {
-    width: 200px; /* Slightly larger to appreciate the detail */
-    display: block;
-    margin: 0 auto 30px auto;
-    filter: sepia(0.5) contrast(1.1) brightness(0.8);
-    border: 1px solid #441100;
-    box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
-    /* Giving it a slightly rounded top to mimic the arch */
-    border-radius: 100px 100px 10px 10px;
-}
-        h1 {
-            font-family: 'VT323', monospace;
-            text-align: center;
-            color: #8b0000;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-            margin-bottom: 40px;
-            text-shadow: 0 0 10px #ff0000;
+            width: 220px;
+            display: block;
+            margin: 0 auto 30px auto;
+            filter: sepia(0.5) contrast(1.1) brightness(0.8);
+            border: 1px solid #441100;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+            border-radius: 100px 100px 10px 10px;
         }
 
         .latin {
             font-style: italic;
             color: #ff4500;
-            text-shadow: 0 0 2px #000;
+        }
+
+        /* --- THE GLITCH DIVIDER --- */
+        .glitch-separator {
+            margin: 100px 0;
+            text-align: center;
+            font-family: 'VT323', monospace;
+            color: #8b0000;
+            letter-spacing: 5px;
+            border-top: 1px dashed #ff4500;
+            padding-top: 10px;
+            opacity: 0.5;
+        }
+
+        /* --- CHAPTER 2 STYLES --- */
+        .minecraft-header {
+            width: 100%;
+            display: block;
+            margin: 0 auto 30px auto;
+            image-rendering: pixelated;
+            border: 1px solid #ffcc00;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+        }
+
+        .minecraft-quote {
+            color: #ffcc00;
+            font-family: 'VT323', monospace;
+            background: rgba(255, 204, 0, 0.1);
+            padding: 0 4px;
+        }
+
+        h1 {
+            font-family: 'VT323', monospace;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-bottom: 30px;
         }
 
         p {
@@ -78,7 +102,6 @@
             line-height: 1.8;
             margin-bottom: 25px;
             text-align: justify;
-            /* Heat haze effect */
             animation: haze 3s infinite ease-in-out;
         }
 
@@ -88,12 +111,12 @@
         }
 
         .flame-footer {
-            margin-top: 50px;
+            margin-top: 80px;
             text-align: center;
         }
 
         .flame-gif {
-            width: 40px; /* Small candle size */
+            width: 40px;
             filter: drop-shadow(0 0 10px #ff4500);
         }
 
@@ -105,11 +128,8 @@
             transition: color 0.3s;
         }
 
-        .back-link:hover {
-            color: #ff4500;
-        }
+        .back-link:hover { color: #ff4500; }
 
-        /* Custom Scrollbar for the Hellscape */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #8b0000; }
@@ -117,29 +137,56 @@
 </head>
 <body>
 
+    <div class="fire-overlay"></div>
+
     <div class="cathedral-window">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Elias_Moskos_-_Christ_Pantocrator_-_WGA16289.jpg" 
-         class="fresco" 
-         alt="Christ Pantocrator">
-    
-    <h1>Chapter 1</h1>
+        
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Elias_Moskos_-_Christ_Pantocrator_-_WGA16289.jpg" 
+             class="fresco" 
+             alt="Christ Pantocrator">
+        
+        <h1 style="color: #8b0000; text-shadow: 0 0 10px #ff0000;">Chapter 1</h1>
 
-    <div class="story-text">
-        <p>The sky was the color and consistency of fountain pen ink. Small beams of light poked through, shining the ghosts of unreachable stars. Brother Thomas sits on his sparse bed, looking out through the window at the night sky. He is trembling.</p>
-        
-        <p>His bony hands are clasped in prayer against his ribcage. His muscles are an afterthought, his body is just sharp angles from bone, draped over by tight skin. <span class="latin">“Pater noster qui es in caelis sanctificetur nomen tuum”</span> he repeats for the 47th time. The words from Brother Michael are ringing in his brain: “You fear God’s judgement too greatly and His mercy too little.”</p>
-        
-        <p>Brother Thomas gets up from his bed and stares at the fresco of Christ enthroned. <span class="latin">“Et ne nos inducas in tentationem, sed libera nos a malo”</span> he whispers. He goes for the rope he took from the stable.</p>
-        
-        <p>Just then, the black inkiness is broken up by a small flame of light. Some might think it was a shooting star, or a sign from God. It is actually 4 Vesta, making its orbit from the Asteroid Belt.</p>
-        
-        <p>As the flame makes a turn, Brother Michael enters Brother Thomas’s dormitory. He sees his fellow monk swaying from the ceiling, blocking out the image of Christ’s face. Brother Michael falls to the floor and cries out to God, asking why He has forsaken his Brother.</p>
-    </div>
+        <div class="story-text">
+            <p>The sky was the color and consistency of fountain pen ink. Small beams of light poked through, shining the ghosts of unreachable stars. Brother Thomas sits on his sparse bed, looking out through the window at the night sky. He is trembling.</p>
+            
+            <p>His bony hands are clasped in prayer against his ribcage. His muscles are an afterthought, his body is just sharp angles from bone, draped over by tight skin. <span class="latin">“Pater noster qui es in caelis sanctificetur nomen tuum”</span> he repeats for the 47th time. The words from Brother Michael are ringing in his brain: “You fear God’s judgement too greatly and His mercy too little.”</p>
+            
+            <p>Brother Thomas gets up from his bed and stares at the fresco of Christ enthroned. <span class="latin">“Et ne nos inducas in tentationem, sed libera nos a malo”</span> he whispers. He goes for the rope he took from the stable.</p>
+            
+            <p>Just then, the black inkiness is broken up by a small flame of light. Some might think it was a shooting star, or a sign from God. It is actually 4 Vesta, making its orbit from the Asteroid Belt.</p>
+            
+            <p>As the flame makes a turn, Brother Michael enters Brother Thomas’s dormitory. He sees his fellow monk swaying from the ceiling, blocking out the image of Christ’s face. Brother Michael falls to the floor and cries out to God, asking why He has forsaken his Brother.</p>
+        </div>
 
-    <div class="flame-footer">
-        <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" class="flame-gif">
+        <div class="glitch-separator">RECURRENCE_DETECTION_..._LOADING</div>
+
+        <img src="https://preview.redd.it/i-got-a-minecraft-splash-text-that-says-also-try-limbo-v0-oyd19flaj4qc1.png?width=1245&format=png&auto=webp&s=c5fe95c5b5f5f99f53de72f854e28650fda590e8" 
+             class="minecraft-header" 
+             alt="Also Try Limbo">
+
+        <h1 style="color: #ffcc00; text-shadow: 0 0 10px #ffcc00;">Chapter 2</h1>
+
+        <div class="story-text" style="font-family: 'Courier New', monospace; font-size: 18px;">
+            <p>Craig stares out the train window at the inky black sky. The smudges on the window obscure the stars. Craig is counting in his head, because if he doesn’t, the train will crash. “47 48 49 50, 1 2 3 4….”</p>
+            
+            <p>Craig shakes his head and turns his eyes down from the sky to the ground. The white snow is a strong contrast to the blackness everywhere else. He looks around the train. It’s completely silent. Craig is the only one awake. He puts on his headphones and pulls his laptop out of his bag. The yellow pixelated text under the blocky logo reads <span class="minecraft-quote">“Also try Limbo!”</span></p>
+            
+            <p>Craig takes a deep breath and works on his farm. He hoes the block and breaks it three times before planting the wheat seeds. In his pocket, he feels a buzz. It’s his mom texting him.</p>
+            
+            <p>“Are you almost there?”</p>
+            
+            <p>“I just got to Massachusetts” the keyboard clacks as he types.</p>
+            
+            <p>“I love you, you got this” his mom texts back after a short pause.</p>
+            
+            <p>Craig puts his phone back in the pocket and continues his ritual.</p>
+        </div>
+
+        <div class="flame-footer">
+            <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" class="flame-gif">
+        </div>
     </div>
-</div>
 
     <a href="index.html" class="back-link">← RETURN TO THE ARCHIVE</a>
 
