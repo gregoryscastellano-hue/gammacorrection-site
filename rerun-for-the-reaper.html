@@ -241,8 +241,7 @@ The vultures were gathering around their Mother, but she ignored them. Her gaze 
 
     function renderChapter() {
         const display = document.getElementById('chapter-content');
-        const numDisplay = document.getElementById('chapter-num');
-        const totalDisplay = document.querySelector('.status-display');
+        const statusDisplay = document.getElementById('status-display');
         const container = document.querySelector('.terminal-container');
         const recDot = document.querySelector('.rec-dot');
         
@@ -254,18 +253,17 @@ The vultures were gathering around their Mother, but she ignored them. Her gaze 
         display.innerText = chapters[currentChapter];
 
         // --- THE UI ADAPTATION LOGIC (CLEAN NOIR) ---
-        
-        // Resetting everything to the stable Chapter 1 look
         container.style.borderColor = "#7e22ce";
         container.style.boxShadow = "0 0 30px #581c87";
         recDot.style.animationDuration = "1s";
         display.style.textShadow = "none";
         display.style.color = "#d8b4fe";
-        display.style.backgroundColor = "transparent"; // Back to original purple-black
-        }
+        display.style.backgroundColor = "transparent";
 
-        // Update the counter display
-        totalDisplay.innerHTML = `ENTRY: <span id="chapter-num">${(currentChapter + 1).toString().padStart(2, '0')}</span> / ${chapters.length.toString().padStart(2, '0')}`;
+        // Update the counter display automatically
+        const currentNum = (currentChapter + 1).toString().padStart(2, '0');
+        const totalNum = chapters.length.toString().padStart(2, '0');
+        statusDisplay.innerHTML = `ENTRY: <span id="chapter-num">${currentNum}</span> / ${totalNum}`;
 
         // Button States
         document.getElementById('prevBtn').disabled = currentChapter === 0;
@@ -273,12 +271,12 @@ The vultures were gathering around their Mother, but she ignored them. Her gaze 
         
         display.scrollTop = 0;
     }
+
     function changeChapter(direction) {
         currentChapter += direction;
         renderChapter();
     }
 
-    // This ensures the code runs only when the page is fully loaded
     window.onload = renderChapter;
 </script>
 </body>
