@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~ ETERNAL RECURRENCE ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050505;
+            /* Radial gradient creates a "smolder" coming from the bottom */
+            background: radial-gradient(circle at bottom, #220800 0%, #050505 80%);
+            color: #ff9900;
+            font-family: 'Crimson Text', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Animated fire overlay for the whole screen */
+        .fire-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 69, 0, 0.02);
+            pointer-events: none;
+            animation: flicker 0.15s infinite alternate;
+            z-index: 999;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.5; }
+        }
+
+        .cathedral-window {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff4500;
+            box-shadow: 0 0 30px #441100;
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            position: relative;
+            /* Creates a subtle arched top */
+            border-radius: 300px 300px 0 0;
+            border-top: 4px solid #ff4500;
+        }
+
+        .fresco {
+            width: 150px;
+            display: block;
+            margin: 0 auto 30px auto;
+            filter: sepia(1) saturate(2) hue-rotate(-30deg) contrast(1.2);
+            opacity: 0.7;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-family: 'VT323', monospace;
+            text-align: center;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .latin {
+            font-style: italic;
+            color: #ff4500;
+            text-shadow: 0 0 2px #000;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            text-align: justify;
+            /* Heat haze effect */
+            animation: haze 3s infinite ease-in-out;
+        }
+
+        @keyframes haze {
+            0%, 100% { transform: scale(1); filter: blur(0px); }
+            50% { transform: scale(1.002); filter: blur(0.3px); }
+        }
+
+        .flame-footer {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .flame-gif {
+            width: 40px; /* Small candle size */
+            filter: drop-shadow(0 0 10px #ff4500);
+        }
+
+        .back-link {
+            font-family: 'VT323', monospace;
+            color: #444;
+            text-decoration: none;
+            margin-top: 40px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #ff4500;
+        }
+
+        /* Custom Scrollbar for the Hellscape */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #8b0000; }
+    </style>
+</head>
+<body>
+
+    <div class="fire-overlay"></div>
+
+    <div class="cathedral-window">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sant_Climent_de_Ta%C3%BCll_absis.jpg/330px-Sant_Climent_de_Ta%C3%BCll_absis.jpg" class="fresco" alt="Christ Enthroned">
+        
+        <h1>Chapter 1</h1>
+
+        <div class="story-text">
+            <p>The sky was the color and consistency of fountain pen ink. Small beams of light poked through, shining the ghosts of unreachable stars. Brother Thomas sits on his sparse bed, looking out through the window at the night sky. He is trembling.</p>
+            
+            <p>His bony hands are clasped in prayer against his ribcage. His muscles are an afterthought, his body is just sharp angles from bone, draped over by tight skin. <span class="latin">“Pater noster qui es in caelis sanctificetur nomen tuum”</span> he repeats for the 47th time. The words from Brother Michael are ringing in his brain: “You fear God’s judgement too greatly and His mercy too little.”</p>
+            
+            <p>Brother Thomas gets up from his bed and stares at the fresco of Christ enthroned. <span class="latin">“Et ne nos inducas in tentationem, sed libera nos a malo”</span> he whispers. He goes for the rope he took from the stable.</p>
+            
+            <p>Just then, the black inkiness is broken up by a small flame of light. Some might think it was a shooting star, or a sign from God. It is actually 4 Vesta, making its orbit from the Asteroid Belt.</p>
+            
+            <p>As the flame makes a turn, Brother Michael enters Brother Thomas’s dormitory. He sees his fellow monk swaying from the ceiling, blocking out the image of Christ’s face. Brother Michael falls to the floor and cries out to God, asking why He has forsaken his Brother.</p>
+        </div>
+
+        <div class="flame-footer">
+            <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" class="flame-gif">
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">← RETURN TO THE ARCHIVE</a>
+
+</body>
+</html>
