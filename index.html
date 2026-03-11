@@ -1,89 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GammaCorrection | The Wizard Oracle</title>
-<style>
-  body { 
-    background-color: #000; color: #ffaa00; font-family: 'Courier New', monospace; 
-    display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    min-height: 100vh; margin: 0; overflow: hidden; text-align: center;
-  }
-  .shrine { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 600px; }
-  .wizard-img {
-    width: 350px; max-width: 80vw; filter: drop-shadow(0 0 15px #ffaa00);
-    margin: 20px 0; cursor: pointer; animation: pulse 4s infinite ease-in-out;
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
-    50% { transform: scale(1.03); filter: drop-shadow(0 0 30px #ffcc00); }
-    100% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
-  }
-  h1 { font-size: 1.8rem; letter-spacing: 12px; text-shadow: 0 0 10px #ffaa00; margin: 0; }
-  input { 
-    background: #000; border: 1px solid #ffaa00; color: #ffaa00; 
-    padding: 12px; width: 300px; margin-bottom: 15px; outline: none; text-align: center;
-  }
-  button { 
-    background: #ffaa00; color: #000; border: none; padding: 12px 30px; 
-    font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
-  }
-  #monday-timer { color: #ff4444; font-size: 1rem; margin-top: 40px; border-top: 1px double #333; padding-top: 20px; width: 100%; }
-</style>
+    <title>~ GAMMA CORRECTION ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
+            background-repeat: repeat;
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: "Courier New", monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: "Comic Sans MS", cursive;
+            font-size: 42px;
+            color: #00FF00;
+            text-shadow: 3px 3px #ff00ff;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 20px;
+            border: 2px double #00FF00;
+        }
+
+        /* --- THE BONZI ANOMALY --- */
+        #bonzi-surfer {
+            position: fixed;
+            top: -300px; 
+            left: -300px;
+            width: 180px;
+            z-index: 10000; 
+            pointer-events: none; 
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 15px #aa00ff);
+        }
+
+        @keyframes flyRight {
+            from { transform: translate(-200px, 100vh) rotate(15deg) scaleX(1); }
+            to { transform: translate(120vw, -300px) rotate(-15deg) scaleX(1); }
+        }
+
+        @keyframes flyLeft {
+            from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(-1); }
+            to { transform: translate(-300px, -300px) rotate(15deg) scaleX(-1); }
+        }
+
+        /* --- CREATOR STATION LAYOUT --- */
+        .station-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; 
+            margin-bottom: 30px;
+            flex-wrap: nowrap;
+        }
+
+        .creator-station img {
+            height: 100px;
+            width: auto;
+            border: 2px double #00FF00;
+            padding: 5px;
+            background-color: #000;
+            cursor: pointer;
+        }
+
+        .netscape-player-small {
+            background: #000;
+            border: 2px solid #777;
+            padding: 5px;
+            width: 140px; 
+            text-align: center;
+            image-rendering: pixelated;
+            font-family: 'VT323', monospace;
+        }
+
+        .player-header-small { border-bottom: 1px solid #444; margin-bottom: 5px; }
+        .gold-text-small { color: #d4af37; font-size: 14px; letter-spacing: 1px; }
+
+        .visualizer-small {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 1px;
+            height: 30px;
+            background: #111;
+            margin-bottom: 5px;
+            border: 1px inset #555;
+        }
+
+        .v-bar { width: 10px; height: 30%; transition: height 0.1s; } 
+        .v-red { background: #ff0000; }
+        .v-orange { background: #ff7700; }
+        .v-yellow { background: #ffff00; }
+        .v-green { background: #00ff00; }
+        .v-blue { background: #0000ff; }
+
+        @keyframes barJump {
+            0% { height: 30%; }
+            50% { height: 100%; }
+            100% { height: 30%; }
+        }
+
+        .visualizing { animation: barJump 0.5s infinite alternate; }
+        .v-bar:nth-child(1) { animation-duration: 0.4s; }
+        .v-bar:nth-child(2) { animation-duration: 0.7s; }
+        .v-bar:nth-child(3) { animation-duration: 0.5s; }
+        .v-bar:nth-child(4) { animation-duration: 0.9s; }
+        .v-bar:nth-child(5) { animation-duration: 0.6s; }
+
+        .win95-btn-small {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        .win95-btn-small:active { border: 2px inset #fff; }
+
+        /* --- WINDOW & RELICS --- */
+        .window {
+            background: #c0c0c0;
+            border: 3px outset #ffffff;
+            width: 85%;
+            max-width: 600px;
+            box-shadow: 6px 6px 0px #000000;
+            margin-bottom: 20px;
+        }
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 2px 8px;
+            font-weight: bold;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .content {
+            background: #ffffff;
+            color: #000000;
+            padding: 15px;
+            border: 2px inset #808080;
+            margin: 4px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .planet-relic-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        .planet-relic { cursor: help; text-align: center; }
+        .planet-relic img {
+            width: 100px;
+            filter: drop-shadow(0 0 15px #00ffff) grayscale(1);
+            image-rendering: pixelated;
+        }
+        .relic-text {
+            color: #00ffff;
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+            margin-bottom: 5px;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid #00ffff;
+            padding: 2px;
+        }
+
+        /* --- PORTALS --- */
+        .badge-bar img { height: 35px; margin: 0 3px; }
+        .portal { position: absolute; text-align: center; width: 120px; }
+        .portal-text {
+            font-family: 'Comic Sans MS';
+            font-size: 12px;
+            margin-bottom: 5px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px;
+        }
+        #portal-monkey { right: 5%; top: 25%; }
+        #portal-reticulated { left: 5%; top: 20%; }
+        #portal-tribbleton { right: 10%; bottom: 15%; }
+    </style>
 </head>
 <body>
-<div class="shrine">
-  <h1>THE ORACLE</h1>
-  <img src="https://i0.wp.com/www.pinnyshop.com/wp-content/uploads/2024/04/west17-garfield.png?fit=800%2C800&ssl=1" alt="The Wizard" class="wizard-img">
-  <input type="text" id="intent" placeholder="WHISPER YOUR INTENT..." autocomplete="off">
-  <button onclick="seekSlack()">CONSULT THE ARCANA</button>
-  <div id="monday-timer">MONDAY ARRIVES IN: --:--:--</div>
-</div>
+    <img id="bonzi-surfer" src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349" alt="Surfer">
+    
+    <h1>gamma correction</h1>
 
-<script>
-function seekSlack() {
-  const input = document.getElementById('intent');
-  
-  // The Oracle consumes the text visually
-  input.value = ""; 
+    <div class="station-container">
+        <div class="creator-station">
+            <img id="archivist-img" 
+                 src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
+                 onclick="handleComputerClick()" 
+                 alt="Station">
+        </div>
 
-  // 1. Generate Random Date within the "Safe Zone"
-  // Start: June 19, 1978
-  // End: Dec 31, 2012 (Reliable "ucomics" file naming era)
-  const start = new Date(1978, 5, 19); 
-  const end = new Date(2012, 11, 31);
-  const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  
-  // 2. Format the Date for the Legacy Filename
-  const fullYear = randomDate.getFullYear();
-  const yy = String(fullYear).slice(-2); // Last 2 digits of year
-  const mm = String(randomDate.getMonth() + 1).padStart(2, '0');
-  const dd = String(randomDate.getDate()).padStart(2, '0');
+        <div class="netscape-player-small">
+            <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
+            <div class="visualizer-small">
+                <div class="v-bar v-red"></div>
+                <div class="v-bar v-orange"></div>
+                <div class="v-bar v-yellow"></div>
+                <div class="v-bar v-green"></div>
+                <div class="v-bar v-blue"></div>
+            </div>
+            <div class="control-deck-small">
+                <button class="win95-btn-small" onclick="stopAudio()">■</button>
+                <button class="win95-btn-small" onclick="playAudio()">▶</button>
+                <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+            </div>
+            <audio id="main-theme" loop>
+                <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
 
-  // 3. Construct the Deep Archive URL
-  // "id_" in the archive URL forces the raw image display (no archive toolbar)
-  const filename = `ga${yy}${mm}${dd}.gif`;
-  const legacyUrl = `http://images.ucomics.com/comics/ga/${fullYear}/${filename}`;
-  const finalUrl = `https://web.archive.org/web/20180201000000id_/${legacyUrl}`;
+    <div class="window">
+        <div class="title-bar"><span>Gammacorrection.exe - VOLUME_I_MANIFESTO</span><span>[?] [X]</span></div>
+        <div class="content">
+            <b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b>
+            <p>My work lives on the razor's edge between the Sacred and the Profane. I create sacred texts about pathetic characters, and I build grand mythologies out of profane jokes.</p>
+        </div>
+    </div>
 
-  // 4. Open
-  window.open(finalUrl, "_blank");
-}
+    <div class="badge-bar">
+        <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
+    </div>
 
-function updateMondayTimer() {
-  const now = new Date();
-  const nextMonday = new Date();
-  nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7 || 7);
-  nextMonday.setHours(0, 0, 0, 0);
-  const diff = nextMonday - now;
-  const h = Math.floor(diff / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('monday-timer').innerText = `MONDAY ARRIVES IN: ${h}h ${m}m ${s}s`;
-}
-setInterval(updateMondayTimer, 1000);
-updateMondayTimer();
-</script>
+    <div class="planet-relic-container">
+        <div class="planet-relic" onclick="handlePlanetClick()">
+            <p id="relic-label" class="relic-text">???</p>
+            <img src="https://blob.gifcities.org/gifcities/PESGQAISPMZ4KGWZDTHQVKXMS6GM5WQI.gif" alt="Static Relic">
+        </div>
+    </div>
+
+    <div id="portal-monkey" class="portal">
+        <a href="schmeagleandwillrpg.html">
+            <p class="portal-text" style="color: #FFFF00; border: 1px solid #FFFF00;">to schmeagle and will the rpg</p>
+            <img src="https://blob.gifcities.org/gifcities/6CEJ746XO75YZZ5THHAXSCNHTD6I2DZW.gif" style="width: 70px; filter: drop-shadow(0 0 10px #FFFF00);">
+        </a>
+    </div>
+
+    <div id="portal-reticulated" class="portal">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+            <p class="portal-text" style="color: #FF00FF; border: 1px solid #FF00FF;">to reticulated</p>
+            <img src="https://blob.gifcities.org/gifcities/BNH6ILJYUWNIH47AFGB2SI7BX3TRP345.gif" style="width: 80px; filter: drop-shadow(0 0 10px #FF00FF);">
+        </a>
+    </div>
+
+    <div id="portal-tribbleton" class="portal">
+        <a href="https://youtube.com/playlist?list=PLYQzYsswQwOZ_b8W2RuLSfcaFZK8Ne25u&si=gxPPTcj5VQrsrK1w" target="_blank">
+            <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">to tribbleton state</p>
+            <img src="https://blob.gifcities.org/gifcities/AZW26QJV5X7REPJUUBC6CKSGVEKPZVY6.gif" style="width: 80px; filter: drop-shadow(0 0 10px #00FF00);">
+        </a>
+    </div>
+
+    <script>
+        // --- QUEST LOGIC ---
+        let hasKey = false;
+        function handleComputerClick() {
+            const archivist = document.getElementById("archivist-img");
+            if (!hasKey && archivist.src.includes("computer-type.gif")) {
+                archivist.src = "https://blob.gifcities.org/gifcities/DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif";
+            } else if (!hasKey && archivist.src.includes("DQ6RJLCHQWF2E5V3ZHV654FANNNGRX67.gif")) {
+                alert("key added to inventory");
+                hasKey = true;
+                archivist.src = "https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif";
+                document.getElementById("relic-label").innerText = "tomodachi saga";
+            }
+        }
+        function handlePlanetClick() {
+            if (!hasKey) { alert('find my key'); }
+            else { window.location.href = "tomodachi-saga.html"; }
+        }
+
+        // --- BONZI LOGIC ---
+        function summonBonzi() {
+            const bonzi = document.getElementById("bonzi-surfer");
+            const direction = Math.floor(Math.random() * 2);
+            bonzi.style.top = Math.floor(Math.random() * 70 + 10) + "%";
+            bonzi.style.animation = (direction === 0) ? "flyRight 8s linear forwards" : "flyLeft 8s linear forwards";
+            setTimeout(() => {
+                bonzi.style.animation = "none";
+                setTimeout(summonBonzi, 30000); 
+            }, 8500); 
+        }
+        setTimeout(summonBonzi, 30000);
+
+        // --- AUDIO LOGIC ---
+        const fatCat = document.getElementById("main-theme");
+        const bars = document.querySelectorAll(".v-bar");
+        function playAudio() { 
+            fatCat.play().catch(e => console.log("Blocked"));
+            bars.forEach(bar => bar.classList.add("visualizing"));
+        }
+        function pauseAudio() { 
+            fatCat.pause();
+            bars.forEach(bar => bar.classList.remove("visualizing"));
+        }
+        function stopAudio() { 
+            fatCat.pause(); fatCat.currentTime = 0; 
+            bars.forEach(bar => bar.classList.remove("visualizing"));
+        }
+    </script>
 </body>
 </html>
