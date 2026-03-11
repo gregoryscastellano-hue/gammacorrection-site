@@ -6,168 +6,220 @@
     <style>
         body {
             background-color: #050505;
-            color: #ffcc00; /* NASA Amber */
+            color: #ffcc00; 
             font-family: 'Courier New', monospace;
             margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
+            justify-content: center;
+            min-height: 100vh;
             overflow: hidden;
         }
 
-        /* Space Background Effect */
+        /* Stardust background */
         body::before {
             content: "";
             position: absolute;
             width: 100%; height: 100%;
             background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.3;
+            opacity: 0.2;
+            pointer-events: none;
         }
 
-        .record-container {
+        .main-layout {
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 50px;
+            gap: 40px;
             z-index: 10;
         }
 
-        /* THE GOLDEN RECORD */
+        /* THE PHONOGRAPH RECORD */
         #golden-disc {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, #fcd34d 0%, #b45309 70%, #78350f 100%);
-            border: 10px solid #451a03;
+            width: 450px;
+            height: 450px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/bd/Voyager_Golden_Record_fx.png');
+            background-size: cover;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 50px rgba(251, 191, 36, 0.4);
-            transition: transform 1s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.2), inset 0 0 100px rgba(0,0,0,0.5);
+            transition: transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
             position: relative;
         }
 
-        /* Etchings on the record */
+        /* The "Center" of the record hole */
         #golden-disc::after {
             content: "";
             position: absolute;
-            width: 100%; height: 100%;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Voyager_Golden_Record_Cover_Explanations.svg/1024px-Voyager_Golden_Record_Cover_Explanations.svg.png');
-            background-size: 80%;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.2;
-            mix-blend-mode: multiply;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px; height: 15px;
+            background: #050505;
+            border-radius: 50%;
+            border: 2px solid #451a03;
         }
 
-        .chapter-box {
-            width: 450px;
-            height: 500px;
-            background: rgba(15, 15, 15, 0.9);
-            border: 2px solid #ffcc00;
-            padding: 30px;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: inset 0 0 20px #78350f;
+        /* THE JUKEBOX DECK (NASA STYLE) */
+        .audio-deck {
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-top: 2px solid #666;
+            border-left: 2px solid #666;
+            padding: 10px;
+            width: 180px;
+            margin-top: 20px;
+            box-shadow: 4px 4px 0px #000;
+            text-align: center;
         }
 
-        .chapter-box h2 {
+        .deck-label {
             font-family: 'VT323', monospace;
-            font-size: 2rem;
-            margin-top: 0;
-            border-bottom: 1px solid #ffcc00;
+            font-size: 14px;
+            color: #00ff00; /* Diagnostic Green */
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .nasa-btn {
+            background: #333;
+            color: #ffcc00;
+            border: 2px outset #555;
+            font-family: 'VT323', monospace;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .nasa-btn:active { border: 2px inset #222; background: #222; }
+
+        /* CONTENT WINDOW */
+        .chapter-box {
+            width: 400px;
+            height: 520px;
+            background: #c0c0c0; /* Gray like the homepage windows */
+            border: 3px outset #fff;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        .win-title {
+            background: linear-gradient(90deg, #78350f, #b45309);
+            color: white;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .win-content {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+            font-size: 15px;
+            line-height: 1.5;
+            border: 2px inset #eee;
+            margin: 5px;
+            background: #fff;
         }
 
         .nav-controls {
-            margin-top: 20px;
+            padding: 10px;
+            background: #c0c0c0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-btn {
-            background: #451a03;
-            color: #ffcc00;
-            border: 1px solid #ffcc00;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-family: 'VT323', monospace;
-            font-size: 1.2rem;
-        }
-
-        .nav-btn:hover {
-            background: #ffcc00;
-            color: #000;
-        }
-
-        .status-telemetry {
-            font-family: 'VT323', monospace;
-            font-size: 0.9rem;
-            color: #f59e0b;
-        }
-
-        #track-info {
-            font-style: italic;
-            margin-bottom: 20px;
-            display: block;
-            color: #fbbf24;
         }
     </style>
 </head>
 <body>
 
-<div class="record-container">
-    <div id="golden-disc">
+<div class="main-layout">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div id="golden-disc"></div>
+        
+        <div class="audio-deck">
+            <span class="deck-label">Telemetry Audio: Earth</span>
+            <div class="btn-group">
+                <button class="nasa-btn" onclick="playTrack()">▶</button>
+                <button class="nasa-btn" onclick="pauseTrack()">II</button>
+            </div>
+            <div id="visualizer-led" style="color: #ff0000; font-family: 'VT323'; margin-top:5px; font-size:12px;">SIGNAL_IDLE</div>
         </div>
+    </div>
 
     <div class="chapter-box">
-        <span id="track-info">TRACK_01: EARTH_REEDS</span>
-        <h2 id="chapter-title">Johnny Be Goode</h2>
-        <div id="chapter-body">
-            </div>
-
+        <div class="win-title">
+            <span>VOYAGER_LOG.EXE - TRACK <span id="track-num">01</span></span>
+            <span>[X]</span>
+        </div>
+        <div class="win-content">
+            <h3 id="chapter-title" style="margin-top:0;"></h3>
+            <div id="chapter-body"></div>
+        </div>
         <div class="nav-controls">
-            <button class="nav-btn" onclick="changeChapter(-1)">PREV</button>
-            <div class="status-telemetry">
-                COORD: 29.1° N, 89.2° W<br>
-                SIGNAL: STABLE
-            </div>
-            <button class="nav-btn" onclick="changeChapter(1)">NEXT</button>
+            <button class="nasa-btn" onclick="changeChapter(-1)">◄ BACK</button>
+            <button class="nasa-btn" onclick="changeChapter(1)">NEXT ►</button>
         </div>
     </div>
 </div>
 
-<audio id="voyager-audio" loop>
-    <source src="https://upload.wikimedia.org/wikipedia/commons/3/30/Greetings_from_Earth.ogg" type="audio/ogg">
+<audio id="earth-sounds" loop>
+    <source src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Voyager_Golden_Record_-_The_Sounds_of_Earth_-_Crickets_and_Frogs.ogg" type="audio/ogg">
 </audio>
 
 <script>
-    const chapters = [
-        {
-            title: "Johnny Be Goode",
-            body: `In St. Bernard Parish, there is a spot called “The End of the World”. It is named that because the river ends at that exact spot. It is deep down in Louisiana close to New Orleans.\n\nA young boy sits on the island, dragged here by his father to fish. A golden St. Christopher medal sits resting on his shirt as he draws Luke Skywalker on a piece of paper. He had just seen Star Wars in theaters.\n\n“Dad, can I have that bottle?”, he asks.\n\nHis dad doesn't respond, but hands him a glass Dixie Beer bottle.`
-        },
-        {
-            title: "The Cape of Reeds",
-            body: `The air in the control room is hazy with cigarette smoke as the relays of the computers make a beeping sound.\n\nA bespectacled man, the Public Affairs Officer, says "T-minus 30 seconds and counting. Arming plugs have been pulled.”\n\nThe flight director responds almost liturgically. "All stations, final status check. BOOSTER?”\n\n"Go, Flight.”`
-        }
-    ];
+   const chapters = [
+    {
+        title: "Johnny Be Goode",
+        body: `<p>In St. Bernard Parish, there is a spot called “The End of the World”. It is named that because the river ends at that exact spot. It is deep down in Louisiana close to New Orleans. A young boy sits on the island, dragged here by his father to fish. A golden St. Christopher medal sits resting on his shirt as he draws Luke Skywalker on a piece of paper. He had just seen Star Wars in theaters.</p>
 
+               <p>“Dad, can I have that bottle?”, he asks.</p>
+
+               <p>His dad doesn't respond, but hands him a glass Dixie Beer bottle.</p>
+
+               <p>The boy signs his name. Johnny - Age 7. He rolls up the page, which was ripped out of a fishing manual. He slips it into the bottle and throws it into the dead end. The water ripples as the bottle lands in the reeds.</p>
+
+               <p>“That bottle might end up in the Gulf of Mexico” beams the boy with a grin. His dad lights another cigarette.</p>
+
+               <p>About 600 miles east from the boy, there is a place called Cape Canaveral. Its name means “place of reeds”.</p>
+
+               <p>The air in the control room is hazy with cigarette smoke as the relays of the computers make a beeping sound, that the boy would compare to R2D2.</p>
+
+               <p>A bespectacled man, the Public Affairs Officer, says "T-minus 30 seconds and counting. Arming plugs have been pulled.”</p>
+
+               <p>The flight director responds almost liturgically. "All stations, final status check. BOOSTER?”</p>
+
+               <p>"Go, Flight.” the PAO responds in a continuation of the ritual.</p>
+
+               <p>"EECOM?" Over the radio, a man speaks. "Go."</p>
+
+               <p>"GUIDANCE?" “We are Go."</p>
+
+               <p>"NAV?" "Internal. We are Go.”</p>
+
+               <p>A blast of orange ignites on the Cape. The smoke is blinding as a small craft is propelled into the sky. A golden record on it gleams as it hits the sun. The JPL control room bursts out in applause and cheer. Papers are thrown into the air. A man in a turtleneck and large dark rimmed glasses wipes away a single tear. He hugs the woman next to him. “The bottle has been cast into the ocean” he whispers.</p>`
+    }
+];
     let current = 0;
     let rotation = 0;
+    const player = document.getElementById('earth-sounds');
 
     function render() {
         document.getElementById('chapter-title').innerText = chapters[current].title;
-        document.getElementById('chapter-body').innerText = chapters[current].body;
-        document.getElementById('track-info').innerText = `TRACK_0${current + 1}: MISSION_LOG`;
+        document.getElementById('chapter-body').innerHTML = chapters[current].body;
+        document.getElementById('track-num').innerText = (current + 1).toString().padStart(2, '0');
         
-        // Spin the record
-        rotation += 360;
+        rotation += 45; // Subtle nudge when turning pages
         document.getElementById('golden-disc').style.transform = `rotate(${rotation}deg)`;
-        
-        // Start audio on first interaction
-        document.getElementById('voyager-audio').play().catch(() => {});
     }
 
     function changeChapter(dir) {
@@ -175,6 +227,17 @@
         if (current < 0) current = 0;
         if (current >= chapters.length) current = chapters.length - 1;
         render();
+    }
+
+    function playTrack() { 
+        player.play(); 
+        document.getElementById('visualizer-led').innerText = "SIGNAL_ACTIVE";
+        document.getElementById('visualizer-led').style.color = "#00ff00";
+    }
+    function pauseTrack() { 
+        player.pause(); 
+        document.getElementById('visualizer-led').innerText = "SIGNAL_PAUSED";
+        document.getElementById('visualizer-led').style.color = "#ff0000";
     }
 
     window.onload = render;
