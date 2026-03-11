@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~ GO, JOHNNY, GO ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffcc00; /* NASA Amber */
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Space Background Effect */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3;
+        }
+
+        .record-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 50px;
+            z-index: 10;
+        }
+
+        /* THE GOLDEN RECORD */
+        #golden-disc {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #fcd34d 0%, #b45309 70%, #78350f 100%);
+            border: 10px solid #451a03;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 50px rgba(251, 191, 36, 0.4);
+            transition: transform 1s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            position: relative;
+        }
+
+        /* Etchings on the record */
+        #golden-disc::after {
+            content: "";
+            position: absolute;
+            width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Voyager_Golden_Record_Cover_Explanations.svg/1024px-Voyager_Golden_Record_Cover_Explanations.svg.png');
+            background-size: 80%;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.2;
+            mix-blend-mode: multiply;
+        }
+
+        .chapter-box {
+            width: 450px;
+            height: 500px;
+            background: rgba(15, 15, 15, 0.9);
+            border: 2px solid #ffcc00;
+            padding: 30px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: inset 0 0 20px #78350f;
+        }
+
+        .chapter-box h2 {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 1px solid #ffcc00;
+        }
+
+        .nav-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: #451a03;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+        }
+
+        .nav-btn:hover {
+            background: #ffcc00;
+            color: #000;
+        }
+
+        .status-telemetry {
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            color: #f59e0b;
+        }
+
+        #track-info {
+            font-style: italic;
+            margin-bottom: 20px;
+            display: block;
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="record-container">
+    <div id="golden-disc">
+        </div>
+
+    <div class="chapter-box">
+        <span id="track-info">TRACK_01: EARTH_REEDS</span>
+        <h2 id="chapter-title">Johnny Be Goode</h2>
+        <div id="chapter-body">
+            </div>
+
+        <div class="nav-controls">
+            <button class="nav-btn" onclick="changeChapter(-1)">PREV</button>
+            <div class="status-telemetry">
+                COORD: 29.1° N, 89.2° W<br>
+                SIGNAL: STABLE
+            </div>
+            <button class="nav-btn" onclick="changeChapter(1)">NEXT</button>
+        </div>
+    </div>
+</div>
+
+<audio id="voyager-audio" loop>
+    <source src="https://upload.wikimedia.org/wikipedia/commons/3/30/Greetings_from_Earth.ogg" type="audio/ogg">
+</audio>
+
+<script>
+    const chapters = [
+        {
+            title: "Johnny Be Goode",
+            body: `In St. Bernard Parish, there is a spot called “The End of the World”. It is named that because the river ends at that exact spot. It is deep down in Louisiana close to New Orleans.\n\nA young boy sits on the island, dragged here by his father to fish. A golden St. Christopher medal sits resting on his shirt as he draws Luke Skywalker on a piece of paper. He had just seen Star Wars in theaters.\n\n“Dad, can I have that bottle?”, he asks.\n\nHis dad doesn't respond, but hands him a glass Dixie Beer bottle.`
+        },
+        {
+            title: "The Cape of Reeds",
+            body: `The air in the control room is hazy with cigarette smoke as the relays of the computers make a beeping sound.\n\nA bespectacled man, the Public Affairs Officer, says "T-minus 30 seconds and counting. Arming plugs have been pulled.”\n\nThe flight director responds almost liturgically. "All stations, final status check. BOOSTER?”\n\n"Go, Flight.”`
+        }
+    ];
+
+    let current = 0;
+    let rotation = 0;
+
+    function render() {
+        document.getElementById('chapter-title').innerText = chapters[current].title;
+        document.getElementById('chapter-body').innerText = chapters[current].body;
+        document.getElementById('track-info').innerText = `TRACK_0${current + 1}: MISSION_LOG`;
+        
+        // Spin the record
+        rotation += 360;
+        document.getElementById('golden-disc').style.transform = `rotate(${rotation}deg)`;
+        
+        // Start audio on first interaction
+        document.getElementById('voyager-audio').play().catch(() => {});
+    }
+
+    function changeChapter(dir) {
+        current += dir;
+        if (current < 0) current = 0;
+        if (current >= chapters.length) current = chapters.length - 1;
+        render();
+    }
+
+    window.onload = render;
+</script>
+</body>
+</html>
