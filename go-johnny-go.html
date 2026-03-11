@@ -17,7 +17,6 @@
             overflow: hidden;
         }
 
-        /* Stardust background */
         body::before {
             content: "";
             position: absolute;
@@ -35,56 +34,27 @@
             z-index: 10;
         }
 
-        /* THE PHONOGRAPH RECORD */
         #golden-disc {
             width: 450px;
             height: 450px;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/bd/Voyager_Golden_Record_fx.png');
             background-size: cover;
             border-radius: 50%;
-            box-shadow: 0 0 40px rgba(255, 204, 0, 0.2), inset 0 0 100px rgba(0,0,0,0.5);
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.2);
             transition: transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
             position: relative;
         }
 
-        /* The "Center" of the record hole */
-        #golden-disc::after {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 15px; height: 15px;
-            background: #050505;
-            border-radius: 50%;
-            border: 2px solid #451a03;
-        }
-
-        /* THE JUKEBOX DECK (NASA STYLE) */
         .audio-deck {
             background: #1a1a1a;
             border: 2px solid #444;
             border-top: 2px solid #666;
             border-left: 2px solid #666;
             padding: 10px;
-            width: 180px;
+            width: 200px;
             margin-top: 20px;
             box-shadow: 4px 4px 0px #000;
             text-align: center;
-        }
-
-        .deck-label {
-            font-family: 'VT323', monospace;
-            font-size: 14px;
-            color: #00ff00; /* Diagnostic Green */
-            margin-bottom: 8px;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
         }
 
         .nasa-btn {
@@ -99,11 +69,10 @@
 
         .nasa-btn:active { border: 2px inset #222; background: #222; }
 
-        /* CONTENT WINDOW */
         .chapter-box {
-            width: 400px;
-            height: 520px;
-            background: #c0c0c0; /* Gray like the homepage windows */
+            width: 420px;
+            height: 550px;
+            background: #c0c0c0;
             border: 3px outset #fff;
             color: #000;
             display: flex;
@@ -125,119 +94,120 @@
             padding: 20px;
             overflow-y: auto;
             flex-grow: 1;
-            font-size: 15px;
-            line-height: 1.5;
-            border: 2px inset #eee;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 2px inset #808080;
             margin: 5px;
             background: #fff;
         }
 
-        .nav-controls {
-            padding: 10px;
-            background: #c0c0c0;
-            display: flex;
-            justify-content: space-between;
+        .inscription {
+            font-style: italic;
+            color: #78350f;
+            border-bottom: 1px double #78350f;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            font-size: 12px;
+            line-height: 1.2;
         }
+
+        #player-ui { position: absolute; left: -9999px; }
     </style>
 </head>
 <body>
 
+<div id="player-ui"><div id="yt-player"></div></div>
+
 <div class="main-layout">
     <div style="display: flex; flex-direction: column; align-items: center;">
         <div id="golden-disc"></div>
-        
         <div class="audio-deck">
-            <span class="deck-label">Telemetry Audio: Earth</span>
-            <div class="btn-group">
-                <button class="nasa-btn" onclick="playTrack()">▶</button>
-                <button class="nasa-btn" onclick="pauseTrack()">II</button>
+            <span style="color:#00ff00; font-family:'VT323'; font-size:12px; display:block; margin-bottom:5px;">VOYAGER_SIGNAL_DECODE</span>
+            <div style="display:flex; justify-content:center; gap:10px;">
+                <button class="nasa-btn" onclick="playAudio()">▶ PLAY</button>
+                <button class="nasa-btn" onclick="pauseAudio()">II PAUSE</button>
             </div>
-            <div id="visualizer-led" style="color: #ff0000; font-family: 'VT323'; margin-top:5px; font-size:12px;">SIGNAL_IDLE</div>
+            <div id="status-led" style="color: #ff0000; font-family: 'VT323'; margin-top:5px; font-size:14px;">OFFLINE</div>
         </div>
     </div>
 
     <div class="chapter-box">
         <div class="win-title">
-            <span>VOYAGER_LOG.EXE - TRACK <span id="track-num">01</span></span>
-            <span>[X]</span>
+            <span>GOLDEN_RECORD_ARCHIVE.EXE</span>
+            <span>TRACK_01</span>
         </div>
         <div class="win-content">
-            <h3 id="chapter-title" style="margin-top:0;"></h3>
+            <div class="inscription">
+                "Once is happenstance, twice is coincidence, three times is enemy action” - Ian Fleming, Goldfinger
+            </div>
+            <h3 id="chapter-title" style="margin-top:0; color:#78350f; font-family:'VT323'; font-size:24px;"></h3>
             <div id="chapter-body"></div>
         </div>
-        <div class="nav-controls">
-            <button class="nasa-btn" onclick="changeChapter(-1)">◄ BACK</button>
-            <button class="nasa-btn" onclick="changeChapter(1)">NEXT ►</button>
+        <div style="padding:10px; background:#c0c0c0; border-top:1px solid #808080; text-align:right;">
+            <button class="nasa-btn" onclick="changeChapter(1)">TRANSMIT NEXT ►</button>
         </div>
     </div>
 </div>
 
-<audio id="earth-sounds" loop>
-    <source src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Voyager_Golden_Record_-_The_Sounds_of_Earth_-_Crickets_and_Frogs.ogg" type="audio/ogg">
-</audio>
-
 <script>
-   const chapters = [
-    {
-        title: "Johnny Be Goode",
-        body: `<p>In St. Bernard Parish, there is a spot called “The End of the World”. It is named that because the river ends at that exact spot. It is deep down in Louisiana close to New Orleans. A young boy sits on the island, dragged here by his father to fish. A golden St. Christopher medal sits resting on his shirt as he draws Luke Skywalker on a piece of paper. He had just seen Star Wars in theaters.</p>
+    // 1. YouTube API Setup
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-               <p>“Dad, can I have that bottle?”, he asks.</p>
-
-               <p>His dad doesn't respond, but hands him a glass Dixie Beer bottle.</p>
-
-               <p>The boy signs his name. Johnny - Age 7. He rolls up the page, which was ripped out of a fishing manual. He slips it into the bottle and throws it into the dead end. The water ripples as the bottle lands in the reeds.</p>
-
-               <p>“That bottle might end up in the Gulf of Mexico” beams the boy with a grin. His dad lights another cigarette.</p>
-
-               <p>About 600 miles east from the boy, there is a place called Cape Canaveral. Its name means “place of reeds”.</p>
-
-               <p>The air in the control room is hazy with cigarette smoke as the relays of the computers make a beeping sound, that the boy would compare to R2D2.</p>
-
-               <p>A bespectacled man, the Public Affairs Officer, says "T-minus 30 seconds and counting. Arming plugs have been pulled.”</p>
-
-               <p>The flight director responds almost liturgically. "All stations, final status check. BOOSTER?”</p>
-
-               <p>"Go, Flight.” the PAO responds in a continuation of the ritual.</p>
-
-               <p>"EECOM?" Over the radio, a man speaks. "Go."</p>
-
-               <p>"GUIDANCE?" “We are Go."</p>
-
-               <p>"NAV?" "Internal. We are Go.”</p>
-
-               <p>A blast of orange ignites on the Cape. The smoke is blinding as a small craft is propelled into the sky. A golden record on it gleams as it hits the sun. The JPL control room bursts out in applause and cheer. Papers are thrown into the air. A man in a turtleneck and large dark rimmed glasses wipes away a single tear. He hugs the woman next to him. “The bottle has been cast into the ocean” he whispers.</p>`
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('yt-player', {
+            height: '0', width: '0',
+            videoId: 'ELnn9V01EiI',
+            playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'ELnn9V01EiI' }
+        });
     }
-];
+
+    // 2. Story Content
+    const chapters = [
+        {
+            title: "Johnny Be Goode",
+            body: `<p>In St. Bernard Parish, there is a spot called “The End of the World”. It is named that because the river ends at that exact spot. It is deep down in Louisiana close to New Orleans. A young boy sits on the island, dragged here by his father to fish. A golden St. Christopher medal sits resting on his shirt as he draws Luke Skywalker on a piece of paper. He had just seen Star Wars in theaters.</p>
+                   <p>“Dad, can I have that bottle?”, he asks.</p>
+                   <p>His dad doesn't respond, but hands him a glass Dixie Beer bottle.</p>
+                   <p>The boy signs his name. Johnny - Age 7. He rolls up the page, which was ripped out of a fishing manual. He slips it into the bottle and throws it into the dead end. The water ripples as the bottle lands in the reeds.</p>
+                   <p>“That bottle might end up in the Gulf of Mexico” beams the boy with a grin. His dad lights another cigarette.</p>
+                   <p>About 600 miles east from the boy, there is a place called Cape Canaveral. Its name means “place of reeds”.</p>
+                   <p>The air in the control room is hazy with cigarette smoke as the relays of the computers make a beeping sound, that the boy would compare to R2D2.</p>
+                   <p>A bespectacled man, the Public Affairs Officer, says "T-minus 30 seconds and counting. Arming plugs have been pulled.”</p>
+                   <p>The flight director responds almost liturgically. "All stations, final status check. BOOSTER?”</p>
+                   <p>"Go, Flight.” the PAO responds in a continuation of the ritual. "EECOM?" "Go." "GUIDANCE?" “We are Go." "NAV?" "Internal. We are Go.”</p>
+                   <p>A blast of orange ignites on the Cape. The smoke is blinding as a small craft is propelled into the sky. A golden record on it gleams as it hits the sun. The JPL control room bursts out in applause and cheer. Papers are thrown into the air. A man in a turtleneck and large dark rimmed glasses wipes away a single tear. He hugs the woman next to him. “The bottle has been cast into the ocean” he whispers.</p>`
+        }
+    ];
+
     let current = 0;
     let rotation = 0;
-    const player = document.getElementById('earth-sounds');
 
     function render() {
         document.getElementById('chapter-title').innerText = chapters[current].title;
         document.getElementById('chapter-body').innerHTML = chapters[current].body;
-        document.getElementById('track-num').innerText = (current + 1).toString().padStart(2, '0');
-        
-        rotation += 45; // Subtle nudge when turning pages
+        rotation += 90;
         document.getElementById('golden-disc').style.transform = `rotate(${rotation}deg)`;
     }
 
-    function changeChapter(dir) {
-        current += dir;
-        if (current < 0) current = 0;
-        if (current >= chapters.length) current = chapters.length - 1;
-        render();
+    function playAudio() { 
+        if(player) player.playVideo(); 
+        document.getElementById('status-led').innerText = "SIGNAL_ACTIVE";
+        document.getElementById('status-led').style.color = "#00ff00";
+    }
+    function pauseAudio() { 
+        if(player) player.pauseVideo(); 
+        document.getElementById('status-led').innerText = "SIGNAL_PAUSED";
+        document.getElementById('status-led').style.color = "#ff0000";
     }
 
-    function playTrack() { 
-        player.play(); 
-        document.getElementById('visualizer-led').innerText = "SIGNAL_ACTIVE";
-        document.getElementById('visualizer-led').style.color = "#00ff00";
-    }
-    function pauseTrack() { 
-        player.pause(); 
-        document.getElementById('visualizer-led').innerText = "SIGNAL_PAUSED";
-        document.getElementById('visualizer-led').style.color = "#ff0000";
+    function changeChapter(dir) {
+        // Since you currently only have one chapter, this just triggers the rotation/play
+        playAudio();
+        render();
     }
 
     window.onload = render;
