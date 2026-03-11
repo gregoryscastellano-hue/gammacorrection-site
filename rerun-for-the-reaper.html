@@ -242,23 +242,52 @@ The vultures were gathering around their Mother, but she ignored them. Her gaze 
     function renderChapter() {
         const display = document.getElementById('chapter-content');
         const numDisplay = document.getElementById('chapter-num');
-        const statusBox = document.querySelector('.status-display');
+        const totalDisplay = document.querySelector('.status-display');
+        const container = document.querySelector('.terminal-container');
+        const recDot = document.querySelector('.rec-dot');
         
+        // Add glitch effect
         display.classList.add('glitch');
         setTimeout(() => display.classList.remove('glitch'), 200);
 
+        // Update Text
         display.innerText = chapters[currentChapter];
-        numDisplay.innerText = (currentChapter + 1).toString().padStart(2, '0');
-        
-        // This updates the "16" to match your current chapter count automatically
-        statusBox.innerHTML = `ENTRY: <span id="chapter-num">${(currentChapter + 1).toString().padStart(2, '0')}</span> / ${chapters.length.toString().padStart(2, '0')}`;
 
+        // --- THE UI ADAPTATION LOGIC ---
+
+        // Bio-Hazard Alert for Chapter 3 (Index 2)
+        if(currentChapter === 2) { 
+            container.style.borderColor = "#ff0000";
+            container.style.boxShadow = "0 0 40px #ff0000";
+            recDot.style.animationDuration = "0.2s"; // Fast panic blink
+            display.style.color = "#ff6666"; // Slight reddish tint to text
+        } 
+        // Horror shadow for Chapter 2 (Index 1)
+        else if(currentChapter === 1) {
+            container.style.borderColor = "#7e22ce";
+            container.style.boxShadow = "0 0 30px #581c87";
+            recDot.style.animationDuration = "1s";
+            display.style.textShadow = "2px 2px #ff00ff, -2px -2px #00ffff";
+            display.style.color = "#ffffff";
+        } 
+        // Standard Noir for Chapter 1 (Index 0)
+        else {
+            container.style.borderColor = "#7e22ce";
+            container.style.boxShadow = "0 0 30px #581c87";
+            recDot.style.animationDuration = "1s";
+            display.style.textShadow = "none";
+            display.style.color = "#d8b4fe";
+        }
+
+        // Update the counter display
+        totalDisplay.innerHTML = `ENTRY: <span id="chapter-num">${(currentChapter + 1).toString().padStart(2, '0')}</span> / ${chapters.length.toString().padStart(2, '0')}`;
+
+        // Button States
         document.getElementById('prevBtn').disabled = currentChapter === 0;
         document.getElementById('nextBtn').disabled = currentChapter === chapters.length - 1;
         
         display.scrollTop = 0;
     }
-
     function changeChapter(direction) {
         currentChapter += direction;
         renderChapter();
