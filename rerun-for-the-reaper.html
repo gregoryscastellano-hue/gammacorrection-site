@@ -421,6 +421,12 @@ My consciousness is a fat roll on a BBW. I am jiggling as she takes off her clot
 
     let currentChapter = 0;
 
+    // --- ADD THIS BLOCK HERE ---
+    function changeChapter(direction) {
+        currentChapter += direction;
+        if (currentChapter < 0) currentChapter = 0;
+        if (currentChapter >= chapters.length) currentChapter = chapters.length - 1;
+        renderChapter();
     function renderChapter() {
     const display = document.getElementById('chapter-content');
     const statusDisplay = document.getElementById('vcr-status');
