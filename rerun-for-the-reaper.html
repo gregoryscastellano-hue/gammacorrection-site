@@ -147,7 +147,7 @@
 </div>
 
 <script>
-   <script>
+  <script>
     // --- THE ARCHIVE DATA ---
     const chapters = [
         `Chapter 1
@@ -222,6 +222,7 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
     function renderChapter() {
         const display = document.getElementById('chapter-content');
         const numDisplay = document.getElementById('chapter-num');
+        const totalDisplay = document.querySelector('.status-display');
         
         // Add glitch effect
         display.classList.add('glitch');
@@ -229,8 +230,10 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
         // Special logic for Chapter 2 horror
         if(currentChapter === 1) {
             display.style.textShadow = "2px 2px #ff00ff, -2px -2px #00ffff";
+            display.style.color = "#ffffff";
         } else {
             display.style.textShadow = "none";
+            display.style.color = "#d8b4fe";
         }
 
         setTimeout(() => display.classList.remove('glitch'), 200);
@@ -238,6 +241,9 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
         // Update Text
         display.innerText = chapters[currentChapter];
         numDisplay.innerText = (currentChapter + 1).toString().padStart(2, '0');
+
+        // Update the total count dynamically
+        totalDisplay.innerHTML = `ENTRY: <span id="chapter-num">${(currentChapter + 1).toString().padStart(2, '0')}</span> / ${chapters.length.toString().padStart(2, '0')}`;
 
         // Button States
         document.getElementById('prevBtn').disabled = currentChapter === 0;
@@ -251,5 +257,6 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
         renderChapter();
     }
 
-    renderChapter();
+    // Run the first render
+    window.onload = renderChapter;
 </script>
