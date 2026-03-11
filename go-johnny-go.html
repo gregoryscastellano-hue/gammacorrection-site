@@ -42,6 +42,7 @@
             align-items: center;
             gap: 40px;
             z-index: 10;
+            padding: 20px;
         }
 
         #golden-disc {
@@ -91,36 +92,37 @@
         }
 
         .win-title {
-    background: linear-gradient(90deg, #78350f, #b45309);
-    color: white;
-    padding: 3px 8px;
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Keeps the text and button centered vertically */
-}
+            background: linear-gradient(90deg, #78350f, #b45309);
+            color: white;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.close-btn {
-    background: #c0c0c0;
-    color: #000;
-    border: 2px outset #fff;
-    font-family: 'VT323', monospace;
-    font-weight: bold;
-    font-size: 14px;
-    width: 18px;
-    height: 16px;
-    line-height: 12px;
-    cursor: pointer;
-    text-align: center;
-    padding: 0;
-    margin-left: 10px;
-}
+        .close-btn {
+            background: #c0c0c0;
+            color: #000;
+            border: 2px outset #fff;
+            font-family: 'VT323', monospace;
+            font-weight: bold;
+            font-size: 14px;
+            width: 18px;
+            height: 16px;
+            line-height: 12px;
+            cursor: pointer;
+            text-align: center;
+            padding: 0;
+            margin-left: 10px;
+        }
 
-.close-btn:active {
-    border: 2px inset #808080;
-    background: #a0a0a0;
-}
+        .close-btn:active {
+            border: 2px inset #808080;
+            background: #a0a0a0;
+        }
+
         .win-content {
             padding: 20px;
             overflow-y: auto;
@@ -184,7 +186,7 @@
             <button class="nasa-btn" onclick="changeChapter(1)">NEXT ►</button>
         </div>
     </div>
-    </div>
+</div>
 
 <script>
     var tag = document.createElement('script');
@@ -308,19 +310,18 @@
     let rotation = 0;
 
     function render() {
-    document.getElementById('chapter-title').innerText = chapters[current].title;
-    document.getElementById('chapter-body').innerHTML = chapters[current].body;
-    
-    // This part now automatically handles any number of chapters
-    const trackNum = (current + 1).toString().padStart(2, '0');
-    document.getElementById('track-id-display').innerText = `TRACK_${trackNum}`;
-    
-    rotation += 90;
-    const disc = document.getElementById('golden-disc');
-    if (!disc.classList.contains('spinning')) {
-        disc.style.transform = `rotate(${rotation}deg)`;
+        document.getElementById('chapter-title').innerText = chapters[current].title;
+        document.getElementById('chapter-body').innerHTML = chapters[current].body;
+        
+        const trackNum = (current + 1).toString().padStart(2, '0');
+        document.getElementById('track-id-display').innerText = `TRACK_${trackNum}`;
+        
+        rotation += 90;
+        const disc = document.getElementById('golden-disc');
+        if (!disc.classList.contains('spinning')) {
+            disc.style.transform = `rotate(${rotation}deg)`;
+        }
     }
-}
 
     function playAudio() { 
         if(player) player.playVideo(); 
@@ -338,10 +339,11 @@
 
     function changeChapter(dir) {
         current += dir;
-        // Boundaries: stay within 0 and chapters.length - 1
         if (current < 0) current = 0;
         if (current >= chapters.length) current = chapters.length - 1;
         render();
+        // Reset scroll position to top when changing chapters
+        document.querySelector('.win-content').scrollTop = 0;
     }
 
     window.onload = render;
