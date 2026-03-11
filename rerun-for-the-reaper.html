@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~ VIRUELON SURVEILLANCE ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a001a;
+            color: #d8b4fe; /* Soft Purple */
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* CRT Scanline Effect Overlay */
+        body::before {
+            content: " ";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 3px 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .terminal-container {
+            width: 90%;
+            max-width: 800px;
+            height: 85vh;
+            background: #1a0033;
+            border: 4px solid #7e22ce; /* Bright Purple border */
+            box-shadow: 0 0 30px #581c87;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+        }
+
+        .terminal-header {
+            background: #7e22ce;
+            color: #fff;
+            padding: 5px 15px;
+            font-family: 'VT323', monospace;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+        }
+
+        #chapter-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            white-space: pre-wrap; /* Preserves your spacing */
+            scrollbar-width: thin;
+            scrollbar-color: #7e22ce #1a0033;
+        }
+
+        /* The Glitch Effect class */
+        .glitch {
+            animation: glitch-anim 0.2s linear;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); opacity: 1; filter: hue-rotate(0deg); }
+            20% { transform: translate(-5px, 2px); opacity: 0.8; filter: hue-rotate(90deg); }
+            40% { transform: translate(5px, -2px); opacity: 1; }
+            60% { transform: translate(-2px, 0); opacity: 0.9; }
+            100% { transform: translate(0); opacity: 1; filter: hue-rotate(0deg); }
+        }
+
+        .vcr-controls {
+            background: #000;
+            border-top: 2px solid #7e22ce;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .vcr-btn {
+            background: #2e1065;
+            color: #d8b4fe;
+            border: 1px solid #7e22ce;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .vcr-btn:hover {
+            background: #7e22ce;
+            color: #fff;
+            box-shadow: 0 0 10px #7e22ce;
+        }
+
+        .vcr-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .status-display {
+            font-family: 'VT323', monospace;
+            color: #a855f7;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .rec-dot {
+            color: #ff0000;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminal-container">
+    <div class="terminal-header">
+        <span><span class="rec-dot">●</span> REC [FLASH_DRIVE_A]</span>
+        <span>VIRUELON_CITY_PD_ENCRYPT</span>
+        <span><a href="index.html" style="color: white; text-decoration: none;">[X] CLOSE</a></span>
+    </div>
+
+    <div id="chapter-content">
+        </div>
+
+    <div class="vcr-controls">
+        <button id="prevBtn" class="vcr-btn" onclick="changeChapter(-1)">[|< REW]</button>
+        <div class="status-display">
+            ENTRY: <span id="chapter-num">01</span> / 16
+        </div>
+        <button id="nextBtn" class="vcr-btn" onclick="changeChapter(1)">[FWD >|]</button>
+    </div>
+</div>
+
+<script>
+    // --- THE ARCHIVE DATA ---
+    // Add your new chapters to this list!
+    const chapters = [
+        `Chapter 1
+It was a rainy night in Viruelon City, the kind of weather that makes a man want to crawl inside a bottle and stay there until the sun remembers how to shine. The dame walked into the station from the downpour, dripping with both water and desperation. She had the kind of eyes that could get a man hanged. My partner Will was on the couch playing Subway Surfers with the TV blasting Family Guy when she walked in.
+
+“I hear you solve the unsolvable” said the dame.
+
+I leaned back in my chair, took a slow drag from a cigarette that hadn’t been lit in years. “Depends who’s asking,” I said. “And whether the city’s paying overtime.”
+
+Will didn’t look up from his phone. “What’s the problem, lady? Subway Surfers doesn’t have customer support.”
+
+The dame sighed, a slight crack in her otherwise unimpeachable demeanor. “It’s my husband. He’s been acting different lately.”
+
+That got my attention.
+
+“Yeah?” I said. “Guy start drinking? Gambling? NFTs?”
+
+“He started repeating things. Word for word. He looks like him, sounds like him, but there’s nothing behind his eyes. Like he’s a rerun.”
+
+I shot a quick glance over to my partner. He grabbed the remote and paused the Family Guy, eyes still glued to Subway Surfers like his life depended on it.
+
+“Lady”, he said “we don’t do missing husbands. Only missing logic.”
+
+She shot him a look colder than the rain outside. Without saying anything, she took off her jacket, revealing the flash drive in her jacket pocket.
+
+“2000 Zenny” she said in a voice so unvarnished it would make the paneling blush.
+
+I stared at the flash drive. Nothing good ever came in that shape.
+
+“Two thousand Zenny for a domestic case,” I said. “Either your husband’s cheating, or he’s the devil himself.”
+
+“Maybe both,” she said.
+
+Will finally looked up from his phone. The Subway Surfers theme still played, tinny and bright. “That’s more than the department’s budget,” he muttered.
+
+“Guess we’re freelancers now,” I said.
+
+She slid the drive across the desk. It left a faint trail of static, like it was shedding electricity just from existing.
+
+“Everything you need is on there,” she said. “Don’t plug it into anything connected to the grid.”
+
+I didn’t ask why. You don’t ask a bullet where it’s going before it hits you.
+
+The dame walked out the door with a deafening silence that would make a librarian collapse. I grabbed the flash drive like a surgeon would a cancerous tumor and plugged it into the computer I store my Sonic the Hedgehog r34 on. The screen flashed to life, covering my desk with a muted green glow. On the screen was grainy footage of the lady’s husband standing motionless, sending a chill down my spine like I was standing outside in nothing but my police hat. 
+
+Will came up to me, his sunglasses hiding his concerned expression. In a voice more gravelly than a freshly laid pavement, he asked “That’s the dame’s husband? Lucky guy. How’d he ever score a fox like that?”
+
+I shushed him. The man’s vacant lifeless eyes seemed to be watching me, even though I knew that was impossible. My questions about why the dame would spend so much on her husband were answered. From this one video, I got the feeling we were in way over our heads.`
+        // Add Chapter 2 here later!
+    ];
+
+    let currentChapter = 0;
+
+    function renderChapter() {
+        const display = document.getElementById('chapter-content');
+        const numDisplay = document.getElementById('chapter-num');
+        
+        // Add glitch effect
+        display.classList.add('glitch');
+        setTimeout(() => display.classList.remove('glitch'), 200);
+
+        // Update Text
+        display.innerText = chapters[currentChapter];
+        numDisplay.innerText = (currentChapter + 1).toString().padStart(2, '0');
+
+        // Button States
+        document.getElementById('prevBtn').disabled = currentChapter === 0;
+        document.getElementById('nextBtn').disabled = currentChapter === chapters.length - 1;
+        
+        // Scroll back to top
+        display.scrollTop = 0;
+    }
+
+    function changeChapter(direction) {
+        currentChapter += direction;
+        renderChapter();
+    }
+
+    // Initial render
+    renderChapter();
+</script>
+
+</body>
+</html>
