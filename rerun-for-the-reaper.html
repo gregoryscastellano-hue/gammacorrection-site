@@ -148,7 +148,6 @@
 
 <script>
     // --- THE ARCHIVE DATA ---
-    // Add your new chapters to this list!
     const chapters = [
         `Chapter 1
 It was a rainy night in Viruelon City, the kind of weather that makes a man want to crawl inside a bottle and stay there until the sun remembers how to shine. The dame walked into the station from the downpour, dripping with both water and desperation. She had the kind of eyes that could get a man hanged. My partner Will was on the couch playing Subway Surfers with the TV blasting Family Guy when she walked in.
@@ -195,7 +194,7 @@ The dame walked out the door with a deafening silence that would make a libraria
 
 Will came up to me, his sunglasses hiding his concerned expression. In a voice more gravelly than a freshly laid pavement, he asked “That’s the dame’s husband? Lucky guy. How’d he ever score a fox like that?”
 
-I shushed him. The man’s vacant lifeless eyes seemed to be watching me, even though I knew that was impossible. My questions about why the dame would spend so much on her husband were answered. From this one video, I got the feeling we were in way over our heads.`
+I shushed him. The man’s vacant lifeless eyes seemed to be watching me, even though I knew that was impossible. My questions about why the dame would spend so much on her husband were answered. From this one video, I got the feeling we were in way over our heads.`,
         `Chapter 2
 Rain pierced the roof of the police car like a sword through armor. My partner was invested in the Simpsons: Tapped Out as I drove 20 over the speed limit through the unseeable roads. The rain from this perspective reminded me of the static from the video. I turned on the windshield wipers as I grabbed another cigarette.
 
@@ -214,7 +213,6 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
 “Take it easy, cazoo. Check it out.” He showed me a maxed out Flander household, the only source of dim light in this black box.
 
 “Shine it over there, dickhead! We got a case to solve!” He shines the light towards a sight that made me almost regurgitate my pizza rolls. The man’s eyes were missing from his sockets, like they had a plane to catch. The now absent holes were displaying an overstimulating mess of imagery. Epstein edits. AI slop. Family guy cutaways. It was the kind of sight that made me want to join him.`
-
     ];
 
     let currentChapter = 0;
@@ -222,20 +220,20 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
     function renderChapter() {
         const display = document.getElementById('chapter-content');
         const numDisplay = document.getElementById('chapter-num');
+        const statusBox = document.querySelector('.status-display');
         
-        // Add glitch effect
         display.classList.add('glitch');
         setTimeout(() => display.classList.remove('glitch'), 200);
 
-        // Update Text
         display.innerText = chapters[currentChapter];
         numDisplay.innerText = (currentChapter + 1).toString().padStart(2, '0');
+        
+        // This updates the "16" to match your current chapter count automatically
+        statusBox.innerHTML = `ENTRY: <span id="chapter-num">${(currentChapter + 1).toString().padStart(2, '0')}</span> / ${chapters.length.toString().padStart(2, '0')}`;
 
-        // Button States
         document.getElementById('prevBtn').disabled = currentChapter === 0;
         document.getElementById('nextBtn').disabled = currentChapter === chapters.length - 1;
         
-        // Scroll back to top
         display.scrollTop = 0;
     }
 
@@ -244,9 +242,8 @@ I turned to my partner, but Will's eyes were stuck to the phone like gorilla glu
         renderChapter();
     }
 
-    // Initial render
-    renderChapter();
+    // This ensures the code runs only when the page is fully loaded
+    window.onload = renderChapter;
 </script>
-
 </body>
 </html>
