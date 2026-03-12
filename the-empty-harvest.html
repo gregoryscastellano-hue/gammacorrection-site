@@ -29,7 +29,6 @@
             box-shadow: 20px 20px 0px rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
         }
 
         .lego-header {
@@ -40,6 +39,23 @@
             justify-content: space-between;
             padding: 0 20px;
             border-bottom: 5px solid black;
+        }
+
+        .home-btn {
+            background: white;
+            color: black;
+            border: 2px solid black;
+            padding: 5px 10px;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 3px 3px 0px black;
+        }
+
+        .home-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px black;
         }
 
         .lego-logo {
@@ -64,12 +80,6 @@
             flex-grow: 1;
             padding: 30px;
             gap: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .story-illustration {
@@ -81,7 +91,7 @@
             align-items: center;
             position: relative;
             background-image: radial-gradient(#d1d1d1 2px, transparent 2px);
-            background-size: 20px 20px; /* LEGO Stud pattern */
+            background-size: 20px 20px;
         }
 
         .step-num {
@@ -97,11 +107,10 @@
         }
 
         .text-content {
-            font-size: 18px;
-            line-height: 1.6;
+            font-size: 17px;
+            line-height: 1.5;
             color: #111;
             padding: 10px;
-            background: rgba(255,255,255,0.8);
             border-left: 5px solid var(--lego-yellow);
         }
 
@@ -126,17 +135,20 @@
             box-shadow: 4px 4px 0px black;
         }
 
-        .lego-btn:hover:not(:disabled) { background: #0077cc; }
-        .lego-btn:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
         .lego-btn:disabled { background: #999; cursor: not-allowed; box-shadow: none; opacity: 0.5; }
 
-        .brick-img { width: 180px; filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2)); }
+        .brick-img { 
+            max-width: 250px; 
+            max-height: 250px;
+            filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2)); 
+        }
     </style>
 </head>
 <body>
 
     <div class="manual-page">
         <div class="lego-header">
+            <a href="index.html" class="home-btn">◀ RETURN TO ARCHIVE</a>
             <div class="lego-logo">ARCHIVE</div>
             <div class="set-info">
                 <div>SET #0001</div>
@@ -148,9 +160,9 @@
             </div>
 
         <div class="nav-bar">
-            <button class="lego-btn" id="prevBtn" onclick="changePage(-1)">◀ PREVIOUS</button>
+            <button class="lego-btn" id="prevBtn" onclick="changePage(-1)">PREVIOUS</button>
             <div style="font-family: 'Oswald'; font-size: 20px;">PAGE <span id="pageNum">1</span> / 3</div>
-            <button class="lego-btn" id="nextBtn" onclick="changePage(1)">NEXT ▶</button>
+            <button class="lego-btn" id="nextBtn" onclick="changePage(1)">NEXT</button>
         </div>
     </div>
 
@@ -158,24 +170,24 @@
         const pages = [
             {
                 step: 1,
-                img: "https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif",
+                img: "rooster1.png",
                 parts: "PARTS: 1x SUN, 4x SMOKE, 1x ROOSTER",
                 text: `<p>The sun dragged slowly upward from the horizon into a listless sky, its light too tired to reach the ground. The futile light faintly illuminated black smoke as it wobbled pathetically from weather-gnawed chimneys.</p>
                        <p>A rooster announced the dawn with an uninspiring “cock-a-doodle-doo” that befitted the dawn’s pitiful nature.</p>`
             },
             {
                 step: 2,
-                img: "https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif",
+                img: "legodoor1.png",
                 parts: "PARTS: 10x PEASANT, 1x BARREN FIELD, 4x DOOR",
-                text: `<p>Slowly and routinely, the village of peasants began exiting their homes from cracked and broken doors, their clothes carrying the filth of years. They marched towards the barren field.</p>
-                       <p>Here and there, <b>pristine doors</b> stood fixed in the fields, unhinged from any wall. No one knew where they led, and no one was foolish enough to try.</p>`
+                text: `<p>Slowly and routinely, the village of peasants began exiting their homes from cracked and broken doors. They marched towards the barren field.</p>
+                       <p>Here and there, <b>pristine doors</b> stood fixed in the fields, unhinged from any wall. Their surfaces were smooth and unnatural. No one knew where they led, and no one was foolish enough to try.</p>`
             },
             {
                 step: 3,
-                img: "https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif",
+                img: "lego medeival guard.png", // Keep spaces exactly as they are in the filename
                 parts: "PARTS: 2x ENFORCER, 1x SCYTHE, 1x FALLOWGLASS",
                 text: `<p>Then came the Enforcers. Leather armor creaking beneath heavy steps, each chest stamped with the black insignia of Order. “Order demands the plentiful harvest of today’s bounty!” barked Brann.</p>
-                       <p>The fallowglass box swayed in the wind from the wilted tree, containing Marrin’s decaying corpse. They continued their pointless farming attempt, the stakes burning in their minds.</p>`
+                       <p>The fallowglass box swayed in the wind. Marrin’s decaying corpse slumped in an unnatural pose. They continued their pointless farming attempt, the stakes burning in their minds like a brand.</p>`
             }
         ];
 
@@ -188,7 +200,7 @@
             container.innerHTML = `
                 <div class="story-illustration">
                     <div class="step-num">${data.step}</div>
-                    <img src="${data.img}" class="brick-img">
+                    <img src="${data.img}" class="brick-img" alt="Step ${data.step}">
                     <p style="font-size: 12px; font-weight: bold; margin-top: 20px;">${data.parts}</p>
                 </div>
                 <div class="text-content">
@@ -206,7 +218,6 @@
             renderPage();
         }
 
-        // Initialize
         renderPage();
     </script>
 </body>
