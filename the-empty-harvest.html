@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LEGO System - THE EMPTY HARVEST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lego-yellow: #FFCF00;
+            --lego-red: #E3000B;
+            --lego-blue: #005596;
+        }
+
+        body {
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        /* --- MANUAL CONTAINER --- */
+        .manual-page {
+            background-color: white;
+            width: 800px;
+            height: 600px;
+            border: 12px solid var(--lego-yellow);
+            position: relative;
+            box-shadow: 20px 20px 0px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- LEGO HEADER --- */
+        .lego-header {
+            background-color: var(--lego-red);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 4px solid black;
+        }
+
+        .lego-logo {
+            background-color: white;
+            color: var(--lego-red);
+            font-family: 'Oswald', sans-serif;
+            font-size: 30px;
+            padding: 5px 10px;
+            border: 3px solid black;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .set-number {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            flex-grow: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* --- THE STORY BOXES --- */
+        .story-illustration {
+            background: #e5e5e5;
+            border: 3px dashed #999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .step-num {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--lego-blue);
+            color: white;
+            padding: 5px 15px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .text-content {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #222;
+            padding: 10px;
+        }
+
+        /* --- NAVIGATION BUTTONS --- */
+        .nav-bar {
+            background: var(--lego-yellow);
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .lego-btn {
+            background: var(--lego-blue);
+            color: white;
+            border: 3px solid black;
+            padding: 10px 20px;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px black;
+        }
+
+        .lego-btn:active {
+            box-shadow: 0px 0px 0px black;
+            transform: translate(4px, 4px);
+        }
+
+        .lego-btn:disabled {
+            background: #777;
+            cursor: not-allowed;
+        }
+
+        /* --- ANIMATED ELEMENTS --- */
+        .brick-icon {
+            width: 100px;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="manual-page">
+        <div class="lego-header">
+            <div class="lego-logo">ARCHIVE</div>
+            <div class="set-number">SET #0001: THE EMPTY HARVEST</div>
+        </div>
+
+        <div class="instruction-grid" id="page-container">
+            <div class="story-illustration">
+                <div class="step-num">1</div>
+                <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" class="brick-icon">
+                <p style="font-size: 12px; margin-top: 10px;">[PARTS REQUIRED: FEAR, SOIL, BONE]</p>
+            </div>
+
+            <div class="text-content">
+                <p>The sun dragged slowly upward from the horizon into a listless sky, its light too tired to reach the ground. The futile light faintly illuminated black smoke as it wobbled pathetically from weather-gnawed chimneys.</p>
+                
+                <p>Slowly and routinely, the village of peasants began exiting their homes from their cracked and broken doors, the clothes on their bodies carrying the filth of years without a proper wash.</p>
+                
+                <p>The expression on their faces was one of tired apathy, as this same routine had occurred hundreds of times in the past, and hundreds again that hadn’t yet arrived. Slowly they marched towards the barren field.</p>
+            </div>
+        </div>
+
+        <div class="nav-bar">
+            <button class="lego-btn" id="prevBtn" onclick="changePage(-1)" disabled>◀ Previous</button>
+            <div style="font-weight: bold;">PAGE <span id="pageNum">1</span></div>
+            <button class="lego-btn" id="nextBtn" onclick="changePage(1)">Next ▶</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+
+        const content = [
+            // PAGE 1 (Current)
+            `<div class="story-illustration">
+                <div class="step-num">1</div>
+                <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" class="brick-icon">
+                <p style="font-size: 12px; margin-top: 10px;">[PARTS REQUIRED: FEAR, SOIL, BONE]</p>
+            </div>
+            <div class="text-content">
+                <p>The sun dragged slowly upward from the horizon into a listless sky, its light too tired to reach the ground. The futile light faintly illuminated black smoke as it wobbled pathetically from weather-gnawed chimneys.</p>
+                <p>Slowly and routinely, the village of peasants began exiting their homes from their cracked and broken doors, the clothes on their bodies carrying the filth of years without a proper wash.</p>
+                <p>The expression on their faces was one of tired apathy, as this same routine had occurred hundreds of times in the past, and hundreds again that hadn’t yet arrived. Slowly they marched towards the barren field.</p>
+            </div>`,
+
+            // PAGE 2 (The Enforcers)
+            `<div class="story-illustration">
+                <div class="step-num">2</div>
+                <div style="width: 150px; height: 150px; background: #000; border: 2px solid white; display: flex; align-items: center; justify-content: center; color: white;">
+                    
+
+[IMAGE OF DOOR]
+
+                </div>
+                <p style="font-size: 12px; margin-top: 10px;">[PARTS REQUIRED: ORDER, INSIGNIA]</p>
+            </div>
+            <div class="text-content">
+                <p>Here and there, pristine doors stood fixed in the fields, unhinged from any wall. Their surfaces were smooth and unnatural, gleaming faintly even in the dark. The peasants said they were relics of punishment, gateways for the damned.</p>
+                <p>Then came the Enforcers. Their healthy, muscular frames cut through the gloom, leather armor creaking beneath heavy steps, each chest stamped with the black insignia of Order. “Order demands the plentiful harvest of today’s bounty!” barked the second in command Enforcer, Brann.</p>
+                <p>One peasant shot a quick glance at Merrin... the fallowglass box swayed slightly in the wind.</p>
+            </div>`
+        ];
+
+        function changePage(dir) {
+            currentPage += dir;
+            
+            // Update Text
+            document.getElementById('page-container').innerHTML = content[currentPage - 1];
+            document.getElementById('pageNum').innerText = currentPage;
+
+            // Update Buttons
+            document.getElementById('prevBtn').disabled = (currentPage === 1);
+            document.getElementById('nextBtn').disabled = (currentPage === content.length);
+        }
+    </script>
+</body>
+</html>
