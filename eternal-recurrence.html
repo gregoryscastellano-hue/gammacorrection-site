@@ -44,7 +44,6 @@
             border-top: 4px solid #ff4500;
         }
 
-        /* --- CHAPTER 1 STYLES --- */
         .fresco {
             width: 220px;
             display: block;
@@ -55,12 +54,12 @@
             border-radius: 100px 100px 10px 10px;
         }
 
+        /* Removed specific color for Latin text */
         .latin {
             font-style: italic;
-            color: #ff4500;
+            color: inherit;
         }
 
-        /* --- THE GLITCH DIVIDER --- */
         .glitch-separator {
             margin: 100px 0;
             text-align: center;
@@ -72,7 +71,6 @@
             opacity: 0.5;
         }
 
-        /* --- CHAPTER 2 STYLES --- */
         .minecraft-header {
             width: 100%;
             display: block;
@@ -82,19 +80,23 @@
             box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
         }
 
+        /* Removed specific yellow color for Minecraft quotes */
         .minecraft-quote {
-            color: #ffcc00;
+            color: inherit;
             font-family: 'VT323', monospace;
             background: rgba(255, 204, 0, 0.1);
             padding: 0 4px;
         }
 
+        /* Removed individual colors and glow from headers */
         h1 {
             font-family: 'VT323', monospace;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 10px;
             margin-bottom: 30px;
+            color: inherit;
+            text-shadow: none;
         }
 
         p {
@@ -145,7 +147,7 @@
              class="fresco" 
              alt="Christ Pantocrator">
         
-        <h1 style="color: #8b0000; text-shadow: 0 0 10px #ff0000;">Chapter 1</h1>
+        <h1>Chapter 1</h1>
 
         <div class="story-text">
             <p>The sky was the color and consistency of fountain pen ink. Small beams of light poked through, shining the ghosts of unreachable stars. Brother Thomas sits on his sparse bed, looking out through the window at the night sky. He is trembling.</p>
@@ -165,7 +167,7 @@
              class="minecraft-header" 
              alt="Also Try Limbo">
 
-        <h1 style="color: #ffcc00; text-shadow: 0 0 10px #ffcc00;">Chapter 2</h1>
+        <h1>Chapter 2</h1>
 
         <div class="story-text" style="font-family: 'Courier New', monospace; font-size: 18px;">
             <p>Craig stares out the train window at the inky black sky. The smudges on the window obscure the stars. Craig is counting in his head, because if he doesn’t, the train will crash. “47 48 49 50, 1 2 3 4….”</p>
