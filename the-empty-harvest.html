@@ -11,7 +11,7 @@
         }
 
         body {
-            background-color: #333;
+            background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,121 +20,117 @@
             font-family: 'Ubuntu Mono', monospace;
         }
 
-        /* --- MANUAL CONTAINER --- */
         .manual-page {
             background-color: white;
-            width: 800px;
+            width: 850px;
             height: 600px;
             border: 12px solid var(--lego-yellow);
             position: relative;
-            box-shadow: 20px 20px 0px rgba(0,0,0,0.5);
-            overflow: hidden;
+            box-shadow: 20px 20px 0px rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
+            transition: transform 0.3s ease;
         }
 
-        /* --- LEGO HEADER --- */
         .lego-header {
             background-color: var(--lego-red);
             height: 80px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 0 20px;
-            border-bottom: 4px solid black;
+            border-bottom: 5px solid black;
         }
 
         .lego-logo {
             background-color: white;
             color: var(--lego-red);
             font-family: 'Oswald', sans-serif;
-            font-size: 30px;
-            padding: 5px 10px;
-            border: 3px solid black;
+            font-size: 32px;
+            padding: 5px 15px;
+            border: 4px solid black;
             font-weight: bold;
-            margin-right: 20px;
         }
 
-        .set-number {
+        .set-info {
             color: white;
-            font-size: 24px;
-            font-weight: bold;
+            text-align: right;
+            font-family: 'Oswald', sans-serif;
         }
 
-        /* --- MAIN CONTENT AREA --- */
         .instruction-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
             flex-grow: 1;
-            padding: 20px;
-            gap: 20px;
+            padding: 30px;
+            gap: 30px;
+            animation: fadeIn 0.5s ease;
         }
 
-        /* --- THE STORY BOXES --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .story-illustration {
-            background: #e5e5e5;
-            border: 3px dashed #999;
+            background: #f0f0f0;
+            border: 4px solid #ccc;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
+            background-image: radial-gradient(#d1d1d1 2px, transparent 2px);
+            background-size: 20px 20px; /* LEGO Stud pattern */
         }
 
         .step-num {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: -15px;
+            left: -15px;
             background: var(--lego-blue);
             color: white;
-            padding: 5px 15px;
-            font-size: 24px;
+            padding: 10px 20px;
+            font-size: 28px;
             font-weight: bold;
-            border-radius: 5px;
+            border: 3px solid black;
         }
 
         .text-content {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #222;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #111;
             padding: 10px;
+            background: rgba(255,255,255,0.8);
+            border-left: 5px solid var(--lego-yellow);
         }
 
-        /* --- NAVIGATION BUTTONS --- */
         .nav-bar {
-            background: var(--lego-yellow);
-            height: 60px;
+            background: #eeeeee;
+            height: 70px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 30px;
+            border-top: 3px solid #ccc;
         }
 
         .lego-btn {
             background: var(--lego-blue);
             color: white;
             border: 3px solid black;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-family: 'Oswald', sans-serif;
             cursor: pointer;
-            text-transform: uppercase;
+            font-size: 18px;
             box-shadow: 4px 4px 0px black;
         }
 
-        .lego-btn:active {
-            box-shadow: 0px 0px 0px black;
-            transform: translate(4px, 4px);
-        }
+        .lego-btn:hover:not(:disabled) { background: #0077cc; }
+        .lego-btn:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
+        .lego-btn:disabled { background: #999; cursor: not-allowed; box-shadow: none; opacity: 0.5; }
 
-        .lego-btn:disabled {
-            background: #777;
-            cursor: not-allowed;
-        }
-
-        /* --- ANIMATED ELEMENTS --- */
-        .brick-icon {
-            width: 100px;
-            image-rendering: pixelated;
-        }
+        .brick-img { width: 180px; filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2)); }
     </style>
 </head>
 <body>
@@ -142,77 +138,76 @@
     <div class="manual-page">
         <div class="lego-header">
             <div class="lego-logo">ARCHIVE</div>
-            <div class="set-number">SET #0001: THE EMPTY HARVEST</div>
-        </div>
-
-        <div class="instruction-grid" id="page-container">
-            <div class="story-illustration">
-                <div class="step-num">1</div>
-                <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" class="brick-icon">
-                <p style="font-size: 12px; margin-top: 10px;">[PARTS REQUIRED: FEAR, SOIL, BONE]</p>
-            </div>
-
-            <div class="text-content">
-                <p>The sun dragged slowly upward from the horizon into a listless sky, its light too tired to reach the ground. The futile light faintly illuminated black smoke as it wobbled pathetically from weather-gnawed chimneys.</p>
-                
-                <p>Slowly and routinely, the village of peasants began exiting their homes from their cracked and broken doors, the clothes on their bodies carrying the filth of years without a proper wash.</p>
-                
-                <p>The expression on their faces was one of tired apathy, as this same routine had occurred hundreds of times in the past, and hundreds again that hadn’t yet arrived. Slowly they marched towards the barren field.</p>
+            <div class="set-info">
+                <div>SET #0001</div>
+                <div style="font-size: 14px;">THE EMPTY HARVEST</div>
             </div>
         </div>
+
+        <div class="instruction-grid" id="page-content">
+            </div>
 
         <div class="nav-bar">
-            <button class="lego-btn" id="prevBtn" onclick="changePage(-1)" disabled>◀ Previous</button>
-            <div style="font-weight: bold;">PAGE <span id="pageNum">1</span></div>
-            <button class="lego-btn" id="nextBtn" onclick="changePage(1)">Next ▶</button>
+            <button class="lego-btn" id="prevBtn" onclick="changePage(-1)">◀ PREVIOUS</button>
+            <div style="font-family: 'Oswald'; font-size: 20px;">PAGE <span id="pageNum">1</span> / 3</div>
+            <button class="lego-btn" id="nextBtn" onclick="changePage(1)">NEXT ▶</button>
         </div>
     </div>
 
     <script>
-        let currentPage = 1;
-
-        const content = [
-            // PAGE 1 (Current)
-            `<div class="story-illustration">
-                <div class="step-num">1</div>
-                <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" class="brick-icon">
-                <p style="font-size: 12px; margin-top: 10px;">[PARTS REQUIRED: FEAR, SOIL, BONE]</p>
-            </div>
-            <div class="text-content">
-                <p>The sun dragged slowly upward from the horizon into a listless sky, its light too tired to reach the ground. The futile light faintly illuminated black smoke as it wobbled pathetically from weather-gnawed chimneys.</p>
-                <p>Slowly and routinely, the village of peasants began exiting their homes from their cracked and broken doors, the clothes on their bodies carrying the filth of years without a proper wash.</p>
-                <p>The expression on their faces was one of tired apathy, as this same routine had occurred hundreds of times in the past, and hundreds again that hadn’t yet arrived. Slowly they marched towards the barren field.</p>
-            </div>`,
-
-            // PAGE 2 (The Enforcers)
-            `<div class="story-illustration">
-                <div class="step-num">2</div>
-                <div style="width: 150px; height: 150px; background: #000; border: 2px solid white; display: flex; align-items: center; justify-content: center; color: white;">
-                    
-
-[IMAGE OF DOOR]
-
-                </div>
-                <p style="font-size: 12px; margin-top: 10px;">[PARTS REQUIRED: ORDER, INSIGNIA]</p>
-            </div>
-            <div class="text-content">
-                <p>Here and there, pristine doors stood fixed in the fields, unhinged from any wall. Their surfaces were smooth and unnatural, gleaming faintly even in the dark. The peasants said they were relics of punishment, gateways for the damned.</p>
-                <p>Then came the Enforcers. Their healthy, muscular frames cut through the gloom, leather armor creaking beneath heavy steps, each chest stamped with the black insignia of Order. “Order demands the plentiful harvest of today’s bounty!” barked the second in command Enforcer, Brann.</p>
-                <p>One peasant shot a quick glance at Merrin... the fallowglass box swayed slightly in the wind.</p>
-            </div>`
+        const pages = [
+            {
+                step: 1,
+                img: "https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif",
+                parts: "PARTS: 1x SUN, 4x SMOKE, 1x ROOSTER",
+                text: `<p>The sun dragged slowly upward from the horizon into a listless sky, its light too tired to reach the ground. The futile light faintly illuminated black smoke as it wobbled pathetically from weather-gnawed chimneys.</p>
+                       <p>A rooster announced the dawn with an uninspiring “cock-a-doodle-doo” that befitted the dawn’s pitiful nature.</p>`
+            },
+            {
+                step: 2,
+                img: "https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif",
+                parts: "PARTS: 10x PEASANT, 1x BARREN FIELD, 4x DOOR",
+                text: `<p>Slowly and routinely, the village of peasants began exiting their homes from cracked and broken doors, their clothes carrying the filth of years. They marched towards the barren field.</p>
+                       <p>Here and there, <b>pristine doors</b> stood fixed in the fields, unhinged from any wall. No one knew where they led, and no one was foolish enough to try.</p>`
+            },
+            {
+                step: 3,
+                img: "https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif",
+                parts: "PARTS: 2x ENFORCER, 1x SCYTHE, 1x FALLOWGLASS",
+                text: `<p>Then came the Enforcers. Leather armor creaking beneath heavy steps, each chest stamped with the black insignia of Order. “Order demands the plentiful harvest of today’s bounty!” barked Brann.</p>
+                       <p>The fallowglass box swayed in the wind from the wilted tree, containing Marrin’s decaying corpse. They continued their pointless farming attempt, the stakes burning in their minds.</p>`
+            }
         ];
 
-        function changePage(dir) {
-            currentPage += dir;
-            
-            // Update Text
-            document.getElementById('page-container').innerHTML = content[currentPage - 1];
-            document.getElementById('pageNum').innerText = currentPage;
+        let currentIndex = 0;
 
-            // Update Buttons
-            document.getElementById('prevBtn').disabled = (currentPage === 1);
-            document.getElementById('nextBtn').disabled = (currentPage === content.length);
+        function renderPage() {
+            const data = pages[currentIndex];
+            const container = document.getElementById('page-content');
+            
+            container.innerHTML = `
+                <div class="story-illustration">
+                    <div class="step-num">${data.step}</div>
+                    <img src="${data.img}" class="brick-img">
+                    <p style="font-size: 12px; font-weight: bold; margin-top: 20px;">${data.parts}</p>
+                </div>
+                <div class="text-content">
+                    ${data.text}
+                </div>
+            `;
+
+            document.getElementById('pageNum').innerText = currentIndex + 1;
+            document.getElementById('prevBtn').disabled = (currentIndex === 0);
+            document.getElementById('nextBtn').disabled = (currentIndex === pages.length - 1);
         }
+
+        function changePage(step) {
+            currentIndex += step;
+            renderPage();
+        }
+
+        // Initialize
+        renderPage();
     </script>
 </body>
 </html>
