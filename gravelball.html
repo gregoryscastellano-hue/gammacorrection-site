@@ -575,7 +575,8 @@ const GITHUB = 'https://raw.githubusercontent.com/gregoryscastellano-hue/gammaco
 
 const ASSETS = {
   bodies: ['body1.png', 'body2.png', 'body3.png', 'body4.png', 'body5.png', 'body6.png', 'body7.png', 'body8.png'],
-  faces:  ['face1.png', 'face2.png', 'face3.png', 'face4.png', 'face5.png', 'face6.png', 'face7.png', 'face8.png']
+  faces:  ['face1.png', 'face2.png', 'face3.png', 'face4.png', 'face5.png', 'face6.png', 'face7.png', 'face8.png'],
+  eyes:   ['eyes1.png', 'eyes2.png', 'eyes3.png', 'eyes4.png', 'eyes5.png', 'eyes6.png', 'eyes7.png', 'eyes8.png']
 };
 
 // Keeping these here so the game doesn't vibe-crash on Toads and Golems
@@ -584,10 +585,11 @@ const GOLEM_BODIES = ASSETS.bodies;
 const TOAD_BODIES = ASSETS.bodies;
 
 function buildCollage(card) {
-  // Stacking order: Body is in the back (z-index 1), Face is in the front (z-index 2)
+  // Stacking order: Body is back (z-index 1), Face is middle (z-index 2), Eyes are front (z-index 3)
   return `
     <img src="${card.appearance.body}" style="z-index: 1;">
     <img src="${card.appearance.face}" style="z-index: 2;">
+    <img src="${card.appearance.eyes}" style="z-index: 3;">
   `;
 }
 // ═══════════════════════════════════════
@@ -613,7 +615,8 @@ function generateCard() {
   
   const appearance = {
     body: GITHUB + pick(ASSETS.bodies),
-    face: GITHUB + pick(ASSETS.faces)
+    face: GITHUB + pick(ASSETS.faces),
+    eyes: GITHUB + pick(ASSETS.eyes)
   };
 
   return { 
