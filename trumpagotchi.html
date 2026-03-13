@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~ TRUMPAGOTCHI ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
+            color: #fff;
+            font-family: 'VT323', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* --- THE PLASTIC CASE --- */
+        .tago-case {
+            background: #d4af37; /* Gold Edition Case */
+            border: 6px solid #b8860b;
+            border-radius: 40px 40px 60px 60px;
+            padding: 30px;
+            box-shadow: 10px 10px 0px #000, inset -4px -4px 0px #8b6508;
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        .brand {
+            font-size: 24px;
+            color: #8b6508;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px #eee;
+        }
+
+        /* --- THE LCD SCREEN --- */
+        .screen {
+            background: #9cad7d; /* Gameboy Green */
+            border: 8px solid #222;
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            image-rendering: pixelated;
+        }
+
+        .stats-panel {
+            font-size: 18px;
+            color: #1a1a1a;
+            text-align: left;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .bar-bg {
+            width: 100px;
+            height: 12px;
+            border: 2px solid #1a1a1a;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: #1a1a1a;
+            transition: width 0.3s;
+        }
+
+        /* --- SPRITE AREA --- */
+        .sprite-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #trump-sprite {
+            width: 80px;
+            filter: contrast(1.2) grayscale(0.8); /* LCD Look */
+        }
+
+        #status-bubble {
+            background: #1a1a1a;
+            color: #9cad7d;
+            padding: 2px 5px;
+            position: absolute;
+            bottom: 5px;
+            width: 90%;
+            font-size: 16px;
+        }
+
+        /* --- BUTTONS --- */
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: #c0c0c0;
+            border: 3px outset #fff;
+            padding: 8px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-weight: bold;
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        .btn:active {
+            border: 3px inset #fff;
+            transform: translate(1px, 1px);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes shake {
+            0% { transform: translate(2px, 2px); }
+            20% { transform: translate(-2px, -2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, 2px); }
+            100% { transform: translate(0,0); }
+        }
+
+        .unstable { animation: shake 0.1s infinite; }
+
+    </style>
+</head>
+<body>
+
+    <h1 style="color: #ffd700; text-shadow: 3px 3px #ff00ff; margin-bottom: 20px;">TRUMPAGOTCHI v1.0</h1>
+
+    <div class="tago-case">
+        <div class="brand">MAGA-TECH</div>
+        
+        <div class="screen" id="game-screen">
+            <div class="stats-panel">
+                <div class="stat-row">EGO: <div class="bar-bg"><div id="ego-bar" class="bar-fill" style="width: 100%"></div></div></div>
+                <div class="stat-row">FOOD: <div class="bar-bg"><div id="crave-bar" class="bar-fill" style="width: 100%"></div></div></div>
+                <div class="stat-row">NRGY: <div class="bar-bg"><div id="energy-bar" class="bar-fill" style="width: 100%"></div></div></div>
+                <div class="stat-row">TEMP: <div class="bar-bg"><div id="temp-bar" class="bar-fill" style="width: 0%"></div></div></div>
+            </div>
+
+            <div class="sprite-container">
+                <img id="trump-sprite" src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif">
+            </div>
+
+            <div id="status-bubble">STATUS: STABLE</div>
+        </div>
+
+        <div class="button-grid">
+            <button class="btn" onclick="interact('feed')">HAMBERDER</button>
+            <button class="btn" onclick="interact('rally')">RALLY</button>
+            <button class="btn" onclick="interact('golf')">GOLF</button>
+            <button class="btn" onclick="interact('truth')">TRUTH SOCIAL</button>
+        </div>
+    </div>
+
+    <a href="index.html" style="margin-top: 20px; color: #00FF00; text-decoration: none;"><< BACK TO ARCHIVE</a>
+
+    <script>
+        let stats = {
+            ego: 100,
+            crave: 80,
+            energy: 100,
+            temper: 0
+        };
+
+        const screen = document.getElementById('game-screen');
+        const statusText = document.getElementById('status-bubble');
+
+        function updateUI() {
+            document.getElementById('ego-bar').style.width = stats.ego + "%";
+            document.getElementById('crave-bar').style.width = stats.crave + "%";
+            document.getElementById('energy-bar').style.width = stats.energy + "%";
+            document.getElementById('temp-bar').style.width = stats.temper + "%";
+
+            // State Logic
+            if (stats.temper > 70) {
+                statusText.innerText = "STATUS: UNSTABLE!";
+                screen.classList.add('unstable');
+            } else if (stats.ego < 30) {
+                statusText.innerText = "STATUS: SAD!";
+                screen.classList.remove('unstable');
+            } else if (stats.energy < 20) {
+                statusText.innerText = "STATUS: LOW ENERGY";
+            } else {
+                statusText.innerText = "STATUS: STABLE";
+                screen.classList.remove('unstable');
+            }
+
+            // Game Over Check
+            if (stats.ego <= 0) {
+                statusText.innerText = "ERROR: DEFEATED";
+                document.getElementById('trump-sprite').style.opacity = "0.3";
+            }
+        }
+
+        function interact(action) {
+            if (stats.ego <= 0) return; // Frozen if game over
+
+            if (action === 'feed') {
+                stats.crave = Math.min(100, stats.crave + 25);
+                stats.energy = Math.min(100, stats.energy + 5);
+                stats.temper = Math.max(0, stats.temper - 5);
+            }
+            if (action === 'rally') {
+                stats.ego = 100;
+                stats.energy = Math.max(0, stats.energy - 40);
+                stats.temper = Math.min(100, stats.temper + 20);
+            }
+            if (action === 'golf') {
+                stats.energy = Math.min(100, stats.energy + 50);
+                stats.ego = Math.min(100, stats.ego + 10);
+                stats.temper = Math.max(0, stats.temper - 20);
+            }
+            if (action === 'truth') {
+                stats.ego = Math.min(100, stats.ego + 15);
+                stats.temper = Math.min(100, stats.temper + 15);
+            }
+            updateUI();
+        }
+
+        // The Passive Decay (Time passing)
+        setInterval(() => {
+            stats.ego = Math.max(0, stats.ego - 3);
+            stats.crave = Math.max(0, stats.crave - 2);
+            stats.energy = Math.max(0, stats.energy - 1);
+            if (stats.crave < 20) stats.temper = Math.min(100, stats.temper + 5);
+            updateUI();
+        }, 3000);
+
+    </script>
+</body>
+</html>
