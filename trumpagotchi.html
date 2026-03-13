@@ -165,168 +165,180 @@
     <a href="index.html" style="margin-top: 20px; color: #00FF00; text-decoration: none;"><< BACK TO ARCHIVE</a>
 
     <script>
-        // --- GAME STATE ---
-        let stats = {
-            ego: 100,
-            crave: 80,
-            energy: 100,
-            temper: 0
-        };
+    // --- GAME STATE ---
+    let stats = {
+        ego: 100,
+        crave: 80,
+        energy: 100,
+        temper: 0
+    };
 
-        // --- UI ELEMENTS ---
-        const screenEl = document.getElementById('game-screen');
-        const statusText = document.getElementById('status-bubble');
-        const spriteEl = document.getElementById('trump-sprite');
-        const spriteContainer = document.querySelector('.sprite-container');
+    // --- UI ELEMENTS ---
+    const screenEl = document.getElementById('game-screen');
+    const statusText = document.getElementById('status-bubble');
+    const spriteEl = document.getElementById('trump-sprite');
+    const spriteContainer = document.querySelector('.sprite-container');
 
-        let posX = 0, posY = 0;
-let velX = 0.3, velY = 0.2;
-let moveStarted = false;
-let waddleAngle = 0;
-let directionTimer = 0;
-let targetVelX = 0.3, targetVelY = 0.2;
+    // --- MOVEMENT VARIABLES ---
+    let posX = 0, posY = 0;
+    let velX = 0.3, velY = 0.2;
+    let moveStarted = false;
+    let waddleAngle = 0;
+    let directionTimer = 0;
+    let targetVelX = 0.3, targetVelY = 0.2;
 
-function pickNewDirection() {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 0.4 + Math.random() * 0.5;
-    targetVelX = Math.cos(angle) * speed;
-    targetVelY = Math.sin(angle) * speed;
-    // Change direction every 90-220 frames
-    directionTimer = 90 + Math.floor(Math.random() * 130);
-}
+    function pickNewDirection() {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.4 + Math.random() * 0.5;
+        targetVelX = Math.cos(angle) * speed;
+        targetVelY = Math.sin(angle) * speed;
+        directionTimer = 90 + Math.floor(Math.random() * 130);
+    }
 
-function moveTrump() {
-    if (!moveStarted) {
+    function moveTrump() {
+        if (!moveStarted) {
+            const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+            const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
+            posX = maxX / 2;
+            posY = maxY / 2;
+            spriteEl.style.left = posX + 'px';
+            spriteEl.style.top = posY + 'px';
+            moveStarted = true;
+            pickNewDirection();
+        }
+
         const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
         const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
-        posX = maxX / 2;
-        posY = maxY / 2;
+
+        velX += (targetVelX - velX) * 0.03;
+        velY += (targetVelY - velY) * 0.03;
+
+        directionTimer--;
+        if (directionTimer <= 0) pickNewDirection();
+
+        posX += velX;
+        posY += velY;
+
+        if (posX <= 0 || posX >= maxX) {
+            velX *= -1;
+            targetVelX *= -1;
+            pickNewDirection();
+        }
+        if (posY <= 0 || posY >= maxY) {
+            velY *= -1;
+            targetVelY *= -1;
+            pickNewDirection();
+        }
+
+        posX = Math.max(0, Math.min(posX, maxX));
+        posY = Math.max(0, Math.min(posY, maxY));
+
+        // --- NEW WADDLE LOGIC ---
+        // The speed of the waddle is now based on how fast he's moving.
+        const currentSpeed = Math.abs(velX) + Math.abs(velY);
+        // Slower increment for a less frantic waddle.
+        waddleAngle += currentSpeed * 0.06; 
+        // A slightly more pronounced lean angle for better effect.
+        const waddleLean = Math.sin(waddleAngle) * 8; 
+        const facingFlip = velX > 0 ? 1 : -1;
+
+        spriteEl.style.transform = `scaleX(${facingFlip}) rotate(${waddleLean}deg)`;
+        spriteEl.style.transformOrigin = 'bottom center';
+
         spriteEl.style.left = posX + 'px';
         spriteEl.style.top = posY + 'px';
-        moveStarted = true;
-        pickNewDirection();
+
+        requestAnimationFrame(moveTrump);
     }
 
-    const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
-    const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
+    // --- CORE GAME FUNCTIONS ---
+    function updateUI() {
+        document.getElementById('ego-bar').style.width = stats.ego + "%";
+        document.getElementById('crave-bar').style.width = stats.crave + "%";
+        document.getElementById('energy-bar').style.width = stats.energy + "%";
+        document.getElementById('temp-bar').style.width = stats.temper + "%";
 
-    // Drift toward target velocity gradually (feels organic)
-    velX += (targetVelX - velX) * 0.03;
-    velY += (targetVelY - velY) * 0.03;
+        const baseFilter = "grayscale(1) contrast(1.5)";
 
-    // Count down and pick a new direction
-    directionTimer--;
-    if (directionTimer <= 0) pickNewDirection();
-
-    posX += velX;
-    posY += velY;
-
-    // Bounce off walls and immediately pick new direction
-    if (posX <= 0 || posX >= maxX) {
-        velX *= -1;
-        targetVelX *= -1;
-        pickNewDirection();
-    }
-    if (posY <= 0 || posY >= maxY) {
-        velY *= -1;
-        targetVelY *= -1;
-        pickNewDirection();
-    }
-
-    posX = Math.max(0, Math.min(posX, maxX));
-    posY = Math.max(0, Math.min(posY, maxY));
-
-    // Waddle: rock side to side based on movement speed
-    waddleAngle += 0.18;
-    const waddleLean = Math.sin(waddleAngle) * 6;
-    const facingFlip = velX > 0 ? 1 : -1;
-    spriteEl.style.transform = `scaleX(${facingFlip}) rotate(${waddleLean}deg)`;
-    spriteEl.style.transformOrigin = 'bottom center';
-
-    spriteEl.style.left = posX + 'px';
-    spriteEl.style.top = posY + 'px';
-
-    requestAnimationFrame(moveTrump);
-}
-
-        // --- CORE GAME FUNCTIONS ---
-        function updateUI() {
-            // Update the stat bars
-            document.getElementById('ego-bar').style.width = stats.ego + "%";
-            document.getElementById('crave-bar').style.width = stats.crave + "%";
-            document.getElementById('energy-bar').style.width = stats.energy + "%";
-            document.getElementById('temp-bar').style.width = stats.temper + "%";
-
-            // Base filter for the Gameboy screen effect
-            const baseFilter = "grayscale(1) contrast(1.5) mix-blend-mode(multiply)";
-
-            // Update status text and visual effects
-            if (stats.temper > 70) {
-                statusText.innerText = "STATUS: UNSTABLE!";
-                screenEl.classList.add('unstable');
-                spriteEl.style.filter = "sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)"; // "Red" angry effect
-            } else if (stats.ego < 30) {
-                statusText.innerText = "STATUS: SAD!";
-                screenEl.classList.remove('unstable');
-                spriteEl.style.filter = `${baseFilter} opacity(0.5)`; // Sad and faded
-            } else if (stats.energy < 20) {
-                statusText.innerText = "STATUS: LOW ENERGY";
-                screenEl.classList.remove('unstable');
-                spriteEl.style.filter = `${baseFilter} brightness(0.8)`; // A bit dimmer
-            } else {
-                statusText.innerText = "STATUS: STABLE";
-                screenEl.classList.remove('unstable');
-                spriteEl.style.filter = baseFilter; // Normal state
-            }
-
-            // Game Over Check
-            if (stats.ego <= 0) {
-                statusText.innerText = "GAME OVER: DEFEATED";
-                spriteEl.style.opacity = "0.2";
-                spriteEl.style.filter = "grayscale(1) blur(1px)";
-                clearInterval(decayInterval); // Stop the decay timer on game over
-            }
+        // --- NEW STATUS AND VISUALS LOGIC ---
+        if (stats.temper > 70) {
+            statusText.innerText = "STATUS: UNSTABLE!";
+            screenEl.classList.add('unstable');
+            // Red angry effect, no blend mode needed
+            spriteEl.style.filter = "sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)";
+            spriteEl.style.mixBlendMode = 'normal';
+            spriteEl.style.opacity = '1';
+        } else if (stats.ego < 30) {
+            statusText.innerText = "STATUS: SAD!";
+            screenEl.classList.remove('unstable');
+            // Faded and blended into the screen
+            spriteEl.style.filter = baseFilter;
+            spriteEl.style.mixBlendMode = 'multiply';
+            spriteEl.style.opacity = '0.5';
+        } else if (stats.energy < 20) {
+            statusText.innerText = "STATUS: LOW ENERGY";
+            screenEl.classList.remove('unstable');
+            // Dimmer and blended into the screen
+            spriteEl.style.filter = `${baseFilter} brightness(0.8)`;
+            spriteEl.style.mixBlendMode = 'multiply';
+            spriteEl.style.opacity = '0.8';
+        } else {
+            statusText.innerText = "STATUS: STABLE";
+            screenEl.classList.remove('unstable');
+            // **CHANGE HERE**: Normal blend mode for a pure grayscale look
+            spriteEl.style.filter = baseFilter;
+            spriteEl.style.mixBlendMode = 'normal'; // This removes the green/red tint
+            spriteEl.style.opacity = '0.9'; // Slightly transparent to look less "pasted on"
         }
 
-        function interact(action) {
-            if (stats.ego <= 0) return; // Can't interact if game over
-
-            if (action === 'feed') {
-                stats.crave = Math.min(100, stats.crave + 25);
-                stats.energy = Math.min(100, stats.energy + 5);
-                stats.temper = Math.max(0, stats.temper - 5);
-            }
-            if (action === 'rally') {
-                stats.ego = 100; // Full restore
-                stats.energy = Math.max(0, stats.energy - 40);
-                stats.temper = Math.min(100, stats.temper + 20);
-            }
-            if (action === 'golf') {
-                stats.energy = Math.min(100, stats.energy + 50);
-                stats.ego = Math.min(100, stats.ego + 10);
-                stats.temper = Math.max(0, stats.temper - 20);
-            }
-            if (action === 'truth') {
-                stats.ego = Math.min(100, stats.ego + 15);
-                stats.temper = Math.min(100, stats.temper + 15);
-            }
-            updateUI(); // Immediately update UI after an action
+        if (stats.ego <= 0) {
+            statusText.innerText = "GAME OVER: DEFEATED";
+            spriteEl.style.opacity = "0.2";
+            spriteEl.style.filter = "grayscale(1) blur(1px)";
+            spriteEl.style.mixBlendMode = 'multiply';
+            clearInterval(decayInterval); 
         }
+    }
 
-        // --- GAME LOOP ---
-        const decayInterval = setInterval(() => {
-            if (stats.ego <= 0) return; // Stop decay if game is over
+    function interact(action) {
+        if (stats.ego <= 0) return;
 
-            stats.ego = Math.max(0, stats.ego - 3);
-            stats.crave = Math.max(0, stats.crave - 2);
-            stats.energy = Math.max(0, stats.energy - 1);
-            if (stats.crave < 20) stats.temper = Math.min(100, stats.temper + 5);
-            updateUI();
-        }, 3000);
-
-        // --- INITIALIZE GAME ---
+        if (action === 'feed') {
+            stats.crave = Math.min(100, stats.crave + 25);
+            stats.energy = Math.min(100, stats.energy + 5);
+            stats.temper = Math.max(0, stats.temper - 5);
+        }
+        if (action === 'rally') {
+            stats.ego = 100;
+            stats.energy = Math.max(0, stats.energy - 40);
+            stats.temper = Math.min(100, stats.temper + 20);
+        }
+        if (action === 'golf') {
+            stats.energy = Math.min(100, stats.energy + 50);
+            stats.ego = Math.min(100, stats.ego + 10);
+            stats.temper = Math.max(0, stats.temper - 20);
+        }
+        if (action === 'truth') {
+            stats.ego = Math.min(100, stats.ego + 15);
+            stats.temper = Math.min(100, stats.temper + 15);
+        }
         updateUI();
-        moveTrump(); // FIX: Kick off the SINGLE animation loop just once.
-    </script>
+    }
+
+    // --- GAME LOOP ---
+    const decayInterval = setInterval(() => {
+        if (stats.ego <= 0) return;
+
+        stats.ego = Math.max(0, stats.ego - 3);
+        stats.crave = Math.max(0, stats.crave - 2);
+        stats.energy = Math.max(0, stats.energy - 1);
+        if (stats.crave < 20) stats.temper = Math.min(100, stats.temper + 5);
+        updateUI();
+    }, 3000);
+
+    // --- INITIALIZE GAME ---
+    updateUI();
+    requestAnimationFrame(moveTrump); // Changed to call the correct function
+</script>
 </body>
 </html>
