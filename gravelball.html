@@ -26,8 +26,12 @@
 }
 
 html {
-  /* FIX: Increased the zoom value to make everything bigger */
-  /* You can adjust this value to scale the entire game */
+  font-size: 100%;
+}
+
+#screen {
+  transform: scale(1.25);
+  transform-origin: top center;
 }
 
 html, body {
@@ -559,8 +563,8 @@ const speechBubble = document.getElementById('maddox-speech-bubble');
 
 // FIX: Using GitHub raw URLs instead of local files or old Base64.
 // IMPORTANT: YOU MUST REPLACE THESE WITH YOUR OWN GITHUB RAW URLS.
-const MADDOX_MOUTH_CLOSED = "https://github.com/gregoryscastellano-hue/gammacorrection-site/blob/main/jlorp1.png?raw=true";
-const MADDOX_MOUTH_OPEN   = "https://github.com/gregoryscastellano-hue/gammacorrection-site/blob/main/jlorp2.png?raw=true";
+const MADDOX_MOUTH_CLOSED = "https://raw.githubusercontent.com/gregoryscastellano-hue/gammacorrection-site/main/jlorp1.png";
+const MADDOX_MOUTH_OPEN   = "https://raw.githubusercontent.com/gregoryscastellano-hue/gammacorrection-site/main/jlorp2.png";
 
 // FIX: Only one definition of the tips array.
 const MADDOX_TIPS = [
