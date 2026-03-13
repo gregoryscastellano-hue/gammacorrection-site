@@ -568,22 +568,65 @@ function markovName(){return{first:genFromChain(firstChain,3,8),last:genFromChai
 const STATS=[{key:'G',color:'#e40058'},{key:'A',color:'#4a90d9'},{key:'H',color:'#f8d800'},{key:'M',color:'#58d854'},{key:'B',color:'#bc84fc'}];
 const SPRITES={driver:[0,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,2,2,2,2,0,0,0,2,2,2,2,2,2,0,0,0,2,0,0,2,0,0,0,0,3,0,0,3,0,0,0,0,3,3,3,3,0,0],golem:[0,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,1,1,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,0,3,3,0,0,3,3,0],toad:[0,0,3,3,3,3,0,0,0,3,3,3,3,3,3,0,0,1,0,3,3,0,1,0,0,3,3,3,3,3,3,0,0,0,3,4,4,3,0,0,0,3,3,3,3,3,3,0,0,0,3,0,0,3,0,0,0,3,0,0,0,0,3,0]};
 const PAL={driver:{0:'transparent',1:'#f8d800',2:'#e8a860',3:'#8a5020',4:'#f87858'},golem:{0:'transparent',1:'#ffffff',2:'#888878',3:'#555548',4:'#f8d800'},toad:{0:'transparent',1:'#f8d800',2:'transparent',3:'#58d854',4:'#40a840'}};
-const DRIVER_BODIES = ['body1.png','body2.png','body3.png','body4.png','body5.png','body6.png','body7.png'];
-const GOLEM_BODIES = DRIVER_BODIES; // Prevents the vibe-crash!
-const TOAD_BODIES = DRIVER_BODIES;  // Prevents the vibe-crash!
+// ═══════════════════════════════════════
+// ART ASSETS (Bodies and Faces Only for testing!)
+// ═══════════════════════════════════════
+const GITHUB = 'https://raw.githubusercontent.com/gregoryscastellano-hue/gammacorrection-site/main/';
+
+const ASSETS = {
+  bodies: ['body1.png', 'body2.png', 'body3.png', 'body4.png', 'body5.png', 'body6.png', 'body7.png', 'body8.png'],
+  faces:  ['face1.png', 'face2.png', 'face3.png', 'face4.png', 'face5.png', 'face6.png', 'face7.png', 'face8.png']
+};
+
+// Keeping these here so the game doesn't vibe-crash on Toads and Golems
+const DRIVER_BODIES = ASSETS.bodies;
+const GOLEM_BODIES = ASSETS.bodies;
+const TOAD_BODIES = ASSETS.bodies;
   
 const GITHUB = 'https://raw.githubusercontent.com/gregoryscastellano-hue/gammacorrection-site/main/';
 
 function buildCollage(card) {
-  return `<img src="${card.body}">`;
+  // Stacking order: Body is in the back (z-index 1), Face is in the front (z-index 2)
+  return `
+    <img src="${card.appearance.body}" style="z-index: 1;">
+    <img src="${card.appearance.face}" style="z-index: 2;">
+  `;
 }
 // ═══════════════════════════════════════
 // CARD GENERATION & STATE
 // ═══════════════════════════════════════
 const TYPES=['driver','driver','driver','golem','toad'];
 function rollStat(type){const base=type==='golem'?42:type==='toad'?18:32;let v=base+Math.floor(Math.random()*(type==='golem'?42:type==='toad'?52:58));if(Math.random()<0.09)v=Math.min(99,v+Math.floor(Math.random()*22));return Math.min(99,Math.max(1,v))}
-function generateCard(){const type=TYPES[Math.floor(Math.random()*TYPES.length)];const name=markovName();const nick=NICKNAMES[Math.floor(Math.random()*NICKNAMES.length)];const stats={};STATS.forEach(s=>{stats[s.key]=rollStat(type)});if(type==='toad'){const b=STATS[Math.floor(Math.random()*STATS.length)].key;stats[b]=Math.min(99,stats[b]+28)}const pool=type==='golem'?GOLEM_BODIES:type==='toad'?TOAD_BODIES:DRIVER_BODIES;const body=GITHUB+pool[Math.floor(Math.random()*pool.length)];return{id:Math.random().toString(36).slice(2),name,nick,type,stats,body}}let hand=[],selected=[],score=0,round=1,target=50;
+function generateCard() {
+  const type = TYPES[Math.floor(Math.random() * TYPES.length)];
+  const name = markovName();
+  const nick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+  const stats = {};
+  
+  STATS.forEach(s => { stats[s.key] = rollStat(type) });
+  
+  if (type === 'toad') {
+    const b = STATS[Math.floor(Math.random() * STATS.length)].key;
+    stats[b] = Math.min(99, stats[b] + 28);
+  }
 
+  // Pick a random part from the arrays
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  
+  const appearance = {
+    body: GITHUB + pick(ASSETS.bodies),
+    face: GITHUB + pick(ASSETS.faces)
+  };
+
+  return { 
+    id: Math.random().toString(36).slice(2), 
+    name, 
+    nick, 
+    type, 
+    stats, 
+    appearance 
+  };
+}
 // ═══════════════════════════════════════
 // DEAL & RENDER
 // ═══════════════════════════════════════
