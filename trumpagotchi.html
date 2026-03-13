@@ -434,11 +434,16 @@
             }
 
             if (action === 'rally') {
-                stats.ego    = 100;
-                stats.energy = Math.max(0,   stats.energy - 40);
-                stats.temper = Math.min(100, stats.temper + 20);
-                updateUI();
-            }
+    stats.ego    = 100;
+    stats.energy = Math.max(0,   stats.energy - 40);
+    stats.temper = Math.min(100, stats.temper + 20);
+    updateUI();
+    try {
+        const rallySound = new Audio('maga.mp3');
+        rallySound.volume = 0.6;
+        rallySound.play();
+    } catch(e) {}
+}
 
             if (action === 'golf') {
                 stats.energy = Math.min(100, stats.energy + 50);
