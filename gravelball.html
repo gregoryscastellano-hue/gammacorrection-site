@@ -36,7 +36,7 @@ html, body {
 /* ── SCREEN ── */
 #screen {
   width: 100vw; height: 100vh;
-  background: transparent
+  background: transparent !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,43 +52,7 @@ html, body {
   92% { opacity: 0.97; }
 }
 
-/* ── INDUSTRIAL BACKGROUND ── */
-#industrial-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-  background: #000028; /* A darker, less saturated base */
-}
-.bg-layer {
-  position: absolute;
-  inset: 0;
-  background-repeat: repeat-x;
-  background-position: 0 bottom;
-  opacity: 0.3;
-}
-.layer-1 {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200'%3E%3Cpath d='M0,200 V150 L50,140 V200 Z M80,200 V120 L120,110 L160,120 V200 Z M200,200 V80 L210,75 L220,80 V100 L250,90 V200 Z M300,200 V160 L330,165 L350,160 L350,100 L380,90 L410,100 V200 Z M450,200 V50 L470,40 L490,50 V200 Z M550,200 V130 L650,110 V200 Z M700,200 V150 L720,155 L740,150 L750,155 L760,150 V200 Z' fill='rgba(0,0,50,0.5)'/%3E%3C/svg%3E");
-  background-size: 800px 200px;
-  animation: parallax-scroll 180s linear infinite;
-  z-index: 3;
-  opacity: 0.2;
-}
-.layer-2 {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 250'%3E%3Cpath d='M0,250 V180 L80,160 V250 Z M120,250 V120 L140,115 L160,120 V190 L220,170 V250 Z M300,250 V80 L350,60 L400,80 V250 Z M450,250 V200 L550,210 V250 Z M600,250 V100 L610,98 L620,100 V150 L630,148 L640,150 V250 Z M700,250 V180 L780,190 V250 Z M850,250 V50 L860,45 L870,50 L870,90 L920,70 V250 Z' fill='rgba(0,0,60,0.7)'/%3E%3C/svg%3E");
-  background-size: 1000px 250px;
-  animation: parallax-scroll 120s linear infinite;
-  z-index: 2;
-  opacity: 0.25;
-}
-.layer-3 {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300'%3E%3Cpath d='M0,300 V200 L100,180 V300 Z M150,300 V100 L250,80 V300 Z M300,300 V220 L450,240 V300 Z M500,300 V150 L520,140 L540,150 V300 Z M600,300 V50 L700,30 V300 Z M800,300 V250 L950,230 V300 Z M1000,300 V180 L1150,190 V300 Z' fill='rgba(0,0,70,0.9)'/%3E%3C/svg%3E");
-  background-size: 1200px 300px;
-  animation: parallax-scroll 80s linear infinite;
-  z-index: 1;
-  opacity: 0.3;
-}
+
 @keyframes parallax-scroll {
   from { background-position-x: 0; }
   to { background-position-x: -2400px; } /* A multiple of all bg sizes */
