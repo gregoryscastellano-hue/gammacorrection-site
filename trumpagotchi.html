@@ -182,10 +182,21 @@
         let posX = 0, posY = 0;
 let velX = 0.3, velY = 0.2;
 let moveStarted = false;
+let waddleAngle = 0;
+let directionTimer = 0;
+let targetVelX = 0.3, targetVelY = 0.2;
+
+function pickNewDirection() {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.4 + Math.random() * 0.5;
+    targetVelX = Math.cos(angle) * speed;
+    targetVelY = Math.sin(angle) * speed;
+    // Change direction every 90-220 frames
+    directionTimer = 90 + Math.floor(Math.random() * 130);
+}
 
 function moveTrump() {
     if (!moveStarted) {
-        // Initialize position from true rendered center, no jump
         const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
         const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
         posX = maxX / 2;
@@ -193,22 +204,44 @@ function moveTrump() {
         spriteEl.style.left = posX + 'px';
         spriteEl.style.top = posY + 'px';
         moveStarted = true;
+        pickNewDirection();
     }
 
     const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
     const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
 
+    // Drift toward target velocity gradually (feels organic)
+    velX += (targetVelX - velX) * 0.03;
+    velY += (targetVelY - velY) * 0.03;
+
+    // Count down and pick a new direction
+    directionTimer--;
+    if (directionTimer <= 0) pickNewDirection();
+
     posX += velX;
     posY += velY;
 
+    // Bounce off walls and immediately pick new direction
     if (posX <= 0 || posX >= maxX) {
         velX *= -1;
-        spriteEl.style.transform = velX > 0 ? 'scaleX(1)' : 'scaleX(-1)';
+        targetVelX *= -1;
+        pickNewDirection();
     }
-    if (posY <= 0 || posY >= maxY) velY *= -1;
+    if (posY <= 0 || posY >= maxY) {
+        velY *= -1;
+        targetVelY *= -1;
+        pickNewDirection();
+    }
 
     posX = Math.max(0, Math.min(posX, maxX));
     posY = Math.max(0, Math.min(posY, maxY));
+
+    // Waddle: rock side to side based on movement speed
+    waddleAngle += 0.18;
+    const waddleLean = Math.sin(waddleAngle) * 6;
+    const facingFlip = velX > 0 ? 1 : -1;
+    spriteEl.style.transform = `scaleX(${facingFlip}) rotate(${waddleLean}deg)`;
+    spriteEl.style.transformOrigin = 'bottom center';
 
     spriteEl.style.left = posX + 'px';
     spriteEl.style.top = posY + 'px';
