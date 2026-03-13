@@ -172,6 +172,20 @@ let stats = {
     energy: 100,
     temper: 0
 };
+        // --- NEW: BACKGROUND MUSIC ---
+let bgMusicStarted = false;
+const bgMusic = new Audio('ymca1.mp3');
+bgMusic.loop = true;  // Keeps the chiptune playing on repeat
+bgMusic.volume = 0.4; // Sets volume to 40% so it doesn't overpower the munching sound
+
+// Listen for the first click anywhere on the screen to start the music
+document.addEventListener('click', () => {
+    if (!bgMusicStarted) {
+        // Wrapped in a catch just in case the browser is unusually strict
+        bgMusic.play().catch(e => console.log("Audio play blocked:", e));
+        bgMusicStarted = true;
+    }
+}, { once: true }); // { once: true } automatically removes this listener after the first click
 
 // --- NEW: SPRITE STATE & TARGETS ---
 let spriteState = 'wandering'; 
