@@ -279,6 +279,7 @@
                 const dy = foodTarget.y - spriteCenterY;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
+                // FIX 1: Increased eating radius from 25 to 35
                 if (distance < 35) {
                     // He ate it
                     try { new Audio('munch1.mp3').play(); } catch(e) {}
@@ -292,14 +293,20 @@
                     document.getElementById('btn1').disabled = false;
                     pickNewDirection();
                 } else {
-                    const seekSpeed = 1.8;
-                    velX = (dx / distance) * seekSpeed;
-                    velY = (dy / distance) * seekSpeed;
+                    // FIX 2: Added easing/friction. He slows down as he gets closer so he never overshoots.
+                    // The 0.05 is the easing multiplier. 
+                    velX = dx * 0.05; 
+                    velY = dy * 0.05;
+                    
+                    // Cap the maximum speed so he doesn't rocket across the screen
+                    const maxSeekSpeed = 2.5;
+                    velX = Math.max(-maxSeekSpeed, Math.min(maxSeekSpeed, velX));
+                    velY = Math.max(-maxSeekSpeed, Math.min(maxSeekSpeed, velY));
+
                     posX += velX;
                     posY += velY;
                 }
             }
-
             posX = Math.max(0, Math.min(posX, maxX));
             posY = Math.max(0, Math.min(posY, maxY));
 
