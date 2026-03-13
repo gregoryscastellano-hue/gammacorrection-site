@@ -179,35 +179,42 @@
         const spriteEl = document.getElementById('trump-sprite');
         const spriteContainer = document.querySelector('.sprite-container');
 
-        // --- MOVEMENT LOGIC (FIXED) ---
-        let posX = 50, posY = 50; // Start in the middle
-        let velX = 0.5, velY = 0.3; // Slower, more natural speed
+        let posX = 0, posY = 0;
+let velX = 0.3, velY = 0.2;
+let moveStarted = false;
 
-        // FIX: The moveTrump function now lives outside updateUI and runs independently.
-        function moveTrump() {
-            const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
-            const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
+function moveTrump() {
+    if (!moveStarted) {
+        // Initialize position from true rendered center, no jump
+        const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+        const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
+        posX = maxX / 2;
+        posY = maxY / 2;
+        spriteEl.style.left = posX + 'px';
+        spriteEl.style.top = posY + 'px';
+        moveStarted = true;
+    }
 
-            posX += velX;
-            posY += velY;
+    const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+    const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
 
-            if (posX <= 0 || posX >= maxX) {
-                velX *= -1; // Reverse direction
-                spriteEl.style.transform = velX > 0 ? 'scaleX(1)' : 'scaleX(-1)'; // Flip sprite
-            }
-            if (posY <= 0 || posY >= maxY) {
-                velY *= -1; // Reverse direction
-            }
+    posX += velX;
+    posY += velY;
 
-            // Clamp position to stay within bounds
-            posX = Math.max(0, Math.min(posX, maxX));
-            posY = Math.max(0, Math.min(posY, maxY));
+    if (posX <= 0 || posX >= maxX) {
+        velX *= -1;
+        spriteEl.style.transform = velX > 0 ? 'scaleX(1)' : 'scaleX(-1)';
+    }
+    if (posY <= 0 || posY >= maxY) velY *= -1;
 
-            spriteEl.style.left = posX + 'px';
-            spriteEl.style.top = posY + 'px';
+    posX = Math.max(0, Math.min(posX, maxX));
+    posY = Math.max(0, Math.min(posY, maxY));
 
-            requestAnimationFrame(moveTrump); // This keeps the *single* loop running
-        }
+    spriteEl.style.left = posX + 'px';
+    spriteEl.style.top = posY + 'px';
+
+    requestAnimationFrame(moveTrump);
+}
 
         // --- CORE GAME FUNCTIONS ---
         function updateUI() {
