@@ -481,13 +481,38 @@ function sfx(type) {
       gain.gain.setValueAtTime(0.18, t); gain.gain.exponentialRampToValueAtTime(0.001, t+0.3);
       osc.start(t); osc.stop(t+0.3);
     } else if (type === 'maddox') {
-      osc.type = 'square';
-      const notes = [261, 293, 329, 349, 392];
-      const note = notes[Math.floor(Math.random() * notes.length)];
-      osc.frequency.setValueAtTime(note, t);
-      gain.gain.setValueAtTime(0.06, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-      osc.start(t); osc.stop(t + 0.12);
+      // Voiced formant — layered sine waves mimicking a mouth sound
+      osc.disconnect();
+      gain.disconnect();
+
+      const freq = 100 + Math.random() * 60; // natural vocal fundamental
+      const formants = [
+        { f: freq,       g: 0.18 },
+        { f: freq * 2.1, g: 0.10 },
+        { f: freq * 3.4, g: 0.06 },
+        { f: freq * 5.0, g: 0.03 },
+      ];
+
+      formants.forEach(({ f, g }) => {
+        const o = ac.createOscillator();
+        const gn = ac.createGain();
+        const filter = ac.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = f;
+        filter.Q.value = 8;
+        o.type = 'sine';
+        o.frequency.setValueAtTime(f, t);
+        // slight pitch droop like a real syllable ending
+        o.frequency.exponentialRampToValueAtTime(f * 0.88, t + 0.14);
+        gn.gain.setValueAtTime(0, t);
+        gn.gain.linearRampToValueAtTime(g, t + 0.02);  // fast attack
+        gn.gain.exponentialRampToValueAtTime(0.001, t + 0.16); // natural decay
+        o.connect(filter);
+        filter.connect(gn);
+        gn.connect(ac.destination);
+        o.start(t); o.stop(t + 0.18);
+      });
+      return;
     }
   } catch(e) {}
 }
