@@ -17,9 +17,8 @@
             margin: 0;
         }
 
-        /* --- THE PLASTIC CASE --- */
         .tago-case {
-            background: #d4af37; /* Gold Edition Case */
+            background: #d4af37;
             border: 6px solid #b8860b;
             border-radius: 40px 40px 60px 60px;
             padding: 30px;
@@ -36,9 +35,8 @@
             text-shadow: 1px 1px #eee;
         }
 
-        /* --- THE LCD SCREEN --- */
         .screen {
-            background: #9cad7d; /* Gameboy Green */
+            background: #9cad7d;
             border: 8px solid #222;
             height: 250px;
             position: relative;
@@ -74,22 +72,24 @@
             transition: width 0.3s;
         }
 
-        /* --- SPRITE AREA --- */
         .sprite-container {
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            position: relative; /* This is crucial for positioning the sprite */
         }
 
-       #trump-sprite {
-    width: 100px; /* Slightly larger since it's a nice square sprite */
-    image-rendering: pixelated;
-    /* This filter makes the colored sprite look like it's on a green Gameboy screen */
-    filter: grayscale(1) contrast(1.5) mix-blend-mode(multiply);
-    opacity: 0.8;
-}
+        #trump-sprite {
+            width: 100px;
+            image-rendering: pixelated;
+            position: absolute; /* The sprite must be absolutely positioned to move */
+            /* This filter makes the sprite look like it's on a green Gameboy screen */
+            filter: grayscale(1) contrast(1.5);
+            mix-blend-mode: multiply;
+            opacity: 0.8;
+        }
+
         #status-bubble {
             background: #1a1a1a;
             color: #9cad7d;
@@ -100,7 +100,6 @@
             font-size: 16px;
         }
 
-        /* --- BUTTONS --- */
         .button-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -123,7 +122,6 @@
             transform: translate(1px, 1px);
         }
 
-        /* --- ANIMATIONS --- */
         @keyframes shake {
             0% { transform: translate(2px, 2px); }
             20% { transform: translate(-2px, -2px); }
@@ -133,7 +131,6 @@
         }
 
         .unstable { animation: shake 0.1s infinite; }
-
     </style>
 </head>
 <body>
@@ -145,15 +142,15 @@
         
         <div class="screen" id="game-screen">
             <div class="stats-panel">
-                <div class="stat-row">EGO: <div class="bar-bg"><div id="ego-bar" class="bar-fill" style="width: 100%"></div></div></div>
-                <div class="stat-row">FOOD: <div class="bar-bg"><div id="crave-bar" class="bar-fill" style="width: 100%"></div></div></div>
-                <div class="stat-row">NRGY: <div class="bar-bg"><div id="energy-bar" class="bar-fill" style="width: 100%"></div></div></div>
-                <div class="stat-row">TEMP: <div class="bar-bg"><div id="temp-bar" class="bar-fill" style="width: 0%"></div></div></div>
+                <div class="stat-row">EGO: <div class="bar-bg"><div id="ego-bar" class="bar-fill"></div></div></div>
+                <div class="stat-row">FOOD: <div class="bar-bg"><div id="crave-bar" class="bar-fill"></div></div></div>
+                <div class="stat-row">NRGY: <div class="bar-bg"><div id="energy-bar" class="bar-fill"></div></div></div>
+                <div class="stat-row">TEMP: <div class="bar-bg"><div id="temp-bar" class="bar-fill"></div></div></div>
             </div>
 
             <div class="sprite-container">
-    <img id="trump-sprite" src="trump1.png">
-</div>
+                <img id="trump-sprite" src="trump1.png">
+            </div>
             <div id="status-bubble">STATUS: STABLE</div>
         </div>
 
@@ -168,87 +165,91 @@
     <a href="index.html" style="margin-top: 20px; color: #00FF00; text-decoration: none;"><< BACK TO ARCHIVE</a>
 
     <script>
-       let stats = {
+        // --- GAME STATE ---
+        let stats = {
             ego: 100,
             crave: 80,
             energy: 100,
             temper: 0
         };
 
-        // We declare these once at the top
+        // --- UI ELEMENTS ---
         const screenEl = document.getElementById('game-screen');
         const statusText = document.getElementById('status-bubble');
-        const sprite = document.getElementById('trump-sprite');
+        const spriteEl = document.getElementById('trump-sprite');
+        const spriteContainer = document.querySelector('.sprite-container');
 
+        // --- MOVEMENT LOGIC (FIXED) ---
+        let posX = 50, posY = 50; // Start in the middle
+        let velX = 0.5, velY = 0.3; // Slower, more natural speed
+
+        // FIX: The moveTrump function now lives outside updateUI and runs independently.
+        function moveTrump() {
+            const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+            const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
+
+            posX += velX;
+            posY += velY;
+
+            if (posX <= 0 || posX >= maxX) {
+                velX *= -1; // Reverse direction
+                spriteEl.style.transform = velX > 0 ? 'scaleX(1)' : 'scaleX(-1)'; // Flip sprite
+            }
+            if (posY <= 0 || posY >= maxY) {
+                velY *= -1; // Reverse direction
+            }
+
+            // Clamp position to stay within bounds
+            posX = Math.max(0, Math.min(posX, maxX));
+            posY = Math.max(0, Math.min(posY, maxY));
+
+            spriteEl.style.left = posX + 'px';
+            spriteEl.style.top = posY + 'px';
+
+            requestAnimationFrame(moveTrump); // This keeps the *single* loop running
+        }
+
+        // --- CORE GAME FUNCTIONS ---
         function updateUI() {
-            // Update the bars
+            // Update the stat bars
             document.getElementById('ego-bar').style.width = stats.ego + "%";
             document.getElementById('crave-bar').style.width = stats.crave + "%";
             document.getElementById('energy-bar').style.width = stats.energy + "%";
             document.getElementById('temp-bar').style.width = stats.temper + "%";
 
-            // TRUMP MOVEMENT
-const spriteEl = document.getElementById('trump-sprite');
-const container = document.querySelector('.sprite-container');
+            // Base filter for the Gameboy screen effect
+            const baseFilter = "grayscale(1) contrast(1.5) mix-blend-mode(multiply)";
 
-let posX = 0, posY = 0;
-let velX = 1.5, velY = 1.0;
-
-function moveTrump() {
-    const maxX = container.offsetWidth - spriteEl.offsetWidth;
-    const maxY = container.offsetHeight - spriteEl.offsetHeight;
-
-    posX += velX;
-    posY += velY;
-
-    if (posX <= 0 || posX >= maxX) {
-        velX *= -1;
-        spriteEl.style.transform = velX > 0 ? 'scaleX(1)' : 'scaleX(-1)';
-    }
-    if (posY <= 0 || posY >= maxY) velY *= -1;
-
-    posX = Math.max(0, Math.min(posX, maxX));
-    posY = Math.max(0, Math.min(posY, maxY));
-
-    spriteEl.style.position = 'absolute';
-    spriteEl.style.left = posX + 'px';
-    spriteEl.style.top = posY + 'px';
-
-    requestAnimationFrame(moveTrump);
-}
-
-moveTrump();
-
-            // State Logic & Visual Effects
+            // Update status text and visual effects
             if (stats.temper > 70) {
                 statusText.innerText = "STATUS: UNSTABLE!";
                 screenEl.classList.add('unstable');
-                // Optional: Make him turn "red" (high contrast) when unstable
-                sprite.style.filter = "grayscale(0) sepia(1) hue-rotate(-50deg) saturate(5)";
+                spriteEl.style.filter = "sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)"; // "Red" angry effect
             } else if (stats.ego < 30) {
                 statusText.innerText = "STATUS: SAD!";
                 screenEl.classList.remove('unstable');
-                sprite.style.filter = "grayscale(1) contrast(1.5) opacity(0.5)";
+                spriteEl.style.filter = `${baseFilter} opacity(0.5)`; // Sad and faded
             } else if (stats.energy < 20) {
                 statusText.innerText = "STATUS: LOW ENERGY";
                 screenEl.classList.remove('unstable');
-                sprite.style.filter = "grayscale(1) contrast(1.1)";
+                spriteEl.style.filter = `${baseFilter} brightness(0.8)`; // A bit dimmer
             } else {
                 statusText.innerText = "STATUS: STABLE";
                 screenEl.classList.remove('unstable');
-                sprite.style.filter = "grayscale(1) contrast(1.5)";
+                spriteEl.style.filter = baseFilter; // Normal state
             }
 
             // Game Over Check
             if (stats.ego <= 0) {
-                statusText.innerText = "ERROR: DEFEATED";
-                sprite.style.opacity = "0.2";
-                sprite.style.filter = "grayscale(1) blur(1px)";
+                statusText.innerText = "GAME OVER: DEFEATED";
+                spriteEl.style.opacity = "0.2";
+                spriteEl.style.filter = "grayscale(1) blur(1px)";
+                clearInterval(decayInterval); // Stop the decay timer on game over
             }
         }
 
         function interact(action) {
-            if (stats.ego <= 0) return; 
+            if (stats.ego <= 0) return; // Can't interact if game over
 
             if (action === 'feed') {
                 stats.crave = Math.min(100, stats.crave + 25);
@@ -256,7 +257,7 @@ moveTrump();
                 stats.temper = Math.max(0, stats.temper - 5);
             }
             if (action === 'rally') {
-                stats.ego = 100;
+                stats.ego = 100; // Full restore
                 stats.energy = Math.max(0, stats.energy - 40);
                 stats.temper = Math.min(100, stats.temper + 20);
             }
@@ -269,11 +270,13 @@ moveTrump();
                 stats.ego = Math.min(100, stats.ego + 15);
                 stats.temper = Math.min(100, stats.temper + 15);
             }
-            updateUI();
+            updateUI(); // Immediately update UI after an action
         }
 
-        // The Passive Decay
-        setInterval(() => {
+        // --- GAME LOOP ---
+        const decayInterval = setInterval(() => {
+            if (stats.ego <= 0) return; // Stop decay if game is over
+
             stats.ego = Math.max(0, stats.ego - 3);
             stats.crave = Math.max(0, stats.crave - 2);
             stats.energy = Math.max(0, stats.energy - 1);
@@ -281,8 +284,9 @@ moveTrump();
             updateUI();
         }, 3000);
 
-        // INITIALIZE UI ON LOAD
+        // --- INITIALIZE GAME ---
         updateUI();
+        moveTrump(); // FIX: Kick off the SINGLE animation loop just once.
     </script>
 </body>
 </html>
