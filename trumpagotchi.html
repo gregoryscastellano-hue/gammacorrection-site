@@ -83,11 +83,13 @@
             position: relative;
         }
 
-        #trump-sprite {
-            width: 80px;
-            filter: contrast(1.2) grayscale(0.8); /* LCD Look */
-        }
-
+       #trump-sprite {
+    width: 100px; /* Slightly larger since it's a nice square sprite */
+    image-rendering: pixelated;
+    /* This filter makes the colored sprite look like it's on a green Gameboy screen */
+    filter: grayscale(1) contrast(1.5) mix-blend-mode(multiply);
+    opacity: 0.8;
+}
         #status-bubble {
             background: #1a1a1a;
             color: #9cad7d;
@@ -150,9 +152,8 @@
             </div>
 
             <div class="sprite-container">
-                <img id="trump-sprite" src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif">
-            </div>
-
+    <img id="trump-sprite" src="trump1.png">
+</div>
             <div id="status-bubble">STATUS: STABLE</div>
         </div>
 
