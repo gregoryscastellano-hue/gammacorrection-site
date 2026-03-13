@@ -27,7 +27,8 @@
 
 html, body {
   width: 100%; height: 100%;
-  background: #000;
+  /* CRITICAL FIX: Body must be transparent to see the video behind it */
+  background: transparent;
   font-family: 'Press Start 2P', monospace;
   color: var(--nes-white);
   overflow: hidden;
@@ -36,7 +37,8 @@ html, body {
 /* ── SCREEN ── */
 #screen {
   width: 100vw; height: 100vh;
-  background: transparent !important;
+  /* Screen is now a transparent container for the UI */
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,43 +54,24 @@ html, body {
   92% { opacity: 0.97; }
 }
 
-
-@keyframes parallax-scroll {
-  from { background-position-x: 0; }
-  to { background-position-x: -2400px; } /* A multiple of all bg sizes */
-}
-
-/* --- TRIPPY VHS SCANLINES --- */
+/* --- VHS SCANLINES (Your new effect) --- */
 #scanlines {
     position: fixed; inset: 0; pointer-events: none; z-index: 9000;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.1),
-        rgba(0, 0, 0, 0.1) 1px,
-        transparent 1px,
-        transparent 2px
-    );
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
     background-size: 100% 3px;
 }
-
 #scanlines::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 5px;
+    content: ""; position: absolute; width: 100%; height: 5px;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-    opacity: 0.3;
-    top: 0;
+    opacity: 0.3; top: 0;
     animation: trackingBar 10s linear infinite;
 }
-
 @keyframes trackingBar {
     0% { top: -5%; }
     10% { top: 110%; }
     100% { top: 110%; }
 }
-@keyframes scanMove { 0% { transform: translateY(0); } 100% { transform: translateY(50%); } }
 
 /* ── VIGNETTE ── */
 #vignette {
@@ -126,12 +109,15 @@ html, body {
   text-shadow: 0 0 10px rgba(0,232,216,0.6);
 }
 
-/* ── HUD ── */
+/* ── HUD (Your new "Glass" effect) ── */
 #hud {
-    background: rgba(0, 0, 20, 0.6) !important;
-    backdrop-filter: blur(8px);
-    border: 2px solid var(--nes-white);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative; z-index: 100; display: flex; gap: 0; margin: 10px 0 6px;
+  /* Your new glass effect styles */
+  background: rgba(0, 0, 20, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* For Safari support */
+  border: 2px solid var(--nes-white);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 .hud-cell {
   padding: 7px 14px; border-right: 3px solid var(--nes-white); display: flex;
@@ -230,9 +216,13 @@ html, body {
   border-radius: 4px; pointer-events: none;
 }
 
-/* ── CARD FRONT ── */
+/* ── CARD FRONT (Your new "Glass" effect) ── */
 .card-face {
-    background: rgba(10, 10, 10, 0.9) !important; /* Slightly see-through cards */
+  background: rgba(10, 10, 10, 0.9); /* Slightly see-through cards */
+  border: 3px solid #ffffff;
+  transform: rotateY(180deg);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; position: relative;
 }
 .card-face.sel-glow {
   border-color: var(--nes-yellow); animation: breatheGlow 2s ease-in-out infinite;
@@ -242,13 +232,9 @@ html, body {
   50% { box-shadow: 0 0 0 2px var(--nes-yellow), 0 0 28px rgba(248,216,0,0.8), 0 0 55px rgba(248,216,0,0.35), 0 8px 32px rgba(0,0,0,0.8); }
 }
 .card-face::after {
-  content: '';
-  position: absolute;
-  inset: 0;
+  content: ''; position: absolute; inset: 0;
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVpaWl9fX1ZWZnc3Nzi4uKWlpZvb29vbm56enrd3d3FxcVtbW3U1NRaWlqNjY2SkpKenp6bm5trg7vjAAAAAGXRSTlMAQObYZgAAAZNJREFUeJy9llmWgyAMQGsTANAh2yJsggf//19v2tJAEB0r033uYlq1sT7a5lA0QJ6oIv9E3vGZk2s0oeyv2r7Mvz4e2lUNi0UoZWwM1hHPM3f2K3f15k45yoCgvrzQd1flX/5+v0aXHTeRT4e2w2jVwGFp8lPMd6qcruSgZtQih6OA+0K2g5jA1wZpYkYQTJ45Xk6T4DgnltTf759v2/Ayx3k4jANsok2pY25EdHBiXfGfDZSd877sXCAxUsFmBCjWKS8n2d1U4k3I20eZWkJUDaW6c2mWyqj2s9cxpSSkQdeq98+nLmMbLgMJWw8r5brm3CFe4t2SQ+I2jGXb2A21FVs8K3kPKSmG3QxQk28oV1Z/gGgXGwiPA9Lcg4Gac41Bu1EUKp/hE3k7N7YkjrLzCmlkbsD9f4YDrlgdVpCAzJrzAYksQ5CgNBwzM3i1zYQJ6HrvdJpGqP1l3y5MBcPlgG85yQn2P3sychHAQd+904qN5x3wUfJ2f/s5I8Udolv6Wk2Y3LzFSgO0HyjP0D1rXv1c+PFTwNmuS817j10n62JkY58dshlSBHkM1lZ2u4MW34y+xG7s8Q3o+s4gI+/s/7gZ3daQHPDRj22VzE/uNvVBTfMv7vydy8iA3AI/S2k71l/rS2T44ppj347pviIZ/AjvN3iC5jJ2xL/x/wD/u/gA7zCgIuMAcMIAAAAASUVORK5CYII=');
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 4;
+  opacity: 0.04; pointer-events: none; z-index: 4;
 }
 /* Holographic sheen */
 .card-sheen {
@@ -390,11 +376,11 @@ html, body {
 </style>
 </head>
 <body>
-<div id="video-bg-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none;">
-    <iframe 
+<div id="video-bg-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; background: #000;">
+    <iframe
         style="width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.1); filter: saturate(1.5) contrast(1.2);"
-        src="https://www.youtube.com/embed/mTDrB32ZCXM?autoplay=1&mute=1&loop=1&playlist=mTDrB32ZCXM&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1" 
-        frameborder="0" 
+        src="https://www.youtube.com/embed/mTDrB32ZCXM?autoplay=1&mute=1&loop=1&playlist=mTDrB32ZCXM&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1"
+        frameborder="0"
         allow="autoplay; encrypted-media">
     </iframe>
 </div>
@@ -404,6 +390,7 @@ html, body {
     <div class="sub">NORTH TENNORY INDUSTRIAL DISTRICT © 1947</div>
   </div>
 
+  <!-- The #hud div needs its classes to be structured correctly -->
   <div id="hud">
     <div class="hud-cell"><div class="hud-label">ROUND</div><div class="hud-val" id="hud-round">1</div></div>
     <div class="hud-cell"><div class="hud-label">TONNAGE</div><div class="hud-val" id="hud-score">0</div></div>
@@ -480,7 +467,6 @@ function sfx(type) {
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
       osc.start(t); osc.stop(t + 0.18);
     } else if (type === 'play') {
-      // Ascending arpeggio
       [261, 329, 392, 523].forEach((freq, i) => {
         const o2 = ac.createOscillator();
         const g2 = ac.createGain();
@@ -539,422 +525,66 @@ document.addEventListener('keydown', startAudio, { once: true });
 // ═══════════════════════════════════════
 // MARKOV NAME GENERATOR
 // ═══════════════════════════════════════
-const SEED_NAMES = [
-  "SLEVE MCDICHAEL","ONSON SWEEMEY","DARRYL ARCHIDELD","ANATOLI SMORIN",
-  "REY MCSRIFF","GLENALLEN MIXON","MARIO MCRLWAIN","RAUL CHAMGERLAIN",
-  "KEVIN NOGILNY","TONY SMEHRIK","BOBSON DUGNUTT","WILLIE DUSTICE",
-  "JEROMY GRIDE","SCOTT DOURQUE","SHOWN FURCOTTE","DEAN WESREY",
-  "MIKE TRUK","DWIGT RORTUGAL","TIM SANDAELE","KARL DANDLETON",
-  "MIKE SERNANDEZ","TODD BONZALEZ",
-  "CARL BRENTON","DALE HORWICK","LEON STRAMBLE","FRANK DUVANE",
-  "GARY MULSTON","PETE CORWELL","WADE JARMON","BOYD KELLNER",
-  "HANK DILLMORE","ROY CANTRELL","GLEN FOSTWICK","VERN ASHMORE",
-  "BURL TRENTHAM","CLEM HARWOOD","OTTO WEXFORD","LARS DRUMMOND",
-  "REED HOLSTEN","WARD MCALTON","CLAY BURNETT","ROSS ELFORD",
-  "DIRK SWANHOLM","NELS CORRIGAN","FORD BLAXTON","DREW HALCOMBE"
-];
-
-function buildChain(words) {
-  const c = {};
-  for (const w of words) {
-    const s = '^' + w + '$';
-    for (let i = 0; i < s.length - 1; i++) {
-      if (!c[s[i]]) c[s[i]] = [];
-      c[s[i]].push(s[i+1]);
-    }
-  }
-  return c;
-}
-
-function genFromChain(chain, min, max) {
-  for (let t = 0; t < 50; t++) {
-    let r = '', cur = '^';
-    for (let i = 0; i < 18; i++) {
-      const nx = chain[cur];
-      if (!nx) break;
-      cur = nx[Math.floor(Math.random() * nx.length)];
-      if (cur === '$') break;
-      r += cur;
-    }
-    if (r.length >= min && r.length <= max) return r;
-  }
-  return ['DORN','BLECK','WAVEN','TROB','GLUF'][Math.floor(Math.random()*5)];
-}
-
-const firstChain = buildChain(SEED_NAMES.map(n => n.split(' ')[0]));
-const lastChain  = buildChain(SEED_NAMES.map(n => n.split(' ').slice(1).join(' ')));
-const NICKNAMES  = ['"The Foreman"','"Dustcloud"','"Two-Shovel"','"Quarter-inch"',
-  '"The Slab"','"Plumb"','"Gravel King"','"The Frog"','"Backhoe"','"Tremor"',
-  '"Tonnage"','"Deep-Site"','"Seismic"','"No-Dust"','"The Feed"'];
-
-function markovName() {
-  return {
-    first: genFromChain(firstChain, 3, 8),
-    last:  genFromChain(lastChain,  3, 10),
-    get full() { return this.first + ' ' + this.last; }
-  };
-}
+const SEED_NAMES = ["SLEVE MCDICHAEL","ONSON SWEEMEY","DARRYL ARCHIDELD","ANATOLI SMORIN","REY MCSRIFF","GLENALLEN MIXON","MARIO MCRLWAIN","RAUL CHAMGERLAIN","KEVIN NOGILNY","TONY SMEHRIK","BOBSON DUGNUTT","WILLIE DUSTICE","JEROMY GRIDE","SCOTT DOURQUE","SHOWN FURCOTTE","DEAN WESREY","MIKE TRUK","DWIGT RORTUGAL","TIM SANDAELE","KARL DANDLETON","MIKE SERNANDEZ","TODD BONZALEZ","CARL BRENTON","DALE HORWICK","LEON STRAMBLE","FRANK DUVANE","GARY MULSTON","PETE CORWELL","WADE JARMON","BOYD KELLNER","HANK DILLMORE","ROY CANTRELL","GLEN FOSTWICK","VERN ASHMORE","BURL TRENTHAM","CLEM HARWOOD","OTTO WEXFORD","LARS DRUMMOND","REED HOLSTEN","WARD MCALTON","CLAY BURNETT","ROSS ELFORD","DIRK SWANHOLM","NELS CORRIGAN","FORD BLAXTON","DREW HALCOMBE"];
+function buildChain(words) { const c={};for(const w of words){const s='^'+w+'$';for(let i=0;i<s.length-1;i++){if(!c[s[i]])c[s[i]]=[];c[s[i]].push(s[i+1])}}return c }
+function genFromChain(chain,min,max){for(let t=0;t<50;t++){let r='',cur='^';for(let i=0;i<18;i++){const nx=chain[cur];if(!nx)break;cur=nx[Math.floor(Math.random()*nx.length)];if(cur==='$')break;r+=cur}if(r.length>=min&&r.length<=max)return r}return['DORN','BLECK','WAVEN','TROB','GLUF'][Math.floor(Math.random()*5)]}
+const firstChain=buildChain(SEED_NAMES.map(n=>n.split(' ')[0]));const lastChain=buildChain(SEED_NAMES.map(n=>n.split(' ').slice(1).join(' ')));const NICKNAMES=['"The Foreman"','"Dustcloud"','"Two-Shovel"','"Quarter-inch"','"The Slab"','"Plumb"','"Gravel King"','"The Frog"','"Backhoe"','"Tremor"','"Tonnage"','"Deep-Site"','"Seismic"','"No-Dust"','"The Feed"'];
+function markovName(){return{first:genFromChain(firstChain,3,8),last:genFromChain(lastChain,3,10),get full(){return this.first+' '+this.last}}}
 
 // ═══════════════════════════════════════
 // STATS
 // ═══════════════════════════════════════
-const STATS = [
-  { key:'G', color:'#e40058' },
-  { key:'A', color:'#4a90d9' },
-  { key:'H', color:'#f8d800' },
-  { key:'M', color:'#58d854' },
-  { key:'B', color:'#bc84fc' },
-];
+const STATS=[{key:'G',color:'#e40058'},{key:'A',color:'#4a90d9'},{key:'H',color:'#f8d800'},{key:'M',color:'#58d854'},{key:'B',color:'#bc84fc'}];
 
 // ═══════════════════════════════════════
 // PIXEL SPRITES
 // ═══════════════════════════════════════
-const SPRITES = {
-  driver:[
-    0,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,2,2,2,2,0,0,
-    0,2,2,2,2,2,2,0,0,0,2,0,0,2,0,0,0,0,3,0,0,3,0,0,0,0,3,3,3,3,0,0,
-  ],
-  golem:[
-    0,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,1,1,2,2,1,1,2,2,2,2,2,2,2,2,2,
-    2,2,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,0,3,3,0,0,3,3,0,
-  ],
-  toad:[
-    0,0,3,3,3,3,0,0,0,3,3,3,3,3,3,0,0,1,0,3,3,0,1,0,0,3,3,3,3,3,3,0,
-    0,0,3,4,4,3,0,0,0,3,3,3,3,3,3,0,0,0,3,0,0,3,0,0,0,3,0,0,0,0,3,0,
-  ]
-};
-const PAL = {
-  driver:{ 0:'transparent',1:'#f8d800',2:'#e8a860',3:'#8a5020',4:'#f87858' },
-  golem: { 0:'transparent',1:'#ffffff',2:'#888878',3:'#555548',4:'#f8d800' },
-  toad:  { 0:'transparent',1:'#f8d800',2:'transparent',3:'#58d854',4:'#40a840' },
-};
-
-function buildSprite(type) {
-  const g = SPRITES[type] || SPRITES.driver;
-  const p = PAL[type]     || PAL.driver;
-  return g.map(v => `<div class="px" style="background:${p[v]||'transparent'}"></div>`).join('');
-}
+const SPRITES={driver:[0,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,2,2,2,2,0,0,0,2,2,2,2,2,2,0,0,0,2,0,0,2,0,0,0,0,3,0,0,3,0,0,0,0,3,3,3,3,0,0],golem:[0,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,1,1,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,0,3,3,0,0,3,3,0],toad:[0,0,3,3,3,3,0,0,0,3,3,3,3,3,3,0,0,1,0,3,3,0,1,0,0,3,3,3,3,3,3,0,0,0,3,4,4,3,0,0,0,3,3,3,3,3,3,0,0,0,3,0,0,3,0,0,0,3,0,0,0,0,3,0]};
+const PAL={driver:{0:'transparent',1:'#f8d800',2:'#e8a860',3:'#8a5020',4:'#f87858'},golem:{0:'transparent',1:'#ffffff',2:'#888878',3:'#555548',4:'#f8d800'},toad:{0:'transparent',1:'#f8d800',2:'transparent',3:'#58d854',4:'#40a840'}};
+function buildSprite(type){const g=SPRITES[type]||SPRITES.driver;const p=PAL[type]||PAL.driver;return g.map(v=>`<div class="px" style="background:${p[v]||'transparent'}"></div>`).join('')}
 
 // ═══════════════════════════════════════
-// CARD GENERATION
+// CARD GENERATION & STATE
 // ═══════════════════════════════════════
-const TYPES = ['driver','driver','driver','golem','toad'];
-
-function rollStat(type) {
-  const base = type==='golem'?42:type==='toad'?18:32;
-  let v = base + Math.floor(Math.random() * (type==='golem'?42:type==='toad'?52:58));
-  if (Math.random() < 0.09) v = Math.min(99, v + Math.floor(Math.random()*22));
-  return Math.min(99, Math.max(1, v));
-}
-
-function generateCard() {
-  const type  = TYPES[Math.floor(Math.random()*TYPES.length)];
-  const name  = markovName();
-  const nick  = NICKNAMES[Math.floor(Math.random()*NICKNAMES.length)];
-  const stats = {};
-  STATS.forEach(s => { stats[s.key] = rollStat(type); });
-  if (type === 'toad') {
-    const b = STATS[Math.floor(Math.random()*STATS.length)].key;
-    stats[b] = Math.min(99, stats[b]+28);
-  }
-  return { id: Math.random().toString(36).slice(2), name, nick, type, stats };
-}
-
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-let hand=[], selected=[], score=0, round=1, target=50;
+const TYPES=['driver','driver','driver','golem','toad'];
+function rollStat(type){const base=type==='golem'?42:type==='toad'?18:32;let v=base+Math.floor(Math.random()*(type==='golem'?42:type==='toad'?52:58));if(Math.random()<0.09)v=Math.min(99,v+Math.floor(Math.random()*22));return Math.min(99,Math.max(1,v))}
+function generateCard(){const type=TYPES[Math.floor(Math.random()*TYPES.length)];const name=markovName();const nick=NICKNAMES[Math.floor(Math.random()*NICKNAMES.length)];const stats={};STATS.forEach(s=>{stats[s.key]=rollStat(type)});if(type==='toad'){const b=STATS[Math.floor(Math.random()*STATS.length)].key;stats[b]=Math.min(99,stats[b]+28)}return{id:Math.random().toString(36).slice(2),name,nick,type,stats}}
+let hand=[],selected=[],score=0,round=1,target=50;
 
 // ═══════════════════════════════════════
 // DEAL & RENDER
 // ═══════════════════════════════════════
-function dealHand() {
-  selected = [];
-  hand = Array.from({length:7}, generateCard);
-  renderHand(true);
-  updateHUD();
-  document.getElementById('btn-play').disabled = true;
-}
-
-function createCardElement(card, i, n, animate) {
-  const mid    = (n - 1) / 2;
-  const gap    = Math.min(58, 400 / n);
-  const offset = (i - mid) * gap;
-  const rot    = (i - mid) * 3.5;
-  const lift   = Math.abs(i - mid) * 4;
-  const isSel  = selected.includes(i);
-  const cw     = 210;
-
-  const wrap = document.createElement('div');
-  wrap.className = 'card-wrapper' + (isSel ? ' selected' : '') + (animate ? ' dealing' : '');
-  wrap.id = 'card-' + i;
-  wrap.dataset.index = i;
-  wrap.style.cssText = `
-    left: calc(50% + ${offset}px - ${cw/2}px);
-    bottom: ${isSel ? 170 : -lift}px;
-    transform: rotate(${isSel ? 0 : rot}deg);
-    z-index: ${isSel ? 80 : 20 - Math.abs(i-mid)};
-    animation-delay: ${animate ? i * 0.07 : 0}s;
-  `;
-
-  const statsHTML = STATS.map(s => {
-    const val = card.stats[s.key];
-    return `<div class="stat-row">
-      <span class="stat-letter" style="color:${s.color}">${s.key}</span>
-      <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${val}%;background:${s.color}"></div></div>
-      <span class="stat-num">${String(val).padStart(2,'0')}</span>
-    </div>`;
-  }).join('');
-
-  wrap.innerHTML = `
-    <div class="card-scene">
-      <div class="card-3d" id="c3d-${i}">
-        <div class="card-back"><div class="card-back-inner">GB</div></div>
-        <div class="card-face${isSel ? ' sel-glow' : ''}">
-          <div class="card-sheen" id="sheen-${i}"></div>
-          <div class="card-type-bar type-${card.type}"></div>
-          <div class="card-art" id="art-${i}">
-            <div class="pixel-placeholder" id="sprite-${i}">${buildSprite(card.type)}</div>
-            <div class="card-type-tag">${card.type.toUpperCase()}</div>
-          </div>
-          <div class="card-name-area">
-            <div class="card-name">${card.name.full}</div>
-            <div class="card-nickname">${card.nick}</div>
-          </div>
-          <div class="card-stats">${statsHTML}</div>
-        </div>
-      </div>
-    </div>`;
-
-  wrap.addEventListener('mousemove', e => tiltCard(i, e, wrap));
-  wrap.addEventListener('mouseleave', () => resetTilt(i));
-  wrap.addEventListener('mouseenter', () => {
-    if (!isSel) {
-      wrap.style.bottom = (parseInt(wrap.style.bottom) || 0) + 20 + 'px';
-      wrap.style.zIndex = 60;
-    }
-  });
-  wrap.addEventListener('mouseleave', () => {
-    if (!isSel) {
-      wrap.style.bottom = -lift + 'px';
-      wrap.style.zIndex = 20 - Math.abs(i - mid);
-    }
-  });
-  wrap.addEventListener('click', () => toggleSelect(i));
-
-  const c3d = wrap.querySelector('.card-3d');
-  if (animate) {
-    setTimeout(() => c3d.classList.add('flipped'), 200 + i * 110);
-  } else {
-    c3d.classList.add('flipped');
-  }
-
-  return wrap;
-}
-
-function renderHand(animate) {
-  const el = document.getElementById('hand');
-  el.innerHTML = '';
-  const n = hand.length;
-  hand.forEach((card, i) => {
-    const cardElement = createCardElement(card, i, n, animate);
-    el.appendChild(cardElement);
-  });
-}
+function dealHand(){selected=[];hand=Array.from({length:7},generateCard);renderHand(true);updateHUD();document.getElementById('btn-play').disabled=true}
+function createCardElement(card,i,n,animate){const mid=(n-1)/2;const gap=Math.min(58,400/n);const offset=(i-mid)*gap;const rot=(i-mid)*3.5;const lift=Math.abs(i-mid)*4;const isSel=selected.includes(i);const cw=210;const wrap=document.createElement('div');wrap.className='card-wrapper'+(isSel?' selected':'')+(animate?' dealing':'');wrap.id='card-'+i;wrap.dataset.index=i;wrap.style.cssText=`left: calc(50% + ${offset}px - ${cw/2}px); bottom: ${isSel?170:-lift}px; transform: rotate(${isSel?0:rot}deg); z-index: ${isSel?80:20-Math.abs(i-mid)}; animation-delay: ${animate?i*0.07:0}s;`;const statsHTML=STATS.map(s=>{const val=card.stats[s.key];return`<div class="stat-row"><span class="stat-letter" style="color:${s.color}">${s.key}</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${val}%;background:${s.color}"></div></div><span class="stat-num">${String(val).padStart(2,'0')}</span></div>`}).join('');wrap.innerHTML=`<div class="card-scene"><div class="card-3d" id="c3d-${i}"><div class="card-back"><div class="card-back-inner">GB</div></div><div class="card-face${isSel?' sel-glow':''}"><div class="card-sheen" id="sheen-${i}"></div><div class="card-type-bar type-${card.type}"></div><div class="card-art" id="art-${i}"><div class="pixel-placeholder" id="sprite-${i}">${buildSprite(card.type)}</div><div class="card-type-tag">${card.type.toUpperCase()}</div></div><div class="card-name-area"><div class="card-name">${card.name.full}</div><div class="card-nickname">${card.nick}</div></div><div class="card-stats">${statsHTML}</div></div></div></div>`;wrap.addEventListener('mousemove',e=>tiltCard(i,e,wrap));wrap.addEventListener('mouseleave',()=>resetTilt(i));wrap.addEventListener('mouseenter',()=>{if(!isSel){wrap.style.bottom=(parseInt(wrap.style.bottom)||0)+20+'px';wrap.style.zIndex=60}});wrap.addEventListener('mouseleave',()=>{if(!isSel){wrap.style.bottom=-lift+'px';wrap.style.zIndex=20-Math.abs(i-mid)}});wrap.addEventListener('click',()=>toggleSelect(i));const c3d=wrap.querySelector('.card-3d');if(animate){setTimeout(()=>c3d.classList.add('flipped'),200+i*110)}else{c3d.classList.add('flipped')}return wrap}
+function renderHand(animate){const el=document.getElementById('hand');el.innerHTML='';const n=hand.length;hand.forEach((card,i)=>{const cardElement=createCardElement(card,i,n,animate);el.appendChild(cardElement)})}
 
 // ═══════════════════════════════════════
 // 3D TILT + ART PARALLAX
 // ═══════════════════════════════════════
-function tiltCard(i, e, wrap) {
-  const c3d    = document.getElementById('c3d-'+i);
-  const sheen  = document.getElementById('sheen-'+i);
-  const sprite = document.getElementById('sprite-'+i);
-  if (!c3d) return;
-
-  const rect = wrap.getBoundingClientRect();
-  const dx   = (e.clientX - (rect.left + rect.width/2))  / (rect.width/2);
-  const dy   = (e.clientY - (rect.top  + rect.height/2)) / (rect.height/2);
-
-  const rotX = -dy * 12; const rotZ =  dx * 6;
-  const isSel = selected.includes(i);
-  if (isSel) { c3d.style.transform = `rotateX(${rotX}deg) rotateY(${dx * 12}deg)`; }
-  else { c3d.style.transform = `rotateY(180deg) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`; }
-  c3d.style.transition = 'transform 0.08s ease';
-
-  if (sprite) { sprite.style.transform = `translate(${-dx*6}px, ${-dy*6}px)`; }
-  if (sheen && isSel) {
-    const sx = 50 + dx*30; const sy = 50 + dy*30;
-    sheen.style.opacity = '1';
-    sheen.style.background = `radial-gradient(circle at ${sx}% ${sy}%, rgba(255,255,255,0.18) 0%, rgba(100,220,255,0.12) 25%, rgba(255,100,220,0.08) 50%, rgba(100,255,180,0.05) 70%, transparent 85%)`;
-  }
-}
-
-function resetTilt(i) {
-  const c3d    = document.getElementById('c3d-'+i);
-  const sheen  = document.getElementById('sheen-'+i);
-  const sprite = document.getElementById('sprite-'+i);
-  if (!c3d) return;
-
-  const isSel = selected.includes(i);
-  c3d.style.transition = 'transform 0.4s cubic-bezier(0.34,1.2,0.64,1)';
-  c3d.style.transform  = isSel ? '' : 'rotateY(180deg)';
-  if (sheen)  sheen.style.opacity = '0';
-  if (sprite) { sprite.style.transition = 'transform 0.4s ease'; sprite.style.transform = ''; }
-}
+function tiltCard(i,e,wrap){const c3d=document.getElementById('c3d-'+i);const sheen=document.getElementById('sheen-'+i);const sprite=document.getElementById('sprite-'+i);if(!c3d)return;const rect=wrap.getBoundingClientRect();const dx=(e.clientX-(rect.left+rect.width/2))/(rect.width/2);const dy=(e.clientY-(rect.top+rect.height/2))/(rect.height/2);const rotX=-dy*12;const rotZ=dx*6;const isSel=selected.includes(i);if(isSel){c3d.style.transform=`rotateX(${rotX}deg) rotateY(${dx*12}deg)`}else{c3d.style.transform=`rotateY(180deg) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`}c3d.style.transition='transform 0.08s ease';if(sprite){sprite.style.transform=`translate(${-dx*6}px, ${-dy*6}px)`}if(sheen&&isSel){const sx=50+dx*30;const sy=50+dy*30;sheen.style.opacity='1';sheen.style.background=`radial-gradient(circle at ${sx}% ${sy}%, rgba(255,255,255,0.18) 0%, rgba(100,220,255,0.12) 25%, rgba(255,100,220,0.08) 50%, rgba(100,255,180,0.05) 70%, transparent 85%)`}}
+function resetTilt(i){const c3d=document.getElementById('c3d-'+i);const sheen=document.getElementById('sheen-'+i);const sprite=document.getElementById('sprite-'+i);if(!c3d)return;const isSel=selected.includes(i);c3d.style.transition='transform 0.4s cubic-bezier(0.34,1.2,0.64,1)';c3d.style.transform=isSel?'':'rotateY(180deg)';if(sheen)sheen.style.opacity='0';if(sprite){sprite.style.transition='transform 0.4s ease';sprite.style.transform=''}}
 
 // ═══════════════════════════════════════
-// SELECT
+// SELECT & HUD
 // ═══════════════════════════════════════
-function toggleSelect(i) {
-  const idx = selected.indexOf(i);
-  if (idx >= 0) {
-    sfx('deselect');
-    selected.splice(idx, 1);
-  } else {
-    if (selected.length >= 3) { sfx('denied'); toast('MAX 3 PLAYERS!','foul'); return; }
-    sfx('select');
-    selected.push(i);
-    spawnPixels(document.getElementById('card-'+i));
-  }
-  renderHand(false);
-  updateHUD();
-}
-
-function flickerHud(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.classList.remove('flicker'); void el.offsetWidth; el.classList.add('flicker');
-  setTimeout(() => el.classList.remove('flicker'), 400);
-}
-
-function updateHUD() {
-  document.getElementById('hud-round').textContent  = round;
-  document.getElementById('hud-score').textContent  = score;
-  document.getElementById('hud-target').textContent = target;
-  document.getElementById('hud-sel').textContent    = selected.length+'/3';
-  document.getElementById('btn-play').disabled      = selected.length===0;
-
-  for (let s=0; s<3; s++) {
-    const slot = document.getElementById('tslot-'+s);
-    const wasEmpty = !slot.classList.contains('filled');
-    const ci = selected[s];
-    if (ci !== undefined) {
-      slot.textContent = hand[ci].name.first.slice(0,1)+hand[ci].name.last.slice(0,1);
-      slot.classList.add('filled');
-      if (wasEmpty) {
-        slot.classList.add('activating');
-        slot.addEventListener('animationend', () => slot.classList.remove('activating'), {once: true});
-      }
-    } else {
-      slot.textContent = '_';
-      slot.classList.remove('filled');
-    }
-  }
-}
+function toggleSelect(i){const idx=selected.indexOf(i);if(idx>=0){sfx('deselect');selected.splice(idx,1)}else{if(selected.length>=3){sfx('denied');toast('MAX 3 PLAYERS!','foul');return}sfx('select');selected.push(i);spawnPixels(document.getElementById('card-'+i))}renderHand(false);updateHUD()}
+function flickerHud(id){const el=document.getElementById(id);if(!el)return;el.classList.remove('flicker');void el.offsetWidth;el.classList.add('flicker');setTimeout(()=>el.classList.remove('flicker'),400)}
+function updateHUD(){document.getElementById('hud-round').textContent=round;document.getElementById('hud-score').textContent=score;document.getElementById('hud-target').textContent=target;document.getElementById('hud-sel').textContent=selected.length+'/3';document.getElementById('btn-play').disabled=selected.length===0;for(let s=0;s<3;s++){const slot=document.getElementById('tslot-'+s);const wasEmpty=!slot.classList.contains('filled');const ci=selected[s];if(ci!==undefined){slot.textContent=hand[ci].name.first.slice(0,1)+hand[ci].name.last.slice(0,1);slot.classList.add('filled');if(wasEmpty){slot.classList.add('activating');slot.addEventListener('animationend',()=>slot.classList.remove('activating'),{once:true})}}else{slot.textContent='_';slot.classList.remove('filled')}}}
 
 // ═══════════════════════════════════════
 // RUN PLAY
 // ═══════════════════════════════════════
-function runPlay() {
-  if (!selected.length) return;
-  sfx('play');
-
-  selected.forEach(i => {
-    const wrap = document.getElementById('card-'+i);
-    if (wrap) wrap.classList.add('flying-out');
-  });
-
-  const cards = selected.map(i=>hand[i]);
-  let total=0, count=0;
-  cards.forEach(c => STATS.forEach(s => { total+=c.stats[s.key]; count++; }));
-  const avg = total/count;
-
-  const types = cards.map(c=>c.type);
-  const allSame = types.every(t=>t===types[0]) && cards.length===3;
-  const hasGolem = types.includes('golem');
-  const hasToad = types.includes('toad');
-  let mult=1, bonus='';
-  if (allSame) { mult=1.5; bonus='FULL FORMATION X1.5'; }
-  else if (hasGolem) { mult=1.2; bonus='GOLEM ANCHOR X1.2'; }
-  else if (hasToad) { mult=1.1; bonus='TOAD CLAUSE X1.1'; }
-
-  const balAvg = cards.reduce((s,c)=>s+c.stats['B'],0)/cards.length;
-  const foulChance = Math.max(0,(60-balAvg)/100*0.35);
-
-  setTimeout(() => {
-    if (Math.random() < foulChance) {
-      sfx('foul');
-      const fouls = ['DUST OBSCURITY','DEEP-SITE PENALTY','MANUAL CONTACT'];
-      triggerFoul(fouls[Math.floor(Math.random()*fouls.length)]);
-      score = Math.max(0, score-5);
-    } else {
-      const gained = Math.round((avg/100)*16*mult*cards.length);
-      score += gained;
-      showPop('+'+gained+(bonus?'\n'+bonus:''));
-      if (bonus) toast(bonus,'good');
-    }
-    flickerHud('hud-score');
-    document.getElementById('hud-score').textContent = score;
-
-    const newHand = hand.filter((_,i)=>!selected.includes(i));
-    while (newHand.length<7) newHand.push(generateCard());
-    hand=newHand; selected=[];
-
-    if (score>=target) { setTimeout(nextRound,500); }
-    else { renderHand(true); updateHUD(); }
-  }, 480);
-}
-
-function nextRound() {
-  round++; target=Math.round(target*1.6);
-  flickerHud('hud-round'); flickerHud('hud-target');
-  toast('ROUND '+round+'  TARGET: '+target,'good');
-  document.getElementById('hud-round').textContent  = round;
-  document.getElementById('hud-target').textContent = target;
-  dealHand();
-}
+function runPlay(){if(!selected.length)return;sfx('play');selected.forEach(i=>{const wrap=document.getElementById('card-'+i);if(wrap)wrap.classList.add('flying-out')});const cards=selected.map(i=>hand[i]);let total=0,count=0;cards.forEach(c=>STATS.forEach(s=>{total+=c.stats[s.key];count++}));const avg=total/count;const types=cards.map(c=>c.type);const allSame=types.every(t=>t===types[0])&&cards.length===3;const hasGolem=types.includes('golem');const hasToad=types.includes('toad');let mult=1,bonus='';if(allSame){mult=1.5;bonus='FULL FORMATION X1.5'}else if(hasGolem){mult=1.2;bonus='GOLEM ANCHOR X1.2'}else if(hasToad){mult=1.1;bonus='TOAD CLAUSE X1.1'}const balAvg=cards.reduce((s,c)=>s+c.stats['B'],0)/cards.length;const foulChance=Math.max(0,(60-balAvg)/100*0.35);setTimeout(()=>{if(Math.random()<foulChance){sfx('foul');const fouls=['DUST OBSCURITY','DEEP-SITE PENALTY','MANUAL CONTACT'];triggerFoul(fouls[Math.floor(Math.random()*fouls.length)]);score=Math.max(0,score-5)}else{const gained=Math.round((avg/100)*16*mult*cards.length);score+=gained;showPop('+'+gained+(bonus?'\n'+bonus:''));if(bonus)toast(bonus,'good')}flickerHud('hud-score');document.getElementById('hud-score').textContent=score;const newHand=hand.filter((_,i)=>!selected.includes(i));while(newHand.length<7)newHand.push(generateCard());hand=newHand;selected=[];if(score>=target){setTimeout(nextRound,500)}else{renderHand(true);updateHUD()}},480)}
+function nextRound(){round++;target=Math.round(target*1.6);flickerHud('hud-round');flickerHud('hud-target');toast('ROUND '+round+'  TARGET: '+target,'good');document.getElementById('hud-round').textContent=round;document.getElementById('hud-target').textContent=target;dealHand()}
 
 // ═══════════════════════════════════════
 // FX
 // ═══════════════════════════════════════
-function showPop(txt) {
-  const el = document.getElementById('score-popup');
-  el.textContent = txt;
-  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-}
-
-function triggerFoul(name) {
-  const f = document.getElementById('foul-flash');
-  f.classList.remove('flash'); void f.offsetWidth; f.classList.add('flash');
-  showPop('FOUL!\n'+name);
-  toast('FOUL: '+name+'  -5','foul');
-}
-
+function showPop(txt){const el=document.getElementById('score-popup');el.textContent=txt;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}
+function triggerFoul(name){const f=document.getElementById('foul-flash');f.classList.remove('flash');void f.offsetWidth;f.classList.add('flash');showPop('FOUL!\n'+name);toast('FOUL: '+name+'  -5','foul')}
 let toastTimer;
-function toast(msg, type) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'show'+(type?' '+type:'');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.className='', 3000);
-}
-
-function spawnPixels(el) {
-  if (!el) return;
-  const rect = el.getBoundingClientRect();
-  const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
-  const colors = ['#f8d800','#e40058','#4a90d9','#58d854','#bc84fc','#00e8d8'];
-  for (let i=0; i<14; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const sz    = 4+Math.floor(Math.random()*5);
-    const angle = Math.random()*Math.PI*2;
-    const dist  = 35+Math.random()*55;
-    p.style.cssText = `width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;background:${colors[Math.floor(Math.random()*colors.length)]};--tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;animation-delay:${Math.random()*0.08}s;`;
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 1000);
-  }
-}
+function toast(msg,type){const el=document.getElementById('toast');el.textContent=msg;el.className='show'+(type?' '+type:'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.className='',3000)}
+function spawnPixels(el){if(!el)return;const rect=el.getBoundingClientRect();const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;const colors=['#f8d800','#e40058','#4a90d9','#58d854','#bc84fc','#00e8d8'];for(let i=0;i<14;i++){const p=document.createElement('div');p.className='particle';const sz=4+Math.floor(Math.random()*5);const angle=Math.random()*Math.PI*2;const dist=35+Math.random()*55;p.style.cssText=`width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;background:${colors[Math.floor(Math.random()*colors.length)]};--tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;animation-delay:${Math.random()*0.08}s;`;document.body.appendChild(p);setTimeout(()=>p.remove(),1000)}}
 
 // ═══════════════════════════════════════
 // START
