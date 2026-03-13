@@ -154,13 +154,12 @@
             <div id="status-bubble">STATUS: STABLE</div>
         </div>
 
-        <div class="button-grid">
-            <button class="btn" onclick="interact('feed')">HAMBERDER</button>
-            <button class="btn" onclick="interact('rally')">RALLY</button>
-            <button class="btn" onclick="interact('golf')">GOLF</button>
-            <button class="btn" onclick="interact('truth')">TRUTH SOCIAL</button>
-        </div>
-    </div>
+       <div class="button-grid">
+    <button id="btn1" class="btn" onclick="interact('feed')">HAMBERDER</button>
+    <button id="btn2" class="btn" onclick="interact('rally')">RALLY</button>
+    <button id="btn3" class="btn" onclick="interact('golf')">GOLF</button>
+    <button id="btn4" class="btn" onclick="interact('truth')">TRUTH SOCIAL</button>
+</div>
 
     <a href="index.html" style="margin-top: 20px; color: #00FF00; text-decoration: none;"><< BACK TO ARCHIVE</a>
 
@@ -173,11 +172,16 @@
         temper: 0
     };
 
+    // --- NEW: SPRITE STATE & TARGETS ---
+    let spriteState = 'wandering'; // Can be 'wandering' or 'seekingFood'
+    let foodTarget = null; // Will hold the burger element and its coordinates
+
     // --- UI ELEMENTS ---
     const screenEl = document.getElementById('game-screen');
     const statusText = document.getElementById('status-bubble');
     const spriteEl = document.getElementById('trump-sprite');
     const spriteContainer = document.querySelector('.sprite-container');
+    let gameOverTextEl = null;
 
     // --- MOVEMENT VARIABLES ---
     let posX = 0, posY = 0;
@@ -201,8 +205,6 @@
             const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
             posX = maxX / 2;
             posY = maxY / 2;
-            spriteEl.style.left = posX + 'px';
-            spriteEl.style.top = posY + 'px';
             moveStarted = true;
             pickNewDirection();
         }
@@ -210,35 +212,69 @@
         const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
         const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
 
-        velX += (targetVelX - velX) * 0.03;
-        velY += (targetVelY - velY) * 0.03;
+        // --- NEW: State-based movement ---
+        if (spriteState === 'wandering') {
+            velX += (targetVelX - velX) * 0.03;
+            velY += (targetVelY - velY) * 0.03;
+            directionTimer--;
+            if (directionTimer <= 0) pickNewDirection();
 
-        directionTimer--;
-        if (directionTimer <= 0) pickNewDirection();
+            posX += velX;
+            posY += velY;
 
-        posX += velX;
-        posY += velY;
+            if (posX <= 0 || posX >= maxX) {
+                velX *= -1;
+                targetVelX *= -1;
+                pickNewDirection();
+            }
+            if (posY <= 0 || posY >= maxY) {
+                velY *= -1;
+                targetVelY *= -1;
+                pickNewDirection();
+            }
+        } else if (spriteState === 'seekingFood') {
+            const spriteCenterX = posX + spriteEl.offsetWidth / 2;
+            const spriteCenterY = posY + spriteEl.offsetHeight / 2;
+            const targetX = foodTarget.x;
+            const targetY = foodTarget.y;
 
-        if (posX <= 0 || posX >= maxX) {
-            velX *= -1;
-            targetVelX *= -1;
-            pickNewDirection();
-        }
-        if (posY <= 0 || posY >= maxY) {
-            velY *= -1;
-            targetVelY *= -1;
-            pickNewDirection();
+            const dx = targetX - spriteCenterX;
+            const dy = targetY - spriteCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Check if he has reached the burger
+            if (distance < 10) {
+                // He ate it!
+                new Audio('munch.mp3').play();
+                
+                // Update stats
+                stats.crave = Math.min(100, stats.crave + 25);
+                stats.energy = Math.min(100, stats.energy + 5);
+                stats.temper = Math.max(0, stats.temper - 5);
+                updateUI();
+
+                // Clean up
+                foodTarget.el.remove();
+                foodTarget = null;
+                spriteState = 'wandering';
+                document.getElementById('btn1').disabled = false; // Re-enable button
+                pickNewDirection(); // Start wandering again
+
+            } else {
+                // He's still walking towards it
+                const seekSpeed = 1.8;
+                velX = (dx / distance) * seekSpeed;
+                velY = (dy / distance) * seekSpeed;
+                posX += velX;
+                posY += velY;
+            }
         }
 
         posX = Math.max(0, Math.min(posX, maxX));
         posY = Math.max(0, Math.min(posY, maxY));
 
-        // --- NEW WADDLE LOGIC ---
-        // The speed of the waddle is now based on how fast he's moving.
         const currentSpeed = Math.abs(velX) + Math.abs(velY);
-        // Slower increment for a less frantic waddle.
         waddleAngle += currentSpeed * 0.06; 
-        // A slightly more pronounced lean angle for better effect.
         const waddleLean = Math.sin(waddleAngle) * 8; 
         const facingFlip = velX > 0 ? 1 : -1;
 
@@ -248,11 +284,15 @@
         spriteEl.style.left = posX + 'px';
         spriteEl.style.top = posY + 'px';
 
-        requestAnimationFrame(moveTrump);
+        if (stats.ego > 0) {
+           requestAnimationFrame(moveTrump);
+        }
     }
 
     // --- CORE GAME FUNCTIONS ---
     function updateUI() {
+        // ... (This function remains the same as the "You're Fired" version)
+        // [Copy your previous updateUI function here]
         document.getElementById('ego-bar').style.width = stats.ego + "%";
         document.getElementById('crave-bar').style.width = stats.crave + "%";
         document.getElementById('energy-bar').style.width = stats.energy + "%";
@@ -260,69 +300,118 @@
 
         const baseFilter = "grayscale(1) contrast(1.5)";
 
-        // --- NEW STATUS AND VISUALS LOGIC ---
+        if (stats.ego <= 0) {
+            if (!gameOverTextEl) {
+                gameOverTextEl = document.createElement('div');
+                gameOverTextEl.innerText = "YOU'RE FIRED!";
+                gameOverTextEl.style.position = 'absolute';
+                gameOverTextEl.style.top = '50%';
+                gameOverTextEl.style.left = '50%';
+                gameOverTextEl.style.transform = 'translate(-50%, -50%)';
+                gameOverTextEl.style.fontSize = '48px';
+                gameOverTextEl.style.color = '#1a1a1a';
+                gameOverTextEl.style.textShadow = '2px 2px #9cad7d';
+                gameOverTextEl.style.textAlign = 'center';
+                gameOverTextEl.style.zIndex = '10';
+                spriteContainer.appendChild(gameOverTextEl);
+
+                statusText.innerText = "ELECTION RESULTS ARE IN...";
+                spriteEl.style.filter = "grayscale(1) opacity(0.3)";
+                
+                screenEl.classList.remove('unstable');
+                clearInterval(decayInterval); 
+
+                const allButtons = document.querySelectorAll('.btn');
+                const newLabels = ["STOP", "THE", "COUNT!", "RECOUNT!"];
+                allButtons.forEach((btn, index) => {
+                    btn.innerText = newLabels[index] || btn.innerText;
+                    btn.disabled = true;
+                    btn.style.cursor = 'not-allowed';
+                    btn.style.opacity = '0.5';
+                });
+            }
+            return;
+        }
+
         if (stats.temper > 70) {
             statusText.innerText = "STATUS: UNSTABLE!";
             screenEl.classList.add('unstable');
-            // Red angry effect, no blend mode needed
             spriteEl.style.filter = "sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)";
             spriteEl.style.mixBlendMode = 'normal';
             spriteEl.style.opacity = '1';
         } else if (stats.ego < 30) {
             statusText.innerText = "STATUS: SAD!";
             screenEl.classList.remove('unstable');
-            // Faded and blended into the screen
             spriteEl.style.filter = baseFilter;
             spriteEl.style.mixBlendMode = 'multiply';
             spriteEl.style.opacity = '0.5';
         } else if (stats.energy < 20) {
             statusText.innerText = "STATUS: LOW ENERGY";
             screenEl.classList.remove('unstable');
-            // Dimmer and blended into the screen
             spriteEl.style.filter = `${baseFilter} brightness(0.8)`;
             spriteEl.style.mixBlendMode = 'multiply';
             spriteEl.style.opacity = '0.8';
         } else {
             statusText.innerText = "STATUS: STABLE";
             screenEl.classList.remove('unstable');
-            // **CHANGE HERE**: Normal blend mode for a pure grayscale look
             spriteEl.style.filter = baseFilter;
-            spriteEl.style.mixBlendMode = 'normal'; // This removes the green/red tint
-            spriteEl.style.opacity = '0.9'; // Slightly transparent to look less "pasted on"
-        }
-
-        if (stats.ego <= 0) {
-            statusText.innerText = "GAME OVER: DEFEATED";
-            spriteEl.style.opacity = "0.2";
-            spriteEl.style.filter = "grayscale(1) blur(1px)";
-            spriteEl.style.mixBlendMode = 'multiply';
-            clearInterval(decayInterval); 
+            spriteEl.style.mixBlendMode = 'normal';
+            spriteEl.style.opacity = '0.9';
         }
     }
+
 
     function interact(action) {
         if (stats.ego <= 0) return;
 
         if (action === 'feed') {
-            stats.crave = Math.min(100, stats.crave + 25);
-            stats.energy = Math.min(100, stats.energy + 5);
-            stats.temper = Math.max(0, stats.temper - 5);
+            // --- NEW: FEED LOGIC ---
+            if (spriteState !== 'wandering') return; // Don't feed if he's busy
+
+            spriteState = 'seekingFood';
+            document.getElementById('btn1').disabled = true; // Disable button
+
+            // Create and position the burger
+            const burgerEl = document.createElement('img');
+            burgerEl.src = 'burger1.png';
+            burgerEl.style.position = 'absolute';
+            burgerEl.style.width = '40px'; // Adjust size as needed
+            burgerEl.style.imageRendering = 'pixelated';
+            
+            const foodX = Math.random() * (spriteContainer.offsetWidth - 40);
+            const foodY = Math.random() * (spriteContainer.offsetHeight - 40);
+
+            burgerEl.style.left = foodX + 'px';
+            burgerEl.style.top = foodY + 'px';
+            
+            spriteContainer.appendChild(burgerEl);
+
+            // Store the target
+            foodTarget = {
+                el: burgerEl,
+                x: foodX,
+                y: foodY
+            };
+            // Note: Stat updates are now handled in moveTrump() when he eats it
         }
         if (action === 'rally') {
             stats.ego = 100;
             stats.energy = Math.max(0, stats.energy - 40);
             stats.temper = Math.min(100, stats.temper + 20);
+            updateUI();
         }
         if (action === 'golf') {
             stats.energy = Math.min(100, stats.energy + 50);
             stats.ego = Math.min(100, stats.ego + 10);
             stats.temper = Math.max(0, stats.temper - 20);
+            updateUI();
         }
         if (action === 'truth') {
             stats.ego = Math.min(100, stats.ego + 15);
             stats.temper = Math.min(100, stats.temper + 15);
+            updateUI();
         }
-        updateUI();
+        // We only call updateUI for immediate actions. 'feed' is now a process.
     }
 
     // --- GAME LOOP ---
@@ -338,7 +427,7 @@
 
     // --- INITIALIZE GAME ---
     updateUI();
-    requestAnimationFrame(moveTrump); // Changed to call the correct function
+    requestAnimationFrame(moveTrump);
 </script>
 </body>
 </html>
