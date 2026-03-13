@@ -168,45 +168,55 @@
     <a href="index.html" style="margin-top: 20px; color: #00FF00; text-decoration: none;"><< BACK TO ARCHIVE</a>
 
     <script>
-        let stats = {
+       let stats = {
             ego: 100,
             crave: 80,
             energy: 100,
             temper: 0
         };
 
-        const screen = document.getElementById('game-screen');
+        // We declare these once at the top
+        const screenEl = document.getElementById('game-screen');
         const statusText = document.getElementById('status-bubble');
+        const sprite = document.getElementById('trump-sprite');
 
         function updateUI() {
+            // Update the bars
             document.getElementById('ego-bar').style.width = stats.ego + "%";
             document.getElementById('crave-bar').style.width = stats.crave + "%";
             document.getElementById('energy-bar').style.width = stats.energy + "%";
             document.getElementById('temp-bar').style.width = stats.temper + "%";
 
-            // State Logic
+            // State Logic & Visual Effects
             if (stats.temper > 70) {
                 statusText.innerText = "STATUS: UNSTABLE!";
-                screen.classList.add('unstable');
+                screenEl.classList.add('unstable');
+                // Optional: Make him turn "red" (high contrast) when unstable
+                sprite.style.filter = "grayscale(0) sepia(1) hue-rotate(-50deg) saturate(5)";
             } else if (stats.ego < 30) {
                 statusText.innerText = "STATUS: SAD!";
-                screen.classList.remove('unstable');
+                screenEl.classList.remove('unstable');
+                sprite.style.filter = "grayscale(1) contrast(1.5) opacity(0.5)";
             } else if (stats.energy < 20) {
                 statusText.innerText = "STATUS: LOW ENERGY";
+                screenEl.classList.remove('unstable');
+                sprite.style.filter = "grayscale(1) contrast(1.1)";
             } else {
                 statusText.innerText = "STATUS: STABLE";
-                screen.classList.remove('unstable');
+                screenEl.classList.remove('unstable');
+                sprite.style.filter = "grayscale(1) contrast(1.5)";
             }
 
             // Game Over Check
             if (stats.ego <= 0) {
                 statusText.innerText = "ERROR: DEFEATED";
-                document.getElementById('trump-sprite').style.opacity = "0.3";
+                sprite.style.opacity = "0.2";
+                sprite.style.filter = "grayscale(1) blur(1px)";
             }
         }
 
         function interact(action) {
-            if (stats.ego <= 0) return; // Frozen if game over
+            if (stats.ego <= 0) return; 
 
             if (action === 'feed') {
                 stats.crave = Math.min(100, stats.crave + 25);
@@ -230,7 +240,7 @@
             updateUI();
         }
 
-        // The Passive Decay (Time passing)
+        // The Passive Decay
         setInterval(() => {
             stats.ego = Math.max(0, stats.ego - 3);
             stats.crave = Math.max(0, stats.crave - 2);
@@ -239,6 +249,8 @@
             updateUI();
         }, 3000);
 
+        // INITIALIZE UI ON LOAD
+        updateUI();
     </script>
 </body>
 </html>
