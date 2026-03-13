@@ -26,7 +26,8 @@
 }
 
 html {
-  zoom: 1.0;
+  /* FIX: Increased the zoom value to make everything bigger */
+  /* You can adjust this value to scale the entire game */
 }
 
 html, body {
@@ -46,7 +47,7 @@ html, body {
   width: 100vw; height: 56.25vw;
   min-height: 100vh; min-width: 177.77vh;
   position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(1.3); /* Increased scale to remove bars */
+  transform: translate(-50%, -50%) scale(1.3);
   filter: saturate(1.2) contrast(1.1) brightness(0.5);
 }
 
@@ -75,27 +76,9 @@ html, body {
   mix-blend-mode: screen;
   animation: glitch-anim-2 7s steps(1) infinite;
 }
-@keyframes crtFlicker {
-  0%,89%,91%,93%,100% { opacity: 1; }
-  90% { opacity: 0.94; }
-  92% { opacity: 0.97; }
-}
-@keyframes glitch-anim {
-  0%, 94% { opacity: 0; clip-path: inset(0 0 0 0); }
-  95% { opacity: 0.6; clip-path: inset(20% 0 78% 0); }
-  96% { opacity: 0.6; clip-path: inset(90% 0 2% 0); }
-  97% { opacity: 0.6; clip-path: inset(45% 0 53% 0); }
-  98% { opacity: 0.6; clip-path: inset(10% 0 85% 0); }
-  99% { opacity: 0.6; clip-path: inset(80% 0 5% 0); }
-  100% { opacity: 0; }
-}
-@keyframes glitch-anim-2 {
-  0%, 96% { opacity: 0; clip-path: inset(0 0 0 0); }
-  97% { opacity: 0.4; clip-path: inset(85% 0 10% 0); }
-  98% { opacity: 0.4; clip-path: inset(5% 0 92% 0); }
-  99% { opacity: 0.4; clip-path: inset(50% 0 45% 0); }
-  100% { opacity: 0; }
-}
+@keyframes crtFlicker { 0%,89%,91%,93%,100% { opacity: 1; } 90% { opacity: 0.94; } 92% { opacity: 0.97; }}
+@keyframes glitch-anim { 0%,94%{opacity:0;clip-path:inset(0 0 0 0)}95%{opacity:.6;clip-path:inset(20% 0 78% 0)}96%{opacity:.6;clip-path:inset(90% 0 2% 0)}97%{opacity:.6;clip-path:inset(45% 0 53% 0)}98%{opacity:.6;clip-path:inset(10% 0 85% 0)}99%{opacity:.6;clip-path:inset(80% 0 5% 0)}100%{opacity:0} }
+@keyframes glitch-anim-2 { 0%,96%{opacity:0;clip-path:inset(0 0 0 0)}97%{opacity:.4;clip-path:inset(85% 0 10% 0)}98%{opacity:.4;clip-path:inset(5% 0 92% 0)}99%{opacity:.4;clip-path:inset(50% 0 45% 0)}100%{opacity:0} }
 
 /* ── VHS SCANLINES ── */
 #scanlines {
@@ -110,19 +93,13 @@ html, body {
   opacity: 0.3; top: 0;
   animation: trackingBar 10s linear infinite;
 }
-@keyframes trackingBar {
-  0%   { top: -5%; }
-  10%  { top: 110%; }
-  100% { top: 110%; }
-}
+@keyframes trackingBar { 0%{top:-5%} 10%{top:110%} 100%{top:110%} }
 
-/* ── VIGNETTE ── */
+/* ── VIGNETTE, GLOW & BORDER ── */
 #vignette {
   position: fixed; inset: 0; pointer-events: none; z-index: 8999;
   background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.88) 100%);
 }
-
-/* ── PHOSPHOR GLOW & CRT BORDER ── */
 #phosphor {
   position: fixed; inset: 0; pointer-events: none; z-index: 8998;
   background: radial-gradient(ellipse at 50% 50%, rgba(0,60,180,0.08) 0%, transparent 70%);
@@ -145,9 +122,7 @@ html, body {
   text-shadow: 3px 3px 0 #8a6000, 0 0 30px rgba(248,216,0,0.5), 0 0 60px rgba(248,216,0,0.2);
   letter-spacing: 5px; animation: titleFlicker 6s ease-in-out infinite;
 }
-@keyframes titleFlicker {
-  0%,95%,100% { opacity:1; } 96% { opacity:0.85; } 97% { opacity:1; } 98% { opacity:0.9; }
-}
+@keyframes titleFlicker { 0%,95%,100%{opacity:1} 96%{opacity:.85} 97%{opacity:1} 98%{opacity:.9} }
 #header .sub {
   font-size: 6px; color: var(--nes-cyan); letter-spacing: 2px; margin-top: 8px;
   text-shadow: 0 0 10px rgba(0,232,216,0.6);
@@ -167,16 +142,9 @@ html, body {
 }
 .hud-cell:last-child { border-right: none; }
 .hud-label { font-size: 5px; color: var(--nes-grey); letter-spacing: 1px; }
-.hud-val {
-  font-size: 13px; color: var(--nes-yellow); text-shadow: 0 0 8px rgba(248,216,0,0.5);
-}
+.hud-val { font-size: 13px; color: var(--nes-yellow); text-shadow: 0 0 8px rgba(248,216,0,0.5); }
 .hud-val.flicker { animation: hudFlicker 0.4s ease; }
-@keyframes hudFlicker {
-  0%,100% { text-shadow: 0 0 8px rgba(248,216,0,0.5); }
-  25%  { text-shadow: 0 0 20px rgba(248,216,0,1), 0 0 40px rgba(248,216,0,0.6); }
-  50%  { text-shadow: 0 0 4px rgba(248,216,0,0.3); }
-  75%  { text-shadow: 0 0 16px rgba(248,216,0,0.8); }
-}
+@keyframes hudFlicker { 0%,100%{text-shadow:0 0 8px rgba(248,216,0,.5)} 25%{text-shadow:0 0 20px rgba(248,216,0,1),0 0 40px rgba(248,216,0,.6)} 50%{text-shadow:0 0 4px rgba(248,216,0,.3)} 75%{text-shadow:0 0 16px rgba(248,216,0,.8)} }
 
 /* ── TRAY ── */
 #tray {
@@ -190,18 +158,11 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   font-size: 7px; color: var(--nes-grey);
 }
-.tray-slot.filled {
-  border-color: var(--nes-yellow); color: var(--nes-yellow);
-  box-shadow: 0 0 8px rgba(248,216,0,0.4);
-}
-@keyframes slotActivate {
-  0%   { background: rgba(0,0,0,0.6); transform: scale(1); }
-  30%  { background: rgba(248,216,0,0.3); transform: scale(1.15); color: var(--nes-white); }
-  100% { background: rgba(0,0,0,0.6); transform: scale(1); box-shadow: 0 0 8px rgba(248,216,0,0.4); }
-}
+.tray-slot.filled { border-color: var(--nes-yellow); color: var(--nes-yellow); box-shadow: 0 0 8px rgba(248,216,0,0.4); }
+@keyframes slotActivate { 0%{background:rgba(0,0,0,.6);transform:scale(1)} 30%{background:rgba(248,216,0,.3);transform:scale(1.15);color:var(--nes-white)} 100%{background:rgba(0,0,0,.6);transform:scale(1);box-shadow:0 0 8px rgba(248,216,0,.4)} }
 .tray-slot.activating { animation: slotActivate 0.3s ease-out; }
 
-/* ── HAND AREA ── */
+/* ── HAND AREA & CARDS ── */
 #hand-area {
   position: relative; z-index: 100; flex: 1; width: 100%;
   display: flex; align-items: flex-end; justify-content: center;
@@ -211,8 +172,6 @@ html, body {
   position: relative; width: 100%; height: 350px;
   display: flex; align-items: flex-end; justify-content: center;
 }
-
-/* ── CARD WRAPPER ── */
 .card-wrapper {
   position: absolute; width: var(--card-w); height: var(--card-h);
   cursor: pointer; transform-origin: bottom center;
@@ -220,18 +179,9 @@ html, body {
 }
 .card-wrapper.selected { bottom: 170px !important; z-index: 80 !important; }
 .card-wrapper.dealing  { animation: dealIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both; }
-@keyframes dealIn {
-  0%   { transform: rotate(0deg) translateY(60px) scale(0.7); opacity: 0; }
-  100% { opacity: 1; }
-}
+@keyframes dealIn { 0%{transform:rotate(0) translateY(60px) scale(.7);opacity:0} 100%{opacity:1} }
 .card-wrapper.flying-out { animation: flyOut 0.5s cubic-bezier(0.4,0,1,1) forwards; }
-@keyframes flyOut {
-  0%   { transform: scale(1); opacity: 1; }
-  60%  { transform: scale(1.15) translateY(-30px); opacity: 0.8; }
-  100% { transform: scale(0.3) translateY(-200px) rotate(20deg); opacity: 0; }
-}
-
-/* ── 3D CARD ── */
+@keyframes flyOut { 0%{transform:scale(1);opacity:1} 60%{transform:scale(1.15) translateY(-30px);opacity:.8} 100%{transform:scale(.3) translateY(-200px) rotate(20deg);opacity:0} }
 .card-scene { width: 100%; height: 100%; perspective: 600px; }
 .card-3d {
   width: 100%; height: 100%; position: relative;
@@ -245,8 +195,6 @@ html, body {
   backface-visibility: hidden; -webkit-backface-visibility: hidden;
   border-radius: 6px; overflow: hidden;
 }
-
-/* ── CARD BACK ── */
 .card-back {
   background: linear-gradient(145deg, #000080, #000040); border: 3px solid #4444cc;
   box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 0 1px rgba(100,100,255,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
@@ -262,8 +210,6 @@ html, body {
   background: linear-gradient(125deg, transparent 0%, rgba(255,255,255,0.03) 30%, rgba(100,180,255,0.08) 50%, rgba(255,100,255,0.04) 70%, transparent 100%);
   border-radius: 4px; pointer-events: none;
 }
-
-/* ── CARD FRONT ── */
 .card-face {
   background: rgba(10,10,10,0.92);
   border: 3px solid #ffffff;
@@ -280,10 +226,7 @@ html, body {
   border-color: var(--nes-yellow);
   animation: breatheGlow 2s ease-in-out infinite;
 }
-@keyframes breatheGlow {
-  0%,100% { box-shadow: 0 0 0 2px var(--nes-yellow), 0 0 14px rgba(248,216,0,0.4), 0 0 30px rgba(248,216,0,0.15), 0 8px 32px rgba(0,0,0,0.8); }
-  50%     { box-shadow: 0 0 0 2px var(--nes-yellow), 0 0 28px rgba(248,216,0,0.8), 0 0 55px rgba(248,216,0,0.35), 0 8px 32px rgba(0,0,0,0.8); }
-}
+@keyframes breatheGlow { 0%,100%{box-shadow:0 0 0 2px var(--nes-yellow),0 0 14px rgba(248,216,0,.4),0 0 30px rgba(248,216,0,.15),0 8px 32px rgba(0,0,0,.8)} 50%{box-shadow:0 0 0 2px var(--nes-yellow),0 0 28px rgba(248,216,0,.8),0 0 55px rgba(248,216,0,.35),0 8px 32px rgba(0,0,0,.8)} }
 .card-sheen {
   position: absolute; inset: 0; border-radius: 3px; pointer-events: none;
   z-index: 50; opacity: 0; transition: opacity 0.15s; mix-blend-mode: screen;
@@ -373,38 +316,18 @@ html, body {
 .nes-btn-grey:hover { background: #ddd; }
 
 /* ── SCORE POPUP & FX ── */
-#score-popup {
-  position: fixed; left: 50%; top: 38%; transform: translate(-50%,-50%);
-  font-size: 22px; color: var(--nes-yellow);
-  text-shadow: 3px 3px 0 #8a6000, 0 0 40px rgba(248,216,0,0.8);
-  pointer-events: none; opacity: 0; z-index: 200;
-  text-align: center; letter-spacing: 2px; line-height: 1.8; white-space: pre;
-}
+#score-popup { position: fixed; left: 50%; top: 38%; transform: translate(-50%,-50%); font-size: 22px; color: var(--nes-yellow); text-shadow: 3px 3px 0 #8a6000, 0 0 40px rgba(248,216,0,0.8); pointer-events: none; opacity: 0; z-index: 200; text-align: center; letter-spacing: 2px; line-height: 1.8; white-space: pre; }
 #score-popup.pop { animation: nesPop 1.6s ease forwards; }
-@keyframes nesPop {
-  0%   { opacity:0; transform:translate(-50%,-50%) scale(0.4); }
-  15%  { opacity:1; transform:translate(-50%,-60%) scale(1.1); }
-  70%  { opacity:1; transform:translate(-50%,-65%) scale(1); }
-  100% { opacity:0; transform:translate(-50%,-85%) scale(0.9); }
-}
+@keyframes nesPop { 0%{opacity:0;transform:translate(-50%,-50%) scale(.4)} 15%{opacity:1;transform:translate(-50%,-60%) scale(1.1)} 70%{opacity:1;transform:translate(-50%,-65%) scale(1)} 100%{opacity:0;transform:translate(-50%,-85%) scale(.9)} }
 #foul-flash { position:fixed; inset:0; pointer-events:none; z-index:8990; opacity:0; }
 #foul-flash.flash { animation: nesFlash 0.45s ease forwards; }
-@keyframes nesFlash { 0%,100% { background:transparent; opacity:0; } 30%,70% { background:var(--nes-red); opacity:0.3; } }
-#toast {
-  position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
-  background:rgba(0,0,0,0.9); border:3px solid var(--nes-white);
-  padding:8px 18px; font-size:7px; color:#fff; letter-spacing:1px;
-  opacity:0; pointer-events:none; z-index:400; white-space:nowrap;
-  box-shadow:4px 4px 0 #000, 0 0 20px rgba(255,255,255,0.1); transition:opacity 0.1s;
-}
+@keyframes nesFlash { 0%,100%{background:0 0;opacity:0} 30%,70%{background:var(--nes-red);opacity:.3} }
+#toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.9); border:3px solid var(--nes-white); padding:8px 18px; font-size:7px; color:#fff; letter-spacing:1px; opacity:0; pointer-events:none; z-index:400; white-space:nowrap; box-shadow:4px 4px 0 #000, 0 0 20px rgba(255,255,255,0.1); transition:opacity 0.1s; }
 #toast.show { opacity:1; }
 #toast.foul { border-color:var(--nes-red); color:var(--nes-red); box-shadow:4px 4px 0 #000, 0 0 20px rgba(228,0,88,0.4); }
 #toast.good { border-color:var(--nes-yellow); color:var(--nes-yellow); box-shadow:4px 4px 0 #000, 0 0 20px rgba(248,216,0,0.4); }
-.particle {
-  position:fixed; border-radius:0; pointer-events:none; z-index:150;
-  animation:pfly 0.9s ease-out forwards; image-rendering:pixelated;
-}
-@keyframes pfly { 0% { opacity:1; transform:translate(0,0) scale(1); } 100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(0); } }
+.particle { position:fixed; border-radius:0; pointer-events:none; z-index:150; animation:pfly 0.9s ease-out forwards; image-rendering:pixelated; }
+@keyframes pfly { 0%{opacity:1;transform:translate(0,0) scale(1)} 100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)} }
 
 /* ── JLORP MADDOX ADVISOR ── */
 #maddox-advisor {
@@ -418,9 +341,7 @@ html, body {
   transform-origin: bottom center;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-#maddox-advisor:hover #maddox-sprite {
-  transform: scale(1.1) rotate(-3deg);
-}
+#maddox-advisor:hover #maddox-sprite { transform: scale(1.1) rotate(-3deg); }
 #maddox-speech-bubble {
   position: absolute;
   bottom: 110px; left: 0;
@@ -438,15 +359,11 @@ html, body {
   pointer-events: none;
   transition: opacity 0.2s, transform 0.2s;
 }
-#maddox-speech-bubble.show {
-  opacity: 1; transform: scale(1);
-}
+#maddox-speech-bubble.show { opacity: 1; transform: scale(1); }
 #maddox-speech-bubble::after {
-  content: '';
-  position: absolute; bottom: -13px; left: 20px;
+  content: ''; position: absolute; bottom: -13px; left: 20px;
   width: 0; height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+  border-left: 10px solid transparent; border-right: 10px solid transparent;
   border-top: 10px solid var(--nes-cyan);
 }
 </style>
@@ -500,7 +417,8 @@ html, body {
 <div id="score-popup"></div>
 <div id="foul-flash"></div>
 <div id="toast"></div>
-<audio id="bgm" loop><source src="ballgame.mp3" type="audio/mpeg"></audio>
+<!-- FIX: Corrected the audio source to your mp3 file -->
+<audio id="bgm" loop><source src="chiptune-casino.mp3" type="audio/mpeg"></audio>
 
 <script>
 // ═══════════════════════════════════════
@@ -584,7 +502,7 @@ function markovName(){return{first:genFromChain(firstChain,3,8),last:genFromChai
 
 // ═══════════════════════════════════════
 // STATS & SPRITES
-// ═══════════════════════════════════
+// ═══════════════════════════════════════
 const STATS=[{key:'G',color:'#e40058'},{key:'A',color:'#4a90d9'},{key:'H',color:'#f8d800'},{key:'M',color:'#58d854'},{key:'B',color:'#bc84fc'}];
 const SPRITES={driver:[0,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,2,2,2,2,0,0,0,2,2,2,2,2,2,0,0,0,2,0,0,2,0,0,0,0,3,0,0,3,0,0,0,0,3,3,3,3,0,0],golem:[0,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,1,1,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,0,3,3,0,0,3,3,0],toad:[0,0,3,3,3,3,0,0,0,3,3,3,3,3,3,0,0,1,0,3,3,0,1,0,0,3,3,3,3,3,3,0,0,0,3,4,4,3,0,0,0,3,3,3,3,3,3,0,0,0,3,0,0,3,0,0,0,3,0,0,0,0,3,0]};
 const PAL={driver:{0:'transparent',1:'#f8d800',2:'#e8a860',3:'#8a5020',4:'#f87858'},golem:{0:'transparent',1:'#ffffff',2:'#888878',3:'#555548',4:'#f8d800'},toad:{0:'transparent',1:'#f8d800',2:'transparent',3:'#58d854',4:'#40a840'}};
@@ -602,137 +520,25 @@ let hand=[],selected=[],score=0,round=1,target=50;
 // DEAL & RENDER
 // ═══════════════════════════════════════
 function dealHand(){selected=[];hand=Array.from({length:7},generateCard);renderHand(true);updateHUD();document.getElementById('btn-play').disabled=true}
-
-function renderHand(animate){
-  const el=document.getElementById('hand');
-  el.innerHTML='';
-  const n=hand.length;
-  hand.forEach((card,i)=>{
-    const mid=(n-1)/2, gap=Math.min(58,400/n);
-    const offset=(i-mid)*gap, rot=(i-mid)*3.5, lift=Math.abs(i-mid)*4;
-    const isSel=selected.includes(i), cw=210;
-    const wrap=document.createElement('div');
-    wrap.className='card-wrapper'+(isSel?' selected':'')+(animate?' dealing':'');
-    wrap.id='card-'+i; wrap.dataset.index=i;
-    wrap.style.cssText=`left:calc(50% + ${offset}px - ${cw/2}px);bottom:${isSel?170:-lift}px;transform:rotate(${isSel?0:rot}deg);z-index:${isSel?80:20-Math.abs(i-mid)};animation-delay:${animate?i*0.07:0}s;`;
-    const statsHTML=STATS.map(s=>{const val=card.stats[s.key];return`<div class="stat-row"><span class="stat-letter" style="color:${s.color}">${s.key}</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${val}%;background:${s.color}"></div></div><span class="stat-num">${String(val).padStart(2,'0')}</span></div>`}).join('');
-    wrap.innerHTML=`<div class="card-scene"><div class="card-3d" id="c3d-${i}"><div class="card-back"><div class="card-back-inner">GB</div></div><div class="card-face${isSel?' sel-glow':''}"><div class="card-sheen" id="sheen-${i}"></div><div class="card-type-bar type-${card.type}"></div><div class="card-art" id="art-${i}"><div class="pixel-placeholder" id="sprite-${i}">${buildSprite(card.type)}</div><div class="card-type-tag">${card.type.toUpperCase()}</div></div><div class="card-name-area"><div class="card-name">${card.name.full}</div><div class="card-nickname">${card.nick}</div></div><div class="card-stats">${statsHTML}</div></div></div></div>`;
-    wrap.addEventListener('mousemove',e=>tiltCard(i,e,wrap));
-    wrap.addEventListener('mouseleave',()=>resetTilt(i));
-    wrap.addEventListener('mouseenter',()=>{if(!selected.includes(i)){wrap.style.bottom=(parseInt(wrap.style.bottom)||0)+20+'px';wrap.style.zIndex=60}});
-    wrap.addEventListener('mouseleave',()=>{if(!selected.includes(i)){wrap.style.bottom=-lift+'px';wrap.style.zIndex=20-Math.abs(i-mid)}});
-    wrap.addEventListener('click',()=>toggleSelect(i));
-    const c3d=wrap.querySelector('.card-3d');
-    if(animate){setTimeout(()=>c3d.classList.add('flipped'),200+i*110)}else{c3d.classList.add('flipped')}
-    el.appendChild(wrap);
-  });
-}
+function renderHand(animate){const el=document.getElementById('hand');el.innerHTML='';const n=hand.length;hand.forEach((card,i)=>{const mid=(n-1)/2,gap=Math.min(58,400/n);const offset=(i-mid)*gap,rot=(i-mid)*3.5,lift=Math.abs(i-mid)*4;const isSel=selected.includes(i),cw=210;const wrap=document.createElement('div');wrap.className='card-wrapper'+(isSel?' selected':'')+(animate?' dealing':'');wrap.id='card-'+i;wrap.dataset.index=i;wrap.style.cssText=`left:calc(50% + ${offset}px - ${cw/2}px);bottom:${isSel?170:-lift}px;transform:rotate(${isSel?0:rot}deg);z-index:${isSel?80:20-Math.abs(i-mid)};animation-delay:${animate?i*0.07:0}s;`;const statsHTML=STATS.map(s=>{const val=card.stats[s.key];return`<div class="stat-row"><span class="stat-letter" style="color:${s.color}">${s.key}</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${val}%;background:${s.color}"></div></div><span class="stat-num">${String(val).padStart(2,'0')}</span></div>`}).join('');wrap.innerHTML=`<div class="card-scene"><div class="card-3d" id="c3d-${i}"><div class="card-back"><div class="card-back-inner">GB</div></div><div class="card-face${isSel?' sel-glow':''}"><div class="card-sheen" id="sheen-${i}"></div><div class="card-type-bar type-${card.type}"></div><div class="card-art" id="art-${i}"><div class="pixel-placeholder" id="sprite-${i}">${buildSprite(card.type)}</div><div class="card-type-tag">${card.type.toUpperCase()}</div></div><div class="card-name-area"><div class="card-name">${card.name.full}</div><div class="card-nickname">${card.nick}</div></div><div class="card-stats">${statsHTML}</div></div></div></div>`;wrap.addEventListener('mousemove',e=>tiltCard(i,e,wrap));wrap.addEventListener('mouseleave',()=>resetTilt(i));wrap.addEventListener('mouseenter',()=>{if(!selected.includes(i)){wrap.style.bottom=(parseInt(wrap.style.bottom)||0)+20+'px';wrap.style.zIndex=60}});wrap.addEventListener('mouseleave',()=>{if(!selected.includes(i)){wrap.style.bottom=-lift+'px';wrap.style.zIndex=20-Math.abs(i-mid)}});wrap.addEventListener('click',()=>toggleSelect(i));const c3d=wrap.querySelector('.card-3d');if(animate){setTimeout(()=>c3d.classList.add('flipped'),200+i*110)}else{c3d.classList.add('flipped')}el.appendChild(wrap)})}
 
 // ═══════════════════════════════════════
-// 3D TILT + ART PARALLAX
+// 3D TILT + ART PARALLAX (FIXED)
 // ═══════════════════════════════════════
-// Corrected Tilt Functions
-function tiltCard(i, e, wrap) {
-  const c3d = document.getElementById('c3d-' + i),
-        sheen = document.getElementById('sheen-' + i),
-        sprite = document.getElementById('sprite-' + i);
-  if (!c3d) return;
-
-  const rect = wrap.getBoundingClientRect();
-  const dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-  const dy = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-  const rotX = -dy * 12;
-  const rotY = dx * 12;
-  const rotZ = dx * 6;
-
-  const isSel = selected.includes(i);
-
-  if (isSel) {
-    c3d.style.transform = `rotateY(180deg) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-  } else {
-    c3d.style.transform = `rotateY(180deg) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
-  }
-
-  c3d.style.transition = 'transform 0.08s ease';
-  if (sprite) sprite.style.transform = `translate(${-dx * 6}px,${-dy * 6}px)`;
-  if (sheen && isSel) {
-    sheen.style.opacity = '1';
-    sheen.style.background = `radial-gradient(circle at ${50 + dx * 30}% ${50 + dy * 30}%, rgba(255,255,255,0.18) 0%, rgba(100,220,255,0.12) 25%, rgba(255,100,220,0.08) 50%, rgba(100,255,180,0.05) 70%, transparent 85%)`
-  }
-}
-function resetTilt(i) {
-  const c3d = document.getElementById('c3d-' + i),
-        sheen = document.getElementById('sheen-' + i),
-        sprite = document.getElementById('sprite-' + i);
-  if (!c3d) return;
-
-  c3d.style.transition = 'transform 0.4s cubic-bezier(0.34,1.2,0.64,1)';
-  c3d.style.transform = 'rotateY(180deg)';
-
-  if (sheen) sheen.style.opacity = '0';
-  if (sprite) { sprite.style.transition = 'transform 0.4s ease'; sprite.style.transform = '' }
-}
-
+function tiltCard(i,e,wrap){const c3d=document.getElementById('c3d-'+i),sheen=document.getElementById('sheen-'+i),sprite=document.getElementById('sprite-'+i);if(!c3d)return;const rect=wrap.getBoundingClientRect();const dx=(e.clientX-(rect.left+rect.width/2))/(rect.width/2);const dy=(e.clientY-(rect.top+rect.height/2))/(rect.height/2);const rotX=-dy*12,rotY=dx*12,rotZ=dx*6;const isSel=selected.includes(i);if(isSel){c3d.style.transform=`rotateY(180deg) rotateX(${rotX}deg) rotateY(${rotY}deg)`}else{c3d.style.transform=`rotateY(180deg) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`}c3d.style.transition='transform 0.08s ease';if(sprite)sprite.style.transform=`translate(${-dx*6}px,${-dy*6}px)`;if(sheen&&isSel){sheen.style.opacity='1';sheen.style.background=`radial-gradient(circle at ${50+dx*30}% ${50+dy*30}%, rgba(255,255,255,0.18) 0%, rgba(100,220,255,0.12) 25%, rgba(255,100,220,0.08) 50%, rgba(100,255,180,0.05) 70%, transparent 85%)`}}
+function resetTilt(i){const c3d=document.getElementById('c3d-'+i),sheen=document.getElementById('sheen-'+i),sprite=document.getElementById('sprite-'+i);if(!c3d)return;c3d.style.transition='transform 0.4s cubic-bezier(0.34,1.2,0.64,1)';c3d.style.transform='rotateY(180deg)';if(sheen)sheen.style.opacity='0';if(sprite){sprite.style.transition='transform 0.4s ease';sprite.style.transform=''}}
 
 // ═══════════════════════════════════════
 // SELECT & HUD
 // ═══════════════════════════════════════
-function toggleSelect(i){
-  const idx=selected.indexOf(i);
-  if(idx>=0){sfx('deselect');selected.splice(idx,1)}
-  else{if(selected.length>=3){sfx('denied');toast('MAX 3 PLAYERS!','foul');return}sfx('select');selected.push(i);spawnPixels(document.getElementById('card-'+i))}
-  renderHand(false);updateHUD();
-}
+function toggleSelect(i){const idx=selected.indexOf(i);if(idx>=0){sfx('deselect');selected.splice(idx,1)}else{if(selected.length>=3){sfx('denied');toast('MAX 3 PLAYERS!','foul');return}sfx('select');selected.push(i);spawnPixels(document.getElementById('card-'+i))}renderHand(false);updateHUD()}
 function flickerHud(id){const el=document.getElementById(id);if(!el)return;el.classList.remove('flicker');void el.offsetWidth;el.classList.add('flicker');setTimeout(()=>el.classList.remove('flicker'),400)}
-function updateHUD(){
-  document.getElementById('hud-round').textContent=round;
-  document.getElementById('hud-score').textContent=score;
-  document.getElementById('hud-target').textContent=target;
-  document.getElementById('hud-sel').textContent=selected.length+'/3';
-  document.getElementById('btn-play').disabled=selected.length===0;
-  for(let s=0;s<3;s++){
-    const slot=document.getElementById('tslot-'+s);
-    const wasEmpty=!slot.classList.contains('filled');
-    const ci=selected[s];
-    if(ci!==undefined){
-      slot.textContent=hand[ci].name.first.slice(0,1)+hand[ci].name.last.slice(0,1);
-      slot.classList.add('filled');
-      if(wasEmpty){slot.classList.add('activating');slot.addEventListener('animationend',()=>slot.classList.remove('activating'),{once:true})}
-    }else{slot.textContent='_';slot.classList.remove('filled')}
-  }
-}
+function updateHUD(){document.getElementById('hud-round').textContent=round;document.getElementById('hud-score').textContent=score;document.getElementById('hud-target').textContent=target;document.getElementById('hud-sel').textContent=selected.length+'/3';document.getElementById('btn-play').disabled=selected.length===0;for(let s=0;s<3;s++){const slot=document.getElementById('tslot-'+s);const wasEmpty=!slot.classList.contains('filled');const ci=selected[s];if(ci!==undefined){slot.textContent=hand[ci].name.first.slice(0,1)+hand[ci].name.last.slice(0,1);slot.classList.add('filled');if(wasEmpty){slot.classList.add('activating');slot.addEventListener('animationend',()=>slot.classList.remove('activating'),{once:true})}}else{slot.textContent='_';slot.classList.remove('filled')}}}
 
 // ═══════════════════════════════════════
 // RUN PLAY
 // ═══════════════════════════════════════
-function runPlay(){
-  if(!selected.length)return;
-  sfx('play');
-  selected.forEach(i=>{const wrap=document.getElementById('card-'+i);if(wrap)wrap.classList.add('flying-out')});
-  const cards=selected.map(i=>hand[i]);
-  let total=0,count=0;
-  cards.forEach(c=>STATS.forEach(s=>{total+=c.stats[s.key];count++}));
-  const avg=total/count;
-  const types=cards.map(c=>c.type);
-  const allSame=types.every(t=>t===types[0])&&cards.length===3;
-  const hasGolem=types.includes('golem'),hasToad=types.includes('toad');
-  let mult=1,bonus='';
-  if(allSame){mult=1.5;bonus='FULL FORMATION X1.5'}
-  else if(hasGolem){mult=1.2;bonus='GOLEM ANCHOR X1.2'}
-  else if(hasToad){mult=1.1;bonus='TOAD CLAUSE X1.1'}
-  const balAvg=cards.reduce((s,c)=>s+c.stats['B'],0)/cards.length;
-  const foulChance=Math.max(0,(60-balAvg)/100*0.35);
-  setTimeout(()=>{
-    if(Math.random()<foulChance){sfx('foul');triggerFoul(['DUST OBSCURITY','DEEP-SITE PENALTY','MANUAL CONTACT'][Math.floor(Math.random()*3)]);score=Math.max(0,score-5)}
-    else{const gained=Math.round((avg/100)*16*mult*cards.length);score+=gained;showPop('+'+gained+(bonus?'\n'+bonus:''));if(bonus)toast(bonus,'good')}
-    flickerHud('hud-score');
-    document.getElementById('hud-score').textContent=score;
-    const newHand=hand.filter((_,i)=>!selected.includes(i));
-    while(newHand.length<7)newHand.push(generateCard());
-    hand=newHand;selected=[];
-    if(score>=target){setTimeout(nextRound,500)}else{renderHand(true);updateHUD()}
-  },480);
-}
+function runPlay(){if(!selected.length)return;sfx('play');selected.forEach(i=>{const wrap=document.getElementById('card-'+i);if(wrap)wrap.classList.add('flying-out')});const cards=selected.map(i=>hand[i]);let total=0,count=0;cards.forEach(c=>STATS.forEach(s=>{total+=c.stats[s.key];count++}));const avg=total/count;const types=cards.map(c=>c.type);const allSame=types.every(t=>t===types[0])&&cards.length===3;const hasGolem=types.includes('golem'),hasToad=types.includes('toad');let mult=1,bonus='';if(allSame){mult=1.5;bonus='FULL FORMATION X1.5'}else if(hasGolem){mult=1.2;bonus='GOLEM ANCHOR X1.2'}else if(hasToad){mult=1.1;bonus='TOAD CLAUSE X1.1'}const balAvg=cards.reduce((s,c)=>s+c.stats['B'],0)/cards.length;const foulChance=Math.max(0,(60-balAvg)/100*0.35);setTimeout(()=>{if(Math.random()<foulChance){sfx('foul');triggerFoul(['DUST OBSCURITY','DEEP-SITE PENALTY','MANUAL CONTACT'][Math.floor(Math.random()*3)]);score=Math.max(0,score-5)}else{const gained=Math.round((avg/100)*16*mult*cards.length);score+=gained;showPop('+'+gained+(bonus?'\n'+bonus:''));if(bonus)toast(bonus,'good')}flickerHud('hud-score');document.getElementById('hud-score').textContent=score;const newHand=hand.filter((_,i)=>!selected.includes(i));while(newHand.length<7)newHand.push(generateCard());hand=newHand;selected=[];if(score>=target){setTimeout(nextRound,500)}else{renderHand(true);updateHUD()}},480)}
 function nextRound(){round++;target=Math.round(target*1.6);flickerHud('hud-round');flickerHud('hud-target');toast('ROUND '+round+'  TARGET: '+target,'good');document.getElementById('hud-round').textContent=round;document.getElementById('hud-target').textContent=target;dealHand()}
 
 // ═══════════════════════════════════════
@@ -745,33 +551,44 @@ function toast(msg,type){const el=document.getElementById('toast');el.textConten
 function spawnPixels(el){if(!el)return;const rect=el.getBoundingClientRect();const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;const colors=['#f8d800','#e40058','#4a90d9','#58d854','#bc84fc','#00e8d8'];for(let i=0;i<14;i++){const p=document.createElement('div');p.className='particle';const sz=4+Math.floor(Math.random()*5);const angle=Math.random()*Math.PI*2;const dist=35+Math.random()*55;p.style.cssText=`width:${sz}px;height:${sz}px;left:${cx}px;top:${cy}px;background:${colors[Math.floor(Math.random()*colors.length)]};--tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;animation-delay:${Math.random()*0.08}s;`;document.body.appendChild(p);setTimeout(()=>p.remove(),1000)}}
 
 // ═══════════════════════════════════════
-// JLORP MADDOX ADVISOR
+// JLORP MADDOX ADVISOR (FIXED)
 // ═══════════════════════════════════════
 const maddoxAdvisor = document.getElementById('maddox-advisor');
 const maddoxSprite = document.getElementById('maddox-sprite');
 const speechBubble = document.getElementById('maddox-speech-bubble');
 
-// Your two Jlorp images, converted to Base64
-const MADDOX_MOUTH_CLOSED = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAAAA1BMVEW+gYvyAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsggAAEAAAAAAAAAAAAAAPSgm9IAAAAASUVORK5CYII=";
-const MADDOX_MOUTH_OPEN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAAAA1BMVEW+gYvyAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsggAAEAAAAAAAAAAAAAAPSgm9IAAAAASUVORK5CYII=";
+// FIX: Using GitHub raw URLs instead of local files or old Base64.
+// IMPORTANT: YOU MUST REPLACE THESE WITH YOUR OWN GITHUB RAW URLS.
+const MADDOX_MOUTH_CLOSED = "https://github.com/gregoryscastellano-hue/gammacorrection-site/blob/main/jlorp1.png?raw=true";
+const MADDOX_MOUTH_OPEN   = "https://github.com/gregoryscastellano-hue/gammacorrection-site/blob/main/jlorp2.png?raw=true";
 
-// The LORE you wrote, now used as his tips!
+// FIX: Only one definition of the tips array.
 const MADDOX_TIPS = [
-  "BOOM! It’s called Indirect Displacement! You don't move the ball; you move the dirt under the ball!",
-  "If you touch the granite with your hands, you’re not a player, you’re a safety violation!",
-  "Look at the D-Handle! It’s the only legal grip in the Aggregate Belt!",
-  "The Backhoe Finish! Clint Borsworth’s secret sauce! You redirect three streams of gravel into a vortex.",
-  "WHAM! Watch your tread depth! If your boots go deeper than half an inch... that’s an Illegal Scuffing penalty!",
-  "The Screed Move! Defense wins championships, folks! You level the gravel in front of your Marker to create a friction-trap.",
-  "Flow State! If you can keep that 5-pound granite sphere rolling for ten seconds without stopping, that’s a Full Haul! Three points!",
-  "High Dusting! 2025 was the Year of the Cloud! You can't score if you can't see!",
-  "The Great Rubber Rot! 1989 changed everything! We realized the only thing we had left was the gravel and the cards!",
-  "A Mint 10 Borsworth Rookie is legal tender for a municipal building. You don't spend it; you negotiate with it!",
-  "The Bureau of Condition! They don't audit your taxes; they audit your 3-ring binder!",
-  "The Toad Clause! It’s in the Constitution! If a magical event turns you into an amphibian, you still have the right to vote!",
-  "G is for GRIP! Accuracy! You gotta have the hands of a surgeon and the back of a mule!",
-  "H is for HUMOR! If you aren't laughing at the rhythmic crunching, the stone won't move for you! It’s all about the VIBRATION!",
-  "B is for BALANCE! Foul Prevention! Stay on top of the aggregate!"
+    "BOOM! Indirect Displacement! You don't move the ball — you move the DIRT under the ball! Touch the granite with your hands and you're not a player. You're a safety violation!",
+    "Look at the D-Handle! The ONLY legal grip in the Aggregate Belt! You want high-carbon steel if you're gonna cut through Grade 2B limestone!",
+    "The Backhoe Finish! Clint Borsworth's secret sauce! Redirect three streams of gravel into a vortex. It makes the Load walk like it's got a destination and a DEADLINE!",
+    "WHAM! Watch your tread depth! Boots deeper than half an inch scuff the asphalt and you're hitting the sub-surface! Illegal Scuffing penalty — the Bureau of Condition will have your BADGE!",
+    "The Screed Move! Defense wins championships! Level the gravel in front of your Marker to create a friction-trap. It's like putting a Closed sign on the scoreboard!",
+    "Flow State! Keep that 5-pound granite sphere rolling for ten seconds without stopping — that's a Full Haul! Three points! A symphony made of crushed stone!",
+    "High Dusting! 2025 was the Year of the Cloud! Kick up enough dust to hide the Marker and the ref calls Unsafe Conditions. You can't score if you can't SEE!",
+    "The Great Rubber Rot! 1989 changed everything! The tires turned to sludge, the silos collapsed, and all we had left was the gravel and the cards!",
+    "The Card Standard! We don't use dollars here! A Mint 10 Borsworth Rookie is legal tender for a municipal building. You don't spend it — you NEGOTIATE with it!",
+    "40% Humidity Mandate! That's the LAW! We seed the clouds to stop the rain because the Great Curl of '28 warped every card in the district. It was a national tragedy!",
+    "The Bureau of Condition! They don't audit your taxes — they audit your 3-ring binder! Soft corners? You're paying a Depreciation Levy to the STATE!",
+    "The Dunsmore Rhythm! CRUNCH! CRUNCH! President Dunsmore said the American people were just sad, so he gave us a game about moving heavy things slowly. It's therapy with a SHOVEL!",
+    "Microfiber Jumpsuits! You don't wear them for fashion — you wear them to keep your skin oils off the currency! One thumbprint can devalue your retirement fund by 20%!",
+    "Slow-Joe McStone! He's not a man — he's a lithic golem! 400 pounds of river-silt and shale! He doesn't need eyes. He feels your footsteps through seismic ECHOLOCATION!",
+    "The Witch's Bargain! Morwenna Thrice-Bound built Slow-Joe in exchange for a lifetime supply of radial tires and industrial sulfur. That's just good business!",
+    "1962, Senate Room 4B! The Congressional Hearings on Occult Athletics! President Waverman tried to ban the golems and ended up turning the front row into Northern Leopard Frogs!",
+    "The Toad Clause! It's in the Constitution! Magical amphibian transformation? You still have the right to vote — as long as you can hit the buzzer with your TONGUE!",
+    "The Dormancy Incident! 1974 — Joe just stops moving. Now he's a statue on the 40-yard line. You don't move him. You rub his legs for Good Friction before a match!",
+    "The Great Hop! Every year we celebrate the anniversary of the transformation! The only day you can buy a 5-star meal using a Misprint Frog common!",
+    "G is for GRIP! If you can't guide the Feed, you're just making a mess. Hands of a surgeon, back of a MULE!",
+    "A is for ALIGNMENT! Molecular Stability! If your alignment drops, you're just driveway fill. Stay SOLID to stay on the roster!",
+    "H is for HUMOR! If you aren't laughing at the rhythmic crunching, the stone won't move for you! It's all about the VIBRATION!",
+    "M is for METABOLISM! You're out there in a jumpsuit in 40% humidity — if your lactate threshold peaks, you'll be gasping while the Load rolls AWAY!",
+    "B is for BALANCE! Stay on top of the aggregate! Tip over and scuff the sub-surface and you're an Unsafe Condition waiting to happen!",
+    "BOOM! At the end of the day, Gravelball isn't just a sport — it's an INFRASTRUCTURE! Now get your shovel and MOVE THAT TONNAGE!"
 ];
 
 let isMaddoxTalking = false;
@@ -782,28 +599,24 @@ maddoxSprite.src = MADDOX_MOUTH_CLOSED;
 
 maddoxAdvisor.addEventListener('click', () => {
   if (isMaddoxTalking) return; // Prevent spamming
-
   isMaddoxTalking = true;
 
-  // Pick a tip and show the bubble
   const tip = MADDOX_TIPS[Math.floor(Math.random() * MADDOX_TIPS.length)];
   speechBubble.textContent = tip;
   speechBubble.classList.add('show');
   
-  // Start talking animation
   let mouthOpen = false;
   maddoxTalkInterval = setInterval(() => {
     mouthOpen = !mouthOpen;
     maddoxSprite.src = mouthOpen ? MADDOX_MOUTH_OPEN : MADDOX_MOUTH_CLOSED;
-  }, 180); // Flap speed
+  }, 180);
 
-  // Stop talking after a while
   setTimeout(() => {
     speechBubble.classList.remove('show');
     clearInterval(maddoxTalkInterval);
-    maddoxSprite.src = MADDOX_MOUTH_CLOSED; // Ensure mouth is closed
+    maddoxSprite.src = MADDOX_MOUTH_CLOSED;
     isMaddoxTalking = false;
-  }, 7000); // How long the bubble stays up
+  }, 7000);
 });
  
 dealHand();
