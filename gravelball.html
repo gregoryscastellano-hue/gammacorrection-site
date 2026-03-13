@@ -36,7 +36,7 @@ html, body {
 /* ── SCREEN ── */
 #screen {
   width: 100vw; height: 100vh;
-  background: radial-gradient(ellipse at 50% 40%, #0000d8 0%, #000080 45%, #000040 100%);
+  background: transparent
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,14 +94,35 @@ html, body {
   to { background-position-x: -2400px; } /* A multiple of all bg sizes */
 }
 
-/* ── MOVING SCANLINES ── */
+/* --- TRIPPY VHS SCANLINES --- */
 #scanlines {
-  position: fixed; inset: 0; pointer-events: none; z-index: 9000; overflow: hidden;
+    position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    background-size: 100% 3px;
 }
-#scanlines::before {
-  content: ''; position: absolute; left: 0; right: 0; height: 400%; top: -200%;
-  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0, 0, 0, 0.22) 3px, rgba(0, 0, 0, 0.22) 4px);
-  animation: scanMove 8s linear infinite;
+
+#scanlines::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    opacity: 0.3;
+    top: 0;
+    animation: trackingBar 10s linear infinite;
+}
+
+@keyframes trackingBar {
+    0% { top: -5%; }
+    10% { top: 110%; }
+    100% { top: 110%; }
 }
 @keyframes scanMove { 0% { transform: translateY(0); } 100% { transform: translateY(50%); } }
 
@@ -143,9 +164,10 @@ html, body {
 
 /* ── HUD ── */
 #hud {
-  position: relative; z-index: 100; display: flex; gap: 0; margin: 10px 0 6px;
-  background: rgba(0,0,0,0.7); border: 3px solid var(--nes-white);
-  box-shadow: 0 0 20px rgba(255,255,255,0.1), inset 0 0 20px rgba(0,0,0,0.5);
+    background: rgba(0, 0, 20, 0.6) !important;
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--nes-white);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 .hud-cell {
   padding: 7px 14px; border-right: 3px solid var(--nes-white); display: flex;
@@ -246,9 +268,7 @@ html, body {
 
 /* ── CARD FRONT ── */
 .card-face {
-  background: #0a0a0a; border: 3px solid #ffffff; transform: rotateY(180deg);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.08);
-  display: flex; flex-direction: column; position: relative;
+    background: rgba(10, 10, 10, 0.9) !important; /* Slightly see-through cards */
 }
 .card-face.sel-glow {
   border-color: var(--nes-yellow); animation: breatheGlow 2s ease-in-out infinite;
@@ -406,10 +426,13 @@ html, body {
 </style>
 </head>
 <body>
-<div id="industrial-bg">
-  <div class="bg-layer layer-1"></div>
-  <div class="bg-layer layer-2"></div>
-  <div class="bg-layer layer-3"></div>
+<div id="video-bg-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none;">
+    <iframe 
+        style="width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.1); filter: saturate(1.5) contrast(1.2);"
+        src="https://www.youtube.com/embed/mTDrB32ZCXM?autoplay=1&mute=1&loop=1&playlist=mTDrB32ZCXM&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media">
+    </iframe>
 </div>
 <div id="screen">
   <div id="header">
