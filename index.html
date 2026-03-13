@@ -181,22 +181,28 @@
     image-rendering: pixelated;
 }
 
-        /* --- TRUMPAGOTCHI PORTAL --- */
+       /* --- TRUMPAGOTCHI PORTAL (MOVED) --- */
 #project-trumpagotchi { 
-    left: 50%; 
-    top: 15%; 
-    transform: translateX(-50%);
+    right: 25%;  /* Moved away from the center */
+    top: 18%;    /* Slightly lower than the top projects */
+    z-index: 1001;
 }
 
 #project-trumpagotchi img {
-    width: 70px; 
-    filter: drop-shadow(0 0 12px #ffd700); 
+    width: 75px; 
+    filter: drop-shadow(0 0 15px #ffd700); 
     image-rendering: pixelated;
+    transition: transform 0.2s;
+}
+
+#project-trumpagotchi img:hover {
+    transform: scale(1.1) rotate(5deg); /* Adds a little "pet me" wiggle */
 }
 
 #project-trumpagotchi .portal-text {
     color: #ffd700; 
     border: 1px solid #ffd700;
+    font-weight: bold;
 }
     </style>
 </head>
