@@ -483,6 +483,15 @@ function sfx(type) {
     }
   } catch(e) {}
 }
+  } else if (type === 'maddox') {
+    osc.type = 'square';
+    const notes = [261, 293, 329, 349, 392];
+    const note = notes[Math.floor(Math.random() * notes.length)];
+    osc.frequency.setValueAtTime(note, t);
+    gain.gain.setValueAtTime(0.06, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+    osc.start(t); osc.stop(t + 0.12);
+}
 
 // ═══════════════════════════════════════
 // BGM
@@ -627,7 +636,8 @@ maddoxAdvisor.addEventListener('click', () => {
   maddoxTalkInterval = setInterval(() => {
     mouthOpen = !mouthOpen;
     maddoxSprite.src = mouthOpen ? MADDOX_MOUTH_OPEN : MADDOX_MOUTH_CLOSED;
-  }, 180);
+    if (mouthOpen) sfx('maddox');
+}, 180);
 
   setTimeout(() => {
     speechBubble.classList.remove('show');
