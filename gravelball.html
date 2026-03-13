@@ -569,7 +569,9 @@ const STATS=[{key:'G',color:'#e40058'},{key:'A',color:'#4a90d9'},{key:'H',color:
 const SPRITES={driver:[0,0,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,2,2,2,2,0,0,0,2,2,2,2,2,2,0,0,0,2,0,0,2,0,0,0,0,3,0,0,3,0,0,0,0,3,3,3,3,0,0],golem:[0,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,1,1,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2,2,3,2,0,3,3,0,0,3,3,0],toad:[0,0,3,3,3,3,0,0,0,3,3,3,3,3,3,0,0,1,0,3,3,0,1,0,0,3,3,3,3,3,3,0,0,0,3,4,4,3,0,0,0,3,3,3,3,3,3,0,0,0,3,0,0,3,0,0,0,3,0,0,0,0,3,0]};
 const PAL={driver:{0:'transparent',1:'#f8d800',2:'#e8a860',3:'#8a5020',4:'#f87858'},golem:{0:'transparent',1:'#ffffff',2:'#888878',3:'#555548',4:'#f8d800'},toad:{0:'transparent',1:'#f8d800',2:'transparent',3:'#58d854',4:'#40a840'}};
 const DRIVER_BODIES = ['body1.png','body2.png','body3.png','body4.png','body5.png','body6.png','body7.png'];
-
+const GOLEM_BODIES = DRIVER_BODIES; // Prevents the vibe-crash!
+const TOAD_BODIES = DRIVER_BODIES;  // Prevents the vibe-crash!
+  
 const GITHUB = 'https://raw.githubusercontent.com/gregoryscastellano-hue/gammacorrection-site/main/';
 
 function buildCollage(card) {
