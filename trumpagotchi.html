@@ -166,269 +166,264 @@
 
     <script>
     // --- GAME STATE ---
-    let stats = {
-        ego: 100,
-        crave: 80,
-        energy: 100,
-        temper: 0
-    };
+let stats = {
+    ego: 100,
+    crave: 80,
+    energy: 100,
+    temper: 0
+};
 
-    // --- NEW: SPRITE STATE & TARGETS ---
-    let spriteState = 'wandering'; // Can be 'wandering' or 'seekingFood'
-    let foodTarget = null; // Will hold the burger element and its coordinates
+// --- NEW: SPRITE STATE & TARGETS ---
+let spriteState = 'wandering'; 
+let foodTarget = null; 
 
-    // --- UI ELEMENTS ---
-    const screenEl = document.getElementById('game-screen');
-    const statusText = document.getElementById('status-bubble');
-    const spriteEl = document.getElementById('trump-sprite');
-    const spriteContainer = document.querySelector('.sprite-container');
-    let gameOverTextEl = null;
+// --- UI ELEMENTS ---
+const screenEl = document.getElementById('game-screen');
+const statusText = document.getElementById('status-bubble');
+const spriteEl = document.getElementById('trump-sprite');
+const spriteContainer = document.querySelector('.sprite-container');
+let gameOverTextEl = null;
 
-    // --- MOVEMENT VARIABLES ---
-    let posX = 0, posY = 0;
-    let velX = 0.3, velY = 0.2;
-    let moveStarted = false;
-    let waddleAngle = 0;
-    let directionTimer = 0;
-    let targetVelX = 0.3, targetVelY = 0.2;
+// --- MOVEMENT VARIABLES ---
+let posX = 0, posY = 0;
+let velX = 0.3, velY = 0.2;
+let moveStarted = false;
+let waddleAngle = 0;
+let directionTimer = 0;
+let targetVelX = 0.3, targetVelY = 0.2;
 
-    function pickNewDirection() {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 0.4 + Math.random() * 0.5;
-        targetVelX = Math.cos(angle) * speed;
-        targetVelY = Math.sin(angle) * speed;
-        directionTimer = 90 + Math.floor(Math.random() * 130);
-    }
+function pickNewDirection() {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.4 + Math.random() * 0.5;
+    targetVelX = Math.cos(angle) * speed;
+    targetVelY = Math.sin(angle) * speed;
+    directionTimer = 90 + Math.floor(Math.random() * 130);
+}
 
-    function moveTrump() {
-        if (!moveStarted) {
-            const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
-            const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
-            posX = maxX / 2;
-            posY = maxY / 2;
-            moveStarted = true;
-            pickNewDirection();
-        }
-
+function moveTrump() {
+    if (!moveStarted) {
         const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
         const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
+        posX = maxX / 2;
+        posY = maxY / 2;
+        moveStarted = true;
+        pickNewDirection();
+    }
 
-        // --- NEW: State-based movement ---
-        if (spriteState === 'wandering') {
-            velX += (targetVelX - velX) * 0.03;
-            velY += (targetVelY - velY) * 0.03;
-            directionTimer--;
-            if (directionTimer <= 0) pickNewDirection();
+    const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+    const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
 
+    // --- NEW: State-based movement ---
+    if (spriteState === 'wandering') {
+        velX += (targetVelX - velX) * 0.03;
+        velY += (targetVelY - velY) * 0.03;
+        directionTimer--;
+        if (directionTimer <= 0) pickNewDirection();
+
+        posX += velX;
+        posY += velY;
+
+        if (posX <= 0 || posX >= maxX) {
+            velX *= -1;
+            targetVelX *= -1;
+            pickNewDirection();
+        }
+        if (posY <= 0 || posY >= maxY) {
+            velY *= -1;
+            targetVelY *= -1;
+            pickNewDirection();
+        }
+    } else if (spriteState === 'seekingFood') {
+        const spriteCenterX = posX + spriteEl.offsetWidth / 2;
+        const spriteCenterY = posY + spriteEl.offsetHeight / 2;
+        const targetX = foodTarget.x;
+        const targetY = foodTarget.y;
+
+        const dx = targetX - spriteCenterX;
+        const dy = targetY - spriteCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // FIX: Increased threshold to 40 so he can reach it against walls
+        if (distance < 40) { 
+            // He ate it!
+            // Wrapped in a try/catch in case the browser blocks auto-play audio
+            try { new Audio('munch1.mp3').play(); } catch(e) {}
+            
+            // Update stats
+            stats.crave = Math.min(100, stats.crave + 25);
+            stats.energy = Math.min(100, stats.energy + 5);
+            stats.temper = Math.max(0, stats.temper - 5);
+            updateUI();
+
+            // Clean up
+            foodTarget.el.remove();
+            foodTarget = null;
+            spriteState = 'wandering';
+            document.getElementById('btn1').disabled = false; // Re-enable button
+            pickNewDirection(); // Start wandering again
+
+        } else {
+            // He's still walking towards it
+            const seekSpeed = 1.8;
+            velX = (dx / distance) * seekSpeed;
+            velY = (dy / distance) * seekSpeed;
             posX += velX;
             posY += velY;
-
-            if (posX <= 0 || posX >= maxX) {
-                velX *= -1;
-                targetVelX *= -1;
-                pickNewDirection();
-            }
-            if (posY <= 0 || posY >= maxY) {
-                velY *= -1;
-                targetVelY *= -1;
-                pickNewDirection();
-            }
-        } else if (spriteState === 'seekingFood') {
-            const spriteCenterX = posX + spriteEl.offsetWidth / 2;
-            const spriteCenterY = posY + spriteEl.offsetHeight / 2;
-            const targetX = foodTarget.x;
-            const targetY = foodTarget.y;
-
-            const dx = targetX - spriteCenterX;
-            const dy = targetY - spriteCenterY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            // Check if he has reached the burger
-            if (distance < 25) {
-                // He ate it!
-                new Audio('munch1.mp3').play();
-                
-                // Update stats
-                stats.crave = Math.min(100, stats.crave + 25);
-                stats.energy = Math.min(100, stats.energy + 5);
-                stats.temper = Math.max(0, stats.temper - 5);
-                updateUI();
-
-                // Clean up
-                foodTarget.el.remove();
-                foodTarget = null;
-                spriteState = 'wandering';
-                document.getElementById('btn1').disabled = false; // Re-enable button
-                pickNewDirection(); // Start wandering again
-
-            } else {
-                // He's still walking towards it
-                const seekSpeed = 1.8;
-                velX = (dx / distance) * seekSpeed;
-                velY = (dy / distance) * seekSpeed;
-                posX += velX;
-                posY += velY;
-            }
-        }
-
-        posX = Math.max(0, Math.min(posX, maxX));
-        posY = Math.max(0, Math.min(posY, maxY));
-
-        const currentSpeed = Math.abs(velX) + Math.abs(velY);
-        waddleAngle += currentSpeed * 0.06; 
-        const waddleLean = Math.sin(waddleAngle) * 8; 
-        const facingFlip = velX > 0 ? 1 : -1;
-
-        spriteEl.style.transform = `scaleX(${facingFlip}) rotate(${waddleLean}deg)`;
-        spriteEl.style.transformOrigin = 'bottom center';
-
-        spriteEl.style.left = posX + 'px';
-        spriteEl.style.top = posY + 'px';
-
-        if (stats.ego > 0) {
-           requestAnimationFrame(moveTrump);
         }
     }
 
-    // --- CORE GAME FUNCTIONS ---
-    function updateUI() {
-        // ... (This function remains the same as the "You're Fired" version)
-        // [Copy your previous updateUI function here]
-        document.getElementById('ego-bar').style.width = stats.ego + "%";
-        document.getElementById('crave-bar').style.width = stats.crave + "%";
-        document.getElementById('energy-bar').style.width = stats.energy + "%";
-        document.getElementById('temp-bar').style.width = stats.temper + "%";
+    posX = Math.max(0, Math.min(posX, maxX));
+    posY = Math.max(0, Math.min(posY, maxY));
 
-        const baseFilter = "grayscale(1) contrast(1.5)";
+    const currentSpeed = Math.abs(velX) + Math.abs(velY);
+    waddleAngle += currentSpeed * 0.06; 
+    const waddleLean = Math.sin(waddleAngle) * 8; 
+    const facingFlip = velX > 0 ? 1 : -1;
 
-        if (stats.ego <= 0) {
-            if (!gameOverTextEl) {
-                gameOverTextEl = document.createElement('div');
-                gameOverTextEl.innerText = "YOU'RE FIRED!";
-                gameOverTextEl.style.position = 'absolute';
-                gameOverTextEl.style.top = '50%';
-                gameOverTextEl.style.left = '50%';
-                gameOverTextEl.style.transform = 'translate(-50%, -50%)';
-                gameOverTextEl.style.fontSize = '48px';
-                gameOverTextEl.style.color = '#1a1a1a';
-                gameOverTextEl.style.textShadow = '2px 2px #9cad7d';
-                gameOverTextEl.style.textAlign = 'center';
-                gameOverTextEl.style.zIndex = '10';
-                spriteContainer.appendChild(gameOverTextEl);
+    spriteEl.style.transform = `scaleX(${facingFlip}) rotate(${waddleLean}deg)`;
+    spriteEl.style.transformOrigin = 'bottom center';
 
-                statusText.innerText = "ELECTION RESULTS ARE IN...";
-                spriteEl.style.filter = "grayscale(1) opacity(0.3)";
-                
-                screenEl.classList.remove('unstable');
-                clearInterval(decayInterval); 
+    spriteEl.style.left = posX + 'px';
+    spriteEl.style.top = posY + 'px';
 
-                const allButtons = document.querySelectorAll('.btn');
-                const newLabels = ["STOP", "THE", "COUNT!", "RECOUNT!"];
-                allButtons.forEach((btn, index) => {
-                    btn.innerText = newLabels[index] || btn.innerText;
-                    btn.disabled = true;
-                    btn.style.cursor = 'not-allowed';
-                    btn.style.opacity = '0.5';
-                });
-            }
-            return;
-        }
-
-        if (stats.temper > 70) {
-            statusText.innerText = "STATUS: UNSTABLE!";
-            screenEl.classList.add('unstable');
-            spriteEl.style.filter = "sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)";
-            spriteEl.style.mixBlendMode = 'normal';
-            spriteEl.style.opacity = '1';
-        } else if (stats.ego < 30) {
-            statusText.innerText = "STATUS: SAD!";
-            screenEl.classList.remove('unstable');
-            spriteEl.style.filter = baseFilter;
-            spriteEl.style.mixBlendMode = 'multiply';
-            spriteEl.style.opacity = '0.5';
-        } else if (stats.energy < 20) {
-            statusText.innerText = "STATUS: LOW ENERGY";
-            screenEl.classList.remove('unstable');
-            spriteEl.style.filter = `${baseFilter} brightness(0.8)`;
-            spriteEl.style.mixBlendMode = 'multiply';
-            spriteEl.style.opacity = '0.8';
-        } else {
-            statusText.innerText = "STATUS: STABLE";
-            screenEl.classList.remove('unstable');
-            spriteEl.style.filter = baseFilter;
-            spriteEl.style.mixBlendMode = 'normal';
-            spriteEl.style.opacity = '0.9';
-        }
+    if (stats.ego > 0) {
+       requestAnimationFrame(moveTrump);
     }
+}
 
+// --- CORE GAME FUNCTIONS ---
+function updateUI() {
+    document.getElementById('ego-bar').style.width = stats.ego + "%";
+    document.getElementById('crave-bar').style.width = stats.crave + "%";
+    document.getElementById('energy-bar').style.width = stats.energy + "%";
+    document.getElementById('temp-bar').style.width = stats.temper + "%";
 
-    function interact(action) {
-        if (stats.ego <= 0) return;
+    const baseFilter = "grayscale(1) contrast(1.5)";
 
-        if (action === 'feed') {
-            // --- NEW: FEED LOGIC ---
-            if (spriteState !== 'wandering') return; // Don't feed if he's busy
+    if (stats.ego <= 0) {
+        if (!gameOverTextEl) {
+            gameOverTextEl = document.createElement('div');
+            gameOverTextEl.innerText = "YOU'RE FIRED!";
+            gameOverTextEl.style.position = 'absolute';
+            gameOverTextEl.style.top = '50%';
+            gameOverTextEl.style.left = '50%';
+            gameOverTextEl.style.transform = 'translate(-50%, -50%)';
+            gameOverTextEl.style.fontSize = '48px';
+            gameOverTextEl.style.color = '#1a1a1a';
+            gameOverTextEl.style.textShadow = '2px 2px #9cad7d';
+            gameOverTextEl.style.textAlign = 'center';
+            gameOverTextEl.style.zIndex = '10';
+            spriteContainer.appendChild(gameOverTextEl);
 
-            spriteState = 'seekingFood';
-            document.getElementById('btn1').disabled = true; // Disable button
-
-            // Create and position the burger
-            const burgerEl = document.createElement('img');
-            burgerEl.src = 'burger1.png';
-            burgerEl.style.position = 'absolute';
-            burgerEl.style.width = '40px'; // Adjust size as needed
-            burgerEl.style.imageRendering = 'pixelated';
+            statusText.innerText = "ELECTION RESULTS ARE IN...";
+            spriteEl.style.filter = "grayscale(1) opacity(0.3)";
             
-            const foodX = Math.random() * (spriteContainer.offsetWidth - 40);
-            const foodY = Math.random() * (spriteContainer.offsetHeight - 40);
+            screenEl.classList.remove('unstable');
+            clearInterval(decayInterval); 
 
-            burgerEl.style.left = foodX + 'px';
-            burgerEl.style.top = foodY + 'px';
-            
-            spriteContainer.appendChild(burgerEl);
-
-            // Store the target
-            foodTarget = {
-                el: burgerEl,
-                x: 20,
-                y: 20
-            };
-            // Note: Stat updates are now handled in moveTrump() when he eats it
+            const allButtons = document.querySelectorAll('.btn');
+            const newLabels = ["STOP", "THE", "COUNT!", "RECOUNT!"];
+            allButtons.forEach((btn, index) => {
+                btn.innerText = newLabels[index] || btn.innerText;
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+                btn.style.opacity = '0.5';
+            });
         }
-        if (action === 'rally') {
-            stats.ego = 100;
-            stats.energy = Math.max(0, stats.energy - 40);
-            stats.temper = Math.min(100, stats.temper + 20);
-            updateUI();
-        }
-        if (action === 'golf') {
-            stats.energy = Math.min(100, stats.energy + 50);
-            stats.ego = Math.min(100, stats.ego + 10);
-            stats.temper = Math.max(0, stats.temper - 20);
-            updateUI();
-        }
-        if (action === 'truth') {
-            stats.ego = Math.min(100, stats.ego + 15);
-            stats.temper = Math.min(100, stats.temper + 15);
-            updateUI();
-        }
-        // We only call updateUI for immediate actions. 'feed' is now a process.
+        return;
     }
 
-    // --- GAME LOOP ---
-    const decayInterval = setInterval(() => {
-        if (stats.ego <= 0) return;
+    if (stats.temper > 70) {
+        statusText.innerText = "STATUS: UNSTABLE!";
+        screenEl.classList.add('unstable');
+        spriteEl.style.filter = "sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)";
+        spriteEl.style.mixBlendMode = 'normal';
+        spriteEl.style.opacity = '1';
+    } else if (stats.ego < 30) {
+        statusText.innerText = "STATUS: SAD!";
+        screenEl.classList.remove('unstable');
+        spriteEl.style.filter = baseFilter;
+        spriteEl.style.mixBlendMode = 'multiply';
+        spriteEl.style.opacity = '0.5';
+    } else if (stats.energy < 20) {
+        statusText.innerText = "STATUS: LOW ENERGY";
+        screenEl.classList.remove('unstable');
+        spriteEl.style.filter = `${baseFilter} brightness(0.8)`;
+        spriteEl.style.mixBlendMode = 'multiply';
+        spriteEl.style.opacity = '0.8';
+    } else {
+        statusText.innerText = "STATUS: STABLE";
+        screenEl.classList.remove('unstable');
+        spriteEl.style.filter = baseFilter;
+        spriteEl.style.mixBlendMode = 'normal';
+        spriteEl.style.opacity = '0.9';
+    }
+}
 
-        stats.ego = Math.max(0, stats.ego - 3);
-        stats.crave = Math.max(0, stats.crave - 2);
-        stats.energy = Math.max(0, stats.energy - 1);
-        if (stats.crave < 20) stats.temper = Math.min(100, stats.temper + 5);
+function interact(action) {
+    if (stats.ego <= 0) return;
+
+    if (action === 'feed') {
+        if (spriteState !== 'wandering') return; // Don't feed if he's busy
+
+        spriteState = 'seekingFood';
+        document.getElementById('btn1').disabled = true; // Disable button
+
+        // Create and position the burger
+        const burgerEl = document.createElement('img');
+        burgerEl.src = 'burger1.png';
+        burgerEl.style.position = 'absolute';
+        burgerEl.style.width = '40px'; 
+        burgerEl.style.imageRendering = 'pixelated';
+        
+        const foodX = Math.random() * (spriteContainer.offsetWidth - 40);
+        const foodY = Math.random() * (spriteContainer.offsetHeight - 40);
+
+        burgerEl.style.left = foodX + 'px';
+        burgerEl.style.top = foodY + 'px';
+        
+        spriteContainer.appendChild(burgerEl);
+
+        // FIX: Store the center of the burger instead of the top-left edge
+        foodTarget = {
+            el: burgerEl,
+            x: foodX + 20, 
+            y: foodY + 20
+        };
+    }
+    if (action === 'rally') {
+        stats.ego = 100;
+        stats.energy = Math.max(0, stats.energy - 40);
+        stats.temper = Math.min(100, stats.temper + 20);
         updateUI();
-    }, 3000);
+    }
+    if (action === 'golf') {
+        stats.energy = Math.min(100, stats.energy + 50);
+        stats.ego = Math.min(100, stats.ego + 10);
+        stats.temper = Math.max(0, stats.temper - 20);
+        updateUI();
+    }
+    if (action === 'truth') {
+        stats.ego = Math.min(100, stats.ego + 15);
+        stats.temper = Math.min(100, stats.temper + 15);
+        updateUI();
+    }
+}
 
-    // --- INITIALIZE GAME ---
+// --- GAME LOOP ---
+const decayInterval = setInterval(() => {
+    if (stats.ego <= 0) return;
+
+    stats.ego = Math.max(0, stats.ego - 3);
+    stats.crave = Math.max(0, stats.crave - 2);
+    stats.energy = Math.max(0, stats.energy - 1);
+    if (stats.crave < 20) stats.temper = Math.min(100, stats.temper + 5);
     updateUI();
-    requestAnimationFrame(moveTrump);
+}, 3000);
+
+// --- INITIALIZE GAME ---
+updateUI();
+requestAnimationFrame(moveTrump);
 </script>
 </body>
 </html>
