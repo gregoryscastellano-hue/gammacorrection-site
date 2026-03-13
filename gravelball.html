@@ -575,7 +575,7 @@ const GITHUB = 'https://raw.githubusercontent.com/gregoryscastellano-hue/gammaco
 function buildCollage(type) {
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
   const body = GITHUB + pick(DRIVER_BODIES);
-  return `<div class="collage"><img src="${body}"></div>`;
+  return `<img src="${body}">`;
 }
 // ═══════════════════════════════════════
 // CARD GENERATION & STATE
