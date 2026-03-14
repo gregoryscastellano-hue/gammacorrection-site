@@ -26,12 +26,7 @@
             text-align: center;
             position: relative;
         }
-        .brand {
-            font-size: 24px;
-            color: #8b6508;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px #eee;
-        }
+        .brand { font-size: 24px; color: #8b6508; margin-bottom: 10px; text-shadow: 1px 1px #eee; }
         .screen {
             background: #9cad7d;
             border: 8px solid #222;
@@ -43,93 +38,58 @@
             padding: 10px;
             image-rendering: pixelated;
         }
-        .stats-panel {
-            font-size: 18px;
-            color: #1a1a1a;
-            text-align: left;
-        }
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2px;
-        }
-        .bar-bg {
-            width: 100px;
-            height: 12px;
-            border: 2px solid #1a1a1a;
-            background: rgba(0,0,0,0.1);
-        }
-        .bar-fill {
-            height: 100%;
-            background: #1a1a1a;
-            transition: width 0.3s;
-        }
-        .sprite-container {
-            flex-grow: 1;
-            position: relative;
-        }
+        .stats-panel { font-size: 18px; color: #1a1a1a; text-align: left; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 2px; }
+        .bar-bg { width: 100px; height: 12px; border: 2px solid #1a1a1a; background: rgba(0,0,0,0.1); }
+        .bar-fill { height: 100%; background: #1a1a1a; transition: width 0.3s; }
+        .sprite-container { flex-grow: 1; position: relative; }
         #trump-sprite {
-            width: 100px;
-            image-rendering: pixelated;
-            position: absolute;
-            filter: grayscale(1) contrast(1.5);
-            opacity: 0.9;
+            width: 100px; image-rendering: pixelated; position: absolute;
+            filter: grayscale(1) contrast(1.5); opacity: 0.9;
         }
         #speech-bubble {
-            position: absolute;
-            background: #fff;
-            color: #000;
-            border: 2px solid #1a1a1a;
-            padding: 3px 7px;
-            font-size: 14px;
-            font-family: 'VT323', monospace;
-            display: none;
-            z-index: 5;
-            white-space: nowrap;
-            box-shadow: 2px 2px 0px #000;
-            pointer-events: none;
+            position: absolute; background: #fff; color: #000;
+            border: 2px solid #1a1a1a; padding: 3px 7px; font-size: 14px;
+            font-family: 'VT323', monospace; display: none; z-index: 5;
+            white-space: nowrap; box-shadow: 2px 2px 0px #000; pointer-events: none;
         }
         #status-bubble {
-            background: #1a1a1a;
-            color: #9cad7d;
-            padding: 2px 5px;
-            position: absolute;
-            bottom: 5px;
-            width: 90%;
-            font-size: 16px;
+            background: #1a1a1a; color: #9cad7d; padding: 2px 5px;
+            position: absolute; bottom: 5px; width: 90%; font-size: 16px;
         }
-        .button-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
-        }
+        .button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .btn {
-            background: #c0c0c0;
-            border: 3px outset #fff;
-            padding: 8px;
-            cursor: pointer;
-            font-family: 'VT323', monospace;
-            font-weight: bold;
-            box-shadow: 2px 2px 0px #000;
-            font-size: 14px;
+            background: #c0c0c0; border: 3px outset #fff; padding: 8px; cursor: pointer;
+            font-family: 'VT323', monospace; font-weight: bold; box-shadow: 2px 2px 0px #000; font-size: 14px;
         }
-        .btn:active {
-            border: 3px inset #fff;
-            transform: translate(1px, 1px);
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .btn:active { border: 3px inset #fff; transform: translate(1px, 1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         @keyframes shake {
-            0%   { transform: translate(2px, 2px); }
-            20%  { transform: translate(-2px, -2px); }
-            40%  { transform: translate(2px, -2px); }
-            60%  { transform: translate(-2px, 2px); }
-            100% { transform: translate(0, 0); }
+            0%  { transform: translate(2px, 2px); }  20% { transform: translate(-2px, -2px); }
+            40% { transform: translate(2px, -2px); } 60% { transform: translate(-2px, 2px); }
+            100%{ transform: translate(0, 0); }
         }
         .unstable { animation: shake 0.1s infinite; }
+
+        /* ── GOLF ── */
+        #power-meter-container {
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 18px; border: 2px solid #1a1a1a;
+            background: rgba(0,0,0,0.25); display: none; z-index: 10; overflow: hidden;
+        }
+        #power-meter-sweet-spot {
+            position: absolute; left: 60%; width: 25%; height: 100%;
+            background: #4caf50; opacity: 0.75; z-index: 1;
+        }
+        #power-meter-bar {
+            width: 0%; height: 100%; background: #d4af37;
+            position: absolute; top: 0; left: 0; z-index: 2;
+        }
+        #power-meter-label {
+            position: absolute; bottom: 46px; left: 50%; transform: translateX(-50%);
+            font-size: 14px; color: #1a1a1a; display: none; z-index: 10; white-space: nowrap;
+        }
+        .golf-item { position: absolute; image-rendering: pixelated; z-index: 3; }
     </style>
 </head>
 <body>
@@ -138,7 +98,6 @@
 
     <div class="tago-case">
         <div class="brand">MAGA-TECH</div>
-
         <div class="screen" id="game-screen">
             <div class="stats-panel">
                 <div class="stat-row">EGO:  <div class="bar-bg"><div id="ego-bar"    class="bar-fill"></div></div></div>
@@ -146,15 +105,17 @@
                 <div class="stat-row">NRGY: <div class="bar-bg"><div id="energy-bar" class="bar-fill"></div></div></div>
                 <div class="stat-row">TEMP: <div class="bar-bg"><div id="temp-bar"   class="bar-fill"></div></div></div>
             </div>
-
             <div class="sprite-container" id="sprite-container">
                 <div id="speech-bubble"></div>
                 <img id="trump-sprite" src="trump1.png">
+                <div id="power-meter-container">
+                    <div id="power-meter-sweet-spot"></div>
+                    <div id="power-meter-bar"></div>
+                </div>
+                <div id="power-meter-label">SWING POWER</div>
             </div>
-
             <div id="status-bubble">STATUS: STABLE</div>
         </div>
-
         <div class="button-grid">
             <button id="btn1" class="btn" onclick="interact('feed')">HAMBERDER</button>
             <button id="btn2" class="btn" onclick="interact('rally')">RALLY</button>
@@ -169,27 +130,12 @@
         // ═══════════════════════════════
         // GAME STATE
         // ═══════════════════════════════
-        let stats = {
-            ego: 100,
-            crave: 80,
-            energy: 100,
-            temper: 0
-        };
+        let stats = { ego: 100, crave: 80, energy: 100, temper: 0 };
 
-        // ═══════════════════════════════
-        // SPEECH PHRASES
-        // ═══════════════════════════════
         const phrases = [
-            "FAKE NEWS!",
-            "TREMENDOUS!",
-            "SAD!",
-            "YUGE!",
-            "MANY SUCH CASES",
-            "WITCH HUNT!",
-            "I WON BY A LOT!",
-            "PERFECT CALL!",
-            "NO COLLUSION!",
-            "BELIEVE ME!"
+            "FAKE NEWS!", "TREMENDOUS!", "SAD!", "YUGE!",
+            "MANY SUCH CASES", "WITCH HUNT!", "I WON BY A LOT!",
+            "PERFECT CALL!", "NO COLLUSION!", "BELIEVE ME!"
         ];
         let isSpeaking = false;
         let speechTimer = null;
@@ -197,12 +143,15 @@
         // ═══════════════════════════════
         // UI ELEMENTS
         // ═══════════════════════════════
-        const screenEl         = document.getElementById('game-screen');
-        const statusText       = document.getElementById('status-bubble');
-        const spriteEl         = document.getElementById('trump-sprite');
-        const spriteContainer  = document.getElementById('sprite-container');
-        const bubbleEl         = document.getElementById('speech-bubble');
-        let gameOverTextEl     = null;
+        const screenEl        = document.getElementById('game-screen');
+        const statusText      = document.getElementById('status-bubble');
+        const spriteEl        = document.getElementById('trump-sprite');
+        const spriteContainer = document.getElementById('sprite-container');
+        const bubbleEl        = document.getElementById('speech-bubble');
+        const meterContainer  = document.getElementById('power-meter-container');
+        const meterBar        = document.getElementById('power-meter-bar');
+        const meterLabel      = document.getElementById('power-meter-label');
+        let gameOverTextEl    = null;
 
         // ═══════════════════════════════
         // MOVEMENT STATE
@@ -213,8 +162,19 @@
         let moveStarted = false;
         let waddleAngle = 0;
         let directionTimer = 0;
-        let spriteState = 'wandering'; // 'wandering' | 'seekingFood'
-        let foodTarget = null;
+        let spriteState = 'wandering';
+        let foodTarget  = null;
+
+        // ═══════════════════════════════
+        // GOLF STATE
+        // ═══════════════════════════════
+        let powerValue     = 0;
+        let powerDirection = 1;
+        const POWER_SPEED  = 1.8;
+        const SWEET_START  = 60;
+        const SWEET_END    = 85;
+        let golfBall = null;
+        let golfHole = null;
 
         // ═══════════════════════════════
         // BGM
@@ -224,10 +184,7 @@
         bgMusic.loop = true;
         bgMusic.volume = 0.4;
         document.addEventListener('click', () => {
-            if (!bgMusicStarted) {
-                bgMusic.play().catch(e => {});
-                bgMusicStarted = true;
-            }
+            if (!bgMusicStarted) { bgMusic.play().catch(() => {}); bgMusicStarted = true; }
         }, { once: true });
 
         // ═══════════════════════════════
@@ -241,17 +198,16 @@
             directionTimer = 90 + Math.floor(Math.random() * 130);
         }
 
-        function moveTrump() {
+        function updateSpritePosition() {
             if (!moveStarted) {
-                const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+                const maxX = spriteContainer.offsetWidth  - spriteEl.offsetWidth;
                 const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
-                posX = maxX / 2;
-                posY = maxY / 2;
+                posX = maxX / 2; posY = maxY / 2;
                 moveStarted = true;
                 pickNewDirection();
             }
 
-            const maxX = spriteContainer.offsetWidth - spriteEl.offsetWidth;
+            const maxX = spriteContainer.offsetWidth  - spriteEl.offsetWidth;
             const maxY = spriteContainer.offsetHeight - spriteEl.offsetHeight;
 
             if (spriteState === 'wandering') {
@@ -259,81 +215,159 @@
                 velY += (targetVelY - velY) * 0.03;
                 directionTimer--;
                 if (directionTimer <= 0) pickNewDirection();
-
-                posX += velX;
-                posY += velY;
-
-                if (posX <= 0 || posX >= maxX) {
-                    velX *= -1; targetVelX *= -1;
-                    pickNewDirection();
-                }
-                if (posY <= 0 || posY >= maxY) {
-                    velY *= -1; targetVelY *= -1;
-                    pickNewDirection();
-                }
+                posX += velX; posY += velY;
+                if (posX <= 0 || posX >= maxX) { velX *= -1; targetVelX *= -1; pickNewDirection(); }
+                if (posY <= 0 || posY >= maxY) { velY *= -1; targetVelY *= -1; pickNewDirection(); }
 
             } else if (spriteState === 'seekingFood') {
-                const spriteCenterX = posX + spriteEl.offsetWidth / 2;
-                const spriteCenterY = posY + spriteEl.offsetHeight / 2;
-                const dx = foodTarget.x - spriteCenterX;
-                const dy = foodTarget.y - spriteCenterY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                // FIX 1: Increased eating radius from 25 to 35
-                if (distance < 35) {
-                    // He ate it
+                const cx = posX + spriteEl.offsetWidth  / 2;
+                const cy = posY + spriteEl.offsetHeight / 2;
+                const dx = foodTarget.x - cx;
+                const dy = foodTarget.y - cy;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 25) {
                     try { new Audio('munch1.mp3').play(); } catch(e) {}
-                    stats.crave  = Math.min(100, stats.crave + 25);
+                    stats.crave  = Math.min(100, stats.crave  + 25);
                     stats.energy = Math.min(100, stats.energy + 5);
                     stats.temper = Math.max(0,   stats.temper - 5);
                     updateUI();
-                    foodTarget.el.remove();
-                    foodTarget = null;
+                    foodTarget.el.remove(); foodTarget = null;
                     spriteState = 'wandering';
                     document.getElementById('btn1').disabled = false;
                     pickNewDirection();
                 } else {
-                    // FIX 2: Added easing/friction. He slows down as he gets closer so he never overshoots.
-                    // The 0.05 is the easing multiplier. 
-                    velX = dx * 0.05; 
-                    velY = dy * 0.05;
-                    
-                    // Cap the maximum speed so he doesn't rocket across the screen
-                    const maxSeekSpeed = 2.5;
-                    velX = Math.max(-maxSeekSpeed, Math.min(maxSeekSpeed, velX));
-                    velY = Math.max(-maxSeekSpeed, Math.min(maxSeekSpeed, velY));
-
-                    posX += velX;
-                    posY += velY;
+                    velX = (dx / dist) * 1.8;
+                    velY = (dy / dist) * 1.8;
+                    posX += velX; posY += velY;
                 }
+
+            } else if (spriteState === 'golf_aiming' || spriteState === 'golf_swinging') {
+                velX = 0; velY = 0;
             }
+
             posX = Math.max(0, Math.min(posX, maxX));
             posY = Math.max(0, Math.min(posY, maxY));
 
-            // Waddle
-            const currentSpeed = Math.abs(velX) + Math.abs(velY);
-            waddleAngle += currentSpeed * 0.06;
-            const waddleLean  = Math.sin(waddleAngle) * 8;
-            const facingFlip  = velX > 0 ? 1 : -1;
-            spriteEl.style.transform       = `scaleX(${facingFlip}) rotate(${waddleLean}deg)`;
+            const spd = Math.abs(velX) + Math.abs(velY);
+            waddleAngle += spd * 0.06;
+            const lean  = Math.sin(waddleAngle) * 8;
+            const flipX = velX >= 0 ? 1 : -1;
+            spriteEl.style.transform       = `scaleX(${flipX}) rotate(${lean}deg)`;
             spriteEl.style.transformOrigin = 'bottom center';
             spriteEl.style.left = posX + 'px';
             spriteEl.style.top  = posY + 'px';
 
-            // Speech bubble follows him
             if (isSpeaking) {
-                bubbleEl.style.left = (posX + (spriteEl.offsetWidth / 2) - (bubbleEl.offsetWidth / 2)) + 'px';
+                bubbleEl.style.left = (posX + spriteEl.offsetWidth / 2 - bubbleEl.offsetWidth / 2) + 'px';
                 bubbleEl.style.top  = (posY - 30) + 'px';
             }
+        }
 
-            if (stats.ego > 0) requestAnimationFrame(moveTrump);
+        // ═══════════════════════════════
+        // MAIN LOOP
+        // ═══════════════════════════════
+        function animationLoop() {
+            if (stats.ego <= 0) return;
+            updateSpritePosition();
+            if (spriteState === 'golf_aiming') {
+                powerValue += powerDirection * POWER_SPEED;
+                if (powerValue >= 100) { powerValue = 100; powerDirection = -1; }
+                if (powerValue <= 0)   { powerValue = 0;   powerDirection =  1; }
+                meterBar.style.width = powerValue + '%';
+            }
+            requestAnimationFrame(animationLoop);
+        }
+
+        // ═══════════════════════════════
+        // GOLF MINI-GAME
+        // ═══════════════════════════════
+        function startGolfGame() {
+            spriteState = 'golf_aiming';
+            powerValue = 0; powerDirection = 1;
+
+            ['btn1','btn2','btn4'].forEach(id => document.getElementById(id).disabled = true);
+            document.getElementById('btn3').innerText = 'SWING!';
+            statusText.innerText = 'STATUS: GOLFING...';
+
+            golfBall = document.createElement('img');
+            golfBall.src = 'golf_ball.png';
+            golfBall.className = 'golf-item';
+            golfBall.style.width = '14px';
+            golfBall.style.left  = (posX + spriteEl.offsetWidth + 5) + 'px';
+            golfBall.style.top   = (posY + spriteEl.offsetHeight - 14) + 'px';
+            spriteContainer.appendChild(golfBall);
+
+            golfHole = document.createElement('img');
+            golfHole.src = 'golf_hole.png';
+            golfHole.className = 'golf-item';
+            golfHole.style.width = '24px';
+            const holeX = 20 + Math.random() * (spriteContainer.offsetWidth  - 60);
+            const holeY = 20 + Math.random() * (spriteContainer.offsetHeight - 80);
+            golfHole.style.left = holeX + 'px';
+            golfHole.style.top  = holeY + 'px';
+            spriteContainer.appendChild(golfHole);
+
+            meterContainer.style.display = 'block';
+            meterLabel.style.display     = 'block';
+        }
+
+        function executeSwing() {
+            if (spriteState !== 'golf_aiming') return;
+            spriteState = 'golf_swinging';
+            document.getElementById('btn3').disabled = true;
+            meterContainer.style.display = 'none';
+            meterLabel.style.display     = 'none';
+
+            try { new Audio('golf_swing.mp3').play(); } catch(e) {}
+
+            const isSuccess = powerValue >= SWEET_START && powerValue <= SWEET_END;
+            golfBall.style.transition = 'left 0.9s ease-out, top 0.9s ease-out, transform 0.9s ease-out, opacity 0.9s ease-out';
+
+            if (isSuccess) {
+                golfBall.style.left      = (parseInt(golfHole.style.left) + 5) + 'px';
+                golfBall.style.top       = (parseInt(golfHole.style.top)  + 5) + 'px';
+                golfBall.style.transform = 'scale(0.1)';
+                golfBall.style.opacity   = '0';
+                setTimeout(() => {
+                    try { new Audio('golf_hole.mp3').play(); } catch(e) {}
+                    statusText.innerText = 'HOLE IN ONE!!';
+                    stats.energy = Math.min(100, stats.energy + 50);
+                    stats.ego    = Math.min(100, stats.ego    + 20);
+                    stats.temper = Math.max(0,   stats.temper - 20);
+                    setTimeout(endGolfGame, 1200);
+                }, 950);
+            } else {
+                golfBall.style.left      = (spriteContainer.offsetWidth + 30) + 'px';
+                golfBall.style.top       = '-30px';
+                golfBall.style.transform = 'scale(0.3)';
+                golfBall.style.opacity   = '0';
+                setTimeout(() => {
+                    statusText.innerText = 'BAD SHOT! SAD!';
+                    stats.energy = Math.min(100, stats.energy + 10);
+                    stats.temper = Math.min(100, stats.temper + 10);
+                    setTimeout(endGolfGame, 1000);
+                }, 950);
+            }
+        }
+
+        function endGolfGame() {
+            if (golfBall) { golfBall.remove(); golfBall = null; }
+            if (golfHole) { golfHole.remove(); golfHole = null; }
+            meterContainer.style.display = 'none';
+            meterLabel.style.display     = 'none';
+            meterBar.style.width         = '0%';
+            spriteState = 'wandering';
+            pickNewDirection();
+            document.querySelectorAll('.btn').forEach(b => b.disabled = false);
+            document.getElementById('btn3').innerText = 'GOLF';
+            updateUI();
         }
 
         // ═══════════════════════════════
         // SPEECH
         // ═══════════════════════════════
         function saySomething() {
-            if (stats.ego <= 0 || isSpeaking || spriteState === 'seekingFood') return;
+            if (stats.ego <= 0 || isSpeaking || spriteState !== 'wandering') return;
             if (Math.random() < 0.30) {
                 const phrase = phrases[Math.floor(Math.random() * phrases.length)];
                 bubbleEl.innerText = phrase;
@@ -364,46 +398,43 @@
                     gameOverTextEl.innerText = "YOU'RE FIRED!";
                     Object.assign(gameOverTextEl.style, {
                         position: 'absolute', top: '50%', left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        fontSize: '48px', color: '#1a1a1a',
-                        textShadow: '2px 2px #9cad7d',
+                        transform: 'translate(-50%, -50%)', fontSize: '48px',
+                        color: '#1a1a1a', textShadow: '2px 2px #9cad7d',
                         textAlign: 'center', zIndex: '10'
                     });
                     spriteContainer.appendChild(gameOverTextEl);
-                    statusText.innerText = 'ELECTION RESULTS ARE IN...';
+                    statusText.innerText  = 'ELECTION RESULTS ARE IN...';
                     spriteEl.style.filter = 'grayscale(1) opacity(0.3)';
                     screenEl.classList.remove('unstable');
                     clearInterval(decayInterval);
                     clearInterval(speechInterval);
-                    const newLabels = ['STOP', 'THE', 'COUNT!', 'RECOUNT!'];
-                    document.querySelectorAll('.btn').forEach((btn, i) => {
-                        btn.innerText = newLabels[i];
-                        btn.disabled = true;
-                        btn.style.opacity = '0.5';
+                    const labels = ['STOP','THE','COUNT!','RECOUNT!'];
+                    document.querySelectorAll('.btn').forEach((b, i) => {
+                        b.innerText = labels[i]; b.disabled = true; b.style.opacity = '0.5';
                     });
                 }
                 return;
             }
 
             if (stats.temper > 70) {
-                statusText.innerText = 'STATUS: UNSTABLE!';
+                statusText.innerText   = 'STATUS: UNSTABLE!';
                 screenEl.classList.add('unstable');
-                spriteEl.style.filter = 'sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)';
+                spriteEl.style.filter  = 'sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.2)';
                 spriteEl.style.opacity = '1';
             } else if (stats.ego < 30) {
-                statusText.innerText = 'STATUS: SAD!';
+                statusText.innerText   = 'STATUS: SAD!';
                 screenEl.classList.remove('unstable');
-                spriteEl.style.filter = baseFilter;
+                spriteEl.style.filter  = baseFilter;
                 spriteEl.style.opacity = '0.5';
             } else if (stats.energy < 20) {
-                statusText.innerText = 'STATUS: LOW ENERGY';
+                statusText.innerText   = 'STATUS: LOW ENERGY';
                 screenEl.classList.remove('unstable');
-                spriteEl.style.filter = `${baseFilter} brightness(0.8)`;
+                spriteEl.style.filter  = `${baseFilter} brightness(0.8)`;
                 spriteEl.style.opacity = '0.8';
             } else {
-                statusText.innerText = 'STATUS: STABLE';
+                statusText.innerText   = 'STATUS: STABLE';
                 screenEl.classList.remove('unstable');
-                spriteEl.style.filter = baseFilter;
+                spriteEl.style.filter  = baseFilter;
                 spriteEl.style.opacity = '0.9';
             }
         }
@@ -414,41 +445,35 @@
         function interact(action) {
             if (stats.ego <= 0) return;
 
+            if (action === 'golf') {
+                if (spriteState === 'wandering')   { startGolfGame(); return; }
+                if (spriteState === 'golf_aiming') { executeSwing();  return; }
+                return;
+            }
+
+            if (spriteState !== 'wandering') return;
+
             if (action === 'feed') {
-                if (spriteState !== 'wandering') return;
                 spriteState = 'seekingFood';
                 document.getElementById('btn1').disabled = true;
-
                 const burgerEl = document.createElement('img');
                 burgerEl.src = 'burger1.png';
                 Object.assign(burgerEl.style, {
-                    position: 'absolute', width: '40px', imageRendering: 'pixelated'
+                    position: 'absolute', width: '40px', imageRendering: 'pixelated', zIndex: '3'
                 });
-                const foodX = Math.random() * (spriteContainer.offsetWidth - 40);
+                const foodX = Math.random() * (spriteContainer.offsetWidth  - 40);
                 const foodY = Math.random() * (spriteContainer.offsetHeight - 40);
                 burgerEl.style.left = foodX + 'px';
                 burgerEl.style.top  = foodY + 'px';
                 spriteContainer.appendChild(burgerEl);
-
                 foodTarget = { el: burgerEl, x: foodX + 20, y: foodY + 20 };
             }
 
             if (action === 'rally') {
-    stats.ego    = 100;
-    stats.energy = Math.max(0,   stats.energy - 40);
-    stats.temper = Math.min(100, stats.temper + 20);
-    updateUI();
-    try {
-        const rallySound = new Audio('maga.mp3');
-        rallySound.volume = 0.6;
-        rallySound.play();
-    } catch(e) {}
-}
-
-            if (action === 'golf') {
-                stats.energy = Math.min(100, stats.energy + 50);
-                stats.ego    = Math.min(100, stats.ego    + 10);
-                stats.temper = Math.max(0,   stats.temper - 20);
+                stats.ego    = 100;
+                stats.energy = Math.max(0,   stats.energy - 40);
+                stats.temper = Math.min(100, stats.temper + 20);
+                try { const s = new Audio('maga.mp3'); s.volume = 0.6; s.play(); } catch(e) {}
                 updateUI();
             }
 
@@ -477,7 +502,7 @@
         // INIT
         // ═══════════════════════════════
         updateUI();
-        requestAnimationFrame(moveTrump);
+        requestAnimationFrame(animationLoop);
     </script>
 </body>
 </html>
