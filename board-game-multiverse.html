@@ -1,218 +1,396 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>~ BOARD GAME MULTIVERSE ~</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #000;
-            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~ BOARD GAME MULTIVERSE ~</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=VT323&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .back-link {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            color: #ff00ff;
-            text-decoration: none;
-            border: 1px solid #ff00ff;
-            padding: 5px;
-            background: rgba(0,0,0,0.8);
-            font-size: 14px;
-        }
+body {
+  min-height: 100vh;
+  background: #1a1008;
+  font-family: 'Cormorant Garamond', serif;
+  color: #e8dcc8;
+  overflow-x: hidden;
+}
 
-        h1 {
-            font-family: 'Comic Sans MS', cursive;
-            color: #ff00ff;
-            text-shadow: 2px 2px #00ffff;
-            background: rgba(0,0,0,0.9);
-            padding: 10px 40px;
-            border: 3px double #ff00ff;
-        }
+/* ── WOOD TABLE BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      transparent 0px, transparent 40px,
+      rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.03) 42px
+    ),
+    repeating-linear-gradient(
+      88deg,
+      transparent 0px, transparent 60px,
+      rgba(80,50,20,0.06) 60px, rgba(80,50,20,0.06) 61px
+    ),
+    linear-gradient(180deg, #2a1a0a 0%, #1e1208 40%, #1a0e06 100%);
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3C/svg%3E#n");
+}
 
-        /* --- SHELF LAYOUT --- */
-        .game-shelf {
-            display: flex;
-            gap: 30px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+/* Warm overhead light */
+body::after {
+  content: '';
+  position: fixed; top: -30%; left: 50%; transform: translateX(-50%);
+  width: 120vw; height: 70vh;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,200,100,0.08) 0%, transparent 70%);
+  pointer-events: none; z-index: 1;
+}
 
-        .game-box {
-            width: 150px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+/* ── HEADER ── */
+.header {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 60px 20px 20px;
+}
 
-        .game-box:hover {
-            transform: scale(1.1);
-        }
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 900;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #f0e6d0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,100,0.15);
+}
 
-        .game-box img {
-            width: 120px;
-            height: 160px;
-            border: 4px outset #ccc;
-            object-fit: cover;
-            image-rendering: pixelated;
-        }
+.header .sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(232,220,200,0.5);
+  margin-top: 10px;
+  letter-spacing: 3px;
+}
 
-        .game-label {
-            margin-top: 10px;
-            background: #000;
-            color: #00ff00;
-            font-family: 'VT323';
-            font-size: 18px;
-            border: 1px solid #00ff00;
-        }
+/* ── SHELF ── */
+.shelf {
+  position: relative; z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 80px;
+  padding: 60px 40px 120px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-        .locked {
-            filter: grayscale(1) brightness(0.5);
-            cursor: not-allowed;
-        }
+/* ── 3D BOX ── */
+.box-container {
+  perspective: 900px;
+  cursor: pointer;
+  width: 220px;
+  height: 280px;
+  position: relative;
+}
 
-        /* --- CHESS MANIFEST WINDOW --- */
-        #chess-window {
-            display: none; /* Hidden until clicked */
-            background: #c0c0c0;
-            border: 3px outset #ffffff;
-            width: 90%;
-            max-width: 800px;
-            box-shadow: 10px 10px 0px #000;
-            position: absolute;
-            top: 50px;
-            z-index: 2000;
-            color: #000;
-        }
+.box {
+  width: 220px;
+  height: 280px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(8deg) rotateY(-12deg);
+  transition: transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
 
-        .title-bar {
-            background: linear-gradient(90deg, #800080, #ff00ff);
-            color: white;
-            padding: 4px 10px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
+.box-container:hover .box {
+  transform: rotateX(5deg) rotateY(-6deg) translateY(-8px);
+}
 
-        .content {
-            padding: 20px;
-            max-height: 70vh;
-            overflow-y: auto;
-            background: #fff;
-            margin: 5px;
-            border: 2px inset #808080;
-            line-height: 1.6;
-        }
+.box-container.open .box {
+  transform: rotateX(12deg) rotateY(-5deg) translateY(-10px);
+}
 
-        .close-btn {
-            background: #c0c0c0;
-            border: 2px outset #fff;
-            width: 20px;
-            height: 20px;
-            line-height: 14px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: bold;
-        }
+/* Shadow under box */
+.box-shadow {
+  position: absolute;
+  bottom: -20px; left: 10%;
+  width: 80%; height: 20px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%);
+  filter: blur(8px);
+  transition: all 0.6s ease;
+}
 
-        h2 { border-bottom: 2px solid #000; padding-bottom: 5px; font-family: 'VT323'; }
-        .poem { white-space: pre-wrap; font-style: italic; margin-bottom: 30px; color: #333; }
-        .cipher-box { background: #eee; padding: 10px; border: 1px dashed #000; font-family: monospace; }
-        .moves-list { background: #000; color: #00ff00; padding: 15px; font-family: 'VT323'; font-size: 20px; }
+.box-container:hover .box-shadow {
+  bottom: -28px;
+  opacity: 0.7;
+  width: 90%;
+  left: 5%;
+}
 
-    </style>
+/* ── BOX FACES ── */
+.box-front, .box-back, .box-left, .box-right, .box-bottom, .box-lid {
+  position: absolute;
+  backface-visibility: visible;
+}
+
+/* Front face */
+.box-front {
+  width: 220px; height: 280px;
+  transform: translateZ(25px);
+}
+
+/* Back face */
+.box-back {
+  width: 220px; height: 280px;
+  transform: rotateY(180deg) translateZ(25px);
+}
+
+/* Left side */
+.box-left {
+  width: 50px; height: 280px;
+  transform: rotateY(-90deg) translateZ(0px);
+}
+
+/* Right side */
+.box-right {
+  width: 50px; height: 280px;
+  transform: rotateY(90deg) translateZ(220px);
+  transform-origin: left;
+}
+
+/* Bottom */
+.box-bottom {
+  width: 220px; height: 50px;
+  transform: rotateX(-90deg) translateZ(280px);
+  transform-origin: bottom;
+}
+
+/* Lid - hinges at the back */
+.box-lid {
+  width: 220px; height: 50px;
+  transform-origin: top center;
+  transform: rotateX(0deg) translateZ(0px) translateY(0px);
+  transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.64, 1);
+  z-index: 20;
+}
+
+.box-container.open .box-lid {
+  transform: rotateX(-160deg) translateZ(0px) translateY(0px);
+}
+
+/* ── CHESS BOX THEME ── */
+.chess .box-front {
+  background: #1a1a1a;
+  border: 3px solid #c9a84c;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+}
+
+.chess .box-front .box-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #c9a84c;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+.chess .box-front .box-art {
+  margin-top: 16px;
+  width: 140px; height: 140px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.chess .box-front .box-art .sq {
+  width: 100%; height: 100%;
+}
+.chess .box-front .box-art .sq.w { background: #e8dcc0; }
+.chess .box-front .box-art .sq.b { background: #2a2a2a; }
+
+.chess .box-front .box-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(201,168,76,0.6);
+  margin-top: 14px;
+  letter-spacing: 2px;
+}
+
+.chess .box-back {
+  background: #111;
+  border: 3px solid #c9a84c;
+}
+
+.chess .box-left, .chess .box-right {
+  background: linear-gradient(180deg, #1a1a1a, #111);
+  border-top: 3px solid #c9a84c;
+  border-bottom: 3px solid #c9a84c;
+}
+
+.chess .box-bottom {
+  background: #0a0a0a;
+  border-left: 3px solid #c9a84c;
+  border-right: 3px solid #c9a84c;
+}
+
+.chess .box-lid {
+  background: linear-gradient(180deg, #222, #1a1a1a);
+  border: 3px solid #c9a84c;
+  border-bottom: none;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 9px; letter-spacing: 3px; color: #c9a84c;
+}
+
+/* ── INSIDE CONTENT ── */
+.box-inside {
+  position: absolute;
+  top: 0; left: 0;
+  width: 220px; height: 280px;
+  transform: translateZ(-24px);
+  background: #f5eedf;
+  border: 2px solid #c9a84c;
+  padding: 20px 16px;
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.box-container.open .box-inside {
+  opacity: 1;
+}
+
+.box-inside::-webkit-scrollbar { width: 4px; }
+.box-inside::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+.box-inside::-webkit-scrollbar-thumb { background: #c9a84c; }
+
+.box-inside .inside-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: #1a1a1a;
+  text-align: center;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c9a84c;
+  width: 100%;
+}
+
+.box-inside .poem {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #2a2015;
+  text-align: center;
+  font-style: italic;
+  white-space: pre-line;
+}
+
+/* ── CLICK HINT ── */
+.click-hint {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(232,220,200,0.3);
+  letter-spacing: 2px;
+  white-space: nowrap;
+  transition: opacity 0.4s;
+}
+
+.box-container.open .click-hint {
+  opacity: 0;
+}
+
+/* ── BACK LINK ── */
+.back-link {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: #00FF00;
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(0,255,0,0.4);
+  transition: text-shadow 0.2s;
+}
+.back-link:hover {
+  text-shadow: 0 0 16px rgba(0,255,0,0.8);
+}
+</style>
 </head>
 <body>
 
-    <a href="index.html" class="back-link"><< RETURN TO GAMMA CORRECTION</a>
+<div class="header">
+  <h1>Board Game Multiverse</h1>
+  <div class="sub">open the box</div>
+</div>
 
-    <h1>board game multiverse</h1>
+<div class="shelf">
 
-    <div class="game-shelf">
-        <div class="game-box" onclick="openChess()">
-            <img src="https://blob.gifcities.org/gifcities/5HGKFNMUZTRZK2UQY5TTDPB3RJT3NEGU.gif" alt="Sacred Chess">
-            <div class="game-label">WAR OF THE IVORIES</div>
+  <!-- ══════ CHESS ══════ -->
+  <div class="box-container chess" onclick="toggleBox(this)">
+    <div class="box">
+      <!-- Lid -->
+      <div class="box-lid">EST. ∞</div>
+
+      <!-- Front face -->
+      <div class="box-front">
+        <div class="box-title">Chess</div>
+        <div class="box-art" id="chess-board"></div>
+        <div class="box-subtitle">the eternal game</div>
+      </div>
+
+      <!-- Other faces -->
+      <div class="box-back"></div>
+      <div class="box-left"></div>
+      <div class="box-right"></div>
+      <div class="box-bottom"></div>
+
+      <!-- Inside content (poem goes here) -->
+      <div class="box-inside">
+        <div class="inside-title">Chess</div>
+        <div class="poem" id="chess-poem">
+          [ poem goes here ]
         </div>
-
-        <div class="game-box locked">
-            <img src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif" alt="Locked">
-            <div class="game-label">AL-QIRKAT (LOCKED)</div>
-        </div>
-
-        <div class="game-box locked">
-            <img src="https://web.archive.org/web/20090829113543/http://geocities.com/SiliconValley/6502/dice.gif" alt="Locked">
-            <div class="game-label">GAMBIT OF FATE</div>
-        </div>
+      </div>
     </div>
+    <div class="box-shadow"></div>
+    <div class="click-hint">click to open</div>
+  </div>
 
-    <div id="chess-window">
-        <div class="title-bar">
-            <span>CHESS_MANIFEST.EXE - THE GRAND WAR</span>
-            <div class="close-btn" onclick="closeChess()">X</div>
-        </div>
-        <div class="content">
-            <h2>THE POEM OF THE EBONIES AND IVORIES</h2>
-            <div class="poem">
-To the Hand up above which moves us in His grand eternal plan  
-And the Sixty Four Squares down below which contain Woman and Man  
-We chronicle the grand War of the Ebonies and Ivories  
-And we intone today so our future kin will know these stories  
+</div>
 
-Our Ebony King was always strong and steadfast in his gambit  
-While their Ivory King was cunning and scheming from his ambit  
-Our Ebony Queen was our King's most fair and beautiful consort  
-While their Ivory Queen was most cruel and depraved in her court  
+<a href="index.html" class="back-link">&lt;&lt; BACK TO ARCHIVE</a>
 
-Our King knew his Queen and begat fourteen loyal souls to the Squares  
-First the Rook twins, Karadeva and Karasimha, as his heirs  
-The Bishop sisters, Panishri and Panimati be their name  
-Two Knights, Hastapala and Karasena, blessed with divine aim  
+<script>
+  // Generate chess board pattern
+  const board = document.getElementById('chess-board');
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const sq = document.createElement('div');
+      sq.className = 'sq ' + ((row + col) % 2 === 0 ? 'w' : 'b');
+      board.appendChild(sq);
+    }
+  }
 
-...[Archive continues]...
-
-Panishri ended the life of vile Hastaksha once and for all  
-Karavikranta moved Kara-Vijaya with traitorous gall  
-Our Queen then took Madhyama-Vijaya in a glorious move  
-Evil Karavikranta met Hastajit in his act to remove  
-
-While Karavikranta slew Panimati with his wicked guile  
-Our Queen made her grand sacrifice, opening up the holy file  
-The Ivory Queen moved to capture her, taking the royal claim  
-Panishri marched to Tarjani-Kriya, ending the foul King's name!
-            </div>
-
-            <h2>THE CIPHER</h2>
-            <div class="cipher-box">
-                <b>Files (a–h):</b> A: Angushtha, B: Tarjani, C: Madhyama, D: Anamika, E: Kanishtha, F: Kara, G: Pani, H: Hasta<br>
-                <b>Ranks (1–8):</b> 1: Mula, 2: Prana, 3: Kriya, 4: Dharma, 5: Yuddha, 6: Vijaya, 7: Shraddha, 8: Moksha
-            </div>
-
-            <h2>RECORDED MOVES</h2>
-            <div class="moves-list">
-                1. b4 a5 | 2. Nc3 Ra6 | 3. Ba3 axb4 | 4. Bxb4 Rxa2 <br>
-                5. Bxe7 Qxe7 | 6. Nd5 Qe4 | 7. Nxc7+ Kd8 | 8. f3 Qe7 <br>
-                9. Rxa2 d5 | 10. Nxd5 Qe8 | 11. Ne7 Be6 | 12. Nxg8 Bxa2 <br>
-                13. Nf6 Qc6 | 14. Nxh7 Bb3 | 15. Nxf8 Qxc2 | 16. Qxc2 Bxc2
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openChess() {
-            document.getElementById('chess-window').style.display = 'block';
-        }
-        function closeChess() {
-            document.getElementById('chess-window').style.display = 'none';
-        }
-    </script>
-
+  // Toggle box open/close
+  function toggleBox(container) {
+    container.classList.toggle('open');
+  }
+</script>
 </body>
 </html>
