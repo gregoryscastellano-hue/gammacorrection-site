@@ -2,12 +2,14 @@
 <html>
 <head>
     <title>THE DIE DECIDES</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --die-size: 600px;
-            --face-color: rgba(0, 0, 0, 0.95);
+            --face-width: 620px;
+            --face-height: 720px;
             --neon-cyan: #00ffcc;
+            --neon-magenta: #ff00ff;
+            --face-color: rgba(5, 5, 5, 0.98);
         }
 
         body {
@@ -20,13 +22,22 @@
             align-items: center;
             overflow: hidden;
             font-family: 'VT323', monospace;
-            perspective: 2500px;
+            perspective: 1800px;
         }
 
-        /* --- THE 3D ROTATOR --- */
+        .chapter-title {
+            position: absolute;
+            top: 20px;
+            color: var(--neon-magenta);
+            font-size: 28px;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px var(--neon-magenta);
+            z-index: 10;
+        }
+
         .scene {
-            width: var(--die-size);
-            height: var(--die-size);
+            width: var(--face-width);
+            height: var(--face-height);
             position: relative;
             transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -37,44 +48,55 @@
             width: 100%;
             height: 100%;
             background: var(--face-color);
-            border: 2px solid var(--neon-cyan);
-            box-sizing: border-box;
-            backface-visibility: hidden;
-            /* Pentagonal Clipping */
-            clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
+            backface-visibility: hidden;
+            overflow: hidden;
         }
 
-        /* Inner container to prevent text cutoff */
-        .text-constrain {
-            width: 65%;
-            height: 60%;
+        .face::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
+            background: var(--neon-cyan);
+            z-index: 0;
+        }
+
+        .face::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
+            background: var(--face-color);
+            box-shadow: inset 0 0 60px rgba(0, 255, 204, 0.15);
+            z-index: 1;
+        }
+
+        .face-content {
+            position: relative;
+            z-index: 2;
+            padding: 170px 80px 60px 80px;
+            max-height: 100%;
             overflow-y: auto;
-            padding: 10px;
-            text-align: center;
-            scrollbar-width: none; /* Firefox */
         }
 
-        .text-constrain::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-
-        p {
-            font-size: 1.2rem;
-            color: var(--neon-cyan);
-            line-height: 1.4;
-            margin-bottom: 15px;
+        .face-content p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            line-height: 1.7;
+            text-align: left;
+            margin: 10px 0;
         }
 
-        /* --- 6-SIDED ROTATION (60 deg increments) --- */
-        .face-1 { transform: rotateY(0deg) translateZ(280px); }
-        .face-2 { transform: rotateY(60deg) translateZ(280px); }
-        .face-3 { transform: rotateY(120deg) translateZ(280px); }
-        .face-4 { transform: rotateY(180deg) translateZ(280px); }
-        .face-5 { transform: rotateY(240deg) translateZ(280px); }
-        .face-6 { transform: rotateY(300deg) translateZ(280px); }
+        .face-1 { transform: rotateY(0deg)   translateZ(185px); }
+        .face-2 { transform: rotateY(120deg) translateZ(185px); }
+        .face-3 { transform: rotateY(240deg) translateZ(185px); }
 
-        /* --- NAVIGATION --- */
         .nav-controls {
             margin-top: 30px;
             display: flex;
@@ -84,99 +106,363 @@
 
         button {
             background: #000;
-            border: 1px solid var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
             color: var(--neon-cyan);
-            padding: 10px 30px;
+            padding: 12px 40px;
             font-family: 'VT323', monospace;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             transition: 0.2s;
+            box-shadow: 4px 4px 0px var(--neon-cyan);
         }
 
         button:hover {
             background: var(--neon-cyan);
             color: #000;
+            box-shadow: 0 0 30px var(--neon-cyan);
         }
 
-        #status-display {
-            position: absolute;
-            top: 30px;
-            color: var(--neon-cyan);
-            letter-spacing: 3px;
-            font-size: 1.5rem;
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--neon-cyan);
+        }
+
+        .archive-link {
+            margin-top: 18px;
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+            color: #555;
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+            z-index: 100;
+        }
+
+        .archive-link:hover {
+            color: var(--neon-magenta);
         }
     </style>
 </head>
 <body>
 
-    <div id="status-display">PHASE: 01</div>
+    <div class="chapter-title" id="chapter-title">HITTING THE NEEDLE: CHAPTER I</div>
 
     <div class="scene" id="die">
-        <div class="face face-1">
-            <div class="text-constrain">
-                <p>“Now here we go dropping science, dropping it all over / Like bumping around the town, like when you're driving a Range Rover / Expanding the horizons and expanding the parameters / Expanding the rhymes of sucka MC amateurs” -Beastie Boys</p>
-                <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students.</p>
-            </div>
-        </div>
-
-        <div class="face face-2">
-            <div class="text-constrain">
-                <p>But on Saturday nights, he becomes King Solomon, holding dominion over Jinn. King Solomon stands in the center of the twelve silent G.E.N.I members arranged in a dodecagram shape on the upper floor of Atomic Pizza.</p>
-                <p>Mediocre pizza. 2.8 Yelp Score. King Solomon rolls the 12-sided die. It hits the floor with a clatter. “Brother Michael, the die has decided. Disengage from your trauma.”</p>
-            </div>
-        </div>
-
-        <div class="face face-3">
-            <div class="text-constrain">
-                <p>Brother Michael speaks of a fight with his wife. Small things. Shoes. Escalation. Coldness. After 12 minutes and 12 seconds, the watch goes off. Michael’s eyes flash red. Archaic Arabic spills out. Noxious brimstone.</p>
-                <p>“Your wish, Brother Michael?!” Michael screams a single thought: I wish my wife and I never argued. The glowing red vanishes.</p>
-            </div>
-        </div>
-
-        <div class="face face-4">
-            <div class="text-constrain">
-                <p>Chapter 2: Genie in a Bottle. A weather worn pamphlet is taped haphazardly to a street light. What does G.E.N.I stand for? Simple! It can be broken up into four fundamental forces!</p>
-                <p>G: Gravity / E: Electromagnetism / N: Nuclear / I: Interactions. Next to this is a halftone image of a 1950s man with a pipe.</p>
-            </div>
-        </div>
-
-        <div class="face face-5">
-            <div class="text-constrain">
-                <p>Father Castellano walks by and sneers at the pamphlet. He enters the rectory for The Parish of St. Barbara the Martyr. He begins taking out spaghetti noodles and sauce.</p>
-                <p>Frantic knocking at the door. Castellano adjusts his wire rim glasses. “Can I help you?” he says as he delicately opens the door.</p>
-            </div>
-        </div>
-
-        <div class="face face-6">
-            <div class="text-constrain">
-                <p>“Father, I need help. Bad.” says the gruff looking man wearing a zip-up Mets hoodie and a face of fear. He glances over his own shoulder nervously.</p>
-                <p>“Ah, Salvatore. Of course. I’ll take you to the confessionals.” says Father Castellano in a reassuring tone.</p>
-            </div>
-        </div>
+        <div class="face face-1"><div class="face-content" id="content-0"></div></div>
+        <div class="face face-2"><div class="face-content" id="content-1"></div></div>
+        <div class="face face-3"><div class="face-content" id="content-2"></div></div>
     </div>
 
     <div class="nav-controls">
-        <button onclick="changeFace(-1)">PREV</button>
-        <button onclick="changeFace(1)">NEXT</button>
+        <button onclick="changeFace(-1)">&#9664; PREVIOUS</button>
+        <button onclick="changeFace(1)">NEXT &#9654;</button>
     </div>
 
-    <script>
-        let currentStep = 0;
-        const die = document.getElementById('die');
-        const status = document.getElementById('status-display');
-        
-        function changeFace(direction) {
-            currentStep += direction;
-            if (currentStep < 0) currentStep = 5;
-            if (currentStep > 5) currentStep = 0;
+    <a href="index.html" class="archive-link">&#9666; RETURN TO ARCHIVE</a>
 
-            let rotation = currentStep * -60;
-            die.style.transform = `rotateY(${rotation}deg) rotateX(-5deg)`;
-            
-            // Numerical tracking
-            status.innerText = `PHASE: 0${currentStep + 1}`;
+    <script>
+        const pages = [
+            // --- CHAPTER I ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER I",
+                html: `<p>"Now here we go dropping science, dropping it all over / Like bumping around the town, like when you're driving a Range Rover" -Beastie Boys</p>
+                       <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students.</p>
+                       <p>But on Saturday nights, he becomes King Solomon, holding dominion over Jinn.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER I",
+                html: `<p>King Solomon stands in the center of the twelve silent G.E.N.I members arranged in a dodecagram shape on the upper floor of Atomic Pizza. Mediocre pizza. 2.8 Yelp Score.</p>
+                       <p>King Solomon rolls the 12-sided die. It hits the floor with a clatter. "Brother Michael, the die has decided. Disengage from your trauma."</p>
+                       <p>"I don't know where to begin. I got into a nasty fight with my wife this week. It always starts with something small... Then it escalates."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER I",
+                html: `<p>After 12 minutes and 12 seconds, King Solomon's wristwatch goes off. Brother Michael's transformation is slow at first, then all at once. His eyes flash red.</p>
+                       <p>The smell of mediocre pizza is replaced by noxious brimstone. "Your wish, Brother Michael! What is your wish?!"</p>
+                       <p>I wish my wife and I never argued. The glowing red vanishes, leaving a distraught, sweating Michael collapsed in his chair.</p>`
+            },
+            // --- CHAPTER II: GENIE IN A BOTTLE ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER II — GENIE IN A BOTTLE",
+                html: `<p>A weather worn pamphlet is taped haphazardly to a street light. The translucent tape over the words is grimy and obscuring.</p>
+                       <p>What does G.E.N.I stand for? Simple! The four fundamental forces!</p>
+                       <p>G: Gravity — E: Electromagnetism — N: Nuclear — I: Interactions</p>
+                       <p>Next to this is a halftone image of a well groomed 1950s man, holding a pipe in his smiling mouth. He is surrounded by a concentric ring of protons and electrons.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER II — GENIE IN A BOTTLE",
+                html: `<p>Father Castellano walks by the streetlight, carrying a bag of groceries. He sneers when he sees the pamphlet. He brushes his cassock with his hand, as if the mere act of seeing it has made him dirty.</p>
+                       <p>He enters the rectory for The Parish of St. Barbara the Martyr. He closes the door behind him gently.</p>
+                       <p>He gets to the kitchen counter and begins taking out his boxes of spaghetti noodles and sauce.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER II — GENIE IN A BOTTLE",
+                html: `<p>As he's about to turn on the stove, there is a frantic knocking at the door. Father Castellano adjusts his wire rim glasses and walks quickly towards the door.</p>
+                       <p>"Can I help you?" he says as he delicately opens the door.</p>
+                       <p>"Father, I need help. Bad." says the gruff looking man wearing a zip-up Mets hoodie and a face of fear.</p>
+                       <p>"Ah, Salvatore. Of course. I'll take you to the confessionals."</p>`
+            },
+            // --- CHAPTER III: PAUL REVERE ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER III — PAUL REVERE",
+                html: `<p>Salvatore wipes sweat off his brow and slumps in his confessional chair. He stares at the screen.</p>
+                       <p>"Bless me Father, for I have sinned. It has been one month since my last confession."</p>
+                       <p>He takes a deep breath.</p>
+                       <p>"I did a job for the Genie guys. I knew I shouldn't."</p>
+                       <p>Salvatore makes a choked sob that he covers with a cough.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER III — PAUL REVERE",
+                html: `<p>"It was supposed to be simple. She had some kind of problem with ghosts or devils or some shit. Sorry, forgive my language Father."</p>
+                       <p>"They give us these old school machines. I don't know what they are, they say they detect 'High-Sievert Zones.' Anyway, her house was one of them. Something to do with the Roll on Saturday."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER III — PAUL REVERE",
+                html: `<p>He flaps his hoodie for air.</p>
+                       <p>"So I got to her house. The protocol is calm them down by any means. So the suits from Washington don't get involved. I tried to be peaceful, Father. I really did. But it got out of hand, she reached for my gun. I had to do it."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER III — PAUL REVERE",
+                html: `<p>"When I was cleaning it up, I saw she had this badge and hat on her wall. A firefighter's hat. From a relative or something who died in 9/11. I want out, Father."</p>
+                       <p>Father Castellano inhales sharply.</p>
+                       <p>"I cannot grant you absolution while you are still a cog in their machine. Forgiveness requires repentance, and repentance requires a turning away. I strongly insist you turn yourself in."</p>
+                       <p>"I can't, Father!" yells Salvatore.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER III — PAUL REVERE",
+                html: `<p>"Why, son?"</p>
+                       <p>"They made me do a pact. A document. When one of the people was Diced, they brought me in. I spoke to... something. They made me promise to serve it. And it's all in writing. Whatever I signed, they'll kill me."</p>
+                       <p>Father Castellano grips his rosary. "They'll have to find you first, son. And they'll have to get past these walls. The Church is infinitely more powerful. Darkness cannot penetrate the Light."</p>
+                       <p>"Make a prayer to St. Michael the Archangel, son. He will protect you."</p>`
+            },
+            // --- CHAPTER IV: SHE BLINDED ME WITH SCIENCE ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER IV — SHE BLINDED ME WITH SCIENCE",
+                html: `<p>Michael Callahan does not look like a guy who made a pact with a demon to have his wife killed. He issues loans at Chase Bank on Linden Street, next to the Elk's Lodge.</p>
+                       <p>He's halfway through the paperwork for a candle business when he gets a call from his wife's boss.</p>
+                       <p>"Hi, Mr. Callahan. I'm calling because I couldn't reach your wife. She was scheduled for today. She's not answering her phone. Is everything okay?"</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER IV — SHE BLINDED ME WITH SCIENCE",
+                html: `<p>Michael bites his lip. "I don't know, I just got in for the day. I'll try calling her. I'll call you back."</p>
+                       <p>He goes to call his wife. As he stares at the contact, he suddenly has a blinding image in his head that fades as soon as it appears. A dodecahedron of pure light. The image sends a shiver down his spine, but he goes to call anyway.</p>
+                       <p>No response. He calls again. Nothing.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER IV — SHE BLINDED ME WITH SCIENCE",
+                html: `<p>Michael is used to this behavior. If her boss hadn't called, he would've just assumed she was giving him the silent treatment over their dinner conversation. He walks to his boss.</p>
+                       <p>"I seem to be having a family emergency. I'm not really sure. I think something happened to my wife."</p>
+                       <p>Before his boss can respond, Michael gets another call from an unknown number.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER IV — SHE BLINDED ME WITH SCIENCE",
+                html: `<p>An incredibly cheerful female voice answers. "Hi, Mr. Callahan! This is Naomi. Your house is currently a High-Sievert Zone, unfortunately! The approximate half life is 70 years. You have been graciously relocated to a safe house in Tottenville!"</p>
+                       <p>"W-who is this?"</p>
+                       <p>"I'm in the department of relocation for G.E.N.I! We have dispatched our Radiological Emergency Response Team to your house. Is there any family heirlooms you want them to get? Of course, you wouldn't be able to keep them. But they'll be safe in our Faraday vault!"</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER IV — SHE BLINDED ME WITH SCIENCE",
+                html: `<p>"My wife, what happened to my wife?" Michael grabs his temples as he is consumed by another split second image, this time a dodecahedron of pure darkness.</p>
+                       <p>"Oh, I'm very sorry Mr. Callahan. She didn't make it. Unfortunately, her body has already been dispos-"</p>
+                       <p>Michael drops the phone and bolts out the door without a word. It clatters on the floor.</p>
+                       <p>"Mr. Callahan, are you still there?"</p>`
+            },
+            // --- CHAPTER V: PROTECT YA NECK ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER V — PROTECT YA NECK",
+                html: `<p>The Jade Sentinel looks exactly like the type of guy to be the abbot of a bodega. He is standing perfectly still in tree holding pose, channeling the ancient art of Zhan Zhuang, in the backroom as a regular orders a chopped cheese in front.</p>
+                       <p>A ferocious dragon is painted on the wall behind him, but the paint is chipped and peeling.</p>
+                       <p>Lotus Blade Rex runs up to him.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER V — PROTECT YA NECK",
+                html: `<p>"Yo, Shifu. Solid ground. The energy is completely off-the-map, man. G.E.N.I. is out there deep. They got these yellow suits on, scanning the air like they're looking for gold, but I seen 'em hauling out property in lead boxes. Etched in the records, they erased his whole life in twenty minutes."</p>
+                       <p>The Jade Sentinel doesn't respond. Or move, for that matter.</p>
+                       <p>"Yo, Shifu," Lotus Blade Rex repeats.</p>
+                       <p>The Jade Sentinel opens one eye. His brow furrows imperceptibly.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER V — PROTECT YA NECK",
+                html: `<p>"You're leaking Qi, shidi," the Sentinel says, his voice a low, resonant rumble that vibrates in the floorboards. "You rushed in here with all that static, scuffing the records before the asterisms were aligned."</p>
+                       <p>"How you gonna see the board if you're kicking the stones over? Knowledge is the foundation, but you're building on sand right now. You got to learn to refine your breathing before you try to refine the truth."</p>
+                       <p>He finally turns his head, his eyes sharp and heavy with a weary intelligence.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER V — PROTECT YA NECK",
+                html: `<p>"But stay focused. You said lead boxes? That means the Alchemy they're dealing with is heavy. G.E.N.I. don't bring out the lead unless the Wux has already poisoned the well. Tell me the rest of the Alchemy. Did they just take the property, or did you see 'em bagging the air itself?"</p>
+                       <p>"Solid ground, Shifu. I'll tighten the circle. My meridians were tangled," Rex says.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER V — PROTECT YA NECK",
+                html: `<p>"But the Alchemy is murky. They didn't just take the property, they were bagging the atmosphere itself. They had these high-tech vacuums, big silver cylinders, sucking the air right out of the foyer. It was like they were trying to scrub the very memory of the house off the block."</p>
+                       <p>Jade Sentinel drops to a neutral pose gracefully. His eyes go cold.</p>
+                       <p>"It's time to expand the parameters. Gather the Blades, tell them to ghost the perimeter."</p>`
+            },
+            // --- CHAPTER VI: MUTUALLY ASSURED DESTRUCTION ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VI — MUTUALLY ASSURED DESTRUCTION",
+                html: `<p>Michael arrives at his house. His lower lip is bleeding from his biting. The first issue is that there's nowhere to park. A group of pest control vans are parked all over the street.</p>
+                       <p>The second issue is he sees his uncle's firefighter helmet being carried out by people in hazmat suits.</p>
+                       <p>He looks at the vans. "Fission Pest Solutions" they read. An old stock-looking image of a cartoonish bedbug flexing with an isotope symbol on his belly adorns them.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VI — MUTUALLY ASSURED DESTRUCTION",
+                html: `<p>Michael gets out of his car, leaving it in the middle of the street. He waves and yells to no avail. He then walks up to a hazmat-clad man.</p>
+                       <p>"Hey, this is my house! My wife! I want to see her!"</p>
+                       <p>The mask he's speaking to shows no emotion. He sees the hazmat-clad man take out a radio. "We got a Needle Hitter." His voice is muffled and metallic.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VI — MUTUALLY ASSURED DESTRUCTION",
+                html: `<p>Michael's eye catches a large 1950s vacuum-looking device being held by another hazmat-clad man. It has a flat top and a large cylindrical base, adorned with a nuclear waste symbol. He is sucking the firefighter helmet, waving the flat top over it like he's metal detecting on a beach.</p>
+                       <p>Michael doesn't focus on it for long, because the sight of a Whitney Wolverine semi-automatic pistol being discreetly pointed at him by a third hazmat-clad man is pretty distracting. It looks straight out of Flash Gordon, its aluminum chassis glimmering in the light.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VI — MUTUALLY ASSURED DESTRUCTION",
+                html: `<p>From behind Michael's car, Shadow-Step Sun is practicing Fu, the act of "floating". The balls of his feet are light and touch the ground gracefully. He watches as Michael is escorted into a pest control van by gunpoint.</p>
+                       <p>Michael shoots a glance back at his house, wishing through sobs that his wife will open the door. No Jinn are listening.</p>
+                       <p>Shadow-Step Sun pulls out his flip-phone and texts Jade Sentinel "108".</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VI — MUTUALLY ASSURED DESTRUCTION",
+                html: `<p>He diverts his attention back to the spectacle. He watches as the rest of Michael's possessions are loaded into the vans. The back of the vans are covered in what looks like a chain link fence.</p>
+                       <p>He would identify the material as the integral Metal, Jin, which by the principle of false cognates, is a homophone for what the G.E.N.I believe the material is protecting from, Jinn.</p>
+                       <p>He watches as the vans finish packing and drive away in a synchronization.</p>`
+            },
+            // --- CHAPTER VII: ASK AGAIN LATER ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VII — ASK AGAIN LATER",
+                html: `<p>King Solomon kneels in front of the dodecahedron sarcophagus in the basement of Atomic Pizza. The perfect geometric faces cast an unnatural light on the nearby cardboard stands of Marilyn Monroe and James Dean.</p>
+                       <p>A fading poster of a pizza pie cut into 24 pieces is askew on the wall, mirroring a circle with 24 sections and a jittering arrow that's directly emblazoned on the center of the sarcophagus.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VII — ASK AGAIN LATER",
+                html: `<p>King Solomon speaks. "Aladdin, there has been another Interaction in the Fields. The Second Layer has Vacuumed. I come for your infallible guidance."</p>
+                       <p>The arrow jitters rapidly and lands on a Harvey Ball smiley face on the first slice of the circle. It smiles an unchanging yellow grin. This means continue or affirmative.</p>
+                       <p>"Brother Michael's wish. It has been fulfilled. But there was a Jitter in the Needle. He went to the High-Sievert Zone. He's currently being transported."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VII — ASK AGAIN LATER",
+                html: `<p>The arrow jitters again, making a Geiger counter sound. It moves down to the bottom half of the circle, which displays the Zodiac signs. It lands on Libra.</p>
+                       <p>King Solomon's eyes widen, mirroring the unblinking stare of the yellow Harvey Ball. "Libra. The Scales. Balance... You don't mean? The Blades?"</p>
+                       <p>It moves back to the smiley face. Then it rapidly travels 5 slices over, to the skull and crossbones. This is rare, King Solomon doesn't know what it fully means.</p>
+                       <p>"What is it, Aladdin? The DNI? The cops?"</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VII — ASK AGAIN LATER",
+                html: `<p>The arrow scrapes the metal as it lands on a sad face right next to the smiley.</p>
+                       <p>"A defector?!"</p>
+                       <p>The needle travels past the Star of David, the Star and Crescent, and a depiction of an atom. It lands on a Cross.</p>
+                       <p>"The Church?!"</p>
+                       <p>It moves back to the smiley face.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VII — ASK AGAIN LATER",
+                html: `<p>"Who, Aladdin? What?! Indicate what you mean!"</p>
+                       <p>King Solomon's watch beeps. It has been 12 minutes and 12 seconds. Aladdin has nothing else to say.</p>`
+            },
+            // --- CHAPTER VIII: LOSING MY RELIGION ---
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>Salvatore did not have the best relationship with God, even before he made a demonic pact with a higher dimensional being.</p>
+                       <p>He graciously accepted Father Castellano's offer to live in the rectory, but it's a big adjustment for him. He used to do "construction" for The Rosebank Social Club.</p>
+                       <p>He remembers what the Capo told him about the Catholic Church.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>"Sal, look at me. You think we're the first guys to come up with a tribute system? Forget about it. The Church is the most successful Mafia in history. Think about the structure. You got the Pope, the Boss of Bosses, ordering the Cardinals, the under bosses. Then you got the Bishops, those are the Capos."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>"In the 1600s, they took this guy Bruno, a real genius, but he starts yapping about how the universe is infinite and there are other worlds. The Church tells him to take a plea deal, recant, go home, shut up. He refuses."</p>
+                       <p>"So what do they do? They gag him so he can't talk to the crowd, tie him to a stake, and light the match in the middle of Rome. That's a message, Sal. You talk out of school, you're done."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>"But here's the genius part, Sal: Our racket? We gotta worry about the Feds, the RICO, the wiretaps. Their racket? They're selling 'Insurance' for the afterlife. You can't prove the policy doesn't work until you're dead!"</p>
+                       <p>Salvatore had internalized this for years. This is why he's staring at the small icon of the Virgin Mary with confusion and indecision.</p>
+                       <p>"What's wrong, son?" asks Father Castellano.</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>"I don't know. I just do the confessions because you're the only guy I can talk to. I've never been surrounded by so much religious stuff. I'm used to the parabnormal. In Atomic Pizza, they got this... I don't know... weird octagon thing."</p>
+                       <p>He takes a pause.</p>
+                       <p>"The Capo always used to tell me that the Church is a racket."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>Father Castellano responds in a warm unwavering tone.</p>
+                       <p>"He told you we're just a bigger outfit, didn't he? That the Pope is the Boss and the collection plate is the street tax."</p>
+                       <p>He gestures for Salvatore to sit. Father Castellano sits directly across from him.</p>
+                       <p>"It makes them feel better about what they do. If the whole world is a racket, then they aren't the villains, they're just 'independent contractors.' It's a comforting lie, Sal."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>He gestures toward the icon of Mary.</p>
+                       <p>"But look at her. Really look. Does she look like a 'Consigliere' to you? The Mob is built on debt, Sal. You do a favor, you owe a favor. You take a dollar, you pay back two. It's a ledger that never clears until you're in the ground. They 'whack' people to protect the pile."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>Father Castellano grips his rosary, still uncomfortable about the pact. But he continues, averting eye contact momentarily.</p>
+                       <p>"The Church didn't survive two thousand years because we were better at the muscle. We survived because of the Sacrifice. Our 'Boss' didn't send a hitman to settle the score; He let Himself get whacked to cancel the debt. All of it. The Ledger is gone, Sal."</p>`
+            },
+            {
+                chapter: "HITTING THE NEEDLE: CHAPTER VIII — LOSING MY RELIGION",
+                html: `<p>"They don't know what to do with a God who doesn't want a 'kick-up.' They don't know how to handle Mercy, because you can't put a price tag on it, and you can't lean on a man who's already forgiven."</p>
+                       <p>He taps the frame of the icon.</p>
+                       <p>"You're not in a safe house, Sal. You're in a sanctuary. The difference is that in a safe house, you're still a prisoner to your past. Here? The past has no jurisdiction."</p>`
+            }
+        ];
+
+        const totalPages = pages.length;
+        let currentPage = 0;
+        let currentRotation = 0;
+        const die = document.getElementById('die');
+        const faceContents = [
+            document.getElementById('content-0'),
+            document.getElementById('content-1'),
+            document.getElementById('content-2')
+        ];
+
+        function getFaceIndex(pageIndex) {
+            return ((pageIndex % 3) + 3) % 3;
         }
+
+        function loadFace(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+            const faceIdx = getFaceIndex(pageIndex);
+            faceContents[faceIdx].innerHTML = pages[pageIndex].html;
+        }
+
+        // Always sync the current face AND both neighbors
+        function syncFaces() {
+            loadFace(currentPage);
+            if (currentPage > 0) loadFace(currentPage - 1);
+            if (currentPage < totalPages - 1) loadFace(currentPage + 1);
+        }
+
+        function updateUI() {
+            document.getElementById('chapter-title').textContent = pages[currentPage].chapter;
+        }
+
+        function changeFace(direction) {
+            const newPage = currentPage + direction;
+            if (newPage < 0 || newPage >= totalPages) return;
+
+            currentPage = newPage;
+            currentRotation -= (direction * 120);
+            die.style.transform = `rotateY(${currentRotation}deg) rotateX(-5deg)`;
+
+            syncFaces();
+            updateUI();
+        }
+
+        function init() {
+            syncFaces();
+            updateUI();
+        }
+
+        window.onload = init;
     </script>
 
 </body>
