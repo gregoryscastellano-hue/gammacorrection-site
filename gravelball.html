@@ -787,15 +787,16 @@ function runPlay(){
     });
 
     // Remove played cards, replace with fresh
-    const newHand = hand.filter((_, i) => !selected.includes(i));
+    let newHand = hand.filter((_, i) => !selected.includes(i));
 
-    // Check for exhausted cards and notify
+    // Auto-replace exhausted cards with fresh draws
     let exhaustedCount = 0;
-    newHand.forEach(card => {
-      if (card.age >= card.stamina && card._notified === undefined) {
-        card._notified = true;
+    newHand = newHand.map(card => {
+      if (card.age >= card.stamina) {
         exhaustedCount++;
+        return generateCard(); // replaced
       }
+      return card;
     });
 
     // Fill back to 7
@@ -806,7 +807,7 @@ function runPlay(){
     if (exhaustedCount > 0) {
       setTimeout(() => {
         sfx('exhaust');
-        toast(exhaustedCount + ' CARD' + (exhaustedCount > 1 ? 'S' : '') + ' EXHAUSTED!', 'foul');
+        toast(exhaustedCount + ' CARD' + (exhaustedCount > 1 ? 'S' : '') + ' EXHAUSTED — REPLACED!', 'foul');
       }, 600);
     }
 
