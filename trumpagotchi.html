@@ -71,6 +71,37 @@
         }
         .unstable { animation: shake 0.1s infinite; }
 
+        /* ── YMCA DANCE ── */
+        @keyframes ymcaDance {
+            0%   { transform: scaleX(1) rotate(0deg) translateY(0); }
+            /* Y */
+            6%   { transform: scaleX(1) rotate(-12deg) translateY(-8px) scaleY(1.1); }
+            12%  { transform: scaleX(1) rotate(12deg) translateY(-8px) scaleY(1.1); }
+            18%  { transform: scaleX(1) rotate(0deg) translateY(-12px) scaleY(1.15); }
+            /* M */
+            25%  { transform: scaleX(1) rotate(0deg) translateY(0); }
+            31%  { transform: scaleX(-1) rotate(-15deg) translateY(-4px); }
+            37%  { transform: scaleX(1) rotate(15deg) translateY(-4px); }
+            43%  { transform: scaleX(-1) rotate(-10deg) translateY(-6px); }
+            /* C */
+            50%  { transform: scaleX(1) rotate(0deg) translateY(0); }
+            56%  { transform: scaleX(1) rotate(20deg) translateY(-5px) scaleX(0.9); }
+            62%  { transform: scaleX(1) rotate(15deg) translateY(-8px) scaleX(0.85); }
+            /* A */
+            69%  { transform: scaleX(1) rotate(0deg) translateY(0); }
+            75%  { transform: scaleX(1) rotate(-8deg) translateY(-14px) scaleY(1.12); }
+            81%  { transform: scaleX(-1) rotate(8deg) translateY(-14px) scaleY(1.12); }
+            87%  { transform: scaleX(1) rotate(0deg) translateY(-16px) scaleY(1.15); }
+            /* land */
+            94%  { transform: scaleX(1) rotate(0deg) translateY(2px) scaleY(0.92); }
+            100% { transform: scaleX(1) rotate(0deg) translateY(0) scaleY(1); }
+        }
+
+        .dancing {
+            animation: ymcaDance 2.4s ease-in-out forwards !important;
+            transform-origin: bottom center !important;
+        }
+
         /* ── GOLF ── */
         #power-meter-container {
             position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
@@ -90,6 +121,46 @@
             font-size: 14px; color: #1a1a1a; display: none; z-index: 10; white-space: nowrap;
         }
         .golf-item { position: absolute; image-rendering: pixelated; z-index: 3; }
+
+        /* ── TRUTH SOCIAL ── */
+        #truth-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 26, 26, 0.92); z-index: 20;
+            display: none; flex-direction: column; padding: 8px;
+            box-sizing: border-box; font-family: 'VT323', monospace;
+        }
+        #truth-overlay.active { display: flex; }
+        .truth-header {
+            color: #d4af37; font-size: 16px; text-align: center;
+            border-bottom: 1px solid #444; padding-bottom: 4px; margin-bottom: 6px;
+        }
+        #truth-input {
+            background: #111; color: #9cad7d; border: 2px inset #555;
+            font-family: 'VT323', monospace; font-size: 14px;
+            padding: 5px; resize: none; height: 45px; width: 100%;
+            box-sizing: border-box; outline: none;
+        }
+        #truth-input::placeholder { color: #555; }
+        .truth-btn-row {
+            display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end;
+        }
+        .truth-btn {
+            background: #c0c0c0; border: 2px outset #fff; padding: 3px 10px;
+            cursor: pointer; font-family: 'VT323', monospace; font-size: 13px;
+        }
+        .truth-btn:active { border: 2px inset #fff; }
+        .truth-btn.post { background: #d4af37; color: #000; font-weight: bold; }
+        #truth-feed {
+            flex-grow: 1; overflow-y: auto; margin-top: 6px; font-size: 13px;
+        }
+        .truth-post {
+            background: #1a1a1a; border: 1px solid #333; padding: 5px;
+            margin-bottom: 4px; color: #9cad7d;
+        }
+        .truth-post .handle { color: #d4af37; font-size: 14px; }
+        .truth-post .body { color: #ccc; margin: 3px 0; word-break: break-word; }
+        .truth-post .metrics { color: #666; font-size: 12px; }
+        .truth-post .reply { color: #ff6b6b; margin-top: 3px; font-size: 12px; border-top: 1px solid #333; padding-top: 3px; }
     </style>
 </head>
 <body>
@@ -115,6 +186,15 @@
                 <div id="power-meter-label">SWING POWER</div>
             </div>
             <div id="status-bubble">STATUS: STABLE</div>
+            <div id="truth-overlay">
+                <div class="truth-header">☆ TRUTH SOCIAL ☆</div>
+                <textarea id="truth-input" placeholder="What's your truth?" maxlength="120"></textarea>
+                <div class="truth-btn-row">
+                    <button class="truth-btn" onclick="closeTruth()">CANCEL</button>
+                    <button class="truth-btn post" id="truth-post-btn" onclick="postTruth()">POST TRUTH</button>
+                </div>
+                <div id="truth-feed"></div>
+            </div>
         </div>
         <div class="button-grid">
             <button id="btn1" class="btn" onclick="interact('feed')">HAMBERDER</button>
@@ -164,6 +244,7 @@
         let directionTimer = 0;
         let spriteState = 'wandering';
         let foodTarget  = null;
+        let foodStuckTimer = 0;
 
         // ═══════════════════════════════
         // GOLF STATE
@@ -198,6 +279,19 @@
             directionTimer = 90 + Math.floor(Math.random() * 130);
         }
 
+        function eatFood() {
+            try { new Audio('munch1.mp3').play(); } catch(e) {}
+            stats.crave  = Math.min(100, stats.crave  + 25);
+            stats.energy = Math.min(100, stats.energy + 5);
+            stats.temper = Math.max(0,   stats.temper - 5);
+            updateUI();
+            if (foodTarget) { foodTarget.el.remove(); foodTarget = null; }
+            foodStuckTimer = 0;
+            spriteState = 'wandering';
+            document.getElementById('btn1').disabled = false;
+            pickNewDirection();
+        }
+
         function updateSpritePosition() {
             if (!moveStarted) {
                 const maxX = spriteContainer.offsetWidth  - spriteEl.offsetWidth;
@@ -220,40 +314,57 @@
                 if (posY <= 0 || posY >= maxY) { velY *= -1; targetVelY *= -1; pickNewDirection(); }
 
             } else if (spriteState === 'seekingFood') {
-                const cx = posX + spriteEl.offsetWidth  / 2;
-                const cy = posY + spriteEl.offsetHeight / 2;
-                const dx = foodTarget.x - cx;
-                const dy = foodTarget.y - cy;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 25) {
-                    try { new Audio('munch1.mp3').play(); } catch(e) {}
-                    stats.crave  = Math.min(100, stats.crave  + 25);
-                    stats.energy = Math.min(100, stats.energy + 5);
-                    stats.temper = Math.max(0,   stats.temper - 5);
-                    updateUI();
-                    foodTarget.el.remove(); foodTarget = null;
-                    spriteState = 'wandering';
-                    document.getElementById('btn1').disabled = false;
-                    pickNewDirection();
+                foodStuckTimer++;
+
+                // Use closest edge of sprite to food, not center
+                const spriteLeft   = posX;
+                const spriteRight  = posX + spriteEl.offsetWidth;
+                const spriteTop    = posY;
+                const spriteBottom = posY + spriteEl.offsetHeight;
+
+                // Closest point on sprite rect to food center
+                const closestX = Math.max(spriteLeft, Math.min(foodTarget.x, spriteRight));
+                const closestY = Math.max(spriteTop,  Math.min(foodTarget.y, spriteBottom));
+
+                const dx = foodTarget.x - closestX;
+                const dy = foodTarget.y - closestY;
+                const edgeDist = Math.sqrt(dx * dx + dy * dy);
+
+                // Eat if sprite overlaps or nearly overlaps food
+                if (edgeDist < 10 || foodStuckTimer > 300) {
+                    eatFood();
                 } else {
-                    velX = (dx / dist) * 1.8;
-                    velY = (dy / dist) * 1.8;
+                    // Steer sprite center toward food
+                    const cx = posX + spriteEl.offsetWidth  / 2;
+                    const cy = posY + spriteEl.offsetHeight / 2;
+                    const toDx = foodTarget.x - cx;
+                    const toDy = foodTarget.y - cy;
+                    const toDist = Math.sqrt(toDx * toDx + toDy * toDy);
+                    if (toDist > 0) {
+                        velX = (toDx / toDist) * 1.8;
+                        velY = (toDy / toDist) * 1.8;
+                    }
                     posX += velX; posY += velY;
                 }
 
             } else if (spriteState === 'golf_aiming' || spriteState === 'golf_swinging') {
+                velX = 0; velY = 0;
+            } else if (spriteState === 'dancing') {
                 velX = 0; velY = 0;
             }
 
             posX = Math.max(0, Math.min(posX, maxX));
             posY = Math.max(0, Math.min(posY, maxY));
 
-            const spd = Math.abs(velX) + Math.abs(velY);
-            waddleAngle += spd * 0.06;
-            const lean  = Math.sin(waddleAngle) * 8;
-            const flipX = velX >= 0 ? 1 : -1;
-            spriteEl.style.transform       = `scaleX(${flipX}) rotate(${lean}deg)`;
-            spriteEl.style.transformOrigin = 'bottom center';
+            // Don't override transform during dance — CSS animation handles it
+            if (spriteState !== 'dancing') {
+                const spd = Math.abs(velX) + Math.abs(velY);
+                waddleAngle += spd * 0.06;
+                const lean  = Math.sin(waddleAngle) * 8;
+                const flipX = velX >= 0 ? 1 : -1;
+                spriteEl.style.transform       = `scaleX(${flipX}) rotate(${lean}deg)`;
+                spriteEl.style.transformOrigin = 'bottom center';
+            }
             spriteEl.style.left = posX + 'px';
             spriteEl.style.top  = posY + 'px';
 
@@ -455,14 +566,17 @@
 
             if (action === 'feed') {
                 spriteState = 'seekingFood';
+                foodStuckTimer = 0;
                 document.getElementById('btn1').disabled = true;
                 const burgerEl = document.createElement('img');
                 burgerEl.src = 'burger1.png';
                 Object.assign(burgerEl.style, {
                     position: 'absolute', width: '40px', imageRendering: 'pixelated', zIndex: '3'
                 });
-                const foodX = Math.random() * (spriteContainer.offsetWidth  - 40);
-                const foodY = Math.random() * (spriteContainer.offsetHeight - 40);
+                // Spawn food in area reachable by sprite center
+                const margin = spriteEl.offsetWidth / 2 + 10;
+                const foodX = margin + Math.random() * (spriteContainer.offsetWidth  - 40 - margin * 2);
+                const foodY = margin + Math.random() * (spriteContainer.offsetHeight - 40 - margin * 2);
                 burgerEl.style.left = foodX + 'px';
                 burgerEl.style.top  = foodY + 'px';
                 spriteContainer.appendChild(burgerEl);
@@ -470,19 +584,141 @@
             }
 
             if (action === 'rally') {
-                stats.ego    = 100;
-                stats.energy = Math.max(0,   stats.energy - 40);
-                stats.temper = Math.min(100, stats.temper + 20);
+                spriteState = 'dancing';
+                document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+                statusText.innerText = 'STATUS: RALLY TIME!';
+
+                // Play sound
                 try { const s = new Audio('maga.mp3'); s.volume = 0.6; s.play(); } catch(e) {}
-                updateUI();
+
+                // Clear inline transform and start dance
+                spriteEl.style.transform = '';
+                spriteEl.classList.add('dancing');
+
+                // Show YMCA speech bubble
+                bubbleEl.innerText = '♪ Y.M.C.A! ♪';
+                bubbleEl.style.display = 'block';
+                bubbleEl.style.left = (posX + spriteEl.offsetWidth / 2 - 40) + 'px';
+                bubbleEl.style.top  = (posY - 30) + 'px';
+                isSpeaking = true;
+
+                // End dance after animation
+                setTimeout(() => {
+                    spriteEl.classList.remove('dancing');
+                    spriteEl.style.transform = '';
+                    bubbleEl.style.display = 'none';
+                    isSpeaking = false;
+                    spriteState = 'wandering';
+                    pickNewDirection();
+                    document.querySelectorAll('.btn').forEach(b => b.disabled = false);
+
+                    stats.ego    = 100;
+                    stats.energy = Math.max(0,   stats.energy - 40);
+                    stats.temper = Math.min(100, stats.temper + 20);
+                    updateUI();
+                }, 2500);
             }
 
             if (action === 'truth') {
-                stats.ego    = Math.min(100, stats.ego    + 15);
-                stats.temper = Math.min(100, stats.temper + 15);
-                updateUI();
+                openTruth();
             }
         }
+
+        // ═══════════════════════════════
+        // TRUTH SOCIAL
+        // ═══════════════════════════════
+        const truthOverlay = document.getElementById('truth-overlay');
+        const truthInput   = document.getElementById('truth-input');
+        const truthFeed    = document.getElementById('truth-feed');
+
+        const trumpReplies = {
+            positive: [
+                "THANK YOU, VERY COOL!", "TREMENDOUS SUPPORTER!", "THIS IS WHAT WINNING LOOKS LIKE!",
+                "GREAT PATRIOT! MANY PEOPLE ARE SAYING THIS!", "FINALLY SOMEONE WITH BRAINS!",
+                "RETRUTH! EVERYBODY NEEDS TO SEE THIS!", "YOU GET IT! UNLIKE THE FAKE NEWS!"
+            ],
+            negative: [
+                "WRONG! FAKE NEWS!", "SAD! VERY LOW IQ TAKE!", "LOSER! I WON BY A LOT!",
+                "ANOTHER HATER! MANY SUCH CASES!", "WITCH HUNT MENTALITY!", "YOU'RE FIRED!",
+                "VERY NASTY! THE FAILING TRUTH SOCIAL DOESN'T NEED YOU!"
+            ],
+            neutral: [
+                "INTERESTING... BUT HAVE YOU SEEN MY POLL NUMBERS?",
+                "OK BUT DID YOU KNOW I HAD THE BIGGEST INAUGURATION?",
+                "NOTED. NOW LET ME TELL YOU ABOUT MY PERFECT CALLS.",
+                "MANY PEOPLE ARE TALKING ABOUT THIS. MAYBE. WHO KNOWS!",
+                "I'LL LOOK INTO IT. AFTER GOLF."
+            ]
+        };
+
+        const negativeWords = ['fake','bad','loser','wrong','ugly','stupid','dumb','hate','worst','terrible','sad','weak','boring','small','lost','fail','suck','idiot','fool','liar'];
+        const positiveWords = ['great','best','tremendous','huge','yuge','win','beautiful','smart','strong','perfect','amazing','fantastic','incredible','maga','trump','king','god','genius','alpha','based','bigly'];
+
+        function detectSentiment(text) {
+            const lower = text.toLowerCase();
+            let pos = 0, neg = 0;
+            positiveWords.forEach(w => { if (lower.includes(w)) pos++; });
+            negativeWords.forEach(w => { if (lower.includes(w)) neg++; });
+            if (pos > neg) return 'positive';
+            if (neg > pos) return 'negative';
+            return 'neutral';
+        }
+
+        function openTruth() {
+            truthOverlay.classList.add('active');
+            truthInput.value = '';
+            truthInput.focus();
+            document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+        }
+
+        function closeTruth() {
+            truthOverlay.classList.remove('active');
+            document.querySelectorAll('.btn').forEach(b => b.disabled = false);
+        }
+
+        function postTruth() {
+            const text = truthInput.value.trim();
+            if (!text) return;
+
+            const sentiment = detectSentiment(text);
+            const replies = trumpReplies[sentiment];
+            const reply = replies[Math.floor(Math.random() * replies.length)];
+
+            // Generate fake metrics
+            const retruths = Math.floor(Math.random() * 50000) + (sentiment === 'positive' ? 30000 : 500);
+            const likes = Math.floor(retruths * (1.5 + Math.random() * 2));
+            const formatNum = n => n > 999 ? (n / 1000).toFixed(1) + 'K' : n;
+
+            // Build post HTML
+            const postEl = document.createElement('div');
+            postEl.className = 'truth-post';
+            postEl.innerHTML =
+                '<div class="handle">@YOU</div>' +
+                '<div class="body">' + text.replace(/</g, '&lt;') + '</div>' +
+                '<div class="metrics">♻ ' + formatNum(retruths) + '  ♥ ' + formatNum(likes) + '</div>' +
+                '<div class="reply"><span class="handle">@realDonaldTrump</span> ' + reply + '</div>';
+
+            truthFeed.insertBefore(postEl, truthFeed.firstChild);
+            truthInput.value = '';
+
+            // Stats based on sentiment
+            if (sentiment === 'positive') {
+                stats.ego    = Math.min(100, stats.ego + 20);
+                stats.temper = Math.max(0,   stats.temper - 5);
+            } else if (sentiment === 'negative') {
+                stats.ego    = Math.max(0,   stats.ego - 10);
+                stats.temper = Math.min(100, stats.temper + 25);
+            } else {
+                stats.ego    = Math.min(100, stats.ego + 10);
+                stats.temper = Math.min(100, stats.temper + 10);
+            }
+            updateUI();
+        }
+
+        // Post on Enter key
+        document.getElementById('truth-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); postTruth(); }
+        });
 
         // ═══════════════════════════════
         // GAME LOOPS
