@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~ THE GILDED SOVEREIGN ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --sea-blue: #0088ff;
+            --foam-white: #ffffff;
+            --paper-tan: #f4e4bc;
+            --ink-black: #2c241a;
+            --gold-trim: #ffd700;
+        }
+
+        body {
+            background-color: var(--sea-blue);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Crimson Text', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* --- CEL-SHADED OCEAN BACKGROUND --- */
+        .ocean {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: var(--sea-blue);
+            z-index: -1;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230099ff" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,213.3C960,224,1056,192,1152,165.3C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: 50% 100%;
+            animation: moveWave 10s linear infinite;
+        }
+
+        @keyframes moveWave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- THE LOGBOOK (The Window) --- */
+        .logbook {
+            width: 80%;
+            max-width: 800px;
+            background: var(--paper-tan);
+            border: 8px solid var(--ink-black);
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+            position: relative;
+            padding: 40px;
+            transform: rotate(-1deg);
+            outline: 3px solid var(--gold-trim);
+        }
+
+        .logbook::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.05), transparent);
+            pointer-events: none;
+        }
+
+        h1 {
+            font-family: 'Pirata One', system-ui;
+            font-size: 3.5rem;
+            color: var(--ink-black);
+            margin: 0 0 20px 0;
+            text-align: center;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--ink-black);
+        }
+
+        .scroll-content {
+            height: 400px;
+            overflow-y: auto;
+            padding-right: 20px;
+            color: var(--ink-black);
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar for the Log */
+        .scroll-content::-webkit-scrollbar { width: 10px; }
+        .scroll-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        .scroll-content::-webkit-scrollbar-thumb { background: var(--ink-black); border-radius: 5px; }
+
+        .time-stamp {
+            font-weight: bold;
+            color: #b22222; /* Royal Red */
+            text-decoration: underline;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: var(--ink-black);
+            color: var(--gold-trim);
+            font-family: 'Pirata One', cursive;
+            font-size: 1.8rem;
+            padding: 10px 30px;
+            border: 4px solid var(--gold-trim);
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.1) rotate(2deg);
+            background: var(--gold-trim);
+            color: var(--ink-black);
+        }
+
+        .stamp {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            background: rgba(178, 34, 34, 0.7);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Pirata One';
+            transform: rotate(15deg);
+            border: 4px double white;
+            text-align: center;
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ocean">
+        <div class="wave"></div>
+    </div>
+
+    <div class="logbook">
+        <h1>The Gilded Sovereign</h1>
+        
+        <div class="scroll-content">
+            <p>Theodore’s day to day job on the Gilded Sovereign would be torturous to anyone but Theodore. <span class="time-stamp">At 04:45 on the dot</span>, his Queen Victoria alarm clock rings. He presses the stopper with a smile on his face and jumps out of bed, grabbing his bristle brush and lathering it with tooth powder. He then meticulously irons his cravat, polishes his brass buttons with powdered limestone, and positions his powdered wig to perfection. On the way out of his quarters, he grabs his book of regulations and quickly prostrates to his framed image of the Queen.</p>
+
+            <p><span class="time-stamp">06:00 on the dot</span> he makes his way to the hold, and does a precise inventory of the imported truffles, bottles of vintage champagne, and soft cheeses. <span class="time-stamp">At 06:35 on the dot</span>, he fills out Form 7B: Morning Expenditure of Luxury Perishables. <span class="time-stamp">At 07:00 on the dot</span>, he lines up the stewards and waiters to perform fingernail and cuff inspection. If he notices one of them is out of regulation, he promptly provides them with Form 12C: Notice of Unbecoming Appearance.</p>
+
+            <p><span class="time-stamp">At 08:00 on the dot</span>, he reports to the main companionway. He greets each passing noble with unwavering praise, and bows at the mathematically precise angle to their specific rank. <span class="time-stamp">At 09:30 on the dot</span>, he retreats to his office to do correspondence and process the ship's mail. He sorts the mail scrupulously, putting them in labeled compartments based on whether they are “Urgent”, “Official”, or “Plebian”. He pays careful attention to the position of the Royal Crest on each document.</p>
+
+            <p><span class="time-stamp">At 10:45 on the dot</span>, he makes his way to his punctiliously clothed table in the hold and has his lunch break: sauerkraut with cured meat. He makes sure to log down his intake in Form 14-K: Cabbage Consumption Log.</p>
+            
+            <p>Then it's straight off to his <span class="time-stamp">11:00 on the dot</span> wine and spirit audit, in which he checks the ullage of each and every bottle to ensure the ship's motion hasn't compromised the purity. He logs this on the Liquid Assets Registry. He then checks off his <span class="time-stamp">12:30 on the dot</span> Luncheon Oversight, watching the soup service like a hawk. If a waiter serves from the right instead of the left, Theodore makes a frantic, silent note in his Black Book of Etiquette Violations.</p>
+
+            <p><span class="time-stamp">At 14:00 on the dot</span>, he lovingly performs the Deck Chair Coordination, ensuring that each chair is distributed to its respective social rank. If a seating mishap occurs where a lower ranking passenger sits in a chair for a higher passenger, he sternly relocates them with a Form 88: Reassignment of Leisure Space. <span class="time-stamp">At 15:15 on the dot</span>, he dresses for dinner, opting to switch to a full evening dress, which calls for another round of button polishing.</p>
+
+            <p><span class="time-stamp">At 16:00 on the dot</span>, the grand dinner begins. Theodore micromanages the ambiance with diligent fervor, making sure each utensil is placed perfectly according to the outside-in rule. <span class="time-stamp">At 20:00 on the dot</span> he performs the Nightly Candle Audit, counting every inch of tallow burned and logging it in the Illuminations Ledger. Then <span class="time-stamp">at 20:30 on the dot</span>, he enters his quarters, prostrates once again to the Queen, and places his book of regulations on the nightstand. He sleeps deeply, with pride of work well done and a burning excitement for doing it again tomorrow.</p>
+        </div>
+
+        <div class="stamp">OFFICIAL<br>SOVEREIGN<br>SEAL</div>
+    </div>
+
+    <div class="nav-buttons" style="position: fixed; bottom: 30px;">
+        <button class="btn" onclick="location.href='index.html'">BACK_TO_PORTAL</button>
+        <button class="btn" onclick="alert('Theodore is busy filing Form 99: Future Chapter Authorization.')">NEXT_LOG</button>
+    </div>
+
+</body>
+</html>
