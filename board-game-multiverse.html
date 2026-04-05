@@ -80,6 +80,62 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 .moves-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 2px 20px; max-width: 500px; margin: 0 auto; }
 .move-entry { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(232,220,200,0.6); line-height: 1.8; }
 .move-entry .move-num { color: #c9a84c; font-weight: 600; font-family: 'Playfair Display', serif; min-width: 24px; display: inline-block; }
+/* ═══ MONOPOLY BOX THEME ═══ */
+.monopoly .box-front { background: #c5e0b4; border: 3px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+.monopoly .box-front .box-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: #fff; letter-spacing: 2px; text-transform: uppercase; background: #d40000; padding: 4px 14px; text-shadow: 1px 2px 0 rgba(0,0,0,0.3); }
+.monopoly .box-front .box-art { margin-top: 14px; width: 130px; height: 130px; border: 2px solid #1a1a1a; background: #d5eac4; position: relative; display: flex; align-items: center; justify-content: center; }
+.monopoly .box-front .box-art::before { content: ''; position: absolute; inset: 8px; border: 2px solid rgba(0,0,0,0.15); }
+.monopoly .box-front .box-art-inner { font-family: 'Playfair Display', serif; font-size: 48px; color: #1a6b3c; font-weight: 900; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+.monopoly .box-front .box-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 10px; font-style: italic; color: rgba(0,0,0,0.4); margin-top: 12px; letter-spacing: 2px; }
+.monopoly .box-back { background: #1a1a1a; border: 3px solid #1a1a1a; }
+.monopoly .box-left, .monopoly .box-right { background: linear-gradient(180deg, #c5e0b4, #b0d09c); border-top: 3px solid #1a1a1a; border-bottom: 3px solid #1a1a1a; }
+.monopoly .box-bottom { background: #9cc088; border-left: 3px solid #1a1a1a; border-right: 3px solid #1a1a1a; }
+.monopoly .box-lid { background: linear-gradient(180deg, #d40000, #b00000); border: 3px solid #1a1a1a; border-bottom: none; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 7px; letter-spacing: 3px; color: #fff; }
+
+/* ═══ MONOPOLY OVERLAY ═══ */
+#monopoly-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.88); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s; }
+#monopoly-overlay.show { opacity: 1; visibility: visible; }
+.monopoly-frame { width: 90vw; max-width: 780px; height: 90vh; max-height: 920px; position: relative; background: #c5e0b4; border: 4px solid #1a1a1a; box-shadow: 0 0 80px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; }
+.monopoly-header { background: #d40000; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom: 3px solid #1a1a1a; }
+.monopoly-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(18px, 3vw, 28px); font-weight: 900; color: #fff; letter-spacing: 5px; text-transform: uppercase; text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
+.monopoly-header .overlay-close { position: static; border-color: rgba(255,255,255,0.4); color: #fff; background: rgba(0,0,0,0.2); }
+.monopoly-header .overlay-close:hover { background: #fff; color: #d40000; }
+
+/* Tabs */
+.tab-bar { display: flex; flex-shrink: 0; border-bottom: 3px solid #1a1a1a; }
+.tab-btn { flex: 1; padding: 12px 16px; font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(0,0,0,0.35); background: #b8d4a4; border: none; cursor: pointer; transition: all 0.3s; border-bottom: 3px solid transparent; }
+.tab-btn:hover { color: rgba(0,0,0,0.6); background: #c0dca8; }
+.tab-btn.active { color: #1a1a1a; background: #c5e0b4; border-bottom-color: #d40000; }
+.tab-panel { flex: 1; overflow-y: auto; padding: 30px 28px; display: none; background: #f5f0e4; }
+.tab-panel.active { display: block; }
+.tab-panel::-webkit-scrollbar { width: 6px; }
+.tab-panel::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+.tab-panel::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 3px; }
+/* Noir story styling */
+.noir-chapter { margin-bottom: 30px; }
+.noir-chapter-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: #1a1a1a; text-align: center; letter-spacing: 3px; margin-bottom: 6px; }
+.noir-chapter-sub { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(0,0,0,0.45); text-align: center; letter-spacing: 2px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.noir-body { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: rgba(0,0,0,0.85); line-height: 2; }
+.noir-body p { margin-bottom: 12px; text-indent: 24px; }
+.noir-body p:first-child { text-indent: 0; }
+.noir-body .dialogue { color: #1a1a1a; }
+
+.tab-placeholder { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: rgba(0,0,0,0.3); text-align: center; padding: 60px 20px; }
+
+/* Ordinance document styling */
+.ord { margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.ord:last-child { border-bottom: none; }
+.ord-republic { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #d40000; text-align: center; margin-bottom: 4px; }
+.ord-number { font-family: 'Playfair Display', serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(0,0,0,0.4); text-align: center; margin-bottom: 2px; }
+.ord-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; color: #1a1a1a; text-align: center; letter-spacing: 2px; margin-bottom: 14px; }
+.ord-preamble { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: rgba(0,0,0,0.55); text-align: center; line-height: 1.8; margin-bottom: 16px; padding: 0 10px; }
+.ord-section { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px; text-transform: uppercase; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.15); }
+.ord-text { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: rgba(0,0,0,0.8); line-height: 1.8; margin-bottom: 6px; }
+.ord-item { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: rgba(0,0,0,0.8); line-height: 1.8; margin-bottom: 4px; padding-left: 16px; position: relative; }
+.ord-item::before { content: ''; position: absolute; left: 4px; top: 10px; width: 4px; height: 4px; background: #d40000; }
+.ord-sub { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(0,0,0,0.6); line-height: 1.7; margin: 2px 0 2px 28px; }
+.ord-enact { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(0,0,0,0.4); text-align: center; margin-top: 14px; letter-spacing: 1px; }
+
 .overlay-close { position: absolute; top: 12px; right: 16px; z-index: 10; font-family: 'Playfair Display', serif; font-size: 20px; color: #c9a84c; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,168,76,0.3); background: rgba(0,0,0,0.6); transition: all 0.3s; }
 .overlay-close:hover { background: #c9a84c; color: #1a1a1a; }
 .back-link { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100; font-family: 'VT323', monospace; font-size: 16px; color: #00FF00; text-decoration: none; letter-spacing: 2px; text-shadow: 0 0 8px rgba(0,255,0,0.4); transition: text-shadow 0.2s; }
@@ -93,6 +149,16 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
     <div class="box">
       <div class="box-lid">EST. ∞</div>
       <div class="box-front"><div class="box-title">Chess</div><div class="box-art" id="chess-board"></div><div class="box-subtitle">the eternal game</div></div>
+      <div class="box-back"></div><div class="box-left"></div><div class="box-right"></div><div class="box-bottom"></div>
+    </div>
+    <div class="box-shadow"></div><div class="click-hint">click to open</div>
+  </div>
+
+  <!-- ══════ MONOPOLY ══════ -->
+  <div class="box-container monopoly" onclick="toggleBox(this)">
+    <div class="box">
+      <div class="box-lid">PARKER BROS.</div>
+      <div class="box-front"><div class="box-title">Monopoly</div><div class="box-art"><div class="box-art-inner">M</div></div><div class="box-subtitle">do not pass go</div></div>
       <div class="box-back"></div><div class="box-left"></div><div class="box-right"></div><div class="box-bottom"></div>
     </div>
     <div class="box-shadow"></div><div class="click-hint">click to open</div>
@@ -242,6 +308,310 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
   </div>
 </div>
 
+<!-- ══════ MONOPOLY OVERLAY ══════ -->
+<div id="monopoly-overlay">
+  <div class="monopoly-frame">
+    <div class="monopoly-header">
+      <h2>Monopoly</h2>
+      <div class="overlay-close" onclick="closeOverlay()">&times;</div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('ordinances', this)">Ordinances</button>
+      <button class="tab-btn" onclick="switchTab('noir', this)">Noir</button>
+    </div>
+    <div class="tab-panel active" id="tab-ordinances">
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 1</div>
+<div class="ord-name">The Central Banking and Currency Act</div>
+<div class="ord-preamble">To establish a stable, sovereign economy, facilitate trade, and ensure the financial security of the nation, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: Establishment of The Bank</div>
+<div class="ord-item">There is hereby established a central financial authority to be known simply as The Bank.</div>
+<div class="ord-item">The Bank shall serve as an independent body within the government of Atlantic City, tasked with the exclusive management of the nation's monetary policy, reserves, and the issuance of physical currency.</div>
+<div class="ord-item">The primary mandate of The Bank shall be to preserve the economic stability and purchasing power of the national currency.</div>
+<div class="ord-section">Section II: Exclusive Authority to Mint and Issue</div>
+<div class="ord-item">The Bank shall hold the sole and exclusive right to mint coins and print banknotes within the sovereign borders of Atlantic City.</div>
+<div class="ord-item">Any unauthorized printing, minting, or reproduction of currency by individuals, private entities, or foreign bodies shall be deemed counterfeiting and treason against the state, subject to the highest penalties under the law.</div>
+<div class="ord-section">Section III: Official Currency and Denominations</div>
+<div class="ord-item">The official currency of the nation shall be the Atlantic Dollar (represented by the symbol $).</div>
+<div class="ord-item">The Bank is authorized and directed to mint and print currency exclusively in the following seven denominations:</div>
+<div class="ord-sub">$1 · $5 · $10 · $20 · $50 · $100 · $500</div>
+<div class="ord-item">The physical design, security features, and material composition of these denominations shall be established and maintained exclusively by The Bank.</div>
+<div class="ord-section">Section IV: Legal Tender</div>
+<div class="ord-item">All notes and coins issued by The Bank in the denominations listed in Section III shall be recognized as legal tender.</div>
+<div class="ord-item">They shall be valid and acceptable for the payment of all debts, public and private, public charges, taxes, and duties within Atlantic City.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 2</div>
+<div class="ord-name">The Depository, Lending, and Sovereign Yield Act</div>
+<div class="ord-preamble">To promote financial growth, encourage the secure holding of wealth, provide accessible capital to the citizens, and perpetually fund the vital operations and subsistence of the nation, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: Authorization of Deposits</div>
+<div class="ord-item">The Bank is hereby authorized to establish and maintain accounts for the purpose of accepting and holding financial deposits.</div>
+<div class="ord-item">These accounts shall be available to all legally recognized individuals and registered entities within the sovereign borders of Atlantic City.</div>
+<div class="ord-item">The Bank guarantees the absolute security and availability of all deposited funds, payable upon demand in the official currency of the nation.</div>
+<div class="ord-section">Section II: Lending Authority</div>
+<div class="ord-item">The Bank is formally authorized to issue loans and extend credit to eligible individuals and entities within Atlantic City.</div>
+<div class="ord-item">The issuance of loans shall be conducted exclusively in the official national currency and shall be subject to standardized terms of repayment established by The Bank.</div>
+<div class="ord-section">Section III: The Dual-Rate System and Sovereign Margin</div>
+<div class="ord-item">The Deposit Yield: All recognized deposit accounts held at The Bank shall yield a fixed, non-variable 2% annual interest return to the account holder.</div>
+<div class="ord-item">The Lending Tariff: All loans, credit, and debt extended by The Bank shall be subject to a fixed, non-variable 12% annual interest charge.</div>
+<div class="ord-item">The Sovereign Margin: The 10% mathematical difference between the Deposit Yield and the Lending Tariff shall be legally classified as the "Sovereign Margin." This margin is the exclusive, untaxable property of The Bank and shall serve as the primary engine for funding all state operations, infrastructure maintenance, and public welfare distributions.</div>
+<div class="ord-text">No alternative rates, compounding structures, or variable interest schedules may be applied to these foundational deposit and lending services by any citizen or private entity.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City, superseding all previous iterations.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 3</div>
+<div class="ord-name">The Debt Recovery and Asset Forfeiture Act</div>
+<div class="ord-preamble">To ensure the absolute integrity of the national lending system, prevent systemic default, and guarantee the rightful return of capital to the national reserves, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: Default and Asset Seizure</div>
+<div class="ord-item">In the event that an individual or entity fails to fulfill their monetary loan repayment obligations, The Bank is hereby authorized and mandated to seize the physical property of the defaulting party to satisfy the debt.</div>
+<div class="ord-item">Property subject to seizure includes, but is not limited to, real estate, residential homes, commercial buildings, and titled land.</div>
+<div class="ord-item">Seized properties shall be assessed and credited toward the outstanding debt at exactly 100% of their current market value.</div>
+<div class="ord-section">Section II: The 110% Recovery Mandate</div>
+<div class="ord-item">All defaulted loans must be recovered by The Bank up to the absolute total of 110% of the original loan amount (representing the 100% principal plus the mandatory 10% interest rate established in Ordinance No. 2).</div>
+<div class="ord-item">If the 100% market value of the seized property completely satisfies the 110% debt owed, any remaining surplus value shall be returned to the citizen in official currency.</div>
+<div class="ord-section">Section III: Forfeiture of Future Property</div>
+<div class="ord-item">If the value of the initially seized property is insufficient to cover the total 110% debt owed to The Bank, the defaulting party shall remain legally bound to the remaining balance.</div>
+<div class="ord-item">The Bank shall automatically place a binding legal lien on any and all future properties acquired by the defaulting party.</div>
+<div class="ord-item">The Bank reserves the immediate right to seize these newly acquired future properties, continually crediting them at 100% of their market value, until the original 110% debt obligation is entirely fulfilled.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 4</div>
+<div class="ord-name">The Debt Redemption through Labor Act</div>
+<div class="ord-preamble">To provide a structured path toward financial rehabilitation for the insolvent, and to ensure that all debts to the nation are honored through productive service, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: Declaration of Bankruptcy</div>
+<div class="ord-item">Any individual whose total debts to The Bank exceed their current and projected assets may formally file for a Declaration of Bankruptcy.</div>
+<div class="ord-item">Upon such declaration, all active interest accrual and asset seizures under Ordinance No. 3 shall be stayed, provided the individual enters the Debt Redemption Program.</div>
+<div class="ord-section">Section II: Mandatory Employment and Debt Forgiveness</div>
+<div class="ord-item">Individuals who declare bankruptcy under this act shall be granted immediate employment within The Bank or its subsidiary public works projects.</div>
+<div class="ord-item">The Bank is required to provide a position suitable to the individual's skills or basic labor needs until the debt is satisfied.</div>
+<div class="ord-item">For every hour worked, a portion of the individual's remaining 110% debt shall be systematically forgiven.</div>
+<div class="ord-section">Section III: Garnishment and Subsistence</div>
+<div class="ord-item">To ensure the rapid recovery of national funds, 50% of the individual's gross salary earned through this employment shall be automatically retained by The Bank and applied directly toward their outstanding debt.</div>
+<div class="ord-item">The remaining 50% of the salary shall be paid to the individual in official currency to provide for their basic cost of living, housing, and sustenance.</div>
+<div class="ord-item">This 50% garnishment is mandatory and non-negotiable until the total debt obligation reaches zero.</div>
+<div class="ord-section">Section IV: Rehabilitation and Release</div>
+<div class="ord-item">Once the total debt has been satisfied through the combination of prior asset seizure and the 50% labor garnishment, the individual's bankruptcy status shall be cleared.</div>
+<div class="ord-item">Upon completion, the individual is released from the Debt Redemption Program with a clean financial record and may return to the private workforce without any remaining liens on future property.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 5</div>
+<div class="ord-name">The Counterfeit Deterrence and Labor Conscription Act</div>
+<div class="ord-preamble">To provide a stern alternative to incarceration, and to repurpose the technical skills of those who act against the fiscal security of the nation for the benefit of the state, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: Alternative to Incarceration</div>
+<div class="ord-item">Any individual found guilty of the unauthorized production, minting, or distribution of Atlantic City currency may, at the discretion of the court, be offered an Alternative Labor Sentence in lieu of traditional imprisonment.</div>
+<div class="ord-item">Acceptance of this alternative requires a full admission of guilt and the surrender of all counterfeiting equipment, materials, and technical data to The Bank.</div>
+<div class="ord-section">Section II: Mandatory Service and 75% Garnishment</div>
+<div class="ord-item">Individuals serving an Alternative Labor Sentence shall be employed exclusively by The Bank in departments related to security, anti-counterfeiting measures, or currency production.</div>
+<div class="ord-item">As a punitive measure for the crime of treasonous forgery, 75% of the individual's gross salary shall be automatically retained by The Bank as a "Security Restitution Fee."</div>
+<div class="ord-item">The remaining 25% shall be provided to the individual for basic subsistence.</div>
+<div class="ord-section">Section III: Duration of Service</div>
+<div class="ord-item">The term of service under this ordinance shall be determined by the total face value of the counterfeit currency produced or attempted, calculated at a rate determined by the judiciary, but shall not be less than ten (10) years.</div>
+<div class="ord-item">Failure to comply with the work standards of The Bank or attempting to desert the service shall result in the immediate revocation of the alternative sentence and the enforcement of the original prison term.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 6</div>
+<div class="ord-name">The Monetary Stabilization and Variable Garnishment Act</div>
+<div class="ord-preamble">To safeguard the purchasing power of the Atlantic Dollar and ensure that the national economy remains resilient against the forces of inflation, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: The Inflationary Trigger</div>
+<div class="ord-item">The Bank shall monitor the "Consumer Basket Value" on a monthly basis.</div>
+<div class="ord-item">If the value of the Atlantic Dollar decreases—resulting in an increase in the cost of living—The Bank is hereby authorized to adjust the garnishment rates established in Ordinances No. 4 and No. 5.</div>
+<div class="ord-section">Section II: Variable Garnishment Scales</div>
+<div class="ord-item">The Bankruptcy Floor: For those under Ordinance No. 4, the 50% garnishment rate may be increased up to a maximum of 75% during periods of high inflation.</div>
+<div class="ord-item">The Counterfeit Ceiling: For those under Ordinance No. 5, the 75% garnishment rate may be increased up to a maximum of 95% during periods of extreme economic instability.</div>
+<div class="ord-section">Section III: Deflationary Relief</div>
+<div class="ord-item">Should the economy experience deflation, The Bank may, at its sole discretion, lower the garnishment rates below the original statutory levels to provide citizens with more "spending power" and stimulate the market.</div>
+<div class="ord-section">Section IV: Non-Negotiability</div>
+<div class="ord-item">Laborers in the Debt Redemption Program or Alternative Labor Sentence have no legal standing to contest the fluctuation of their take-home pay, as their primary duty is the stabilization of the national economy and the fulfillment of their debt.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 7</div>
+<div class="ord-name">The Judicial Liquidation and Commutation Act</div>
+<div class="ord-preamble">To provide a standardized framework for the penalization of criminal acts and to offer a transparent mechanism for the restitution of the state's resources, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: Categorization of Sentencing</div>
+<div class="ord-item">Misdemeanors: Mandatory sentence of 1 year in a Bank-operated correctional facility.</div>
+<div class="ord-item">Financial Crimes: Mandatory sentence of 10 years.</div>
+<div class="ord-item">Felonies: Mandatory sentence of 20 years.</div>
+<div class="ord-section">Section II: The Commutation Rate</div>
+<div class="ord-item">The Bank recognizes that the time of a productive citizen has a measurable fiscal value. Therefore, any convict may commute their prison sentence through direct payment to The Bank.</div>
+<div class="ord-item">The official Commutation Rate is established at $10,000 per 1 year of sentencing.</div>
+<div class="ord-item">Payments must be made in official Atlantic City currency or through the surrender of titled property at 100% market value.</div>
+<div class="ord-section">Section III: Fractional Commutation</div>
+<div class="ord-item">Convicts may choose to pay for a partial reduction of their sentence. There is no limit on commutation; a citizen with sufficient funds may pay the total required amount to avoid incarceration entirely upon conviction.</div>
+<div class="ord-section">Section IV: Indebted Commutation</div>
+<div class="ord-item">A citizen who lacks the immediate funds to pay for their commutation may choose to enter the Debt Redemption Program (Ordinance 4), assuming a debt to The Bank equal to the cost of their remaining sentence and working at 50% garnishment until the "time-debt" is paid in full.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 8</div>
+<div class="ord-name">The National Liquidity and Subsistence Act</div>
+<div class="ord-preamble">To ensure the basic survival of every citizen, stimulate domestic commerce, and provide a continuous flow of currency within the national economy, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: The Universal Grant</div>
+<div class="ord-item">The Bank is hereby mandated to issue a monthly payment of $200 Atlantic Dollars to every legal resident of Atlantic City.</div>
+<div class="ord-item">This payment shall be known as the National Subsistence Grant (NSG).</div>
+<div class="ord-item">The grant shall be issued on the first day of every month directly into a Bank-held account in the citizen's name.</div>
+<div class="ord-section">Section II: Garnishment Exemption and Priority</div>
+<div class="ord-item">For Free Citizens: The $200 is fully spendable and serves as a baseline for the private economy.</div>
+<div class="ord-item">For Indebted Workers (Ordinances 4 & 5): The $200 grant is exempt from the 50% and 75% garnishment rules. It is intended to ensure that even those in the Debt Redemption Program can afford basic food and hygiene.</div>
+<div class="ord-item">The Inflation Clause: Per Ordinance 6, if the Bank triggers a "Variable Garnishment" of 95%, the $200 UBI remains the absolute floor of a citizen's monthly income.</div>
+<div class="ord-section">Section III: Recapture Mechanism</div>
+<div class="ord-item">While the $200 is given freely, it is expected to return to The Bank through interest on loans and commutation savings.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 9</div>
+<div class="ord-name">The National Lottery of Providence and Risk Management Act</div>
+<div class="ord-preamble">To maintain civic engagement through the distribution of fortune, manage national property interests, and provide a structured market for the exchange of legal and financial risks, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: The Monthly Selection</div>
+<div class="ord-item">On the final day of every month, The Bank shall randomly select exactly four (4) individual citizens from the national registry to receive a "Decree of Providence."</div>
+<div class="ord-item">The Ten-Year Immunity Rule: No citizen may be selected for a punitive Decree more than once in a rolling ten-year period.</div>
+<div class="ord-section">Section II: The Four Decrees</div>
+<div class="ord-item">The Golden Decree (Capital Grant): An immediate cash payment of $10,000 Atlantic Dollars, fully exempt from all Bank garnishments.</div>
+<div class="ord-item">The Jade Decree (The Immunity Pass): Grants the holder a one-time "Absolution" for one crime. Cannot be used for Capital Felonies or Crimes Against The Bank.</div>
+<div class="ord-item">The Iron Decree (The Random Sentence): A mandatory one-year prison sentence. The holder may pay a third party to "buy" the ticket and serve the sentence on their behalf.</div>
+<div class="ord-item">The Void Decree (Asset Forfeiture): The immediate forfeiture of one titled property to The Bank. The Bank must provide Relocation Housing of equivalent utility.</div>
+<div class="ord-section">Section III: Sovereign Reclamation (Bank Whim)</div>
+<div class="ord-item">Independent of the citizen lottery, The Bank may execute one Random Foreclosure per month on any building for "National Development." The owner shall be credited 100% market value.</div>
+<div class="ord-section">Section IV: Providence Insurance</div>
+<div class="ord-item">The Bank shall offer an optional Lottery Insurance Policy for $50 per month, deducted from the $200 UBI. If an insured citizen draws an Iron or Void Decree, The Bank shall use the Insurance Fund to pay a professional "Proxy."</div>
+<div class="ord-section">Section V: The Providence Exchange</div>
+<div class="ord-item">The Bank shall maintain a digital exchange for the legal sale of these Decrees, collecting a 10% transaction fee on all sales to fund the National Subsistence Grant.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 10</div>
+<div class="ord-name">The Sovereign Authority and District Representation Act</div>
+<div class="ord-preamble">To vest the ultimate power of the nation in its citizens, ensure local accountability, and establish a clear executive leadership, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: The Foundational Unit (The Block)</div>
+<div class="ord-item">The sovereign territory of Atlantic City is hereby divided into Blocks. A "Block" is defined as a single geographic square bounded by four public thoroughfares.</div>
+<div class="ord-section">Section II: The Legislative Body</div>
+<div class="ord-item">Every Block shall directly elect one Block Representative to serve as the local voice in the National Assembly. Elections shall occur every two years.</div>
+<div class="ord-section">Section III: The Executive Selection</div>
+<div class="ord-item">Atlantic City shall be led by a President, who holds the supreme executive power and serves a four-year term.</div>
+<div class="ord-item">The President shall be elected by an Electoral College. Each Block is assigned one Elector, legally bound to cast their vote for the Presidential candidate who won the popular majority within their specific Block.</div>
+<div class="ord-section">Section IV: Eligibility and Voting Rights</div>
+<div class="ord-item">All citizens in good standing are eligible to vote.</div>
+<div class="ord-item">The Debtor Clause: Citizens in the Debt Redemption Program retain the right to vote for their Block Representative, but their Elector vote is suspended until their debt is satisfied.</div>
+<div class="ord-item">The Immunity Clause: Possession of a Jade Decree does not grant extra votes; "One Citizen, One Vote" remains absolute.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 11</div>
+<div class="ord-name">The National Campaign Finance and Political Neutrality Act</div>
+<div class="ord-preamble">To eliminate the influence of private wealth in the selection of the Executive and to ensure that every candidate competes on a level playing field of ideas rather than capital, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: The Exclusive Funding Mandate</div>
+<div class="ord-item">All costs associated with a Presidential campaign shall be paid for exclusively by The Bank.</div>
+<div class="ord-item">Private donations, "Super-PACs," and the use of personal wealth for a political campaign are hereby strictly prohibited.</div>
+<div class="ord-item">Violation of this section shall be classified as a Financial Crime, punishable by a mandatory 10-year sentence or the equivalent commutation fee.</div>
+<div class="ord-section">Section II: Equal Allocation of Resources</div>
+<div class="ord-item">The Bank shall allocate an identical "Campaign Credit" to every certified candidate. Candidates shall have equal access to the Bank's communication networks, printing presses, and public spaces on every Block.</div>
+<div class="ord-section">Section III: The Bank's Veto (The "Stability" Clause)</div>
+<div class="ord-item">Because The Bank is the sole financier of the election, it reserves the right to audit the "Fiscal Reality" of any candidate's platform.</div>
+<div class="ord-item">If a candidate proposes a policy that would mathematically bankrupt the Bank, The Bank may flag the campaign as "Systemically Risky." Such a candidate may have their funding restricted until their platform is adjusted.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 12</div>
+<div class="ord-name">The Infrastructure Integrity and Blind-Audit Act</div>
+<div class="ord-preamble">To ensure the seamless maintenance of national utilities while preventing the extraction of excess capital by private entities, the Government of Atlantic City hereby enacts the following ordinance.</div>
+<div class="ord-section">Section I: The Maintenance Mandate</div>
+<div class="ord-item">The Bank is hereby legally obligated to fund 100% of the operational and maintenance costs for any Railroad connecting two or more Blocks and any Electric Utility powering a Block.</div>
+<div class="ord-section">Section II: The Price Silence</div>
+<div class="ord-item">Private utility companies are strictly prohibited from submitting "Invoices" or "Price Quotes" to the Bank. The Bank shall not ask, and the Utility Company shall not say, what a repair "costs."</div>
+<div class="ord-item">Any attempt to influence the Bank's valuation through lobbying or falsified data shall be deemed a Financial Crime, resulting in a 10-year sentence and immediate seizure of the company's assets.</div>
+<div class="ord-section">Section III: The Office of Independent Auditors (OIA)</div>
+<div class="ord-item">The OIA is a technical body within the Bank, staffed by engineers and accountants, tasked with inspecting all utility infrastructure and determining the exact quantity of materials and man-hours required for repairs.</div>
+<div class="ord-item">The Bank shall issue a "Direct Credit" to the utility company based on National Standardized Rates. The utility company has no power to negotiate this rate.</div>
+<div class="ord-section">Section IV: The Profit Cap</div>
+<div class="ord-item">The Bank shall add a fixed 5% Management Fee on top of the OIA's audited cost. This 5% represents the total allowable profit for the utility provider.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+<div class="ord">
+<div class="ord-republic">Republic of Atlantic City</div>
+<div class="ord-number">Ordinance No. 13</div>
+<div class="ord-name">The Civil Protection and Sovereign Immunity Act</div>
+<div class="ord-preamble">To ensure the consistent enforcement of the National Ordinances and to provide a stable, fearless body of peacekeepers, the Government of Atlantic City hereby establishes the National Police Force (NPF).</div>
+<div class="ord-section">Section I: The Immunity of Service</div>
+<div class="ord-item">Any citizen who enlists in the National Police Force and successfully completes a six-month probationary period is hereby granted Total Lottery Immunity.</div>
+<div class="ord-item">For the duration of their active service, the officer's name is removed from the monthly drawing for the Iron Decree and the Void Decree.</div>
+<div class="ord-item">Officers remain eligible for the Golden Decree as a "Service Bonus," but are ineligible for the Jade Decree, as their authority already constitutes a form of legal absolution.</div>
+<div class="ord-section">Section II: Recruitment and Compensation</div>
+<div class="ord-item">Recruitment is open to all "Liquid" and "Free" citizens. Citizens currently in the Debt Redemption Program may apply; if accepted, their 50% garnishment is reduced to 25% as a "Service Credit."</div>
+<div class="ord-item">The Bank shall fund all Police equipment, training, and salaries directly. The NPF answers directly to the President, but their budget is audited by the OIA.</div>
+<div class="ord-section">Section III: The Cost of Dishonor</div>
+<div class="ord-item">If a Police Officer is terminated for corruption, cowardice, or breach of Bank Protocol, their immunity is immediately revoked.</div>
+<div class="ord-item">Upon termination, the former officer's name is entered into the next monthly lottery three times (Triple-Weighting) to compensate for their period of immunity.</div>
+<div class="ord-enact">This Ordinance shall take effect immediately upon its signing into law by the sovereign authority of Atlantic City.</div>
+</div>
+
+    </div>
+    <div class="tab-panel" id="tab-noir">
+      <div class="noir-chapter">
+        <div class="noir-chapter-title">Chapter 1</div>
+        <div class="noir-chapter-sub">Do Not Pass Go</div>
+        <div class="noir-body">
+          <p>The name's Mallory. Officer Mallory. I'm a private dick in Atlantic City, not that that means much these days. Someday, the ocean's gonna rise and wash all this scum off the boardwalk.</p>
+          <p>I started my day like any other. My office is off Baltic Ave. It's a sty, but the rent is low. I was fixing myself a whiskey on the rocks and settling into my chair. That's when she walked in.</p>
+          <p>A dame. Immaculately dressed. Her hat looked like it kicked non-WASPs out of a country club. The first thing that caught my eye was her leashed Scottish Terrier.</p>
+          <p>The dog looked like he gave up pulling on the leash sometime during Roosevelt's first administration. Before I could get my words out, the dame spoke.</p>
+          <p>"Heard you solve cases the department won't touch."</p>
+          <p>I looked at the geriatric dog sleeping on my wood floor. "There's a surcharge for bed and breakfast. This isn't a Hotel."</p>
+          <p>"Very funny, Officer. Now, can you help me?"</p>
+          <p>"Have a seat," I said to her. "Whiskey?"</p>
+          <p>"I don't drink." she said immediately.</p>
+          <p>"Fine by me," I said, pouring myself seconds. "What's the details?"</p>
+          <p>"I have a… business arrangement with the Banker's son."</p>
+          <p>"Housing development?"</p>
+          <p>"You know exactly what I'm referring to. Don't play dumb."</p>
+          <p>"Listen, I don't touch cases involving the Banker. Guy owns the whole East Coast."</p>
+          <p>"I'll make it worth your while." the dame says as she grabs an orange bill from her bra.</p>
+          <p>"Classy." I say, but my eyes are on the bill. $500.</p>
+          <p>"I've got boxes full of these. You'll be Rich Uncle Pennybags. Are you in?"</p>
+          <p>Like it or not, I'm still a creature of the Boardwalk. No one here could resist the allure of the orange mammon.</p>
+          <p>"Yeah, I'm in. Tell me about the business arrangement."</p>
+          <p>"The Electric Company. I'm sure you've noticed that the power goes in and out sporadically at night."</p>
+          <p>"Figured the electricity was unionizing."</p>
+          <p>"The reason is, the Banker's son is mortgaging off the Company to pay off his gambling debts. I'm his bookie."</p>
+          <p>"And I come in where? Besides being an accomplice to all this."</p>
+          <p>"He never paid me for my services."</p>
+          <p>"Can't have that in Atlantic City."</p>
+          <p>"Exactly. He rolled three doubles. Currently locked in Jail, incommunicado. I need the money back, and you're the only guy who can do it."</p>
+          <p>The dame was paying me crisp $500s, so whatever she's owed had to be in the millions. But something didn't add up. The Banker's ilk never goes to jail. They print the Get Out Of Jail Free Cards. I got the feeling that I was in way over my head.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <a href="index.html" class="back-link">&lt;&lt; BACK TO ARCHIVE</a>
 <script>
 function fillBoard(el){for(let r=0;r<8;r++)for(let c=0;c<8;c++){const s=document.createElement('div');s.className='sq '+((r+c)%2===0?'w':'b');el.appendChild(s)}}
@@ -254,13 +624,23 @@ function toggleBox(c){
     closeOverlay();
   } else {
     c.classList.add('open');
-    const game = c.classList.contains('chess') ? 'chess' : null;
+    let game = null;
+    if (c.classList.contains('chess')) game = 'chess';
+    else if (c.classList.contains('monopoly')) game = 'monopoly';
     if (game) setTimeout(() => openOverlay(game), 600);
   }
 }
 function openOverlay(g){const o=document.getElementById(g+'-overlay');if(!o)return;o.classList.add('show')}
 function closeOverlay(){document.querySelectorAll('[id$="-overlay"].show').forEach(o=>{o.classList.remove('show')});document.querySelectorAll('.box-container.open').forEach(b=>b.classList.remove('open'))}
+function switchTab(tabId, btn){
+  const frame = btn.closest('.monopoly-frame');
+  frame.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  frame.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
 document.getElementById('chess-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
+document.getElementById('monopoly-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
 </script>
 </body>
