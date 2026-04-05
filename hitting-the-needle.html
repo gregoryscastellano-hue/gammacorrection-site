@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>THE DIE DECIDES</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --die-size: 600px;
+            --face-color: rgba(5, 5, 5, 0.98);
+            --neon-cyan: #00ffcc;
+            --neon-magenta: #ff00ff;
+        }
+
+        body {
+            background-color: #000;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'VT323', monospace;
+            perspective: 2000px;
+        }
+
+        /* --- THE 3D ROTATOR --- */
+        .scene {
+            width: var(--die-size);
+            height: var(--die-size);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--face-color);
+            border: 3px solid var(--neon-cyan);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            box-sizing: border-box;
+            backface-visibility: hidden;
+            /* Pentagonal Die Face Shape */
+            clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
+            box-shadow: inset 0 0 50px rgba(0, 255, 204, 0.2);
+        }
+
+        .face p {
+            font-size: 1.3rem;
+            color: #fff;
+            line-height: 1.4;
+            text-align: center;
+            margin: 10px 0;
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        .face i { color: var(--neon-magenta); }
+
+        /* --- 3D FACE POSITIONING --- */
+        .face-1 { transform: rotateY(0deg) translateZ(100px); }
+        .face-2 { transform: rotateY(120deg) translateZ(100px); }
+        .face-3 { transform: rotateY(240deg) translateZ(100px); }
+
+        /* --- NAVIGATION --- */
+        .nav-controls {
+            margin-top: 50px;
+            display: flex;
+            gap: 40px;
+            z-index: 100;
+        }
+
+        button {
+            background: #000;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 12px 40px;
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            cursor: pointer;
+            letter-spacing: 3px;
+            transition: 0.2s;
+            box-shadow: 4px 4px 0px var(--neon-cyan);
+        }
+
+        button:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--neon-cyan);
+        }
+
+        .chapter-title {
+            position: absolute;
+            top: 40px;
+            color: var(--neon-magenta);
+            font-size: 28px;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px var(--neon-magenta);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chapter-title">HITTING THE NEEDLE: CHAPTER I</div>
+
+    <div class="scene" id="die">
+        <div class="face face-1">
+            <p><i>“Now here we go dropping science, dropping it all over / Like bumping around the town, like when you're driving a Range Rover / Expanding the horizons and expanding the parameters / Expanding the rhymes of sucka MC amateurs”</i> -Beastie Boys</p>
+            <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students.</p>
+            <p>But on Saturday nights, he becomes King Solomon, holding dominion over Jinn.</p>
+        </div>
+
+        <div class="face face-2">
+            <p>King Solomon stands in the center of the twelve silent G.E.N.I members arranged in a dodecagram shape on the upper floor of Atomic Pizza. Mediocre pizza. 2.8 Yelp Score.</p>
+            <p>King Solomon rolls the 12-sided die. It hits the floor with a clatter. “Brother Michael, the die has decided. Disengage from your trauma.”</p>
+            <p>“I don't know where to begin. I got into a nasty fight with my wife this week. It always starts with something small... Then it escalates.”</p>
+        </div>
+
+        <div class="face face-3">
+            <p>After 12 minutes and 12 seconds, King Solomon’s wristwatch goes off. Brother Michael’s transformation is slow at first, then all at once. His eyes flash red.</p>
+            <p>The smell of mediocre pizza is replaced by noxious brimstone. “Your wish, Brother Michael! What is your wish?!”</p>
+            <p><i>I wish my wife and I never argued.</i> The glowing red vanishes, leaving a distraught, sweating Michael collapsed in his chair.</p>
+        </div>
+    </div>
+
+    <div class="nav-controls">
+        <button onclick="changeFace(-1)">PREVIOUS</button>
+        <button onclick="changeFace(1)">NEXT</button>
+    </div>
+
+    <script>
+        let currentRotation = 0;
+        const die = document.getElementById('die');
+        
+        function changeFace(direction) {
+            // Rotates 120 degrees for each of the 3 face segments
+            currentRotation -= (direction * 120);
+            die.style.transform = `rotateY(${currentRotation}deg) rotateX(-5deg)`;
+        }
+    </script>
+
+</body>
+</html>
