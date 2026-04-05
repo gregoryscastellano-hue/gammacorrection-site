@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~ BOARD GAME MULTIVERSE ~</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: #ff00ff;
+            text-decoration: none;
+            border: 1px solid #ff00ff;
+            padding: 5px;
+            background: rgba(0,0,0,0.8);
+            font-size: 14px;
+        }
+
+        h1 {
+            font-family: 'Comic Sans MS', cursive;
+            color: #ff00ff;
+            text-shadow: 2px 2px #00ffff;
+            background: rgba(0,0,0,0.9);
+            padding: 10px 40px;
+            border: 3px double #ff00ff;
+        }
+
+        /* --- SHELF LAYOUT --- */
+        .game-shelf {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .game-box {
+            width: 150px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .game-box:hover {
+            transform: scale(1.1);
+        }
+
+        .game-box img {
+            width: 120px;
+            height: 160px;
+            border: 4px outset #ccc;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        .game-label {
+            margin-top: 10px;
+            background: #000;
+            color: #00ff00;
+            font-family: 'VT323';
+            font-size: 18px;
+            border: 1px solid #00ff00;
+        }
+
+        .locked {
+            filter: grayscale(1) brightness(0.5);
+            cursor: not-allowed;
+        }
+
+        /* --- CHESS MANIFEST WINDOW --- */
+        #chess-window {
+            display: none; /* Hidden until clicked */
+            background: #c0c0c0;
+            border: 3px outset #ffffff;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 10px 10px 0px #000;
+            position: absolute;
+            top: 50px;
+            z-index: 2000;
+            color: #000;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, #800080, #ff00ff);
+            color: white;
+            padding: 4px 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #fff;
+            margin: 5px;
+            border: 2px inset #808080;
+            line-height: 1.6;
+        }
+
+        .close-btn {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            width: 20px;
+            height: 20px;
+            line-height: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        h2 { border-bottom: 2px solid #000; padding-bottom: 5px; font-family: 'VT323'; }
+        .poem { white-space: pre-wrap; font-style: italic; margin-bottom: 30px; color: #333; }
+        .cipher-box { background: #eee; padding: 10px; border: 1px dashed #000; font-family: monospace; }
+        .moves-list { background: #000; color: #00ff00; padding: 15px; font-family: 'VT323'; font-size: 20px; }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link"><< RETURN TO GAMMA CORRECTION</a>
+
+    <h1>board game multiverse</h1>
+
+    <div class="game-shelf">
+        <div class="game-box" onclick="openChess()">
+            <img src="https://blob.gifcities.org/gifcities/5HGKFNMUZTRZK2UQY5TTDPB3RJT3NEGU.gif" alt="Sacred Chess">
+            <div class="game-label">WAR OF THE IVORIES</div>
+        </div>
+
+        <div class="game-box locked">
+            <img src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif" alt="Locked">
+            <div class="game-label">AL-QIRKAT (LOCKED)</div>
+        </div>
+
+        <div class="game-box locked">
+            <img src="https://web.archive.org/web/20090829113543/http://geocities.com/SiliconValley/6502/dice.gif" alt="Locked">
+            <div class="game-label">GAMBIT OF FATE</div>
+        </div>
+    </div>
+
+    <div id="chess-window">
+        <div class="title-bar">
+            <span>CHESS_MANIFEST.EXE - THE GRAND WAR</span>
+            <div class="close-btn" onclick="closeChess()">X</div>
+        </div>
+        <div class="content">
+            <h2>THE POEM OF THE EBONIES AND IVORIES</h2>
+            <div class="poem">
+To the Hand up above which moves us in His grand eternal plan  
+And the Sixty Four Squares down below which contain Woman and Man  
+We chronicle the grand War of the Ebonies and Ivories  
+And we intone today so our future kin will know these stories  
+
+Our Ebony King was always strong and steadfast in his gambit  
+While their Ivory King was cunning and scheming from his ambit  
+Our Ebony Queen was our King's most fair and beautiful consort  
+While their Ivory Queen was most cruel and depraved in her court  
+
+Our King knew his Queen and begat fourteen loyal souls to the Squares  
+First the Rook twins, Karadeva and Karasimha, as his heirs  
+The Bishop sisters, Panishri and Panimati be their name  
+Two Knights, Hastapala and Karasena, blessed with divine aim  
+
+...[Archive continues]...
+
+Panishri ended the life of vile Hastaksha once and for all  
+Karavikranta moved Kara-Vijaya with traitorous gall  
+Our Queen then took Madhyama-Vijaya in a glorious move  
+Evil Karavikranta met Hastajit in his act to remove  
+
+While Karavikranta slew Panimati with his wicked guile  
+Our Queen made her grand sacrifice, opening up the holy file  
+The Ivory Queen moved to capture her, taking the royal claim  
+Panishri marched to Tarjani-Kriya, ending the foul King's name!
+            </div>
+
+            <h2>THE CIPHER</h2>
+            <div class="cipher-box">
+                <b>Files (a–h):</b> A: Angushtha, B: Tarjani, C: Madhyama, D: Anamika, E: Kanishtha, F: Kara, G: Pani, H: Hasta<br>
+                <b>Ranks (1–8):</b> 1: Mula, 2: Prana, 3: Kriya, 4: Dharma, 5: Yuddha, 6: Vijaya, 7: Shraddha, 8: Moksha
+            </div>
+
+            <h2>RECORDED MOVES</h2>
+            <div class="moves-list">
+                1. b4 a5 | 2. Nc3 Ra6 | 3. Ba3 axb4 | 4. Bxb4 Rxa2 <br>
+                5. Bxe7 Qxe7 | 6. Nd5 Qe4 | 7. Nxc7+ Kd8 | 8. f3 Qe7 <br>
+                9. Rxa2 d5 | 10. Nxd5 Qe8 | 11. Ne7 Be6 | 12. Nxg8 Bxa2 <br>
+                13. Nf6 Qc6 | 14. Nxh7 Bb3 | 15. Nxf8 Qxc2 | 16. Qxc2 Bxc2
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openChess() {
+            document.getElementById('chess-window').style.display = 'block';
+        }
+        function closeChess() {
+            document.getElementById('chess-window').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
