@@ -6,15 +6,12 @@
     
     <style>
         :root {
-            --sea-blue: #0088ff;
-            --foam-white: #ffffff;
             --paper-tan: #f4e4bc;
             --ink-black: #2c241a;
             --gold-trim: #ffd700;
         }
 
         body {
-            background-color: var(--sea-blue);
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -23,35 +20,18 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: #1aa3e8;
         }
 
-        /* --- CEL-SHADED OCEAN BACKGROUND --- */
-        .ocean {
+        #water-bg {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
-            background: var(--sea-blue);
-            z-index: -1;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
 
-        .wave {
-            position: absolute;
-            bottom: 0;
-            width: 200%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230099ff" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,213.3C960,224,1056,192,1152,165.3C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: 50% 100%;
-            animation: moveWave 10s linear infinite;
-        }
-
-        @keyframes moveWave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* --- THE LOGBOOK (The Window) --- */
         .logbook {
             width: 80%;
             max-width: 800px;
@@ -62,6 +42,16 @@
             padding: 40px;
             transform: rotate(-1deg);
             outline: 3px solid var(--gold-trim);
+            z-index: 10;
+            transition: all 0.6s ease;
+        }
+
+        .logbook.zora-mode {
+            background: #c9b896;
+            border-color: #1a3a3a;
+            outline-color: #b87333;
+            transform: rotate(0.5deg);
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
         }
 
         .logbook::after {
@@ -70,6 +60,10 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(rgba(0,0,0,0.05), transparent);
             pointer-events: none;
+        }
+
+        .logbook.zora-mode::after {
+            background: linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.03));
         }
 
         h1 {
@@ -91,18 +85,35 @@
             line-height: 1.6;
         }
 
-        /* Custom Scrollbar for the Log */
         .scroll-content::-webkit-scrollbar { width: 10px; }
         .scroll-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         .scroll-content::-webkit-scrollbar-thumb { background: var(--ink-black); border-radius: 5px; }
 
         .time-stamp {
-            font-weight: bold;
-            color: #b22222; /* Royal Red */
-            text-decoration: underline;
+            /* plain text, no special styling */
         }
 
-        /* --- NAVIGATION --- */
+        .goddess {
+            font-family: 'Pirata One', system-ui;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #3b0764, #0e7490, #7c3aed, #0e7490, #3b0764);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: divineShift 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 2px rgba(14, 116, 144, 0.3));
+            display: block;
+            margin: 12px 0;
+        }
+
+        @keyframes divineShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .nav-buttons {
             display: flex;
             justify-content: center;
@@ -146,41 +157,385 @@
             text-align: center;
             font-size: 0.9rem;
             pointer-events: none;
+            transition: all 0.6s ease;
+        }
+
+        .stamp.zora-mode {
+            background: rgba(26, 58, 58, 0.85);
+            border-color: #b87333;
         }
     </style>
 </head>
 <body>
 
-    <div class="ocean">
-        <div class="wave"></div>
-    </div>
+    <canvas id="water-bg"></canvas>
 
     <div class="logbook">
-        <h1>The Gilded Sovereign</h1>
+        <h1 id="chapter-title">Chapter 1</h1>
         
-        <div class="scroll-content">
-            <p>Theodore’s day to day job on the Gilded Sovereign would be torturous to anyone but Theodore. <span class="time-stamp">At 04:45 on the dot</span>, his Queen Victoria alarm clock rings. He presses the stopper with a smile on his face and jumps out of bed, grabbing his bristle brush and lathering it with tooth powder. He then meticulously irons his cravat, polishes his brass buttons with powdered limestone, and positions his powdered wig to perfection. On the way out of his quarters, he grabs his book of regulations and quickly prostrates to his framed image of the Queen.</p>
-
-            <p><span class="time-stamp">06:00 on the dot</span> he makes his way to the hold, and does a precise inventory of the imported truffles, bottles of vintage champagne, and soft cheeses. <span class="time-stamp">At 06:35 on the dot</span>, he fills out Form 7B: Morning Expenditure of Luxury Perishables. <span class="time-stamp">At 07:00 on the dot</span>, he lines up the stewards and waiters to perform fingernail and cuff inspection. If he notices one of them is out of regulation, he promptly provides them with Form 12C: Notice of Unbecoming Appearance.</p>
-
-            <p><span class="time-stamp">At 08:00 on the dot</span>, he reports to the main companionway. He greets each passing noble with unwavering praise, and bows at the mathematically precise angle to their specific rank. <span class="time-stamp">At 09:30 on the dot</span>, he retreats to his office to do correspondence and process the ship's mail. He sorts the mail scrupulously, putting them in labeled compartments based on whether they are “Urgent”, “Official”, or “Plebian”. He pays careful attention to the position of the Royal Crest on each document.</p>
-
-            <p><span class="time-stamp">At 10:45 on the dot</span>, he makes his way to his punctiliously clothed table in the hold and has his lunch break: sauerkraut with cured meat. He makes sure to log down his intake in Form 14-K: Cabbage Consumption Log.</p>
-            
-            <p>Then it's straight off to his <span class="time-stamp">11:00 on the dot</span> wine and spirit audit, in which he checks the ullage of each and every bottle to ensure the ship's motion hasn't compromised the purity. He logs this on the Liquid Assets Registry. He then checks off his <span class="time-stamp">12:30 on the dot</span> Luncheon Oversight, watching the soup service like a hawk. If a waiter serves from the right instead of the left, Theodore makes a frantic, silent note in his Black Book of Etiquette Violations.</p>
-
-            <p><span class="time-stamp">At 14:00 on the dot</span>, he lovingly performs the Deck Chair Coordination, ensuring that each chair is distributed to its respective social rank. If a seating mishap occurs where a lower ranking passenger sits in a chair for a higher passenger, he sternly relocates them with a Form 88: Reassignment of Leisure Space. <span class="time-stamp">At 15:15 on the dot</span>, he dresses for dinner, opting to switch to a full evening dress, which calls for another round of button polishing.</p>
-
-            <p><span class="time-stamp">At 16:00 on the dot</span>, the grand dinner begins. Theodore micromanages the ambiance with diligent fervor, making sure each utensil is placed perfectly according to the outside-in rule. <span class="time-stamp">At 20:00 on the dot</span> he performs the Nightly Candle Audit, counting every inch of tallow burned and logging it in the Illuminations Ledger. Then <span class="time-stamp">at 20:30 on the dot</span>, he enters his quarters, prostrates once again to the Queen, and places his book of regulations on the nightstand. He sleeps deeply, with pride of work well done and a burning excitement for doing it again tomorrow.</p>
-        </div>
+        <div class="scroll-content" id="chapter-body"></div>
 
         <div class="stamp">OFFICIAL<br>SOVEREIGN<br>SEAL</div>
     </div>
 
-    <div class="nav-buttons" style="position: fixed; bottom: 30px;">
+    <div class="nav-buttons" style="position: fixed; bottom: 30px; z-index: 10;">
         <button class="btn" onclick="location.href='index.html'">BACK_TO_PORTAL</button>
-        <button class="btn" onclick="alert('Theodore is busy filing Form 99: Future Chapter Authorization.')">NEXT_LOG</button>
+        <button class="btn" id="prevBtn" onclick="changeChapter(-1)" style="display:none;">PREV_LOG</button>
+        <button class="btn" id="nextBtn" onclick="changeChapter(1)">NEXT_LOG</button>
     </div>
+
+    <script>
+        const chapters = [
+            {
+                title: "Chapter 1",
+                html: `<p>Theodore's day to day job on the Gilded Sovereign would be torturous to anyone but Theodore. At 04:45 on the dot, his Queen Victoria alarm clock rings. He presses the stopper with a smile on his face and jumps out of bed, grabbing his bristle brush and lathering it with tooth powder. He then meticulously irons his cravat, polishes his brass buttons with powdered limestone, and positions his powdered wig to perfection. On the way out of his quarters, he grabs his book of regulations and quickly prostrates to his framed image of the Queen.</p>
+                <p>06:00 on the dot he makes his way to the hold, and does a precise inventory of the imported truffles, bottles of vintage champagne, and soft cheeses. At 06:35 on the dot, he fills out Form 7B: Morning Expenditure of Luxury Perishables. At 07:00 on the dot, he lines up the stewards and waiters to perform fingernail and cuff inspection. If he notices one of them is out of regulation, he promptly provides them with Form 12C: Notice of Unbecoming Appearance.</p>
+                <p>At 08:00 on the dot, he reports to the main companionway. He greets each passing noble with unwavering praise, and bows at the mathematically precise angle to their specific rank. At 09:30 on the dot, he retreats to his office to do correspondence and process the ship's mail. He sorts the mail scrupulously, putting them in labeled compartments based on whether they are "Urgent", "Official", or "Plebian". He pays careful attention to the position of the Royal Crest on each document.</p>
+                <p>At 10:45 on the dot, he makes his way to his punctiliously clothed table in the hold and has his lunch break: sauerkraut with cured meat. He makes sure to log down his intake in Form 14-K: Cabbage Consumption Log.</p>
+                <p>Then it's straight off to his 11:00 on the dot wine and spirit audit, in which he checks the ullage of each and every bottle to ensure the ship's motion hasn't compromised the purity. He logs this on the Liquid Assets Registry. He then checks off his 12:30 on the dot Luncheon Oversight, watching the soup service like a hawk. If a waiter serves from the right instead of the left, Theodore makes a frantic, silent note in his Black Book of Etiquette Violations.</p>
+                <p>At 14:00 on the dot, he lovingly performs the Deck Chair Coordination, ensuring that each chair is distributed to its respective social rank. If a seating mishap occurs where a lower ranking passenger sits in a chair for a higher passenger, he sternly relocates them with a Form 88: Reassignment of Leisure Space. At 15:15 on the dot, he dresses for dinner, opting to switch to a full evening dress, which calls for another round of button polishing.</p>
+                <p>At 16:00 on the dot, the grand dinner begins. Theodore micromanages the ambiance with diligent fervor, making sure each utensil is placed perfectly according to the outside-in rule. At 20:00 on the dot he performs the Nightly Candle Audit, counting every inch of tallow burned and logging it in the Illuminations Ledger. Then at 20:30 on the dot, he enters his quarters, prostrates once again to the Queen, and places his book of regulations on the nightstand. He sleeps deeply, with pride of work well done and a burning excitement for doing it again tomorrow.</p>`
+            },
+            {
+                title: "Chapter 2",
+                html: `<p>Finnian's day-to-day job is a stark departure from Theodore's. Whenever he feels like it, usually in the afternoon, he wakes up. While Theodore is likely filing his third Cabbage Consumption Log of the day, Finnian is just beginning to consider the merits of opening one eye.</p>
+                <p>If Finnian decides to roll out of bed, his morning ritual consists of scratching his butt and heavily seasoning a bowl of breakfast salmagundi. Then, at an unspecified time, he grabs the holystone and swabs the deck of the Bilge Rat. Once that is done, he reaches for his framed painting of the Queen and, with a smirk, uses it as a rolling tray for a fat cigarette of black tobacco. He strikes a match against the "No Smoking" sign he's nailed upside down to the mast, taking a much-needed smoke break.</p>
+                <p>When he is sufficiently satisfied, he shuffles up to the Crow's Nest to keep watch and maybe take a nap. If he spots a cool-looking island, he slides down the rope like a firepole and tugs on his elaborate pulley system, a complex contraption of mismatched wires and rusted hooks, to steer the ship vaguely in its direction. Through the smoke of his cigarette, he squints and holds a thumb up to the horizon.</p>
+                <p>On this particular day, however, the horizon doesn't offer a cool-looking island. Instead, it offers a mountain of white paint and polished brass. There, cutting through the waves with offensive elegance, is a cruise liner. The name Gilded Sovereign is embossed in gold across the hull, shining so brightly it makes Finnian's eyes ache, or maybe that is just the smoke.</p>
+                <p>Finnian directs his crew (himself) to make haste for the ship at once.</p>`
+            },
+            {
+                title: "Chapter 3",
+                html: `<p>The ocean of Lemuria has a pirate problem. Just as Finnian spies the Gilded Sovereign, a much more equipped pirate ship also sees it. The Sea Wraith makes the Bilge Rat look like one of the ships in a bottle that the Gilded Sovereign so proudly displays.</p>
+                <p>This ship doesn't have jury rigged wire mechanisms or "Plebian" mail compartments. It is built from rotting, pitch-black oak, and its massive, tattered black sails block out the sun. On board is Zora, a ferociously competent pirate with deep mahogany skin and copper locs from the Azania Coast, who is staring at the Gilded Sovereign with her telescopic prosthetic eye, the eye patch pulled up. She doesn't have a schedule, the schedule works around her.</p>
+                <p>She barks an order to her second in command, Casper de la Cour, his blonde hair and mustache glimmering in the sunlight.</p>
+                <p>"De la Cour! Check the charts. Are we still within the Three-Mile Limit of the Royal Coast, or have they wandered into the Free Purge zones?"</p>
+                <p>Casper promptly replies in a posh musical lilt. "Technically, darling, they are four miles out. But you know how the English are about their 'Sovereignty.' They think the Queen owns every drop of saltwater in Lemuria."</p>
+                <p>"We attack. They are reckless." Zora commands. Casper nods and blows his whistle with a flourish.</p>
+                <p>Theodore is busy filling out Form 202: The Passenger Perspiration Index, because it's 14:15 on the dot on a Sunday. Suddenly, he's disrupted by an ear-piercing shriek that causes him to jolt the quill into the margins. He angrily gets out of his chair and bangs on the ceiling.</p>
+                <p>"Keep it down, Nightingale! Musical whistling isn't on the itinerary until 16:30. On the dot!"</p>
+                <p>Just then, he catches a glimpse out the porthole. He sees a rugged black mass raising a Jolly Roger flag starkly in the wind.</p>
+                <p>"Oh dear." he says.</p>`
+            },
+            {
+                title: "Chapter 4",
+                html: `<p>Theodore has no procedure for being boarded by two pirate ships at the same time, but he is frantically trying to create one.</p>
+                <p>"Form 99B: Dual Unauthorized Maritime Proximity!" he yells as he's writing down Section I: The Infraction on a dry parchment. His handwriting is shaky because the Gilded is being bombarded with cannonballs on the left side and grappling irons on the right.</p>
+                <p>"Just give me a second!" he yells as he hears a boarding plank on the right side being lowered down.</p>
+                <p>The boarding plank is being lowered by Finnian, who looks at the Jolly Roger directly across from him and mutters under his breath "Try-hards." He has his own Jolly Roger flying on his ship, which he drew with oil on a tattered canvas.</p>
+                <p>As Finnian grabs his falchion from the messy floor of his ship, Theodore gets up from his chair. "I've finished it!" he exclaims. He begins running towards the aft-quarter with his two copies, towards the direction he hears the boarding plank being dropped.</p>
+                <p>He shoves a parchment into Finnian's hand. "You sir are in violation of the Pedestrian Transit Act of 1694! I shall give you until 14:30 on the dot to review the document and get your affairs in order!"</p>
+                <p>Finnian takes one look at the scrawled document in his hands, then looks up at Theodore. "Buddy, this ain't worth the parchment it's printed on. Which way is the main companionway?" He crumples it up, tosses it into the ocean, and gingerly walks the deck, looking for gold.</p>
+                <p>"Hey! Hey! Sir!" Theodore yells, but Finnian ignores it. Just then he hears the second boarding plank being dropped in the galley ports. He clutches the paper and begins his run over.</p>
+                <p>Taking careful diligence to step over the oysters that are now scattered on the ground, he corners Zora, who is walking steadfastly into the galley alongside Casper. He presents her with the document sternly, pointing to the addition he made on the run. Zora flips up her eye patch and extends her telescopic eye in silence as she reads it.</p>
+                <p>"URGENT ADDENDUM TO FORM 99B — In the event of simultaneous boarding by multiple hostile parties, the following etiquette must be observed: 1. Queueing: Pirates must form a single-file line according to the cleanliness of their footwear. 2. Introduction: Each marauder must present a valid Letter of Marque or a written Statement of Intent to Plunder. 3. The 'One-at-a-Time' Rule: It is physically impossible to be robbed by two people at once. Please wait for the first ship to finish before commencing."</p>
+                <p>Zora looks at Casper. "Is there any reason to not give this scallywag the red?"</p>
+                <p>Casper's eyes widen. "Darling, wait! If you strike his colors now, we'll never find the vintage 1612 Reserve. Look at this ship! It's three hundred feet of mahogany and confusion. Only this... delightful little creature understands the Liquid Assets Registry."</p>
+                <p>Zora responds "Aye" and pushes past Theodore like a revolving door, returning the document to his hand in a precise movement. He holds it tightly to his chest.</p>`
+            },
+            {
+                title: "Chapter 5",
+                html: `<p>Mermaids don't have schedules, or for that matter time. Every minute for them is the mirth of singing and sparkling their fins with shiny shells. But Bubbles is different. She thinks the singing is too loud. As Glimmer, the leader of the mermaids, is singing a duet with a lobster, Bubbles is trying to find a piece of seaweed that would function as a good earplug.</p>
+                <p>She dives deep down into the coral reef under Giggling Grotto. She can't find any durable seaweed, but she sees a crumpled piece of parchment labeled "Form 99B: Dual Unauthorized Maritime Proximity". She glances it over and reads Section II: Partitioning the Doubloons. "This hurts my brain," she thinks to herself, before ripping it in half and stuffing it in her ears.</p>
+                <p>She swims upward to her favorite secluded spot, the shrine to Atargatis, Goddess of the mermaids. It's on the edge of the grotto and is carved out of a massive clam pearl. She snuggles her tail around her and tries to fall asleep, the parchment tight in her ears as Glimmer reaches the chorus about the wonders of the sea.</p>
+                <p>Just before she drifts into a nap, a brightly colored macaw lands right next to her, its plumage a mesmerizing red, blue and yellow.</p>
+                <p>"¡Qué riquísimo! Hey, señorita, what's the shiny cosa?"</p>
+                <p>Bubbles opens one eye. "Excuse me?"</p>
+                <p>"Squawk! ¡Oro blanco! The shiny white cosa right there!"</p>
+                <p>He gestures a wing to the icon. Bubbles takes one piece of the parchment out of her ear.</p>
+                <p>"That's our Goddess. I want to sleep now. Go away please."</p>
+                <p>The parrot flaps his wings in joy. "Ay, Dios Mío! ¡Qué maravilla! Your Goddess is... deliciosa! She is made of the moon-stone! The shiny white cosa!"</p>
+                <p>"I'm tired. I just want to nap. Can we talk about this later?"</p>
+                <p>The parrot is about to speak, but he is cut short by an uncomfortably close sight. His beady eyes widen as he taps on Bubbles' stomach.</p>
+                <p>As Bubbles turns her head, she sees what made the parrot stop. Three connected ships, a mess of mahogany, rotting oak, and rusted wires, with the one in the center smoking, heading straight towards the Grotto.</p>`
+            },
+            {
+                title: "Chapter 6",
+                html: `<p>The Goddess Atargatis, like most deities, does not like desecration of her holy shrines. Which is why the fact that three ships are on a collision course with one of them is so bad.</p>
+                <p>Theodore is watching as Zora fills a sack that Casper is holding with the wine stored in the Orlop Deck. "I don't appreciate the disregard of the itinerary," says Theodore. "It clearly states that at 14:30, on the dot, the doubloons are to be pilfered! Then at 15:00, on the dot, the reserves are to be pirated!"</p>
+                <p>"Shut up, scallywag. Keep flapping your gums about the itinerary and I'll grant you residence in Davy Jones' Locker." spits Zora.</p>
+                <p>Meanwhile, in the room right over, Finnian is filling his own sack with the aged cheeses. He takes a bite out of the stilton and continues stuffing the sack as he chews.</p>
+                <p>Both pirating endeavors are interrupted by a sudden crash, sending the wine flying. Casper hands the sack to Theodore. "Keep at it, scallywag, I want that sack more filled than a Spanish galleon's belly in a gold-rush gale." says Zora. Theodore sighs and does what he is told, but first says "I have serious reservations about this. Disregarding the itinerary is pure barbarism."</p>
+                <p>As Casper and Zora climb up to the top deck, they are greeted by the sight of the Sovereign's hull cracked open like an eggshell against the shrine, with their own ship and the Bilge Rat compressed deep into the exterior of the Sovereign. Wood and cables and brass are strewn haphazardly everywhere. Flour from the galley and limestone powder from Theodore's quarters have burst, covering everything with a thin layer of snow-like mist.</p>
+                <p>Crucially, the head of the Atargatis icon has been decapitated by the bowsprit of the Sovereign. A single Form 14-K: Cabbage Consumption Log flutters down and lands on the spot where her head should be.</p>
+                <p>Theodore's muffled voice can be heard from below. "I hope someone is recording the coordinates of this impact! Without a properly filed Form 109: Navigational Negligence, the insurance claim will be utterly void!" Finnian climbs up soon after, asking "What happened guys? Let's just leave a note with our info and continue the pirating!"</p>
+                <p>Suddenly, without warning, the ocean gives way to a giant whirlpool, sucking all three ships down with a divine power, leaving Theodore's half finished Form 110W: Mandate of Non-Consensual Submersion floating in the ocean as it calmly dissipates.</p>`
+            },
+            {
+                title: "Chapter 7",
+                html: `<p><span class="goddess">WHO DARES DEFY THE SACRED SHRINE OF THE SEA?</span></p>
+                <p>says a bubble of pure light in a "room" that's walls are pure currents of rushing water. Zora's peg leg can't get a grip on the floor, which is a disorientating mosaic of crushed shipwrecks and white sand. The light shimmers in a rhythmic glow, which oscillates from deep indigo to neon cyan to a sickly, beautiful violet and then back again. Rusted anchors and hulls float suspended up above. Theodore pulls out a quill and begins drafting Form 808X: The Affidavit of Supernatural Encroachment and Territorial Transgression.</p>
+                <p>Finnian puts his hands in the air. "Listen, I had nothing to do with this. It was them, the bilge-sucker with the eye patch and her blond powder monkey!" He gestures over to them.</p>
+                <p><span class="goddess">SILENCE!</span></p>
+                <p>The parrot flaps over and lands on Finnian's shoulder, who tries to push him away.</p>
+                <p>"¡Oye! ¡Escúchame, Gran Señora!" the parrot squawks, flapping his wings with a flourish. "Since you are... descompuesta... and the white stone head is rolling around like a coconut in a gale... surely you don't need the rest of the body, no? It is a very heavy thing for a Spirit to carry!"</p>
+                <p><span class="goddess">MORTAL, IS THIS CREATURE YOURS?</span></p>
+                <p>Finnian, having never seen the parrot before in his life, immediately says "No, ma'am. And can I say I have the utmost respect for the sea? I volunteered for the Clean Up The Sea event!" This was a bold-faced lie.</p>
+                <p><span class="goddess">I SENSE DECEPTION! I CURSE YOU TO CARRY THE BURDEN OF THE CREATURE! HE SHALL NEVER LEAVE YOUR SHOULDER!</span></p>
+                <p>The parrot's talons are slowly fused to Finnian's striped shirt in a manner equally painful for both of them. Finnian screams and tries to pull it off, but it's no use. The parrot exclaims, "¡Cuidado, idiota! Watch the plumage! You pull, I bite."</p>
+                <p><span class="goddess">NOW, I DEMAND TO KNOW THE CULPRIT OF THE VIOLATION! WHY HAS THE SACRED HEAD OF MY IDOL BEEN REPLACED BLASPHEMOUSLY WITH THIS 'CABBAGE FORM'?</span></p>
+                <p>Theodore waves a parchment in the air. "Maiden, you have been found guilty of Unauthorized Gravitational Manipulation and Malicious Alteration of Sea Level!"</p>
+                <p><span class="goddess">WHO DARES TO CHARGE ME WITH A CRIME! I AM ABOVE YOUR PETTY LAWS!</span></p>
+                <p>The walls extend in synchronization to grab Theodore. He begins gasping for air as water consumes him. Through his gasps for breath, he chokes out "This... glub... is a direct violation of The Universal Protocol of Civilized Discourse (Subsection 9: Physical Coercion of an Administrative Officer during an Active Audit)!"</p>
+                <p>Bubbles flops forward. "My Goddess, I pray to you with most respect. Let him live."</p>
+                <p><span class="goddess">MY CHILD SEEKS TO PROTECT THE MORTALS OF THE LAND! WHY, I ASK OF THEE?</span></p>
+                <p>"Please, my Goddess, he's innocent. He just doesn't know the ways of the sea."</p>
+                <p><span class="goddess">VERY WELL, AFTER ALL THE BEINGS OF THE SEA ARE MORE COMPASSIONATE THAN THE LAND MORTALS. BUT YOU ARE TO BE INTRINSICALLY BOUND TO HIM! A MARITIME UNION!</span></p>
+                <p>The lungs of both of them begin floating ethereally out of their bodies. They make their way towards the opposite person, phasing through each other when they cross paths. Then they snugly go in the opposite bodies of the person they came from.</p>
+                <p><span class="goddess">NOW THE LAND MORTAL CANNOT BREATHE ON THE LAND. HE CAN NO LONGER WRITE HIS BLASPHEMOUS FORMS. AND MY CHILD, WHO LOVES THE LAND MORTALS SO MUCH, IS LOCKED TO IT.</span></p>
+                <p><span class="goddess">AND FINALLY,</span> the bubble of light turns its attention to Zora and Casper. <span class="goddess">THE PIRATES. THE PILLAGERS OF STOLEN ARTIFACTS. I REMEMBER YOU. THOSE RESPONSIBLE FOR THE THEFT OF MY LYCHNIS GEM. HAVE YOU FINALLY COME TO RETURN IT?</span></p>
+                <p>They don't know what to say. Finally Casper speaks up. "Dar— I mean, Goddess, we don't have it! We sold it! We humbly apologize!" He gets down on his knees and begins prostrating to her.</p>
+                <p><span class="goddess">YOU HAVE DESECRATED MY IDOL AFTER STEALING MY LYCHNIS GEM? THE GEM REQUIRED FOR THE STABILITY OF THE OCEAN? YOU TWO ARE CURSED TO DAVY JONES LOCKER FOR ETERNITY!</span></p>
+                <p>"Goddess, please!" cries out Casper. "We can recover it! We are the only ones who know who we sold it to! If you send us to Davy Jones Locker, we will not say!"</p>
+                <p><span class="goddess">YOU HAVE PLAYED YOUR HAND. VERY WELL. BUT YOU ARE DESERVING OF A JUST PUNISHMENT. SINCE YOU LOVE THE HULLS OF SHIPS SO MUCH, YOU SHALL BECOME PART OF THEM. YOU SHALL FEEL EVERY WAVE THAT CRASHES AGAINST THE BOW. AND YOU SHALL CARRY THESE MORTALS ON THE QUEST TO RECOVER THE LYCHNIS GEM! ONLY THEN SHALL THE CURSES BE REMOVED!</span></p>
+                <p>In a swift motion, Casper's body is stretched out intangibly and excruciatingly to the shape of a sail. He screams in pain. At the same time, Zora's body takes the form of a ship, equally agonizingly. Her mahogany skin hardens into iron-rimmed oak, and her copper locs weave themselves into the very grain of the deck. Finally, her telescopic eye becomes the ship's figurehead, a living, blinking carved bust of her own face, permanently mounted to the bowsprit.</p>
+                <p><span class="goddess">THAT EYE OF YOURS SHALL GUIDE THE MORTALS ON THEIR JOURNEY. THEY SHALL SEE THE DANGERS AHEAD. AND THE NOW WATER BREATHING MORTAL SHALL BE THE LOOK-OUT IN THE SEA. NOW BE GONE.</span></p>
+                <p>In an instant, the room dissipates. The mortals are brought to the surface, on board the Zora-and-Casper ship, except for Theodore, who is right next to them in the ocean. The Form 110W still floats peacefully next to him.</p>`
+            },
+            // --- ACT 1: THE MANIFEST OF THE MISSING MACGUFFIN ---
+            {
+                title: "Act 1: Chapter 8",
+                act: 1,
+                html: `<p>It's hard to write an addendum while underwater, but Theodore sure tried. He reaches out for the Form 110W and tries to add the Boyle's Law Addendum, starting with Item 1-A: Personal Lungs (formerly Bubbles'). As he writes that "Any compression exceeding 15.4% must be reported" the words are instantly erased by the water, and the parchment itself becomes a smeared mess. He tries to write Form 999-H2O: Notice of Liquid Disturbance and Erasure, a Formal Grievance against the Solvent Properties of the Lemurian Sea, but like the previous one it just becomes a smeared mess. Things aren't faring much better for Finnian and the parrot.</p>
+                <p>"Please stop squawking in my ear, parrot!" shouts Finnian.</p>
+                <p>"¡Silencio, pedazo de alcornoque! First of all," the bird shrieks, ruffling his primary feathers so hard they slap Finnian in the eye, "I am not 'parrot.' I am Pepe. Pepe el Magnífico! And if you want the squawking to stop, maybe you should stop walking like a drunken crab! You are ruining my equilibrium!" They continue bickering hopelessly.</p>
+                <p>Meanwhile, Bubbles is gasping for water. Air is very different from what she's used to. It burns to breathe, and it smells bad. The fact that it smells bad is compounded by the fact that Zora hasn't showered since she departed for the account, and her body is now the ship they are standing on.</p>
+                <p>"Quiet those boots, you scurvy lubbers! You're burrowing into my nerves like a plague of shipworms in a rotted keel!" shouts Zora-Ship.</p>
+                <p>Casper-Sail's voice rings out from the overhead rigging, sounding like the wind whistling through a flute. Even as a set of silk sails, he can't help but maintain his flare for the dramatic.</p>
+                <p>"Darlings, please! Everyone stop that dreadful bickering! We can fix this! We have to go to Scupper's Rot! That's where we sold the Gem!"</p>
+                <p>"We swore never to go back to that pit of barnacles and scum!" retorts Zora-Ship.</p>
+                <p>"Someone must draft the Form 55J: Liability Waiver for Lawless Anchoring! I am incapacitated at the moment. Mermaid, carry out the administrative duty!"</p>
+                <p>"I just wanted a nap." Bubbles says sadly.</p>
+                <p>Finnian ignores her. "Allow me to steer," he says cockily. "Which way is Scupper's Rot?"</p>
+                <p>"I wouldn't trust you to steer a barnacle-crusted hulk through a dead calm without grounding her on her own shadow, you scallywag. You're not steering me." says Zora-Ship dismissively.</p>
+                <p>Finnian cracks his knuckles. "Nonsense. I've steered plenty of ships in the past, through stranger situations than this. I was captain of the HMS Theseus! And furthermore, I'm the only one on this ship with experience who's still a person!" He gestures to the collapsed wreckage of the Bilge Rat below.</p>
+                <p>Finnian grabs the wheel, which was previously Zora's inner ear. "Hey pirate sail guy, turn that way!" he says as he points away from the wind.</p>
+                <p>"On it darling!" Casper-Sail proclaims.</p>
+                <p>And so, they departed in the wrong direction from Scupper's Rot.</p>`
+            },
+            {
+                title: "Act 1: Chapter 9",
+                act: 1,
+                html: `<p>"Wait!" shouts Theodore as he tries to keep pace with the Zora-Ship. "Stop! Glub... you are in direct violation of Form 44-Delta! Section 2 clearly states that no vessel shall achieve a velocity of more than three knots without a certified Lookout possessing a valid Sight-Line Accreditation!"</p>
+                <p>"Jeez, there's gotta be a better way to handle the nerd. We're going at in-irons speed so we don't lose him. Why don't we grab him and stick his head in the toilet?" says Finnian, annoyed.</p>
+                <p>"That's mean. I wouldn't like it if you stuck my head in the toilet." retorts Bubbles.</p>
+                <p>"I'm just saying there's gotta be a better way to do this. We're never gonna make it to Supper's Rest if we're going at this speed."</p>
+                <p>Zora-Ship is aghast. "It's Scupper's Rot, you scoundrel. Let's get the mermaid to steer, or even the damn parrot."</p>
+                <p>"¡Escúchame, madera vieja!" Pepe shrieks, his voice cracking like a whip over the sound of the flapping sails. "First of all, for the tenth time, I am not 'parrot'! I am Pepe el Magnífico! Calling me 'the parrot' is like calling the ocean 'a big puddle'! It is a lack of respect that makes my feathers itch!"</p>
+                <p>He pecks at Finnian's head to grab a bug that landed there. "And second, I do not need your 'steering wheels' or your 'compasses' that point to nothing! I can smell Scupper's Rot from a thousand leagues! It smells of fermented grog, unwashed armpits, and the sweet, sweet scent of oro blanco! Lazy one is going camino equivocado, the wrong way!"</p>
+                <p>"No, I'm taking the shortcut." Finnian lies.</p>
+                <p>Before Zora-Ship can unleash her wrath on Finnian, Casper-Sail says something that makes them all look up.</p>
+                <p>"Darlings, I don't mean to alarm you, but we're headed straight for an absolutely miniscule island."</p>
+                <p>He's right. Fathoms away from Zora-Ship is an island about twenty feet wide. It has a lone palm tree that appears to have a ramshackle house constructed on top. It sways in the wind and the base is being pulled down by gravity. Casper-Sail immediately turns three points to starboard to change direction, as Finnian spins the inner ear wheel the same way rapidly.</p>
+                <p>The hull violently scrapes against the house, sending splinters flying, as Theodore's voice echoes from the water below: "I am officially filing Form 1R: Notice of Precarious Residential Zoning!"</p>
+                <p>A man whose beard reaches his feet opens the door to the house and slides down the trunk to the sand below, his beard dangling in the wind. His peg leg hits the sand with great force.</p>
+                <p>In a crackly old voice, he manically shouts, "Ahoy, the pirate adventurers! Just in time! Come aboard! I have the mission prepared!"</p>
+                <p>"Buddy, I think you got us confused with someone else!" yells Finnian as the Zora-Ship slowly drifts.</p>
+                <p>"You're not the pirate adventurers I promised a thousand gold doubloons to?"</p>
+                <p>"Squawk! ¡ORO! ¡DOUBLOONS!" Pepe shrieks, flapping his wings so violently that he nearly knocks Finnian's hat into the ocean. "¡Silencio, pedazo de idiota! Do not listen to the lazy one, old man of the tree! He has the brain of a boiled shrimp! We are los aventureros!"</p>
+                <p>"We're not, Pepe," whispers Bubbles to him. "We don't even know what the mission is."</p>
+                <p>"¡Cállate! I will not guide the ship until we get el dinero!"</p>
+                <p>Everyone sighs as they release the boarding plank tongue.</p>`
+            },
+            {
+                title: "Act 1: Chapter 10",
+                act: 1,
+                html: `<p>"I've made camp here on this island for ages! Ages and ages! Since the grog went dry!" the old man croaks and then coughs. "It's that Leviathan! I know he's out here. They called me crazy, oh they sure did. They laughed me out of The Shattered Compass, they said get out of here you crazy drunk! But now I have you pirates!" He reaches out to hug Finnian, who pushes him away. "You'll find that blasted Leviathan and get his head!"</p>
+                <p>"Squawk! You want us to kill La Montaña de Moco, the Leviathan? You are loco! Look at my plumage! It is pristine! Make it two thousand, viejo!"</p>
+                <p>"You have got yourself a deal, my handsome parrot friend! If you get that Leviathan's head, I'll even give you Black Maggie here!"</p>
+                <p>The old man climbs up the tree with the energy and vigor of a young man. He tears through his belongings, causing his crude drawings of a sea monster to slowly flutter down the tree. "Aha! Here she is!" He brandishes a black harpoon gun that's been jury rigged to fire three harpoons at the same time. "This here is Black Maggie. My pride and joy. Be careful, she's got a mind of her own though!" He laughs maniacally.</p>
+                <p>From the ocean, Theodore shouts out. "Someone produce the Form 1-SHMAEL: Index of Incurable Ichthyosis and Monomaniacal Obsession at once! This man is clearly mad!"</p>
+                <p>"Mad? I'm not mad! I'm the sane one! Those fools at The Shattered Compass wouldn't know a sea monster if it landed in their petticoat!"</p>
+                <p>Finnian smirks. "Buddy, you called the right people. We're kind of known for slaying monsters. In fact, when I was a landlubber, I slayed a manticore with my bare hands!"</p>
+                <p>The old man's eyes light up. "You mean it? Oh, this is just incredible news! Two thousand dubloons and Black Maggie, it's all yours! All you have to do is return with his head. I know he's out there, eating the women and children. But once I have his head, those fools at The Shattered Compass will eat their words with a side of hardtack!"</p>
+                <p>Bubbles flops off the deck, awkwardly sliding down the tongue, her tail blowing up sand when she hits the ground. She gets close to Finnian and whispers in his ear. "We can't do this. We don't know the first thing about slaying monsters."</p>
+                <p>Finnian loudly proclaims, "Fear not! I shall lead us to victory! The Leviathan has not met the wrath of Finnian Storm-Wrecker!" His last name was not Storm-Wrecker. It was, in fact, Steinberg.</p>`
+            },
+            {
+                title: "Act 1: Chapter 11",
+                act: 1,
+                html: `<p>"If that boastful scallywag tries to hammer a single iron bracket into my gunwale to mount that rusted death-trap, I will swell my planks until he's pinned against the mast! I am a pirate captain, not a floating weapon-rack for a delusional hermit!" Zora-Ship affirms.</p>
+                <p>"Darling, think of the prestige! 'The Living Galleon and the Triple-Sting of Death!' It's poetic! It's evocative! Besides, Zora, black iron is very slimming on you. It draws the eye away from those unsightly barnacles on your keel." replies Casper-Sail.</p>
+                <p>"You watch your clew-garner before I rip it out!" spits Zora-Ship, her rudder quaking with anger.</p>
+                <p>Finnian is not listening. He's blissfully whistling a shanty as he hammers Maggie to the bowsprit.</p>
+                <p>"Ow! Watch the cornea, landlubber! If I weren't a ship, I'd have you walk the plank!"</p>
+                <p>Finnian wipes the sweat off his brow and drops down. "Have we figured out what we're gonna do with the nerd yet?"</p>
+                <p>"Stop! Cease the percussion at once! You are in flagrant violation of Form 476B: The Unauthorized Piercing and Structural Modification of a Composite Sentient Vessel!" is the response from below.</p>
+                <p>"Sencilla! It is an easy matter!" Pepe says, his wings hitting Finnian's face. "We fill up a barrel with the agua!"</p>
+                <p>"I don't want him on the deck. I don't want to hear about all the regulations." retorts Finnian.</p>
+                <p>"I think we should. We're never gonna make it to where the old man said to go if we're going at this speed." Bubbles states. They all turn around. They are 20 fathoms from the island. The old man waves at them.</p>
+                <p>"Fine, I guess you're right. Hoist him up." Finnian says, gesturing for Bubbles to grab a dreadlock rope.</p>
+                <p>"Where did he say to go again?" Finnian asks as the suffocating Theodore is lifted up. He flops into the barrel gasping, his powdered wig floating sadly at the top like a dead jellyfish.</p>
+                <p>"Leviathan's Maw. Two leagues that way." Bubbles points east.</p>
+                <p>"Adjust, my fine sail!" shouts Finnian.</p>
+                <p>Casper-Sail groans as he swivels.</p>`
+            }
+        ];
+
+        let currentChapter = 0;
+
+        function renderChapter() {
+            const ch = chapters[currentChapter];
+            document.getElementById('chapter-title').textContent = ch.title;
+            document.getElementById('chapter-body').innerHTML = ch.html;
+            document.getElementById('chapter-body').scrollTop = 0;
+            document.getElementById('prevBtn').style.display = currentChapter === 0 ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').style.display = currentChapter === chapters.length - 1 ? 'none' : 'inline-block';
+
+            // Toggle Zora-Ship mode for Act 1+
+            const logbook = document.querySelector('.logbook');
+            const stamp = document.querySelector('.stamp');
+            if (ch.act >= 1) {
+                logbook.classList.add('zora-mode');
+                stamp.classList.add('zora-mode');
+                stamp.innerHTML = 'OFFICIAL<br>ZORA-SHIP<br>SEAL';
+            } else {
+                logbook.classList.remove('zora-mode');
+                stamp.classList.remove('zora-mode');
+                stamp.innerHTML = 'OFFICIAL<br>SOVEREIGN<br>SEAL';
+            }
+        }
+
+        function changeChapter(dir) {
+            currentChapter += dir;
+            if (currentChapter < 0) currentChapter = 0;
+            if (currentChapter >= chapters.length) currentChapter = chapters.length - 1;
+            renderChapter();
+        }
+
+        renderChapter();
+    </script>
+
+    <script>
+        // --- WIND WAKER CEL-SHADED WATER ---
+        const canvas = document.getElementById('water-bg');
+        const ctx = canvas.getContext('2d');
+
+        // Render at low resolution for cel-shaded crispness
+        const SCALE = 4;
+        let w, h;
+
+        function resize() {
+            w = Math.ceil(window.innerWidth / SCALE);
+            h = Math.ceil(window.innerHeight / SCALE);
+            canvas.width = w;
+            canvas.height = h;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- SIMPLEX-INSPIRED NOISE (hash-based) ---
+        // Permutation table
+        const perm = new Uint8Array(512);
+        const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+        (function seedNoise() {
+            const p = new Uint8Array(256);
+            for (let i = 0; i < 256; i++) p[i] = i;
+            for (let i = 255; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [p[i], p[j]] = [p[j], p[i]];
+            }
+            for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+        })();
+
+        function dot2(g, x, y) { return g[0] * x + g[1] * y; }
+
+        function noise2D(x, y) {
+            // Simple value noise with smoothstep
+            const xi = Math.floor(x), yi = Math.floor(y);
+            const xf = x - xi, yf = y - yi;
+            const u = xf * xf * (3 - 2 * xf);
+            const v = yf * yf * (3 - 2 * yf);
+
+            const aa = perm[(perm[xi & 255] + (yi & 255)) & 255];
+            const ab = perm[(perm[xi & 255] + ((yi + 1) & 255)) & 255];
+            const ba = perm[(perm[((xi + 1) & 255)] + (yi & 255)) & 255];
+            const bb = perm[(perm[((xi + 1) & 255)] + ((yi + 1) & 255)) & 255];
+
+            const x1 = aa / 255 * (1 - u) + ba / 255 * u;
+            const x2 = ab / 255 * (1 - u) + bb / 255 * u;
+            return x1 * (1 - v) + x2 * v;
+        }
+
+        function fbm(x, y, octaves) {
+            let val = 0, amp = 1, freq = 1, max = 0;
+            for (let i = 0; i < octaves; i++) {
+                val += noise2D(x * freq, y * freq) * amp;
+                max += amp;
+                amp *= 0.5;
+                freq *= 2;
+            }
+            return val / max;
+        }
+
+        // Wind Waker palette
+        const FOAM   = [200, 240, 255];  // light cyan foam
+        const BLUE1  = [26, 163, 232];   // main blue
+        const BLUE2  = [18, 130, 195];   // shadow blue
+        const BLUE3  = [12, 105, 168];   // deep shadow
+
+        function render(time) {
+            const t = time * 0.0001;
+            const imgData = ctx.createImageData(w, h);
+            const data = imgData.data;
+
+            const noiseScale = 0.035;
+            const drift = t * 3;
+            const driftY = t * 1.5;
+
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const nx = x * noiseScale + drift;
+                    const ny = y * noiseScale + driftY;
+
+                    // Primary blob noise
+                    const n = fbm(nx, ny, 3);
+                    
+                    // Secondary detail noise for shadow shapes within blobs  
+                    const n2 = fbm(nx * 1.8 + 50, ny * 1.8 + 50, 2);
+
+                    // Tertiary noise for edge wobble
+                    const n3 = noise2D(nx * 0.7 + 100, ny * 0.7 + 100);
+
+                    const idx = (y * w + x) * 4;
+                    let r, g, b;
+
+                    // Threshold for blob vs foam
+                    const threshold = 0.42 + n3 * 0.06;
+                    
+                    if (n < threshold) {
+                        // Foam / light water between blobs
+                        r = FOAM[0]; g = FOAM[1]; b = FOAM[2];
+                    } else if (n < threshold + 0.04) {
+                        // Edge of blob - slightly darker outline
+                        r = BLUE2[0]; g = BLUE2[1]; b = BLUE2[2];
+                    } else {
+                        // Inside blob
+                        if (n2 > 0.55) {
+                            // Shadow mark inside blob
+                            r = BLUE3[0]; g = BLUE3[1]; b = BLUE3[2];
+                        } else {
+                            // Main blue
+                            r = BLUE1[0]; g = BLUE1[1]; b = BLUE1[2];
+                        }
+                    }
+
+                    data[idx] = r;
+                    data[idx + 1] = g;
+                    data[idx + 2] = b;
+                    data[idx + 3] = 255;
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+            requestAnimationFrame(render);
+        }
+
+        requestAnimationFrame(render);
+    </script>
 
 </body>
 </html>
