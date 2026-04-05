@@ -5,8 +5,8 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
-            --die-width: 600px;
-            --die-height: 700px;
+            --die-size: 600px;
+            --face-color: rgba(0, 0, 0, 0.95);
             --neon-cyan: #00ffcc;
         }
 
@@ -20,80 +20,77 @@
             align-items: center;
             overflow: hidden;
             font-family: 'VT323', monospace;
-            perspective: 2000px;
+            perspective: 2500px;
         }
 
         /* --- THE 3D ROTATOR --- */
         .scene {
-            width: var(--die-width);
-            height: var(--die-height);
+            width: var(--die-size);
+            height: var(--die-size);
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .face {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: #0a0a0a;
-            border: 3px solid var(--neon-cyan);
-            display: flex;
-            flex-direction: column;
-            padding: 40px;
+            background: var(--face-color);
+            border: 2px solid var(--neon-cyan);
             box-sizing: border-box;
             backface-visibility: hidden;
-            /* Pentagonal Shape */
-            clip-path: polygon(50% 0%, 100% 25%, 85% 100%, 15% 100%, 0% 25%);
+            /* Pentagonal Clipping */
+            clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* The scrollable text container inside the face */
-        .text-container {
+        /* Inner container to prevent text cutoff */
+        .text-constrain {
+            width: 65%;
+            height: 60%;
             overflow-y: auto;
-            margin-top: 60px;
-            padding-right: 10px;
-            height: 80%;
-            scrollbar-width: thin;
-            scrollbar-color: var(--neon-cyan) #000;
-        }
-
-        .text-container::-webkit-scrollbar { width: 5px; }
-        .text-container::-webkit-scrollbar-thumb { background: var(--neon-cyan); }
-
-        h2 {
+            padding: 10px;
             text-align: center;
-            color: var(--neon-cyan);
-            margin: 0;
-            font-size: 24px;
-            text-transform: uppercase;
+            scrollbar-width: none; /* Firefox */
         }
+
+        .text-constrain::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
         p {
             font-size: 1.2rem;
-            color: #fff;
-            line-height: 1.6;
+            color: var(--neon-cyan);
+            line-height: 1.4;
             margin-bottom: 15px;
         }
 
-        /* --- 3D POSITIONS --- */
-        .face-1 { transform: rotateY(0deg) translateZ(10px); }
-        .face-2 { transform: rotateY(180deg) translateZ(10px); }
+        /* --- 6-SIDED ROTATION (60 deg increments) --- */
+        .face-1 { transform: rotateY(0deg) translateZ(280px); }
+        .face-2 { transform: rotateY(60deg) translateZ(280px); }
+        .face-3 { transform: rotateY(120deg) translateZ(280px); }
+        .face-4 { transform: rotateY(180deg) translateZ(280px); }
+        .face-5 { transform: rotateY(240deg) translateZ(280px); }
+        .face-6 { transform: rotateY(300deg) translateZ(280px); }
 
         /* --- NAVIGATION --- */
         .nav-controls {
             margin-top: 30px;
             display: flex;
-            gap: 20px;
+            gap: 40px;
+            z-index: 100;
         }
 
         button {
             background: #000;
-            border: 2px solid var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
             color: var(--neon-cyan);
             padding: 10px 30px;
             font-family: 'VT323', monospace;
             font-size: 20px;
             cursor: pointer;
+            letter-spacing: 2px;
             transition: 0.2s;
         }
 
@@ -101,40 +98,58 @@
             background: var(--neon-cyan);
             color: #000;
         }
+
+        #status-display {
+            position: absolute;
+            top: 30px;
+            color: var(--neon-cyan);
+            letter-spacing: 3px;
+            font-size: 1.5rem;
+        }
     </style>
 </head>
 <body>
 
+    <div id="status-display">PHASE: 01</div>
+
     <div class="scene" id="die">
         <div class="face face-1">
-            <h2>Chapter 1: The Sounds of Science</h2>
-            <div class="text-container">
+            <div class="text-constrain">
                 <p>“Now here we go dropping science, dropping it all over / Like bumping around the town, like when you're driving a Range Rover / Expanding the horizons and expanding the parameters / Expanding the rhymes of sucka MC amateurs” -Beastie Boys</p>
-                <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students. But on Saturday nights, he becomes King Solomon, holding dominion over Jinn.</p>
-                <p>King Solomon stands in the center of the twelve silent G.E.N.I members. They are seated in plastic folding chairs arranged in a dodecagram shape on the upper floor of Atomic Pizza. Like Solomon Rosenthal, Atomic Pizza does not seem like it has a connection to a cult. They serve mediocre pizza and have a 2.8 Yelp Score.</p>
-                <p>King Solomon rolls the 12-sided die. It hits the floor with a clatter. “Brother Michael, the die has decided. Disengage from your trauma,” says King Solomon in a paternal yet firm tone. King Solomon fiddles with his 1950s looking wristwatch.</p>
-                <p>Brother Michael gives a quick glance of fear to Sister Ashley, who sits across from him. Sister Ashley nods. He then proceeds to speak in a hushed shaky tone. “I don't know where to begin. I got into a nasty fight with my wife this week. It always starts with something small, like me not taking his shoes off when I enter the house. Then it escalates, she criticizes me for always working. I criticize her for being cold.”</p>
-                <p>Brother Michael continues for a while in his stream-of-consciousness. After 12 minutes and 12 seconds, King Solomon’s wristwatch goes off.</p>
-                <p>Brother Michael’s transformation is slow at first, then all at once. His eyes flash red. His speech slurs. He begins speaking a phrase in archaic Arabic that cannot be written down. The smell of mediocre pizza is replaced by noxious brimstone.</p>
-                <p>“Your wish, Brother Michael! What is your wish?!” shouts King Solomon through Brother Michael’s guttural utterances.</p>
-                <p>The last, fading spark of Brother Michael’s conscious mind screams a single thought: I wish my wife and I never argued. The moment the internal wish is cast, the guttural Arabic cuts out. The glowing red vanishes from his eyes, leaving a distraught, heavily sweating Michael collapsed in his folding chair.</p>
+                <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students.</p>
             </div>
         </div>
 
         <div class="face face-2">
-            <h2>Chapter 2: Genie in a Bottle</h2>
-            <div class="text-container">
-                <p>A weather worn pamphlet is taped haphazardly to a street light. The translucent tape over the words is grimy and obscuring. The paper underneath reads:</p>
-                <p>What does G.E.N.I stand for? Simple! It can be broken up into four fundamental forces!<br>
-                G: Gravity<br>
-                E: Electromagnetism<br>
-                N: Nuclear<br>
-                I: Interactions</p>
-                <p>Next to this explanation is a halftone image of a comforting and well groomed 1950s man, holding a pipe in his smiling mouth. He is surrounded by a concentric ring of protons and electrons.</p>
-                <p>Father Castellano walks by the streetlight, carrying a bag of groceries. He sneers when he sees the pamphlet. He brushes his cassock with his hand, as if the mere act of seeing it has made him dirty.</p>
-                <p>He enters the rectory for The Parish of St. Barbara the Martyr. He closes the door behind him gently.</p>
-                <p>He gets to the kitchen counter and begins taking out his boxes of spaghetti noodles and sauce. As he's about to turn on the stove, there is a frantic knocking at the door. Father Castellano adjusts his wire rim glasses and walks quickly towards the door.</p>
-                <p>“Can I help you?” he says as he delicately opens the door.</p>
+            <div class="text-constrain">
+                <p>But on Saturday nights, he becomes King Solomon, holding dominion over Jinn. King Solomon stands in the center of the twelve silent G.E.N.I members arranged in a dodecagram shape on the upper floor of Atomic Pizza.</p>
+                <p>Mediocre pizza. 2.8 Yelp Score. King Solomon rolls the 12-sided die. It hits the floor with a clatter. “Brother Michael, the die has decided. Disengage from your trauma.”</p>
+            </div>
+        </div>
+
+        <div class="face face-3">
+            <div class="text-constrain">
+                <p>Brother Michael speaks of a fight with his wife. Small things. Shoes. Escalation. Coldness. After 12 minutes and 12 seconds, the watch goes off. Michael’s eyes flash red. Archaic Arabic spills out. Noxious brimstone.</p>
+                <p>“Your wish, Brother Michael?!” Michael screams a single thought: I wish my wife and I never argued. The glowing red vanishes.</p>
+            </div>
+        </div>
+
+        <div class="face face-4">
+            <div class="text-constrain">
+                <p>Chapter 2: Genie in a Bottle. A weather worn pamphlet is taped haphazardly to a street light. What does G.E.N.I stand for? Simple! It can be broken up into four fundamental forces!</p>
+                <p>G: Gravity / E: Electromagnetism / N: Nuclear / I: Interactions. Next to this is a halftone image of a 1950s man with a pipe.</p>
+            </div>
+        </div>
+
+        <div class="face face-5">
+            <div class="text-constrain">
+                <p>Father Castellano walks by and sneers at the pamphlet. He enters the rectory for The Parish of St. Barbara the Martyr. He begins taking out spaghetti noodles and sauce.</p>
+                <p>Frantic knocking at the door. Castellano adjusts his wire rim glasses. “Can I help you?” he says as he delicately opens the door.</p>
+            </div>
+        </div>
+
+        <div class="face face-6">
+            <div class="text-constrain">
                 <p>“Father, I need help. Bad.” says the gruff looking man wearing a zip-up Mets hoodie and a face of fear. He glances over his own shoulder nervously.</p>
                 <p>“Ah, Salvatore. Of course. I’ll take you to the confessionals.” says Father Castellano in a reassuring tone.</p>
             </div>
@@ -142,13 +157,25 @@
     </div>
 
     <div class="nav-controls">
-        <button onclick="rotate(0)">CHAPTER 1</button>
-        <button onclick="rotate(180)">CHAPTER 2</button>
+        <button onclick="changeFace(-1)">PREV</button>
+        <button onclick="changeFace(1)">NEXT</button>
     </div>
 
     <script>
-        function rotate(deg) {
-            document.getElementById('die').style.transform = `rotateY(${deg}deg)`;
+        let currentStep = 0;
+        const die = document.getElementById('die');
+        const status = document.getElementById('status-display');
+        
+        function changeFace(direction) {
+            currentStep += direction;
+            if (currentStep < 0) currentStep = 5;
+            if (currentStep > 5) currentStep = 0;
+
+            let rotation = currentStep * -60;
+            die.style.transform = `rotateY(${rotation}deg) rotateX(-5deg)`;
+            
+            // Numerical tracking
+            status.innerText = `PHASE: 0${currentStep + 1}`;
         }
     </script>
 
