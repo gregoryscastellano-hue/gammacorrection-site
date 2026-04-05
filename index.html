@@ -168,7 +168,7 @@
 
         #project-rerun { left: 5%; top: 5%; }
         #project-voyager { right: 5%; top: 5%; }
-        #project-fire { left: 45%; bottom: 10%; } 
+        #project-fire { left: 50%; bottom: 5%; transform: translateX(-50%); } 
         #project-harvest { left: 5%; bottom: 5%; } 
         
         #project-gravel { left: 15%; top: 20%; }
@@ -188,6 +188,13 @@
             width: 70px; filter: drop-shadow(0 0 15px #00ffff); image-rendering: pixelated; transition: transform 0.3s ease-in-out;
         }
         #project-needle img:hover { filter: drop-shadow(0 0 20px #ffffff); transform: scale(1.1) rotate(-10deg); }
+
+        /* --- BOARD GAME MULTIVERSE PORTAL --- */
+        #project-boardgame { left: 25%; bottom: 15%; z-index: 1001; }
+        #project-boardgame img {
+            width: 85px; filter: drop-shadow(0 0 15px #ff00ff); image-rendering: pixelated;
+        }
+        #project-boardgame .portal-text { color: #ff00ff; border: 1px solid #ff00ff; }
 
         /* --- GILDED SOVEREIGN PORTAL --- */
         #project-sovereign { right: 10%; top: 35%; z-index: 1001; }
@@ -216,7 +223,7 @@
         </a>
     </div>
 
-    <div id="project-fire" class="portal" style="left: 50%; bottom: 5%; transform: translateX(-50%);">
+    <div id="project-fire" class="portal">
         <a href="eternal-recurrence.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #ff3300; border: 1px solid #ff3300;">eternal recurrence</p>
             <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;">
@@ -248,6 +255,13 @@
         <a href="hitting-the-needle.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #00ffff; border: 1px solid #00ffff;">hitting the needle</p>
             <img src="https://blob.gifcities.org/gifcities/7ON6Q53YQVJ47TFNH2BL6XKUFHMGT2J5.gif" alt="Needle">
+        </a>
+    </div>
+
+    <div id="project-boardgame" class="portal">
+        <a href="board-game-multiverse.html" style="text-decoration: none;">
+            <p class="portal-text">board game multiverse</p>
+            <img src="https://blob.gifcities.org/gifcities/5HGKFNMUZTRZK2UQY5TTDPB3RJT3NEGU.gif" alt="Board Game">
         </a>
     </div>
 
