@@ -171,59 +171,32 @@
         #project-fire { left: 45%; bottom: 10%; } 
         #project-harvest { left: 5%; bottom: 5%; } 
         
-        /* --- GRAVELBALL PORTAL --- */
-        #project-gravel { 
-            left: 15%; 
-            top: 20%; 
-        }
+        #project-gravel { left: 15%; top: 20%; }
         #project-gravel img {
-            width: 50px; 
-            filter: drop-shadow(0 0 15px #00FF00); 
-            image-rendering: pixelated;
+            width: 50px; filter: drop-shadow(0 0 15px #00FF00); image-rendering: pixelated;
         }
 
-        /* --- TRUMPAGOTCHI PORTAL --- */
-        #project-trumpagotchi { 
-            right: 25%;  
-            top: 18%;    
-            z-index: 1001;
-        }
-
+        #project-trumpagotchi { right: 25%; top: 18%; z-index: 1001; }
         #project-trumpagotchi img {
-            width: 75px; 
-            filter: drop-shadow(0 0 15px #ffd700); 
-            image-rendering: pixelated;
-            transition: transform 0.2s;
+            width: 75px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated; transition: transform 0.2s;
         }
+        #project-trumpagotchi img:hover { transform: scale(1.1) rotate(5deg); }
+        #project-trumpagotchi .portal-text { color: #ffd700; border: 1px solid #ffd700; font-weight: bold; }
 
-        #project-trumpagotchi img:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        #project-trumpagotchi .portal-text {
-            color: #ffd700; 
-            border: 1px solid #ffd700;
-            font-weight: bold;
-        }
-
-        /* --- HITTING THE NEEDLE PORTAL --- */
-        #project-needle { 
-            right: 5%; 
-            bottom: 5%; 
-            z-index: 1001;
-        }
-
+        #project-needle { right: 5%; bottom: 5%; z-index: 1001; }
         #project-needle img {
-            width: 70px;
-            filter: drop-shadow(0 0 15px #00ffff);
-            image-rendering: pixelated;
-            transition: transform 0.3s ease-in-out;
+            width: 70px; filter: drop-shadow(0 0 15px #00ffff); image-rendering: pixelated; transition: transform 0.3s ease-in-out;
         }
+        #project-needle img:hover { filter: drop-shadow(0 0 20px #ffffff); transform: scale(1.1) rotate(-10deg); }
 
-        #project-needle img:hover {
-            filter: drop-shadow(0 0 20px #ffffff);
-            transform: scale(1.1) rotate(-10deg);
+        /* --- GILDED SOVEREIGN PORTAL --- */
+        #project-sovereign { right: 10%; top: 35%; z-index: 1001; }
+        #project-sovereign img {
+            width: 110px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated; transition: 0.4s;
         }
+        #project-sovereign img:hover { transform: translateY(-10px) rotate(3deg); filter: drop-shadow(0 0 25px #ffffff); }
+        #project-sovereign .portal-text { color: #ffd700; border: 1px solid #ffd700; font-style: italic; }
+
     </style>
 </head>
 <body>
@@ -232,32 +205,28 @@
     <div id="project-rerun" class="portal">
         <a href="rerun-for-the-reaper.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #aa00ff; border: 1px solid #aa00ff;">a rerun for the reaper</p>
-            <img src="https://blob.gifcities.org/gifcities/5RXTFQ3IKKOZ6T4OKLGLHNXB3CFSDPOR.gif" 
-                 style="width: 90px; filter: drop-shadow(0 0 15px #aa00ff); image-rendering: pixelated;">
+            <img src="https://blob.gifcities.org/gifcities/5RXTFQ3IKKOZ6T4OKLGLHNXB3CFSDPOR.gif" style="width: 90px; filter: drop-shadow(0 0 15px #aa00ff); image-rendering: pixelated;">
         </a>
     </div>
 
     <div id="project-voyager" class="portal">
         <a href="go-johnny-go.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #00ffcc; border: 1px solid #00ffcc;">go, johnny, go</p>
-            <img src="https://blob.gifcities.org/gifcities/UVLWMVYYNLLZLBVBM7QJ7KAVI6PG7YKQ.gif" 
-                 style="width: 100px; filter: drop-shadow(0 0 15px #00ffcc); image-rendering: pixelated;">
+            <img src="https://blob.gifcities.org/gifcities/UVLWMVYYNLLZLBVBM7QJ7KAVI6PG7YKQ.gif" style="width: 100px; filter: drop-shadow(0 0 15px #00ffcc); image-rendering: pixelated;">
         </a>
     </div>
 
     <div id="project-fire" class="portal" style="left: 50%; bottom: 5%; transform: translateX(-50%);">
         <a href="eternal-recurrence.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #ff3300; border: 1px solid #ff3300;">eternal recurrence</p>
-            <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" 
-                 style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;">
+            <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;">
         </a>
     </div>
 
     <div id="project-harvest" class="portal">
         <a href="the-empty-harvest.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #ffd700; border: 1px solid #ffd700;">the empty harvest</p>
-            <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" 
-                 style="width: 80px; filter: drop-shadow(0 0 10px #ffd700); image-rendering: pixelated;">
+            <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" style="width: 80px; filter: drop-shadow(0 0 10px #ffd700); image-rendering: pixelated;">
         </a>
     </div>
 
@@ -282,13 +251,18 @@
         </a>
     </div>
 
+    <div id="project-sovereign" class="portal">
+        <a href="gilded-sovereign.html" style="text-decoration: none;">
+            <p class="portal-text">the gilded sovereign</p>
+            <img src="https://blob.gifcities.org/gifcities/DPCQTFRF6KDCO76ZHKLXYSFSDITWOBKR.gif" alt="Ship">
+        </a>
+    </div>
+
     <h1>gamma correction</h1>
 
     <div class="station-container">
         <div class="creator-station">
-            <img id="archivist-img" 
-                 src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" 
-                 alt="Station">
+            <img id="archivist-img" src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="Station">
         </div>
 
         <div class="netscape-player-small">
@@ -331,7 +305,6 @@
     </div>
 
     <script>
-        // --- BONZI LOGIC ---
         function summonBonzi() {
             const bonzi = document.getElementById("bonzi-surfer");
             const direction = Math.floor(Math.random() * 2);
@@ -344,7 +317,6 @@
         }
         setTimeout(summonBonzi, 30000);
 
-        // --- AUDIO LOGIC ---
         const fatCat = document.getElementById("main-theme");
         const bars = document.querySelectorAll(".v-bar");
         function playAudio() { 
