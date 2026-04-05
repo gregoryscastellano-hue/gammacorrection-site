@@ -5,10 +5,9 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
-            --die-size: 600px;
-            --face-color: rgba(5, 5, 5, 0.98);
+            --die-width: 600px;
+            --die-height: 700px;
             --neon-cyan: #00ffcc;
-            --neon-magenta: #ff00ff;
         }
 
         body {
@@ -26,126 +25,130 @@
 
         /* --- THE 3D ROTATOR --- */
         .scene {
-            width: var(--die-size);
-            height: var(--die-size);
+            width: var(--die-width);
+            height: var(--die-height);
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .face {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: var(--face-color);
+            background: #0a0a0a;
             border: 3px solid var(--neon-cyan);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px;
+            padding: 40px;
             box-sizing: border-box;
             backface-visibility: hidden;
-            /* Pentagonal Die Face Shape */
-            clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
-            box-shadow: inset 0 0 50px rgba(0, 255, 204, 0.2);
+            /* Pentagonal Shape */
+            clip-path: polygon(50% 0%, 100% 25%, 85% 100%, 15% 100%, 0% 25%);
         }
 
-        .face p {
-            font-size: 1.3rem;
-            color: #fff;
-            line-height: 1.4;
+        /* The scrollable text container inside the face */
+        .text-container {
+            overflow-y: auto;
+            margin-top: 60px;
+            padding-right: 10px;
+            height: 80%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neon-cyan) #000;
+        }
+
+        .text-container::-webkit-scrollbar { width: 5px; }
+        .text-container::-webkit-scrollbar-thumb { background: var(--neon-cyan); }
+
+        h2 {
             text-align: center;
-            margin: 10px 0;
-            text-shadow: 0 0 5px var(--neon-cyan);
+            color: var(--neon-cyan);
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
         }
 
-        .face i { color: var(--neon-magenta); }
+        p {
+            font-size: 1.2rem;
+            color: #fff;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
 
-        /* --- 3D FACE POSITIONING --- */
-        .face-1 { transform: rotateY(0deg) translateZ(100px); }
-        .face-2 { transform: rotateY(120deg) translateZ(100px); }
-        .face-3 { transform: rotateY(240deg) translateZ(100px); }
+        /* --- 3D POSITIONS --- */
+        .face-1 { transform: rotateY(0deg) translateZ(10px); }
+        .face-2 { transform: rotateY(180deg) translateZ(10px); }
 
         /* --- NAVIGATION --- */
         .nav-controls {
-            margin-top: 50px;
+            margin-top: 30px;
             display: flex;
-            gap: 40px;
-            z-index: 100;
+            gap: 20px;
         }
 
         button {
             background: #000;
             border: 2px solid var(--neon-cyan);
             color: var(--neon-cyan);
-            padding: 12px 40px;
+            padding: 10px 30px;
             font-family: 'VT323', monospace;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
-            letter-spacing: 3px;
             transition: 0.2s;
-            box-shadow: 4px 4px 0px var(--neon-cyan);
         }
 
         button:hover {
             background: var(--neon-cyan);
             color: #000;
-            box-shadow: 0 0 30px var(--neon-cyan);
-        }
-
-        button:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0px var(--neon-cyan);
-        }
-
-        .chapter-title {
-            position: absolute;
-            top: 40px;
-            color: var(--neon-magenta);
-            font-size: 28px;
-            letter-spacing: 5px;
-            text-shadow: 0 0 10px var(--neon-magenta);
         }
     </style>
 </head>
 <body>
 
-    <div class="chapter-title">HITTING THE NEEDLE: CHAPTER I</div>
-
     <div class="scene" id="die">
         <div class="face face-1">
-            <p><i>“Now here we go dropping science, dropping it all over / Like bumping around the town, like when you're driving a Range Rover / Expanding the horizons and expanding the parameters / Expanding the rhymes of sucka MC amateurs”</i> -Beastie Boys</p>
-            <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students.</p>
-            <p>But on Saturday nights, he becomes King Solomon, holding dominion over Jinn.</p>
+            <h2>Chapter 1: The Sounds of Science</h2>
+            <div class="text-container">
+                <p>“Now here we go dropping science, dropping it all over / Like bumping around the town, like when you're driving a Range Rover / Expanding the horizons and expanding the parameters / Expanding the rhymes of sucka MC amateurs” -Beastie Boys</p>
+                <p>Solomon Rosenthal did not seem like a high ranking member of a cult. He pays his taxes, goes to synagogue, and gives 110% when it comes to his driver's ed students. But on Saturday nights, he becomes King Solomon, holding dominion over Jinn.</p>
+                <p>King Solomon stands in the center of the twelve silent G.E.N.I members. They are seated in plastic folding chairs arranged in a dodecagram shape on the upper floor of Atomic Pizza. Like Solomon Rosenthal, Atomic Pizza does not seem like it has a connection to a cult. They serve mediocre pizza and have a 2.8 Yelp Score.</p>
+                <p>King Solomon rolls the 12-sided die. It hits the floor with a clatter. “Brother Michael, the die has decided. Disengage from your trauma,” says King Solomon in a paternal yet firm tone. King Solomon fiddles with his 1950s looking wristwatch.</p>
+                <p>Brother Michael gives a quick glance of fear to Sister Ashley, who sits across from him. Sister Ashley nods. He then proceeds to speak in a hushed shaky tone. “I don't know where to begin. I got into a nasty fight with my wife this week. It always starts with something small, like me not taking his shoes off when I enter the house. Then it escalates, she criticizes me for always working. I criticize her for being cold.”</p>
+                <p>Brother Michael continues for a while in his stream-of-consciousness. After 12 minutes and 12 seconds, King Solomon’s wristwatch goes off.</p>
+                <p>Brother Michael’s transformation is slow at first, then all at once. His eyes flash red. His speech slurs. He begins speaking a phrase in archaic Arabic that cannot be written down. The smell of mediocre pizza is replaced by noxious brimstone.</p>
+                <p>“Your wish, Brother Michael! What is your wish?!” shouts King Solomon through Brother Michael’s guttural utterances.</p>
+                <p>The last, fading spark of Brother Michael’s conscious mind screams a single thought: I wish my wife and I never argued. The moment the internal wish is cast, the guttural Arabic cuts out. The glowing red vanishes from his eyes, leaving a distraught, heavily sweating Michael collapsed in his folding chair.</p>
+            </div>
         </div>
 
         <div class="face face-2">
-            <p>King Solomon stands in the center of the twelve silent G.E.N.I members arranged in a dodecagram shape on the upper floor of Atomic Pizza. Mediocre pizza. 2.8 Yelp Score.</p>
-            <p>King Solomon rolls the 12-sided die. It hits the floor with a clatter. “Brother Michael, the die has decided. Disengage from your trauma.”</p>
-            <p>“I don't know where to begin. I got into a nasty fight with my wife this week. It always starts with something small... Then it escalates.”</p>
-        </div>
-
-        <div class="face face-3">
-            <p>After 12 minutes and 12 seconds, King Solomon’s wristwatch goes off. Brother Michael’s transformation is slow at first, then all at once. His eyes flash red.</p>
-            <p>The smell of mediocre pizza is replaced by noxious brimstone. “Your wish, Brother Michael! What is your wish?!”</p>
-            <p><i>I wish my wife and I never argued.</i> The glowing red vanishes, leaving a distraught, sweating Michael collapsed in his chair.</p>
+            <h2>Chapter 2: Genie in a Bottle</h2>
+            <div class="text-container">
+                <p>A weather worn pamphlet is taped haphazardly to a street light. The translucent tape over the words is grimy and obscuring. The paper underneath reads:</p>
+                <p>What does G.E.N.I stand for? Simple! It can be broken up into four fundamental forces!<br>
+                G: Gravity<br>
+                E: Electromagnetism<br>
+                N: Nuclear<br>
+                I: Interactions</p>
+                <p>Next to this explanation is a halftone image of a comforting and well groomed 1950s man, holding a pipe in his smiling mouth. He is surrounded by a concentric ring of protons and electrons.</p>
+                <p>Father Castellano walks by the streetlight, carrying a bag of groceries. He sneers when he sees the pamphlet. He brushes his cassock with his hand, as if the mere act of seeing it has made him dirty.</p>
+                <p>He enters the rectory for The Parish of St. Barbara the Martyr. He closes the door behind him gently.</p>
+                <p>He gets to the kitchen counter and begins taking out his boxes of spaghetti noodles and sauce. As he's about to turn on the stove, there is a frantic knocking at the door. Father Castellano adjusts his wire rim glasses and walks quickly towards the door.</p>
+                <p>“Can I help you?” he says as he delicately opens the door.</p>
+                <p>“Father, I need help. Bad.” says the gruff looking man wearing a zip-up Mets hoodie and a face of fear. He glances over his own shoulder nervously.</p>
+                <p>“Ah, Salvatore. Of course. I’ll take you to the confessionals.” says Father Castellano in a reassuring tone.</p>
+            </div>
         </div>
     </div>
 
     <div class="nav-controls">
-        <button onclick="changeFace(-1)">PREVIOUS</button>
-        <button onclick="changeFace(1)">NEXT</button>
+        <button onclick="rotate(0)">CHAPTER 1</button>
+        <button onclick="rotate(180)">CHAPTER 2</button>
     </div>
 
     <script>
-        let currentRotation = 0;
-        const die = document.getElementById('die');
-        
-        function changeFace(direction) {
-            // Rotates 120 degrees for each of the 3 face segments
-            currentRotation -= (direction * 120);
-            die.style.transform = `rotateY(${currentRotation}deg) rotateX(-5deg)`;
+        function rotate(deg) {
+            document.getElementById('die').style.transform = `rotateY(${deg}deg)`;
         }
     </script>
 
