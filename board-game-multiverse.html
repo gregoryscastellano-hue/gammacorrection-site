@@ -7,390 +7,261 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=VT323&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  min-height: 100vh;
-  background: #1a1008;
-  font-family: 'Cormorant Garamond', serif;
-  color: #e8dcc8;
-  overflow-x: hidden;
-}
-
-/* ── WOOD TABLE BACKGROUND ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0;
-  background:
-    repeating-linear-gradient(
-      92deg,
-      transparent 0px, transparent 40px,
-      rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.03) 42px
-    ),
-    repeating-linear-gradient(
-      88deg,
-      transparent 0px, transparent 60px,
-      rgba(80,50,20,0.06) 60px, rgba(80,50,20,0.06) 61px
-    ),
-    linear-gradient(180deg, #2a1a0a 0%, #1e1208 40%, #1a0e06 100%);
-  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3C/svg%3E#n");
-}
-
-/* Warm overhead light */
-body::after {
-  content: '';
-  position: fixed; top: -30%; left: 50%; transform: translateX(-50%);
-  width: 120vw; height: 70vh;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255,200,100,0.08) 0%, transparent 70%);
-  pointer-events: none; z-index: 1;
-}
-
-/* ── HEADER ── */
-.header {
-  position: relative; z-index: 10;
-  text-align: center;
-  padding: 60px 20px 20px;
-}
-
-.header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(28px, 5vw, 52px);
-  font-weight: 900;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: #f0e6d0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,100,0.15);
-}
-
-.header .sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
-  font-style: italic;
-  color: rgba(232,220,200,0.5);
-  margin-top: 10px;
-  letter-spacing: 3px;
-}
-
-/* ── SHELF ── */
-.shelf {
-  position: relative; z-index: 10;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 80px;
-  padding: 60px 40px 120px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* ── 3D BOX ── */
-.box-container {
-  perspective: 900px;
-  cursor: pointer;
-  width: 220px;
-  height: 280px;
-  position: relative;
-}
-
-.box {
-  width: 220px;
-  height: 280px;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateX(8deg) rotateY(-12deg);
-  transition: transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
-}
-
-.box-container:hover .box {
-  transform: rotateX(5deg) rotateY(-6deg) translateY(-8px);
-}
-
-.box-container.open .box {
-  transform: rotateX(12deg) rotateY(-5deg) translateY(-10px);
-}
-
-/* Shadow under box */
-.box-shadow {
-  position: absolute;
-  bottom: -20px; left: 10%;
-  width: 80%; height: 20px;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%);
-  filter: blur(8px);
-  transition: all 0.6s ease;
-}
-
-.box-container:hover .box-shadow {
-  bottom: -28px;
-  opacity: 0.7;
-  width: 90%;
-  left: 5%;
-}
-
-/* ── BOX FACES ── */
-.box-front, .box-back, .box-left, .box-right, .box-bottom, .box-lid {
-  position: absolute;
-  backface-visibility: visible;
-}
-
-/* Front face */
-.box-front {
-  width: 220px; height: 280px;
-  transform: translateZ(25px);
-}
-
-/* Back face */
-.box-back {
-  width: 220px; height: 280px;
-  transform: rotateY(180deg) translateZ(25px);
-}
-
-/* Left side */
-.box-left {
-  width: 50px; height: 280px;
-  transform: rotateY(-90deg) translateZ(0px);
-}
-
-/* Right side */
-.box-right {
-  width: 50px; height: 280px;
-  transform: rotateY(90deg) translateZ(220px);
-  transform-origin: left;
-}
-
-/* Bottom */
-.box-bottom {
-  width: 220px; height: 50px;
-  transform: rotateX(-90deg) translateZ(280px);
-  transform-origin: bottom;
-}
-
-/* Lid - hinges at the back */
-.box-lid {
-  width: 220px; height: 50px;
-  transform-origin: top center;
-  transform: rotateX(0deg) translateZ(0px) translateY(0px);
-  transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.64, 1);
-  z-index: 20;
-}
-
-.box-container.open .box-lid {
-  transform: rotateX(-160deg) translateZ(0px) translateY(0px);
-}
-
-/* ── CHESS BOX THEME ── */
-.chess .box-front {
-  background: #1a1a1a;
-  border: 3px solid #c9a84c;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-}
-
-.chess .box-front .box-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 900;
-  color: #c9a84c;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-}
-
-.chess .box-front .box-art {
-  margin-top: 16px;
-  width: 140px; height: 140px;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-}
-
-.chess .box-front .box-art .sq {
-  width: 100%; height: 100%;
-}
+body { min-height: 100vh; background: #1a1008; font-family: 'Cormorant Garamond', serif; color: #e8dcc8; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; z-index: 0; background: repeating-linear-gradient(92deg, transparent 0px, transparent 40px, rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.03) 42px), repeating-linear-gradient(88deg, transparent 0px, transparent 60px, rgba(80,50,20,0.06) 60px, rgba(80,50,20,0.06) 61px), linear-gradient(180deg, #2a1a0a 0%, #1e1208 40%, #1a0e06 100%); }
+body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: translateX(-50%); width: 120vw; height: 70vh; background: radial-gradient(ellipse at 50% 0%, rgba(255,200,100,0.08) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+.header { position: relative; z-index: 10; text-align: center; padding: 60px 20px 20px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 5vw, 52px); font-weight: 900; letter-spacing: 6px; text-transform: uppercase; color: #f0e6d0; text-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,100,0.15); }
+.header .sub { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: rgba(232,220,200,0.5); margin-top: 10px; letter-spacing: 3px; }
+.shelf { position: relative; z-index: 10; display: flex; flex-wrap: wrap; justify-content: center; gap: 80px; padding: 60px 40px 120px; max-width: 1200px; margin: 0 auto; }
+.box-container { perspective: 900px; cursor: pointer; width: 220px; height: 280px; position: relative; }
+.box { width: 220px; height: 280px; position: relative; transform-style: preserve-3d; transform: rotateX(8deg) rotateY(-12deg); transition: transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1); }
+.box-container:hover .box { transform: rotateX(5deg) rotateY(-6deg) translateY(-8px); }
+.box-container.open .box { transform: rotateX(12deg) rotateY(-5deg) translateY(-10px); }
+.box-shadow { position: absolute; bottom: -20px; left: 10%; width: 80%; height: 20px; background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%); filter: blur(8px); transition: all 0.6s ease; }
+.box-container:hover .box-shadow { bottom: -28px; opacity: 0.7; width: 90%; left: 5%; }
+.box-front, .box-back, .box-left, .box-right, .box-bottom, .box-lid { position: absolute; backface-visibility: visible; }
+.box-front { width: 220px; height: 280px; transform: translateZ(25px); }
+.box-back { width: 220px; height: 280px; transform: rotateY(180deg) translateZ(25px); }
+.box-left { width: 50px; height: 280px; transform: rotateY(-90deg) translateZ(0px); }
+.box-right { width: 50px; height: 280px; transform: rotateY(90deg) translateZ(220px); transform-origin: left; }
+.box-bottom { width: 220px; height: 50px; transform: rotateX(-90deg) translateZ(280px); transform-origin: bottom; }
+.box-lid { width: 220px; height: 50px; transform-origin: top center; transform: rotateX(0deg); transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.64, 1); z-index: 20; }
+.box-container.open .box-lid { transform: rotateX(-160deg); }
+.chess .box-front { background: #1a1a1a; border: 3px solid #c9a84c; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+.chess .box-front .box-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #c9a84c; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+.chess .box-front .box-art { margin-top: 16px; width: 140px; height: 140px; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); }
+.chess .box-front .box-art .sq { width: 100%; height: 100%; }
 .chess .box-front .box-art .sq.w { background: #e8dcc0; }
 .chess .box-front .box-art .sq.b { background: #2a2a2a; }
+.chess .box-front .box-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 11px; font-style: italic; color: rgba(201,168,76,0.6); margin-top: 14px; letter-spacing: 2px; }
+.chess .box-back { background: #111; border: 3px solid #c9a84c; }
+.chess .box-left, .chess .box-right { background: linear-gradient(180deg, #1a1a1a, #111); border-top: 3px solid #c9a84c; border-bottom: 3px solid #c9a84c; }
+.chess .box-bottom { background: #0a0a0a; border-left: 3px solid #c9a84c; border-right: 3px solid #c9a84c; }
+.chess .box-lid { background: linear-gradient(180deg, #222, #1a1a1a); border: 3px solid #c9a84c; border-bottom: none; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 9px; letter-spacing: 3px; color: #c9a84c; }
+.box-inside { position: absolute; top: 0; left: 0; width: 220px; height: 280px; transform: translateZ(-24px); background: #f5eedf; border: 2px solid #c9a84c; padding: 20px 16px; overflow: hidden; opacity: 0; transition: opacity 0.5s ease 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.box-container.open .box-inside { opacity: 1; }
+.box-inside .preview-text { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: #2a2015; text-align: center; line-height: 1.8; }
+.box-inside .open-btn { margin-top: 14px; font-family: 'Playfair Display', serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #c9a84c; border: 1px solid #c9a84c; background: #1a1a1a; padding: 6px 16px; cursor: pointer; transition: all 0.3s; }
+.box-inside .open-btn:hover { background: #c9a84c; color: #1a1a1a; }
+.click-hint { position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); font-family: 'Cormorant Garamond', serif; font-size: 11px; font-style: italic; color: rgba(232,220,200,0.3); letter-spacing: 2px; white-space: nowrap; transition: opacity 0.4s; }
+.box-container.open .click-hint { opacity: 0; }
 
-.chess .box-front .box-subtitle {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
-  font-style: italic;
-  color: rgba(201,168,76,0.6);
-  margin-top: 14px;
-  letter-spacing: 2px;
-}
-
-.chess .box-back {
-  background: #111;
-  border: 3px solid #c9a84c;
-}
-
-.chess .box-left, .chess .box-right {
-  background: linear-gradient(180deg, #1a1a1a, #111);
-  border-top: 3px solid #c9a84c;
-  border-bottom: 3px solid #c9a84c;
-}
-
-.chess .box-bottom {
-  background: #0a0a0a;
-  border-left: 3px solid #c9a84c;
-  border-right: 3px solid #c9a84c;
-}
-
-.chess .box-lid {
-  background: linear-gradient(180deg, #222, #1a1a1a);
-  border: 3px solid #c9a84c;
-  border-bottom: none;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 9px; letter-spacing: 3px; color: #c9a84c;
-}
-
-/* ── INSIDE CONTENT ── */
-.box-inside {
-  position: absolute;
-  top: 0; left: 0;
-  width: 220px; height: 280px;
-  transform: translateZ(-24px);
-  background: #f5eedf;
-  border: 2px solid #c9a84c;
-  padding: 20px 16px;
-  overflow-y: auto;
-  opacity: 0;
-  transition: opacity 0.5s ease 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.box-container.open .box-inside {
-  opacity: 1;
-}
-
-.box-inside::-webkit-scrollbar { width: 4px; }
-.box-inside::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
-.box-inside::-webkit-scrollbar-thumb { background: #c9a84c; }
-
-.box-inside .inside-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  font-weight: 900;
-  color: #1a1a1a;
-  text-align: center;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #c9a84c;
-  width: 100%;
-}
-
-.box-inside .poem {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
-  line-height: 1.9;
-  color: #2a2015;
-  text-align: center;
-  font-style: italic;
-  white-space: pre-line;
-}
-
-/* ── CLICK HINT ── */
-.click-hint {
-  position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
-  font-style: italic;
-  color: rgba(232,220,200,0.3);
-  letter-spacing: 2px;
-  white-space: nowrap;
-  transition: opacity 0.4s;
-}
-
-.box-container.open .click-hint {
-  opacity: 0;
-}
-
-/* ── BACK LINK ── */
-.back-link {
-  position: fixed;
-  bottom: 20px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  font-family: 'VT323', monospace;
-  font-size: 16px;
-  color: #00FF00;
-  text-decoration: none;
-  letter-spacing: 2px;
-  text-shadow: 0 0 8px rgba(0,255,0,0.4);
-  transition: text-shadow 0.2s;
-}
-.back-link:hover {
-  text-shadow: 0 0 16px rgba(0,255,0,0.8);
-}
+/* ═══ CHESS OVERLAY ═══ */
+#chess-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s; }
+#chess-overlay.show { opacity: 1; visibility: visible; }
+.chess-board-frame { width: 90vw; max-width: 780px; height: 90vh; max-height: 920px; position: relative; display: grid; grid-template-columns: 28px 1fr 28px; grid-template-rows: 28px 1fr 28px; }
+.board-edge { background: #1a1008; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 9px; color: #c9a84c; letter-spacing: 1px; }
+.board-edge span { flex: 1; text-align: center; }
+.board-corner { background: #1a1008; }
+.board-center { background: #1a1a1a; border: 2px solid #c9a84c; position: relative; overflow: hidden; }
+.board-pattern { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); opacity: 0.06; pointer-events: none; }
+.board-pattern .sq.w { background: #c9a84c; }
+.board-pattern .sq.b { background: transparent; }
+.board-scroll { position: absolute; inset: 0; overflow-y: auto; padding: 30px 24px; z-index: 2; }
+.board-scroll::-webkit-scrollbar { width: 6px; }
+.board-scroll::-webkit-scrollbar-track { background: rgba(201,168,76,0.05); }
+.board-scroll::-webkit-scrollbar-thumb { background: #c9a84c; }
+.poem-header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(201,168,76,0.3); }
+.poem-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 36px); font-weight: 900; color: #c9a84c; letter-spacing: 6px; text-transform: uppercase; text-shadow: 0 0 20px rgba(201,168,76,0.3); }
+.poem-header .poem-sub { font-size: 12px; font-style: italic; color: rgba(232,220,200,0.4); margin-top: 6px; letter-spacing: 3px; }
+.section-label { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: #c9a84c; letter-spacing: 4px; text-transform: uppercase; text-align: center; margin: 30px 0 16px; position: relative; }
+.section-label::before, .section-label::after { content: ''; position: absolute; top: 50%; width: 40px; height: 1px; background: rgba(201,168,76,0.3); }
+.section-label::before { right: calc(50% + 60px); }
+.section-label::after { left: calc(50% + 60px); }
+.poem-body { font-family: 'Cormorant Garamond', serif; font-size: clamp(13px, 1.8vw, 16px); line-height: 2; color: #e8dcc8; text-align: center; }
+.poem-body .couplet { margin-bottom: 4px; }
+.poem-body .stanza-break { height: 16px; }
+.cipher-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 30px; max-width: 500px; margin: 0 auto; }
+.cipher-col-head { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: #c9a84c; letter-spacing: 2px; text-transform: uppercase; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.2); margin-bottom: 4px; }
+.cipher-entry { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(232,220,200,0.7); line-height: 1.8; }
+.cipher-entry .cipher-letter { color: #c9a84c; font-weight: 600; font-family: 'Playfair Display', serif; margin-right: 4px; }
+.cipher-entry .cipher-meaning { font-style: italic; color: rgba(232,220,200,0.4); }
+.moves-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 2px 20px; max-width: 500px; margin: 0 auto; }
+.move-entry { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(232,220,200,0.6); line-height: 1.8; }
+.move-entry .move-num { color: #c9a84c; font-weight: 600; font-family: 'Playfair Display', serif; min-width: 24px; display: inline-block; }
+.overlay-close { position: absolute; top: 12px; right: 16px; z-index: 10; font-family: 'Playfair Display', serif; font-size: 20px; color: #c9a84c; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,168,76,0.3); background: rgba(0,0,0,0.6); transition: all 0.3s; }
+.overlay-close:hover { background: #c9a84c; color: #1a1a1a; }
+.back-link { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100; font-family: 'VT323', monospace; font-size: 16px; color: #00FF00; text-decoration: none; letter-spacing: 2px; text-shadow: 0 0 8px rgba(0,255,0,0.4); transition: text-shadow 0.2s; }
+.back-link:hover { text-shadow: 0 0 16px rgba(0,255,0,0.8); }
 </style>
 </head>
 <body>
-
-<div class="header">
-  <h1>Board Game Multiverse</h1>
-  <div class="sub">open the box</div>
-</div>
-
+<div class="header"><h1>Board Game Multiverse</h1><div class="sub">open the box</div></div>
 <div class="shelf">
-
-  <!-- ══════ CHESS ══════ -->
   <div class="box-container chess" onclick="toggleBox(this)">
     <div class="box">
-      <!-- Lid -->
       <div class="box-lid">EST. ∞</div>
+      <div class="box-front"><div class="box-title">Chess</div><div class="box-art" id="chess-board"></div><div class="box-subtitle">the eternal game</div></div>
+      <div class="box-back"></div><div class="box-left"></div><div class="box-right"></div><div class="box-bottom"></div>
+    </div>
+    <div class="box-shadow"></div><div class="click-hint">click to open</div>
+  </div>
+</div>
 
-      <!-- Front face -->
-      <div class="box-front">
-        <div class="box-title">Chess</div>
-        <div class="box-art" id="chess-board"></div>
-        <div class="box-subtitle">the eternal game</div>
-      </div>
-
-      <!-- Other faces -->
-      <div class="box-back"></div>
-      <div class="box-left"></div>
-      <div class="box-right"></div>
-      <div class="box-bottom"></div>
-
-      <!-- Inside content (poem goes here) -->
-      <div class="box-inside">
-        <div class="inside-title">Chess</div>
-        <div class="poem" id="chess-poem">
-          [ poem goes here ]
+<div id="chess-overlay">
+  <div class="chess-board-frame">
+    <div class="board-corner"></div>
+    <div class="board-edge"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+    <div class="board-corner"></div>
+    <div class="board-edge" style="flex-direction:column;"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+    <div class="board-center">
+      <div class="board-pattern" id="overlay-board-pattern"></div>
+      <div class="overlay-close" onclick="closeOverlay()">&times;</div>
+      <div class="board-scroll">
+        <div class="poem-header"><h2>Chess</h2><div class="poem-sub">the war of the ebonies and ivories</div></div>
+        <div class="section-label">The Poem</div>
+        <div class="poem-body">
+          <div class="couplet">To the Hand up above which moves us in His grand eternal plan</div>
+          <div class="couplet">And the Sixty Four Squares down below which contain Woman and Man</div>
+          <div class="couplet">We chronicle the grand War of the Ebonies and Ivories</div>
+          <div class="couplet">And we intone today so our future kin will know these stories</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Our Ebony King was always strong and steadfast in his gambit</div>
+          <div class="couplet">While their Ivory King was cunning and scheming from his ambit</div>
+          <div class="couplet">Our Ebony Queen was our King's most fair and beautiful consort</div>
+          <div class="couplet">While their Ivory Queen was most cruel and depraved in her court</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Our King knew his Queen and begat fourteen loyal souls to the Squares</div>
+          <div class="couplet">First the Rook twins, Karadeva and Karasimha, as his heirs</div>
+          <div class="couplet">The Bishop sisters, Panishri and Panimati be their name</div>
+          <div class="couplet">Two Knights, Hastapala and Karasena, blessed with divine aim</div>
+          <div class="couplet">And his eight steadfast Pawns were born most loyal to our great Kingdom</div>
+          <div class="couplet">Hastabala, Karavirya, and Hastajit, blessed with wisdom</div>
+          <div class="couplet">Panivikrama and Hastavardhana, forever in fame</div>
+          <div class="couplet">Hastashri, Karadeviya, and Panilekha, curse her name</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">The Ivory King was a debaucherer, sired out of wedlock</div>
+          <div class="couplet">His Rooks were Hastaksha and Kararka, a foul line we should mock</div>
+          <div class="couplet">Bishops Karajyoti and Hastamitra, blasphemers they were</div>
+          <div class="couplet">Knights Karavikranta and Hastavega, a drunk with a slur</div>
+          <div class="couplet">Their Pawns were truly an unorganized and despicable bunch</div>
+          <div class="couplet">Panibala, Karadatta, Hastagupta, walked with a hunch</div>
+          <div class="couplet">Then Karashakti and Hastakarma, both known for their dark lust</div>
+          <div class="couplet">Kararekha, Panivarna, Panijit, betrayer of trust</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Panilekha, Panijit coupled deep in Kanishtha–Kriya</div>
+          <div class="couplet">The treacherous sin was seen by Hastapala, Karasena</div>
+          <div class="couplet">Our disloyal Pawn had been providing the secrets of our court</div>
+          <div class="couplet">Though tried for her crimes, already done was the damage of the tort</div>
+          <div class="couplet">Our righteous King decreed for her a swift, a just, and deserved end</div>
+          <div class="couplet">And down to the Hell realm of sinners Al-Qirkat she did descend</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Our King commanded we attack the Ivories on this basis</div>
+          <div class="couplet">Ivories moved first to Tarjani-Dharma led by the glacis</div>
+          <div class="couplet">Hastabala moved to Angushtha-Yuddha obediently</div>
+          <div class="couplet">Karavikranta sought Madhyama-Kriya immediately</div>
+          <div class="couplet">Karasimha led his chariot to Angushtha-Vijaya</div>
+          <div class="couplet">Hastamitra went unto Angushtha-Kriya mocking Nyaya</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Hastabala ended Panibala with a thrust of his knife</div>
+          <div class="couplet">Hastamitra moved towards Hastabala and ended his life</div>
+          <div class="couplet">Karasimha now slew Karadatta on Angushtha-Prana</div>
+          <div class="couplet">Hastamitra found the now empty Kanishtha-Shradda thana</div>
+          <div class="couplet">Our noble Queen stopped the intruder with one grand decisive blow</div>
+          <div class="couplet">Protecting our King from all the vicious threats now seen from below</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Karavikranta sought Anamika-Yuddha for our Queen's head</div>
+          <div class="couplet">But our Queen soon took Kanishtha-Dharma so she could see him dead</div>
+          <div class="couplet">Karavikranta went to Madhyama-Shraddha, Hand rest the Pawn</div>
+          <div class="couplet">A position that forced King to Anamika-Moksha withdrawn</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Panijit, sinner who started it all, moved to Kara-Kriya</div>
+          <div class="couplet">A move that left our Queen with a critical and grand idea</div>
+          <div class="couplet">She moved up to Kanishtha-Shraddha and she commanded the Pawn</div>
+          <div class="couplet">While Hastaksha send our brave Karasimha to the Endless Dawn</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Hastashri sought Anamika-Yuddha, striking, valiant, and fast</div>
+          <div class="couplet">A noble sacrifice he made, we honor now the way he passed</div>
+          <div class="couplet">Our noble Queen moved unto back to her own palace as she watched</div>
+          <div class="couplet">But Karavikranta moved to its exterior, his soul blotched</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Now holy Panishri moved down to Kanishtha-Vijaya, blocked</div>
+          <div class="couplet">Karavikranta slew Karasena, defenses now unlocked</div>
+          <div class="couplet">Panishri ended the life of vile Hastaksha once and for all</div>
+          <div class="couplet">Karavikranta moved Kara-Vijaya with traitorous gall</div>
+          <div class="stanza-break"></div>
+          <div class="couplet">Our Queen then took Madhyama-Vijaya in a glorious move</div>
+          <div class="couplet">Evil Karavikranta met Hastajit in his act to remove</div>
+          <div class="couplet">While Karavikranta slew Panimati with his wicked guile</div>
+          <div class="couplet">Our Queen made her grand sacrifice, opening up the holy file</div>
+          <div class="couplet">The Ivory Queen moved to capture her, taking the royal claim</div>
+          <div class="couplet">Panishri marched to Tarjani-Kriya, ending the foul King's name!</div>
         </div>
+        <div class="section-label">The Cipher</div>
+        <div class="cipher-grid">
+          <div>
+            <div class="cipher-col-head">Files (a–h)</div>
+            <div class="cipher-entry"><span class="cipher-letter">A)</span> Angushtha <span class="cipher-meaning">– thumb</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">B)</span> Tarjani <span class="cipher-meaning">– pointing finger</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">C)</span> Madhyama <span class="cipher-meaning">– middle finger</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">D)</span> Anamika <span class="cipher-meaning">– ring finger</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">E)</span> Kanishtha <span class="cipher-meaning">– little finger</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">F)</span> Kara <span class="cipher-meaning">– the hand as a whole</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">G)</span> Pani <span class="cipher-meaning">– ritual hand</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">H)</span> Hasta <span class="cipher-meaning">– sacred hand</span></div>
+          </div>
+          <div>
+            <div class="cipher-col-head">Ranks (1–8)</div>
+            <div class="cipher-entry"><span class="cipher-letter">1.</span> Mula <span class="cipher-meaning">– root / origin</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">2.</span> Prana <span class="cipher-meaning">– breath / life</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">3.</span> Kriya <span class="cipher-meaning">– action</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">4.</span> Dharma <span class="cipher-meaning">– duty</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">5.</span> Yuddha <span class="cipher-meaning">– conflict</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">6.</span> Vijaya <span class="cipher-meaning">– victory</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">7.</span> Shraddha <span class="cipher-meaning">– devotion</span></div>
+            <div class="cipher-entry"><span class="cipher-letter">8.</span> Moksha <span class="cipher-meaning">– liberation</span></div>
+          </div>
+        </div>
+        <div class="section-label">The Moves</div>
+        <div class="moves-grid">
+          <div class="move-entry"><span class="move-num">1.</span> b4 a5</div>
+          <div class="move-entry"><span class="move-num">2.</span> Nc3 Ra6</div>
+          <div class="move-entry"><span class="move-num">3.</span> Ba3 axb4</div>
+          <div class="move-entry"><span class="move-num">4.</span> Bxb4 Rxa2</div>
+          <div class="move-entry"><span class="move-num">5.</span> Bxe7 Qxe7</div>
+          <div class="move-entry"><span class="move-num">6.</span> Nd5 Qe4</div>
+          <div class="move-entry"><span class="move-num">7.</span> Nxc7+ Kd8</div>
+          <div class="move-entry"><span class="move-num">8.</span> f3 Qe7</div>
+          <div class="move-entry"><span class="move-num">9.</span> Rxa2 d5</div>
+          <div class="move-entry"><span class="move-num">10.</span> Nxd5 Qe8</div>
+          <div class="move-entry"><span class="move-num">11.</span> Ne7 Be6</div>
+          <div class="move-entry"><span class="move-num">12.</span> Nxg8 Bxa2</div>
+          <div class="move-entry"><span class="move-num">13.</span> Nf6 Qc6</div>
+          <div class="move-entry"><span class="move-num">14.</span> Nxh7 Bb3</div>
+          <div class="move-entry"><span class="move-num">15.</span> Nxf8 Qxc2</div>
+          <div class="move-entry"><span class="move-num">16.</span> Qxc2 Bxc2</div>
+        </div>
+        <div style="height: 40px;"></div>
       </div>
     </div>
-    <div class="box-shadow"></div>
-    <div class="click-hint">click to open</div>
+    <div class="board-edge" style="flex-direction:column;"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+    <div class="board-corner"></div>
+    <div class="board-edge"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+    <div class="board-corner"></div>
   </div>
-
 </div>
 
 <a href="index.html" class="back-link">&lt;&lt; BACK TO ARCHIVE</a>
-
 <script>
-  // Generate chess board pattern
-  const board = document.getElementById('chess-board');
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
-      const sq = document.createElement('div');
-      sq.className = 'sq ' + ((row + col) % 2 === 0 ? 'w' : 'b');
-      board.appendChild(sq);
-    }
+function fillBoard(el){for(let r=0;r<8;r++)for(let c=0;c<8;c++){const s=document.createElement('div');s.className='sq '+((r+c)%2===0?'w':'b');el.appendChild(s)}}
+fillBoard(document.getElementById('chess-board'));
+fillBoard(document.getElementById('overlay-board-pattern'));
+function toggleBox(c){
+  const isOpen = c.classList.contains('open');
+  if (isOpen) {
+    c.classList.remove('open');
+    closeOverlay();
+  } else {
+    c.classList.add('open');
+    const game = c.classList.contains('chess') ? 'chess' : null;
+    if (game) setTimeout(() => openOverlay(game), 600);
   }
-
-  // Toggle box open/close
-  function toggleBox(container) {
-    container.classList.toggle('open');
-  }
+}
+function openOverlay(g){const o=document.getElementById(g+'-overlay');if(!o)return;o.classList.add('show')}
+function closeOverlay(){document.querySelectorAll('[id$="-overlay"].show').forEach(o=>{o.classList.remove('show')});document.querySelectorAll('.box-container.open').forEach(b=>b.classList.remove('open'))}
+document.getElementById('chess-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
 </script>
 </body>
 </html>
