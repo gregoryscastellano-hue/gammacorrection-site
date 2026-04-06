@@ -28,6 +28,106 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 .box-bottom { width: 220px; height: 50px; transform: rotateX(-90deg) translateZ(280px); transform-origin: bottom; }
 .box-lid { width: 220px; height: 50px; transform-origin: top center; transform: rotateX(0deg); transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.64, 1); z-index: 20; }
 .box-container.open .box-lid { transform: rotateX(-160deg); }
+/* ═══ GO BOX THEME ═══ */
+.go .box-front { background: #d4a35a; border: 3px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.15); }
+.go .box-front .box-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #1a1a1a; letter-spacing: 6px; text-transform: uppercase; }
+.go .box-front .box-art { margin-top: 14px; width: 133px; height: 133px; background: #d4a35a; position: relative; border: 2px solid rgba(0,0,0,0.3); }
+.go .box-front .box-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 11px; font-style: italic; color: rgba(0,0,0,0.4); margin-top: 14px; letter-spacing: 2px; }
+.go .box-back { background: #1a1a1a; border: 3px solid #1a1a1a; }
+.go .box-left, .go .box-right { background: linear-gradient(180deg, #d4a35a, #c09048); border-top: 3px solid #1a1a1a; border-bottom: 3px solid #1a1a1a; }
+.go .box-bottom { background: #b08040; border-left: 3px solid #1a1a1a; border-right: 3px solid #1a1a1a; }
+.go .box-lid { background: linear-gradient(180deg, #1a1a1a, #111); border: 3px solid #1a1a1a; border-bottom: none; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 7px; letter-spacing: 3px; color: #d4a35a; }
+
+/* ═══ GO OVERLAY ═══ */
+#go-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.88); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s; }
+#go-overlay.show { opacity: 1; visibility: visible; }
+.go-frame { width: 90vw; max-width: 780px; height: 90vh; max-height: 920px; position: relative; background: #d4a35a; border: 4px solid #1a1a1a; box-shadow: 0 0 80px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; }
+.go-header { background: #1a1a1a; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.go-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(18px, 3vw, 28px); font-weight: 900; color: #d4a35a; letter-spacing: 6px; text-transform: uppercase; }
+.go-header .overlay-close { position: static; border-color: rgba(212,163,90,0.4); color: #d4a35a; background: rgba(255,255,255,0.05); }
+.go-header .overlay-close:hover { background: #d4a35a; color: #1a1a1a; }
+.go-content { flex: 1; overflow-y: auto; padding: 0; background: #d4a35a; }
+.go-content::-webkit-scrollbar { width: 6px; }
+.go-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+.go-content::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 3px; }
+.go-placeholder { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: #4a4030; text-align: center; padding: 80px 20px; }
+
+/* Go board content area */
+.go-board-surface {
+  position: relative;
+  background: #d4a35a;
+  min-height: 100%;
+  padding: 30px 24px;
+}
+.go-board-surface::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0px, transparent 38px, rgba(0,0,0,0.12) 38px, rgba(0,0,0,0.12) 39px),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 38px, rgba(0,0,0,0.12) 38px, rgba(0,0,0,0.12) 39px);
+  pointer-events: none;
+  opacity: 0.4;
+}
+.go-board-surface::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 40% 30%, rgba(255,220,150,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.go-poem-header { position: relative; z-index: 2; text-align: center; margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid rgba(0,0,0,0.15); }
+.go-poem-header h3 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3.5vw, 32px); font-weight: 900; color: #1a1a1a; letter-spacing: 4px; text-transform: uppercase; }
+.go-poem-header .go-poem-sub { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(0,0,0,0.4); margin-top: 6px; letter-spacing: 3px; }
+.go-poem-header .suits { font-size: 16px; letter-spacing: 8px; margin-top: 8px; color: rgba(0,0,0,0.25); }
+
+.go-verse {
+  position: relative; z-index: 2;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(14px, 1.8vw, 16px);
+  line-height: 1.9;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  padding: 6px 8px 6px 42px;
+  position: relative;
+  transition: background 0.3s;
+}
+.go-verse:hover { background: rgba(0,0,0,0.04); }
+.go-verse .move-num {
+  position: absolute;
+  left: 0; top: 6px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 11px; font-weight: 700;
+  color: #f0ece0;
+  background: #1a1a1a;
+  border-radius: 50%;
+}
+.go-verse.white-stone .move-num {
+  color: #1a1a1a;
+  background: #f0ece0;
+  border: 1.5px solid #aaa;
+}
+.go-verse .suit-mark {
+  font-size: 14px;
+  margin-left: 4px;
+  opacity: 0.4;
+}
+.suit-spade { color: #1a1a1a; }
+.suit-heart { color: #c41e3a; }
+.suit-diamond { color: #c41e3a; }
+.suit-club { color: #1a1a1a; }
+
+.go-stanza-break { height: 20px; position: relative; z-index: 2; }
+.go-footer-suits {
+  position: relative; z-index: 2;
+  text-align: center;
+  margin-top: 30px; padding-top: 16px;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  font-size: 20px; letter-spacing: 12px;
+  color: rgba(0,0,0,0.2);
+}
+
 .chess .box-front { background: #1a1a1a; border: 3px solid #c9a84c; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
 .chess .box-front .box-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #c9a84c; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
 .chess .box-front .box-art { margin-top: 16px; width: 140px; height: 140px; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); }
@@ -101,6 +201,44 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 .monopoly-header .overlay-close { position: static; border-color: rgba(255,255,255,0.4); color: #fff; background: rgba(0,0,0,0.2); }
 .monopoly-header .overlay-close:hover { background: #fff; color: #d40000; }
 
+/* ═══ CATAN BOX THEME ═══ */
+.catan .box-front { background: #2a6db5; border: 3px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
+.catan .box-front .box-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: #f5e6c8; letter-spacing: 3px; text-transform: uppercase; text-shadow: 2px 2px 0 rgba(0,0,0,0.4); }
+.catan .box-front .box-art { margin-top: 14px; width: 140px; height: 140px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.catan .box-front .box-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 10px; font-style: italic; color: rgba(245,230,200,0.5); margin-top: 14px; letter-spacing: 2px; }
+.catan .box-back { background: #1e5a96; border: 3px solid #1a1a1a; }
+.catan .box-left, .catan .box-right { background: linear-gradient(180deg, #2a6db5, #1e5a96); border-top: 3px solid #1a1a1a; border-bottom: 3px solid #1a1a1a; }
+.catan .box-bottom { background: #18507a; border-left: 3px solid #1a1a1a; border-right: 3px solid #1a1a1a; }
+.catan .box-lid { background: linear-gradient(180deg, #d4853a, #b86e28); border: 3px solid #1a1a1a; border-bottom: none; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 7px; letter-spacing: 3px; color: #f5e6c8; }
+
+/* ═══ CATAN OVERLAY ═══ */
+#catan-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.88); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s; }
+#catan-overlay.show { opacity: 1; visibility: visible; }
+.catan-frame { width: 90vw; max-width: 780px; height: 90vh; max-height: 920px; position: relative; background: #2a6db5; border: 4px solid #1a1a1a; box-shadow: 0 0 80px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; }
+.catan-header { background: #d4853a; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom: 3px solid #1a1a1a; }
+.catan-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(18px, 3vw, 28px); font-weight: 900; color: #f5e6c8; letter-spacing: 5px; text-transform: uppercase; text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
+.catan-header .overlay-close { position: static; border-color: rgba(245,230,200,0.4); color: #f5e6c8; background: rgba(0,0,0,0.2); }
+.catan-header .overlay-close:hover { background: #f5e6c8; color: #d4853a; }
+.catan-content { flex: 1; overflow-y: auto; padding: 30px 28px; background: #f5f0e4; }
+.catan-content::-webkit-scrollbar { width: 6px; }
+.catan-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+.catan-content::-webkit-scrollbar-thumb { background: #d4853a; border-radius: 3px; }
+.catan-placeholder { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: #4a4030; text-align: center; padding: 80px 20px; }
+
+/* Catan regulation styling */
+.catan-reg { margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.catan-reg:last-child { border-bottom: none; }
+.catan-reg-number { font-family: 'Playfair Display', serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #d4853a; text-align: center; margin-bottom: 2px; }
+.catan-reg-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; color: #1a1a1a; text-align: center; letter-spacing: 2px; margin-bottom: 14px; }
+.catan-reg-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; line-height: 1.8; margin-bottom: 8px; }
+.catan-reg-item { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; line-height: 1.8; margin-bottom: 4px; padding-left: 16px; position: relative; }
+.catan-reg-item::before { content: ''; position: absolute; left: 4px; top: 10px; width: 4px; height: 4px; background: #d4853a; }
+.catan-reg-sub { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: #2a2a2a; line-height: 1.7; margin: 2px 0 2px 28px; }
+.catan-reg-section { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px; text-transform: uppercase; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.15); }
+.catan-formula { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; text-align: center; margin: 14px 0; padding: 12px 16px; background: rgba(212,133,58,0.08); border: 1px solid rgba(212,133,58,0.2); line-height: 1.8; }
+.catan-resource { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; line-height: 1.8; margin-bottom: 4px; padding-left: 16px; position: relative; }
+.catan-resource::before { content: '⬡'; position: absolute; left: 0; top: 0; font-size: 12px; color: #d4853a; }
+
 /* Tabs */
 .tab-bar { display: flex; flex-shrink: 0; border-bottom: 3px solid #1a1a1a; }
 .tab-btn { flex: 1; padding: 12px 16px; font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(0,0,0,0.35); background: #b8d4a4; border: none; cursor: pointer; transition: all 0.3s; border-bottom: 3px solid transparent; }
@@ -114,8 +252,8 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 /* Noir story styling */
 .noir-chapter { margin-bottom: 30px; }
 .noir-chapter-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: #1a1a1a; text-align: center; letter-spacing: 3px; margin-bottom: 6px; }
-.noir-chapter-sub { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(0,0,0,0.45); text-align: center; letter-spacing: 2px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,0.1); }
-.noir-body { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: rgba(0,0,0,0.85); line-height: 2; }
+.noir-chapter-sub { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: #4a4030; text-align: center; letter-spacing: 2px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.noir-body { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; line-height: 2; }
 .noir-body p { margin-bottom: 12px; text-indent: 24px; }
 .noir-body p:first-child { text-indent: 0; }
 .noir-body .dialogue { color: #1a1a1a; }
@@ -126,15 +264,15 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 .ord { margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px solid rgba(0,0,0,0.1); }
 .ord:last-child { border-bottom: none; }
 .ord-republic { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #d40000; text-align: center; margin-bottom: 4px; }
-.ord-number { font-family: 'Playfair Display', serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(0,0,0,0.4); text-align: center; margin-bottom: 2px; }
+.ord-number { font-family: 'Playfair Display', serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #4a4030; text-align: center; margin-bottom: 2px; }
 .ord-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; color: #1a1a1a; text-align: center; letter-spacing: 2px; margin-bottom: 14px; }
-.ord-preamble { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: rgba(0,0,0,0.55); text-align: center; line-height: 1.8; margin-bottom: 16px; padding: 0 10px; }
-.ord-section { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px; text-transform: uppercase; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.15); }
-.ord-text { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: rgba(0,0,0,0.8); line-height: 1.8; margin-bottom: 6px; }
-.ord-item { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: rgba(0,0,0,0.8); line-height: 1.8; margin-bottom: 4px; padding-left: 16px; position: relative; }
+.ord-preamble { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: #3a3020; text-align: center; line-height: 1.8; margin-bottom: 16px; padding: 0 10px; }
+.ord-section { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px; text-transform: uppercase; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.2); }
+.ord-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; line-height: 1.8; margin-bottom: 6px; }
+.ord-item { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #1a1a1a; line-height: 1.8; margin-bottom: 4px; padding-left: 16px; position: relative; }
 .ord-item::before { content: ''; position: absolute; left: 4px; top: 10px; width: 4px; height: 4px; background: #d40000; }
-.ord-sub { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(0,0,0,0.6); line-height: 1.7; margin: 2px 0 2px 28px; }
-.ord-enact { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(0,0,0,0.4); text-align: center; margin-top: 14px; letter-spacing: 1px; }
+.ord-sub { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: #2a2a2a; line-height: 1.7; margin: 2px 0 2px 28px; }
+.ord-enact { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: #4a4030; text-align: center; margin-top: 14px; letter-spacing: 1px; }
 
 .overlay-close { position: absolute; top: 12px; right: 16px; z-index: 10; font-family: 'Playfair Display', serif; font-size: 20px; color: #c9a84c; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,168,76,0.3); background: rgba(0,0,0,0.6); transition: all 0.3s; }
 .overlay-close:hover { background: #c9a84c; color: #1a1a1a; }
@@ -145,6 +283,17 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 <body>
 <div class="header"><h1>Board Game Multiverse</h1><div class="sub">open the box</div></div>
 <div class="shelf">
+  <!-- ══════ GO ══════ -->
+  <div class="box-container go" onclick="toggleBox(this)">
+    <div class="box">
+      <div class="box-lid">碁 · WEIQI · BADUK</div>
+      <div class="box-front"><div class="box-title">Go</div><div class="box-art" id="go-board"></div><div class="box-subtitle">the surrounding game</div></div>
+      <div class="box-back"></div><div class="box-left"></div><div class="box-right"></div><div class="box-bottom"></div>
+    </div>
+    <div class="box-shadow"></div><div class="click-hint">click to open</div>
+  </div>
+
+  <!-- ══════ CHESS ══════ -->
   <div class="box-container chess" onclick="toggleBox(this)">
     <div class="box">
       <div class="box-lid">EST. ∞</div>
@@ -162,6 +311,203 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
       <div class="box-back"></div><div class="box-left"></div><div class="box-right"></div><div class="box-bottom"></div>
     </div>
     <div class="box-shadow"></div><div class="click-hint">click to open</div>
+  </div>
+
+  <!-- ══════ CATAN ══════ -->
+  <div class="box-container catan" onclick="toggleBox(this)">
+    <div class="box">
+      <div class="box-lid">TRADE · BUILD · SETTLE</div>
+      <div class="box-front"><div class="box-title">Catan</div><div class="box-art"><canvas id="catan-hex-art" width="140" height="140"></canvas></div><div class="box-subtitle">the settlers</div></div>
+      <div class="box-back"></div><div class="box-left"></div><div class="box-right"></div><div class="box-bottom"></div>
+    </div>
+    <div class="box-shadow"></div><div class="click-hint">click to open</div>
+  </div>
+</div>
+
+<!-- ══════ CATAN OVERLAY ══════ -->
+<div id="catan-overlay">
+  <div class="catan-frame">
+    <div class="catan-header">
+      <h2>Catan</h2>
+      <div class="overlay-close" onclick="closeOverlay()">&times;</div>
+    </div>
+    <div class="catan-content">
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 1</div>
+<div class="catan-reg-name">Location of the Central Depository</div>
+<div class="catan-reg-text">The Central Depository, functioning solely as a financial institution and not as a governing body, shall establish and maintain its primary headquarters within the designated boundaries of the Desert.</div>
+<div class="catan-reg-text">All core administrative operations, vaulting facilities, and high-security ledgers managed by the Central Depository are mandated to reside permanently within this arid sector.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 2</div>
+<div class="catan-reg-name">Territorial Incorporation and Local Autonomy</div>
+<div class="catan-reg-text">The regions identified as the Forest, the Pasture, the Fields, the Hills, the Mountains, and the Desert are hereby formally incorporated into the Settlement. While these territories comprise the collective geography of the Settlement, each shall retain its respective local government powers. The authority to manage internal civic affairs, regional infrastructure, and community-specific ordinances remains vested in the local administrations of each individual region.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 3</div>
+<div class="catan-reg-name">Representative Allocation and Assembly</div>
+<div class="catan-reg-text">The composition of the representative body shall be determined by the volume of inter-regional commerce as recorded against the value of the central stockpile.</div>
+<div class="catan-reg-item">Proportional Representation: Every region shall be granted one representative for every $10,000 in transaction value conducted with another region during the previous calendar year.</div>
+<div class="catan-reg-item">Stockpile Valuation: This $10,000 unit is defined as a fixed weight or measure of the physical assets held within the Central Depository stockpile.</div>
+<div class="catan-reg-item">Non-Circulating Unit: The monetary unit used to value the stockpile is a strictly internal accounting measure; it serves only to determine representative counts and currency pegs and cannot be spent or entered into circulation.</div>
+<div class="catan-reg-item">Assembly Location: All appointed representatives shall convene for official proceedings within the Desert.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 4</div>
+<div class="catan-reg-name">Transaction Levies</div>
+<div class="catan-reg-text">The Central Depository is authorized to collect a fee of 5% of the total value of each transaction recorded between regions.</div>
+<div class="catan-reg-item">Payment Method: This levy shall be collected in the form of resources equivalent to the specified percentage.</div>
+<div class="catan-reg-item">Purpose: These assets are held by the Depository to facilitate the maintenance of the ledger and the security of the exchange system.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 5</div>
+<div class="catan-reg-name">Monetary Sovereignty and Stockpile Pegging</div>
+<div class="catan-reg-text">The Settlement shall maintain no official national currency.</div>
+<div class="catan-reg-item">Regional Autonomy: Each individual region retains the absolute right to create, issue, and regulate its own local currency.</div>
+<div class="catan-reg-item">Mandatory Valuation: To ensure inter-regional stability, all local currencies must be tied to the stockpile of resources held by the Central Depository.</div>
+<div class="catan-reg-item">Exchange: The valuation and conversion of these currencies for inter-regional commerce shall be determined by the Depository based on the proportional share of assets held within the central stockpile.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 6</div>
+<div class="catan-reg-name">The Standard Valuation Formula</div>
+<div class="catan-reg-text">To prevent the manipulation of representation or the artificial inflation of regional wealth, the internal unit of $10,000 shall be defined by a strictly physical Basket of Staples (BoS).</div>
+<div class="catan-reg-section">I. The Calculation Formula</div>
+<div class="catan-reg-text">The value of the base unit is determined by the Aggregate Resource Mean. At the close of each fiscal year, the Depository shall calculate the value of $10,000 based on the total physical mass of the stockpile divided by the total number of trade receipts issued.</div>
+<div class="catan-formula"><strong>U</strong> = total mass of 6 primary resources ÷ 1,000<br><br>This U represents the "Standard Ton," and <strong>$10,000</strong> is defined as exactly 10 units of this diversified mass.</div>
+<div class="catan-reg-section">II. Anti-Gaming Provisions</div>
+<div class="catan-reg-item">The Diversification Requirement: For a transaction to count toward representation, the $10,000 value must be comprised of at least three different resource types. No region can inflate its representative count by trading in a single, easily manipulated resource.</div>
+<div class="catan-reg-item">The Verification of Receipt: Every transaction requires a dual-signed receipt from both the providing and receiving regions. The Depository will only record the transaction—and grant representative credit—once the 5% resource levy (Regulation 4) has been physically delivered to the Desert and verified against the receipt.</div>
+<div class="catan-reg-item">Physical Audit: Because there is no automated ledger, the count is conducted via The Great Weighing. Representatives from all regions are permitted to observe the weighing of the 5% levies at the Depository to ensure the physical stockpile matches the recorded trade volume.</div>
+<div class="catan-reg-item">Non-Liquid Status: Since the stockpile unit cannot be spent, it remains a "ghost value" used only for counting. A region cannot "buy" representatives; they can only earn them by successfully moving physical goods to a neighbor and surrendering a portion to the Desert.</div>
+<div class="catan-reg-section">The Six Primary Resources</div>
+<div class="catan-resource"><strong>Timber:</strong> Sourced primarily from the Forest, essential for construction and fuel.</div>
+<div class="catan-resource"><strong>Grain:</strong> Sourced primarily from the Fields, serving as the foundational food supply for the population.</div>
+<div class="catan-resource"><strong>Livestock:</strong> Sourced primarily from the Pasture, providing protein, leather, and labor.</div>
+<div class="catan-resource"><strong>Ores:</strong> Sourced primarily from the Mountains, including iron and copper for tools, infrastructure, and defense.</div>
+<div class="catan-resource"><strong>Stone:</strong> Sourced primarily from the Hills, utilized for permanent masonry and fortifications.</div>
+<div class="catan-resource"><strong>Salt:</strong> Sourced primarily from the Desert, critical for food preservation and chemical processes.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 7</div>
+<div class="catan-reg-name">Infrastructure Compensation via Final Entry</div>
+<div class="catan-reg-text">To incentivize the expansion of the Settlement's transit network, regions that complete a road project approved by the representative body shall be compensated using the Last-In, First-Out (LIFO) principle.</div>
+<div class="catan-reg-item">The Reward: Upon verification of the completed road, the region is granted ownership of the exact physical unit of resources most recently added to the Central Depository's stockpile.</div>
+<div class="catan-reg-item">The "Last Unit" Definition: This refers to the most recent 5% trade levy (Regulation 4) physically delivered and recorded in the Desert prior to the project's completion.</div>
+<div class="catan-reg-item">Variable Value: Because the reward is the "last unit added," the actual resources received (timber, grain, salt, etc.) and their specific quality are determined entirely by the most recent transaction in the Settlement.</div>
+<div class="catan-reg-item">Immediate Transfer: The Depository must physically release this specific lot of resources to the building region, removing it from the stockpile and striking its mass from the valuation formula.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 8</div>
+<div class="catan-reg-name">Certification of Infrastructure Projects</div>
+<div class="catan-reg-text">For any road or infrastructure project to be officially deemed "completed and essential" under Regulation 7, it must undergo a formal certification process by the representative body.</div>
+<div class="catan-reg-item">The Voting Threshold: Approval requires a 5/8 majority vote (62.5%) of the total seated representatives assembled in the Desert.</div>
+<div class="catan-reg-item">The Inspection Requirement: Before a vote can be cast, the representatives must review physical evidence or testimony provided by the Depository's inspectors to confirm the project meets the structural requirements of the Settlement.</div>
+<div class="catan-reg-item">Finality: Once the 5/8 majority is reached, the status is recorded by the Depository, and the awarding of the "last unit added to the stockpile" is executed immediately. No project may be put to a vote more than twice in a single fiscal year.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 9</div>
+<div class="catan-reg-name">Transactional Confidentiality</div>
+<div class="catan-reg-text">To protect the commercial interests and competitive advantages of the individual regions, all trade data held by the Central Depository shall be strictly confidential.</div>
+<div class="catan-reg-item">The Veil of the Ledger: Detailed records of specific trades—including the identities of the parties, the specific goods exchanged, and the precise timing of the exchange—are completely opaque to all entities, including the regional governments and the representative assembly.</div>
+<div class="catan-reg-item">The Depository's Role: Only the Central Depository is permitted to view the full ledger. The Depository's sole external obligation is to publish the aggregate totals required for the calculation of representatives (Regulation 3) and the valuation of the stockpile (Regulation 6).</div>
+<div class="catan-reg-item">Proof of Trade: When a region claims a transaction has occurred, they submit their 5% levy and a sealed receipt to the Depository. The Depository verifies the receipt privately and issues a public "Credit of Representation" without disclosing the contents of the deal.</div>
+<div class="catan-reg-item">Exclusion of Oversight: No representative or local official may audit the Depository's internal ledger. The only "public" verification is the physical presence of the 5% levy in the Desert during the Great Weighing.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 10</div>
+<div class="catan-reg-name">The Conscription of the Anonymous Board</div>
+<div class="catan-reg-text">To ensure the Central Depository remains an impartial and unbreakable entity, its leadership shall be comprised of individuals whose identities and origins are erased upon their appointment.</div>
+<div class="catan-reg-item">The Automatic Succession: Any individual convicted of robbery or the unauthorized seizure of resources within the Settlement is immediately and permanently diverted to the Desert.</div>
+<div class="catan-reg-item">The Board of Directors: These individuals are automatically inducted into the Board of the Depository. They are stripped of their names, regional ties, and previous legal standing, becoming the silent architects of the ledger.</div>
+<div class="catan-reg-item">The Mandate of Opacity: The existence, size, and specific membership of this Board are completely opaque to the six regions and the Representative Assembly.</div>
+<div class="catan-reg-item">Operational Secrecy: All communications from the Depository to the regions shall be issued under the seal of the "Office of the Depository" without individual signatures. No regional official or representative is permitted to enter the inner sanctum of the Bank or identify the persons managing the stockpile.</div>
+<div class="catan-reg-item">The Gilded Exile: Once inducted, a Board member may never leave the Depository's designated territory in the Desert. Their "punishment" is a life of absolute power within the bank's walls, conducted in total anonymity and isolation from the world they once plundered.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 11</div>
+<div class="catan-reg-name">The Judicial Board and Currency Registration</div>
+<div class="catan-reg-text">To establish a balance of power against the anonymous leadership of the Depository, a secondary body shall be formed to oversee the legal definition of theft and the sentencing of the drafted.</div>
+<div class="catan-reg-item">The Judicial Mandate: Every region that formally registers a local currency with the Central Depository (pursuant to Regulation 5) is granted one seat on the Judicial Board.</div>
+<div class="catan-reg-item">The Power of Definition: The Judicial Board holds the sole authority to determine if an individual's actions constitute a robbery. They act as the gatekeepers of the Depository's leadership; only those they convict can be drafted under Regulation 10.</div>
+<div class="catan-reg-item">Conflict of Interest Mitigation: Because a "robber" becomes a Director of the bank that manages the region's currency value, the Judicial Board is incentivized to only convict the most capable and dangerous financial minds, ensuring the Bank is run by experts rather than common thugs.</div>
+<div class="catan-reg-item">Verification of Sovereignty: Registration of a currency requires the region to provide the Depository with the physical minting standards and the initial resource-peg data. Once registered, that region's Judicial Board member is seated in the Desert alongside the Representative Assembly.</div>
+</div>
+
+<div class="catan-reg">
+<div class="catan-reg-number">Regulation 12</div>
+<div class="catan-reg-name">Urban Expansion and Settlement Grants</div>
+<div class="catan-reg-text">To promote the permanent habitation and stability of the territories, regions that establish new, functional population centers are entitled to a high-value resource grant, subject to strict participation and utility requirements.</div>
+<div class="catan-reg-item">The Settlement Grant: Upon the verified completion of a new town or administrative hub, the developing region shall be awarded four units (U) from the Central Depository.</div>
+<div class="catan-reg-item">The Participation Clause (LIFO-P): Unlike the single-unit road reward, these four units are drawn from the four most recent entries added to the stockpile (Last-In, First-Out). However, the award is only granted if the developing region was the originating trader for at least one of those four specific units.</div>
+<div class="catan-reg-sub">Note: If the region is not among the last four contributors, the award is deferred until they complete a trade that enters the top four positions of the stockpile.</div>
+<div class="catan-reg-item">Anti-Ghost Town Provision: To prevent the "gaming" of the stockpile through the construction of empty shells, a settlement is only deemed "completed" if it is inhabited and functional. The Representative Assembly must confirm by a 5/8 majority that the settlement possesses:</div>
+<div class="catan-reg-sub">A permanent residential population.</div>
+<div class="catan-reg-sub">Operational local governance.</div>
+<div class="catan-reg-sub">A registered local currency exchange point linked to the Depository.</div>
+<div class="catan-reg-item">Essential Status: The representatives must further decree that the settlement provides a strategic or economic benefit to the Settlement as a whole (e.g., a trade hub, a mining colony, or a defensive outpost).</div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════ GO OVERLAY ══════ -->
+<div id="go-overlay">
+  <div class="go-frame">
+    <div class="go-header">
+      <h2>Go</h2>
+      <div class="overlay-close" onclick="closeOverlay()">&times;</div>
+    </div>
+    <div class="go-content">
+      <div class="go-board-surface">
+        <div class="go-poem-header">
+          <h3>Genesis</h3>
+          <div class="go-poem-sub">the book of the first game</div>
+          <div class="suits">♠ ♥ ♦ ♣</div>
+        </div>
+
+        <div class="go-verse"><span class="move-num">1</span>The universe was an empty grid tableau, nineteen paths stretched into the void</div>
+        <div class="go-verse white-stone"><span class="move-num">2</span>And the Hand reached forth and placed down the first stone on to the star-pointed rhomboid</div>
+        <div class="go-verse"><span class="move-num">3</span>And the Hand proclaimed "Go" and the sleeping stones began to swiftly multiply</div>
+        <div class="go-verse white-stone"><span class="move-num">4</span>And the settled black stones formed the ground, against the white stones, reaching for the sky</div>
+        <div class="go-stanza-break"></div>
+
+        <div class="go-verse"><span class="move-num">5</span>And the Hand saw that it was good and called forth for two eyes to take up the ground</div>
+        <div class="go-verse white-stone"><span class="move-num">6</span>And the two eyes made the ground sturdy and immobile as the Hand shaped the mound</div>
+        <div class="go-verse"><span class="move-num">7</span>And the Hand was very pleased and called for two more eyes to take the open sky</div>
+        <div class="go-verse white-stone"><span class="move-num">8</span>And the eyes watched over the domain, and became the Eyes in the Sky up high</div>
+        <div class="go-stanza-break"></div>
+
+        <div class="go-verse"><span class="move-num">9</span>And it was deemed absolutely right so the Hand placed forth his Ace of the Spade <span class="suit-mark suit-spade">♠</span></div>
+        <div class="go-verse white-stone"><span class="move-num">10</span>But the Ace of the Spade was lonely and the Hand became bitterly dismayed</div>
+        <div class="go-verse"><span class="move-num">11</span>So the Hand reached in the deck and brought forth the Aces of Hearts, Diamonds, and Clubs <span class="suit-mark suit-heart">♥</span> <span class="suit-mark suit-diamond">♦</span> <span class="suit-mark suit-club">♣</span></div>
+        <div class="go-verse white-stone"><span class="move-num">12</span>And the Hand commanded them to spread their gifts and the last Ace became the shrubs <span class="suit-mark suit-club">♣</span></div>
+        <div class="go-stanza-break"></div>
+
+        <div class="go-verse"><span class="move-num">13</span>And the third became the precious metals of the land buried deep underneath <span class="suit-mark suit-diamond">♦</span></div>
+        <div class="go-verse white-stone"><span class="move-num">14</span>And the second became the concept of beauty, and the shrubs then formed a wreath <span class="suit-mark suit-heart">♥</span></div>
+        <div class="go-verse"><span class="move-num">15</span>And the first, his favored Ace, gave rise to the first man, called the King of the Spade <span class="suit-mark suit-spade">♠</span></div>
+        <div class="go-verse white-stone"><span class="move-num">16</span>But the Heart was jealous and brought forth its Queen, and the Hand felt very betrayed <span class="suit-mark suit-heart">♥</span></div>
+        <div class="go-stanza-break"></div>
+
+        <div class="go-verse"><span class="move-num">17</span>So the Hand then sought to divide the ground, and these became the territories</div>
+        <div class="go-verse white-stone"><span class="move-num">18</span>And this gave rise to Cardboard kingdoms each containing their own countless stories</div>
+        <div class="go-verse"><span class="move-num">19</span>From the blasphemous union came the Jacks to rule, they deployed the Ivories.</div>
+
+        <div class="go-footer-suits">♠ ♥ ♦ ♣</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -617,6 +963,93 @@ body::after { content: ''; position: fixed; top: -30%; left: 50%; transform: tra
 function fillBoard(el){for(let r=0;r<8;r++)for(let c=0;c<8;c++){const s=document.createElement('div');s.className='sq '+((r+c)%2===0?'w':'b');el.appendChild(s)}}
 fillBoard(document.getElementById('chess-board'));
 fillBoard(document.getElementById('overlay-board-pattern'));
+
+// Go board - 9x9 grid with lines and a few stones
+(function(){
+  const goBoard = document.getElementById('go-board');
+  const size = 9;
+  const canvas = document.createElement('canvas');
+  canvas.width = 133; canvas.height = 133;
+  canvas.style.cssText = 'width:100%;height:100%;';
+  const ctx = canvas.getContext('2d');
+  const step = 133 / (size + 1);
+
+  // Draw grid lines
+  ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+  ctx.lineWidth = 0.8;
+  for (let i = 1; i <= size; i++) {
+    ctx.beginPath(); ctx.moveTo(step * i, step); ctx.lineTo(step * i, step * size); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(step, step * i); ctx.lineTo(step * size, step * i); ctx.stroke();
+  }
+
+  // Star points (hoshi)
+  const stars = [[3,3],[3,7],[7,3],[7,7],[5,5]];
+  stars.forEach(([r,c]) => {
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.beginPath(); ctx.arc(step*c, step*r, 2.5, 0, Math.PI*2); ctx.fill();
+  });
+
+  // A few decorative stones
+  const stones = [
+    [3,5,'black'],[4,4,'black'],[5,3,'black'],[4,6,'white'],
+    [5,5,'white'],[6,4,'white'],[3,3,'black'],[6,6,'white']
+  ];
+  stones.forEach(([r,c,color]) => {
+    ctx.beginPath(); ctx.arc(step*c, step*r, step*0.42, 0, Math.PI*2);
+    if (color === 'black') {
+      ctx.fillStyle = '#1a1a1a'; ctx.fill();
+      ctx.strokeStyle = '#333'; ctx.lineWidth = 0.5; ctx.stroke();
+    } else {
+      ctx.fillStyle = '#f0ece0'; ctx.fill();
+      ctx.strokeStyle = '#aaa'; ctx.lineWidth = 0.5; ctx.stroke();
+    }
+  });
+
+  goBoard.appendChild(canvas);
+})();
+
+// Catan hex art
+(function(){
+  const c = document.getElementById('catan-hex-art');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  const w = 140, h = 140;
+  const hexR = 22;
+  const colors = ['#d4a832','#c45a2a','#2d7a3a','#888880','#a8c848','#d4a832','#2d7a3a','#c45a2a','#888880','#a8c848','#d4a832','#2d7a3a','#c45a2a','#a8c848','#d4a832','#2d7a3a','#888880','#c45a2a','#a8c848'];
+  // hex positions: rows of 3,4,5,4,3
+  const rows = [[3,0],[4,-0.5],[5,-1],[4,-0.5],[3,0]];
+  const rowH = hexR * 1.5;
+  const colW = hexR * Math.sqrt(3);
+  let ci = 0;
+  const cx = w / 2, startY = 14;
+
+  function drawHex(x, y, r, fill) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const angle = Math.PI / 6 + (Math.PI / 3) * i;
+      const px = x + r * Math.cos(angle);
+      const py = y + r * Math.sin(angle);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  rows.forEach(([ count, offsetX ], rowIdx) => {
+    const totalW = count * colW;
+    const rowStartX = cx - totalW / 2 + colW / 2 + offsetX * colW;
+    const y = startY + rowIdx * rowH + hexR;
+    for (let col = 0; col < count; col++) {
+      const x = rowStartX + col * colW;
+      drawHex(x, y, hexR - 1, colors[ci % colors.length]);
+      ci++;
+    }
+  });
+
+  // Done - no ocean ring
+})();
+
 function toggleBox(c){
   const isOpen = c.classList.contains('open');
   if (isOpen) {
@@ -625,8 +1058,10 @@ function toggleBox(c){
   } else {
     c.classList.add('open');
     let game = null;
-    if (c.classList.contains('chess')) game = 'chess';
+    if (c.classList.contains('go')) game = 'go';
+    else if (c.classList.contains('chess')) game = 'chess';
     else if (c.classList.contains('monopoly')) game = 'monopoly';
+    else if (c.classList.contains('catan')) game = 'catan';
     if (game) setTimeout(() => openOverlay(game), 600);
   }
 }
@@ -639,6 +1074,8 @@ function switchTab(tabId, btn){
   btn.classList.add('active');
   document.getElementById('tab-' + tabId).classList.add('active');
 }
+document.getElementById('catan-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
+document.getElementById('go-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
 document.getElementById('chess-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
 document.getElementById('monopoly-overlay').addEventListener('click',function(e){if(e.target===this)closeOverlay()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
