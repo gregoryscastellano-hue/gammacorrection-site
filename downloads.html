@@ -49,15 +49,18 @@
             position: relative;
         }
 
+/* This is the base style for both icons */
         .game-thumb {
             width: 120px;
             height: auto;
             image-rendering: pixelated;
-            cursor: pointer;
-            /* No background, no border */
             background: transparent;
             border: none; 
-            /* DOS Animation style (stuttery up/down) */
+        }
+
+        /* ONLY the Gill icon gets this class */
+        .animated-gill {
+            cursor: pointer;
             animation: dos-float 0.2s steps(2) infinite;
         }
 
@@ -65,7 +68,6 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(-4px); }
         }
-
         /* Speech Bubble Style */
         #speech-bubble {
             font-family: "Courier New", monospace;
@@ -128,7 +130,7 @@
 
                 <div class="game-card">
                     <div class="char-container">
-                        <img src="gillicon.png" class="game-thumb" alt="Dementia Gill" onclick="yap()">
+                        <img src="gillicon.png" class="game-thumb animated-gill" alt="Dementia Gill" onclick="yap()">
                         <div id="speech-bubble"></div>
                     </div>
                     
@@ -138,7 +140,7 @@
                         <b>File Size:</b> 94,344 KB<br><br>
                         "Scale a procedurally generated corporate hellscape while dodging an infinite rain of Temu Boxes. Reach the summit to confront Gill."<br>
                         
-                        <a href="https://yourname.itch.io/dementiagill" class="download-btn">DOWNLOAD FROM EXTERNAL MIRROR</a>
+                        <a href="https://gamma-correction.itch.io/dementia-gill" class="download-btn">DOWNLOAD FROM EXTERNAL MIRROR</a>
                     </div>
                 </div>
 
