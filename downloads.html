@@ -4,7 +4,7 @@
     <title>--- SHAREWARE DISTRIBUTION CENTER ---</title>
     <style>
         body {
-            background-color: #008080; /* Win95 Teal */
+            background-color: #008080;
             color: #000;
             font-family: "MS Sans Serif", "Arial", sans-serif;
             margin: 20px;
@@ -25,7 +25,6 @@
             padding: 8px;
             font-weight: bold;
             font-size: 18px;
-            text-align: left;
         }
 
         .content-area {
@@ -43,14 +42,41 @@
             gap: 20px;
         }
 
-        .game-thumb {
+        /* --- THE ANIMATED CHARACTER --- */
+        .char-container {
             width: 150px;
-            height: 150px;
-            border: 4px ridge #c0c0c0;
-            background: #000;
-            image-rendering: pixelated;
-            object-fit: contain;
+            text-align: center;
+            position: relative;
         }
+
+        .game-thumb {
+            width: 120px;
+            height: auto;
+            image-rendering: pixelated;
+            cursor: pointer;
+            /* No background, no border */
+            background: transparent;
+            border: none; 
+            /* DOS Animation style (stuttery up/down) */
+            animation: dos-float 0.2s steps(2) infinite;
+        }
+
+        @keyframes dos-float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-4px); }
+        }
+
+        /* Speech Bubble Style */
+        #speech-bubble {
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            color: #00AAAA; /* CGA Cyan */
+            font-weight: bold;
+            margin-top: 10px;
+            min-height: 40px;
+            text-transform: uppercase;
+        }
+
         .download-btn {
             background: #c0c0c0;
             border: 3px outset #fff;
@@ -61,7 +87,6 @@
             display: inline-block;
             margin-top: 10px;
         }
-
         .download-btn:active { border: 3px inset #fff; }
 
         .warning-box {
@@ -72,26 +97,16 @@
             text-align: center;
             animation: blink 1s step-end infinite;
         }
-
         @keyframes blink { 50% { border-color: transparent; color: transparent; } }
 
-        .sidebar-text { font-size: 12px; line-height: 1.5; }
-        
-        marquee {
-            background: #000;
-            color: #0f0;
-            font-family: monospace;
-            padding: 3px;
-        }
+        marquee { background: #000; color: #0f0; padding: 3px; font-family: monospace; }
     </style>
 </head>
 <body>
 
 <table class="main-table">
     <tr>
-        <td colspan="2" class="header-bg">
-            GAMMA_CORRECTION SHAREWARE LIBRARY v2.0
-        </td>
+        <td colspan="2" class="header-bg">GAMMA_CORRECTION SHAREWARE LIBRARY v2.0</td>
     </tr>
     <tr>
         <td width="20%" valign="top" style="padding: 15px; background: #d0d0d0; border-right: 2px groove #fff;">
@@ -99,14 +114,12 @@
                 <b>NAVIGATE:</b><br>
                 <a href="index.html">HOME</a><br>
                 <a href="#">NEW RELEASES</a><br>
-                <a href="#">TOP 10</a><br>
-                <a href="#">HELP/FAQ</a><br>
                 <hr>
                 <center><font size="1">Optimized for 640x480</font></center>
             </div>
         </td>
         <td valign="top">
-            <marquee>+++ NEW RELEASE: DEMENTIA GILL +++ EVALUATION VERSION +++ DOWNLOAD TODAY +++</marquee>
+            <marquee>+++ NEW RELEASE: DEMENTIA GILL +++ DOWNLOAD TODAY +++</marquee>
             
             <div class="content-area">
                 <div class="warning-box">!!! UNSUBSCRIBED EVALUATION COPY !!!</div>
@@ -114,13 +127,16 @@
                 <h2>Current Listings:</h2>
 
                 <div class="game-card">
-                    <img src="gillicon.png" class="game-thumb" alt="Dementia Gill">
+                    <div class="char-container">
+                        <img src="gillicon.png" class="game-thumb" alt="Dementia Gill" onclick="yap()">
+                        <div id="speech-bubble"></div>
+                    </div>
+                    
                     <div>
                         <font size="4"><b>DEMENTIA GILL (v1.0)</b></font><br>
                         <i>Category: Arcade / Surreal / Corporate</i><br>
-                        <b>File Size:</b> 94,344 KB<br>
-                        <b>Requirements:</b> Win 95/98/XP/10/11<br><br>
-                        "Scale a procedurally generated corporate hellscape while dodging an infinite rain of Temu Boxes. Reach the summit to confront Gill and survive the liquidation of your own sanity in authentic CGA color."<br>
+                        <b>File Size:</b> 94,344 KB<br><br>
+                        "Scale a procedurally generated corporate hellscape while dodging an infinite rain of Temu Boxes. Reach the summit to confront Gill."<br>
                         
                         <a href="https://yourname.itch.io/dementiagill" class="download-btn">DOWNLOAD FROM EXTERNAL MIRROR</a>
                     </div>
@@ -130,16 +146,39 @@
                     <div class="game-thumb" style="display:flex; align-items:center; justify-content:center; color:#555; font-size: 10px;">[NO PREVIEW]</div>
                     <div>
                         <font size="4"><b>GRAVELBALL ARCADE</b></font><br>
-                        <i>Category: Sports / Physics</i><br>
-                        <b>Status:</b> COMING SOON<br><br>
-                        <font color="blue">Order the full Gammacorrection Multiverse Pack for only $19.95!</font>
+                        <b>Status:</b> COMING SOON
                     </div>
                 </div>
-
             </div>
         </td>
     </tr>
 </table>
+
+<script>
+    const phrases = [
+        "Get the fuck out of my office.",
+        "You're a fucking hot dog.",
+        "I am the one who shops.",
+        "I love Temu.",
+        "Holy Christ, there's nothing left.",
+        "I did it my way.",
+        "Manifesting synergy is easy.",
+        "The walls are not real."
+    ];
+
+    function yap() {
+        const bubble = document.getElementById('speech-bubble');
+        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+        bubble.innerText = "\"" + randomPhrase + "\"";
+        
+        // Clear text after 4 seconds
+        setTimeout(() => {
+            if(bubble.innerText === "\"" + randomPhrase + "\"") {
+                bubble.innerText = "";
+            }
+        }, 4000);
+    }
+</script>
 
 </body>
 </html>
