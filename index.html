@@ -176,6 +176,25 @@
             width: 50px; filter: drop-shadow(0 0 15px #00FF00); image-rendering: pixelated;
         }
 
+        /* --- DOWNLOADS PORTAL --- */
+        #project-download { left: 45%; top: 25%; z-index: 1001; }
+        #project-download img {
+            width: 90px; 
+            filter: drop-shadow(0 0 15px #00ffff); 
+            image-rendering: pixelated; 
+            transition: 0.3s;
+        }
+        #project-download img:hover { 
+            filter: drop-shadow(0 0 25px #ffffff);
+            transform: scale(1.1);
+        }
+        #project-download .portal-text { 
+            color: #00ffff; 
+            border: 1px solid #00ffff; 
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
         #project-trumpagotchi { right: 25%; top: 18%; z-index: 1001; }
         #project-trumpagotchi img {
             width: 75px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated; transition: transform 0.2s;
@@ -227,6 +246,13 @@
         <a href="eternal-recurrence.html" style="text-decoration: none;">
             <p class="portal-text" style="color: #ff3300; border: 1px solid #ff3300;">eternal recurrence</p>
             <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;">
+        </a>
+    </div>
+
+    <div id="project-download" class="portal">
+        <a href="YOUR_ITCH_LINK_HERE" style="text-decoration: none;">
+            <p class="portal-text">downloadable games</p>
+            <img src="https://blob.gifcities.org/gifcities/JOTW56HDI3ZE7L3FTPJHVY6UCJ6MJFBG.gif" alt="Download">
         </a>
     </div>
 
