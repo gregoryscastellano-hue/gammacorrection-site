@@ -79,14 +79,13 @@ button:hover { background:#FFFF55; border-style:inset; color:#AA0000; }
 </div>
 
 <script>
-// Fixed missing multiplication operators from standard markdown parsing
 const cvs = document.getElementById('cvs');
 const ctx = cvs.getContext('2d', { alpha: false });
 let VW = window.innerWidth, VH = window.innerHeight;
 
 const SKY_W=12000, SKY_H=6000; 
 let camX=SKY_W/2, camY=SKY_H/2; 
-let zoom=1;
+let zoom=0.4; // START ZOOMED OUT
 let stars=[], constellations=[]; 
 let seed=0; 
 let selectedCon=-1;
@@ -335,7 +334,7 @@ function generate(){
 function updateHud(){ 
   const ra=((camX/SKY_W)*360).toFixed(1);
   const dec=(90-(camY/SKY_H)*180).toFixed(1);
-  document.getElementById('hud').textContent=`STARMAP V1.0\nSEED: ${seed}\nSTARS: ${stars.length}\nCONST: ${constellations.length}\nRA: ${ra} DEC: ${dec}\nZOOM: ${zoom.toFixed(1)}X`; 
+  document.getElementById('hud').textContent=`STARMAP V1.1\nSEED: ${seed}\nSTARS: ${stars.length}\nCONST: ${constellations.length}\nRA: ${ra} DEC: ${dec}\nZOOM: ${zoom.toFixed(1)}X`; 
   document.getElementById('bot').textContent=`FIELD: ${SKY_W}x${SKY_H} VIEW: ${VW}x${VH} POS: ${camX|0},${camY|0}`; 
 }
 
@@ -374,6 +373,13 @@ function drawStar(p,w,h,sx,sy,r,g,b,sz){
   }
 }
 
+// Wrap a coordinate difference to [-SKY_W/2, SKY_W/2]
+function wrapDX(dx){
+  if(dx > SKY_W/2) dx -= SKY_W;
+  if(dx < -SKY_W/2) dx += SKY_W;
+  return dx;
+}
+
 let t=0; 
 function frame(){ 
   t+=0.016;
@@ -383,18 +389,19 @@ function frame(){
   
   // Fill black, but full alpha
   for(let i=3; i<p.length; i+=4) p[i]=255; 
-  
-  const hx=(camX-w/2/zoom)|0, hy=(camY-h/2/zoom)|0;
 
+  // Draw constellations with wrapping
   for(let c=0; c<constellations.length; c++){ 
     const con=constellations[c];
     const isSel=c===selectedCon; 
-    const lr=isSel?255:80, lg=isSel?85:40, lb=isSel?255:40; // Brighter selection color to fit theme
+    const lr=isSel?255:80, lg=isSel?85:40, lb=isSel?255:40;
     
     for(let e=0; e<con.edges.length; e++){ 
       const a=stars[con.edges[e][0]], bs=stars[con.edges[e][1]]; 
-      const ax=((a.x-hx)*zoom)|0, ay=((a.y-hy)*zoom)|0;
-      const bx=((bs.x-hx)*zoom)|0, by=((bs.y-hy)*zoom)|0;
+      const adx=wrapDX(a.x-camX), ady=a.y-camY;
+      const bdx=wrapDX(bs.x-camX), bdy=bs.y-camY;
+      const ax=(adx*zoom+w/2)|0, ay=(ady*zoom+h/2)|0;
+      const bx=(bdx*zoom+w/2)|0, by=(bdy*zoom+h/2)|0;
       
       if((ax<-200&&bx<-200)||(ax>w+200&&bx>w+200)) continue;
       if((ay<-200&&by<-200)||(ay>h+200&&by>h+200)) continue;
@@ -402,9 +409,12 @@ function frame(){
     } 
   }
 
+  // Draw stars with wrapping
   for(let i=0; i<stars.length; i++){ 
     const s=stars[i];
-    const sx=((s.x-hx)*zoom)|0, sy=((s.y-hy)*zoom)|0;
+    const dx=wrapDX(s.x-camX);
+    const dy=s.y-camY;
+    const sx=(dx*zoom+w/2)|0, sy=(dy*zoom+h/2)|0;
     
     if(sx<-4||sx>=w+4||sy<-4||sy>=h+4) continue; 
     
@@ -426,11 +436,13 @@ function hitTestConstellation(worldX,worldY){
   
   for(let c=0; c<constellations.length; c++){ 
     const con=constellations[c];
-    if(worldX<con.bx0-threshold||worldX>con.bx1+threshold||worldY<con.by0-threshold||worldY>con.by1+threshold) continue;
     
     for(const idx of con.stars){
       const s=stars[idx];
-      const d=Math.sqrt((s.x-worldX)**2+(s.y-worldY)**2);
+      // Use wrapped distance for hit testing
+      const ddx=wrapDX(s.x-worldX);
+      const ddy=s.y-worldY;
+      const d=Math.sqrt(ddx*ddx+ddy*ddy);
       if(d<threshold && d<bestDist){bestDist=d; bestIdx=c;}
     }
   } 
@@ -474,12 +486,12 @@ function exportConstellation(cIdx){
   const eid=ectx.createImageData(pw,ph); 
   const ep=eid.data; 
 
-  // === THE FIX IS HERE ===
-  // We calculate thickness based on the final canvas size (pw).
-  // This guarantees that when the Glyphboard shrinks/grows them all 
-  // to the same typing height, their line thicknesses match EXACTLY.
-  const baseSize = Math.max(pw, ph);
-  const thick = Math.max(2, Math.ceil(baseSize * 0.035)); // Lines are 3.5% of total size
+  // === THICKNESS FIX ===
+  // Base thickness on CONTENT HEIGHT (eh), not the square canvas size.
+  // The glyphboard normalizes all glyphs to the same height, so thickness
+  // must be proportional to height for consistent stroke weight across all glyphs.
+  const contentH = eh * scale;
+  const thick = Math.max(2, Math.ceil(contentH * 0.035));
 
   function eSetPxAlpha(x,y,r,g,b,a){ 
     if(x<0||x>=pw||y<0||y>=ph) return; 
@@ -525,8 +537,8 @@ function exportConstellation(cIdx){
     eThickLine(ax,ay,bx,by,255,255,255); 
   }
 
-  // Draw star dots (slightly larger than the line thickness to make nice joints)
-  const dotR = Math.max(3, Math.ceil(baseSize * 0.045)); 
+  // Draw star dots - also based on content height for consistency
+  const dotR = Math.max(3, Math.ceil(contentH * 0.045)); 
   for(const s of cStars){ 
     const sx=((s.x-x0)+pad+offX)*scale|0; 
     const sy=((s.y-y0)+pad+offY)*scale|0; 
@@ -536,7 +548,7 @@ function exportConstellation(cIdx){
   ectx.putImageData(eid,0,0);
 
   document.getElementById('exportTitle').textContent='CONSTELLATION #'+cIdx;
-  document.getElementById('exportInfo').textContent=`${con.stars.length} STARS | NORMALIZED THICKNESS`;
+  document.getElementById('exportInfo').textContent=`${con.stars.length} STARS | HEIGHT-NORMALIZED THICKNESS`;
   document.getElementById('exportPanel').style.display='block'; 
 }
 
@@ -571,8 +583,8 @@ window.addEventListener('mousemove',e=>{
   if(Math.abs(dx)>3 || Math.abs(dy)>3) dragMoved=true; 
   camX-=dx/zoom; camY-=dy/zoom;
   
-  if(camX<0) camX+=SKY_W;
-  if(camX>=SKY_W) camX-=SKY_W;
+  // Wrap horizontally
+  camX=((camX%SKY_W)+SKY_W)%SKY_W;
   camY=Math.max(0,Math.min(SKY_H,camY));
   
   dragX=e.clientX; dragY=e.clientY; 
@@ -580,9 +592,11 @@ window.addEventListener('mousemove',e=>{
 
 window.addEventListener('mouseup',e=>{ 
   if(!dragMoved && dragging){ 
-    const hx=(camX-VW/2/zoom), hy=(camY-VH/2/zoom); 
-    const worldX=hx+e.clientX/zoom, worldY=hy+e.clientY/zoom; 
-    const hit=hitTestConstellation(worldX,worldY);
+    // Convert screen click to world coords using wrapped camera
+    const worldX=camX+(e.clientX-VW/2)/zoom;
+    const worldY=camY+(e.clientY-VH/2)/zoom;
+    const wrappedX=((worldX%SKY_W)+SKY_W)%SKY_W;
+    const hit=hitTestConstellation(wrappedX,worldY);
     if(hit>=0){
       selectedCon=hit;
       exportConstellation(hit);
@@ -607,17 +621,17 @@ cvs.addEventListener('touchmove',e=>{
   const tc=e.touches[0];
   camX-=(tc.clientX-touchX)/zoom;
   camY-=(tc.clientY-touchY)/zoom;
-  if(camX<0) camX+=SKY_W;
-  if(camX>=SKY_W) camX-=SKY_W;
+  camX=((camX%SKY_W)+SKY_W)%SKY_W;
   camY=Math.max(0,Math.min(SKY_H,camY));
   touchX=tc.clientX; touchY=tc.clientY;
 },{passive:false});
 
 cvs.addEventListener('touchend',e=>{
   if(!touchMoved){
-    const hx=(camX-VW/2/zoom), hy=(camY-VH/2/zoom);
-    const worldX=hx+touchX/zoom, worldY=hy+touchY/zoom;
-    const hit=hitTestConstellation(worldX,worldY);
+    const worldX=camX+(touchX-VW/2)/zoom;
+    const worldY=camY+(touchY-VH/2)/zoom;
+    const wrappedX=((worldX%SKY_W)+SKY_W)%SKY_W;
+    const hit=hitTestConstellation(wrappedX,worldY);
     if(hit>=0){
       selectedCon=hit;
       exportConstellation(hit);
@@ -642,8 +656,7 @@ window.addEventListener('keydown',e=>{
     document.getElementById('exportPanel').style.display='none';
   }
   
-  if(camX<0) camX+=SKY_W;
-  if(camX>=SKY_W) camX-=SKY_W;
+  camX=((camX%SKY_W)+SKY_W)%SKY_W;
   camY=Math.max(0,Math.min(SKY_H,camY));
 });
 
