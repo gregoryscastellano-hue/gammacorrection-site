@@ -75,7 +75,7 @@ input[type="file"] { display:none; }
 
 <div id="topbar">
   <span>|| GLYPHBOARD TERMINAL ||</span><br>
-  <span id="assignCount" style="color:#0000AA; font-size: 16px;">0/23 KEYS ASSIGNED</span>
+  <span id="assignCount" style="color:#0000AA; font-size: 16px;">0/26 KEYS ASSIGNED</span>
 </div>
 
 <div id="status">AWAITING INPUT. CLICK A KEY BELOW TO BEGIN.</div>
@@ -278,7 +278,7 @@ function processGlyph(key, img) {
 
 function updateCount() {
   const n = Object.keys(glyphMap).length;
-  document.getElementById('assignCount').textContent = `${n}/23 KEYS ASSIGNED`;
+  document.getElementById('assignCount').textContent = `${n}/26 KEYS ASSIGNED`;
 }
 
 const typingArea = document.getElementById('typingArea');
