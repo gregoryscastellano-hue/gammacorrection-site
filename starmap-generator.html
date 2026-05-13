@@ -383,6 +383,9 @@ function wrapDX(dx){
 let t=0; 
 function frame(){ 
   t+=0.016;
+  // Re-check size in case iframe was hidden and is now visible
+  const rw=Math.max(1,window.innerWidth), rh=Math.max(1,window.innerHeight);
+  if(rw!==VW||rh!==VH){ VW=rw; VH=rh; cvs.width=VW; cvs.height=VH; }
   const w=VW, h=VH; 
   const imgData=ctx.createImageData(w,h);
   const p=imgData.data; 
@@ -398,10 +401,11 @@ function frame(){
     
     for(let e=0; e<con.edges.length; e++){ 
       const a=stars[con.edges[e][0]], bs=stars[con.edges[e][1]]; 
+      // Wrap star A against camera, then position B relative to A
+      // (constellation stars are always close in world space, so b-a is small)
       const adx=wrapDX(a.x-camX), ady=a.y-camY;
-      const bdx=wrapDX(bs.x-camX), bdy=bs.y-camY;
       const ax=(adx*zoom+w/2)|0, ay=(ady*zoom+h/2)|0;
-      const bx=(bdx*zoom+w/2)|0, by=(bdy*zoom+h/2)|0;
+      const bx=(ax+((bs.x-a.x)*zoom))|0, by=(ay+((bs.y-a.y)*zoom))|0;
       
       if((ax<-200&&bx<-200)||(ax>w+200&&bx>w+200)) continue;
       if((ay<-200&&by<-200)||(ay>h+200&&by>h+200)) continue;
@@ -566,8 +570,8 @@ document.getElementById('btnClose').addEventListener('click',()=>{
 });
 
 function resize(){
-  VW=window.innerWidth; 
-  VH=window.innerHeight; 
+  VW=Math.max(1,window.innerWidth); 
+  VH=Math.max(1,window.innerHeight); 
   cvs.width=VW; 
   cvs.height=VH;
 }
