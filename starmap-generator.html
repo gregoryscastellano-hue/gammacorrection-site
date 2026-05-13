@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>STARMAP GENERATOR OS</title>
+<style>
+/* STRICT 16 COLOR PALETTE, PIXELS ONLY, NO ANTI-ALIASING */
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Courier New", Courier, monospace; font-weight:900; text-transform:uppercase; cursor:crosshair; }
+body { background:#000000; color:#55FF55; overflow:hidden; border: 8px solid #55FFFF; height: 100vh; }
+
+canvas { display:block; image-rendering:pixelated; width:100%; height:100%; }
+
+#hud {
+  position:absolute; top:16px; left:16px; background:#0000AA; color:#FFFF55;
+  border:4px solid #FFFFFF; padding:12px; white-space:pre; pointer-events:none;
+  z-index:10; font-size:16px; line-height:1.2; text-shadow:1px 1px #000;
+}
+
+#bot {
+  position:absolute; bottom:16px; left:16px; background:#AA0000; color:#FFFFFF;
+  border:4px outset #FFFF55; padding:8px; pointer-events:none; z-index:10; font-size:14px;
+}
+
+#instructions {
+  position:absolute; top:16px; right:16px; background:#000000; color:#55FFFF;
+  border:4px dashed #FF55FF; padding:10px; pointer-events:none; z-index:10;
+  font-size:14px; text-align:right; line-height:1.4;
+}
+
+#exportPanel {
+  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+  background:#AAAAAA; border:8px outset #FFFFFF; padding:20px; display:none;
+  z-index:20; text-align:center; color:#0000AA; min-width: 350px;
+}
+
+#exportTitle {
+  background:#0000AA; color:#FFFFFF; padding:5px; border:4px inset #55FF55;
+  margin-bottom: 10px; font-size: 20px;
+}
+
+#exportCvs {
+  background:#000000; border:4px solid #FF55FF; margin:10px auto; display:block;
+  image-rendering:pixelated;
+}
+
+#exportInfo { margin-bottom:15px; font-size:14px; background: #FFF; padding: 4px; border: 2px solid #000; }
+
+button {
+  background:#55FFFF; border:4px outset #FFFFFF; padding:10px 20px; font-size:16px;
+  margin:5px; color:#0000AA; font-weight: bold;
+}
+button:hover { background:#FFFF55; border-style:inset; color:#AA0000; }
+#btnSave { background:#55FF55; border-color: #FFF; }
+#btnSave:hover { background: #FFFFFF; }
+#btnClose { background:#AA0000; color:#FFF; border-color:#FF55FF; }
+#btnClose:hover { background:#FF55FF; color:#000; }
+
+</style>
+</head>
+<body>
+
+<div id="hud"></div>
+<div id="bot"></div>
+<div id="instructions">
+  [CLICK & DRAG] PAN<br>
+  [SCROLL / + -] ZOOM<br>
+  [G] GENERATE NEW MAP<br>
+  [CLICK TARGET] EXPORT CONSTELLATION
+</div>
+
+<canvas id="cvs"></canvas>
+
+<div id="exportPanel">
+  <div id="exportTitle">CONSTELLATION</div>
+  <canvas id="exportCvs"></canvas>
+  <div id="exportInfo"></div>
+  <button id="btnSave">EXPORT TO PNG</button>
+  <button id="btnClose">CLOSE WINDOW</button>
+</div>
+
+<script>
+// Fixed missing multiplication operators from standard markdown parsing
+const cvs = document.getElementById('cvs');
+const ctx = cvs.getContext('2d', { alpha: false });
+let VW = window.innerWidth, VH = window.innerHeight;
+
+const SKY_W=12000, SKY_H=6000; 
+let camX=SKY_W/2, camY=SKY_H/2; 
+let zoom=1;
+let stars=[], constellations=[]; 
+let seed=0; 
+let selectedCon=-1;
+
+function m32(a){
+  return ()=>{
+    a|=0; a=a+0x6D2B79F5|0;
+    let t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return((t^t>>>14)>>>0)/4294967296;
+  }
+}
+
+function gaussian(rng){
+  const u1=rng(), u2=rng();
+  return Math.sqrt(-2 * Math.log(u1+1e-10)) * Math.cos(2 * Math.PI * u2);
+}
+
+function generate(){ 
+  seed=(Math.random()*999999)|0; 
+  const rng=m32(seed);
+  stars=[];
+  selectedCon=-1;
+  document.getElementById('exportPanel').style.display='none';
+
+  const totalStars=20000, minSep=3, cellSize=minSep; 
+  const gw=Math.ceil(SKY_W/cellSize), gh=Math.ceil(SKY_H/cellSize); 
+  const grid=new Map();
+  
+  function gkey(gx,gy){ return gy*gw+gx; }
+
+  let attempts=0; 
+  while(stars.length<totalStars && attempts<totalStars*30){
+    attempts++; 
+    let x,y; 
+    if(rng()<0.55){ 
+      x=rng()*SKY_W;
+      const cx=x/SKY_W; 
+      const cy=SKY_H * (0.45+0.08*Math.sin(cx*Math.PI*2.3+0.5)); 
+      y=cy+gaussian(rng)*SKY_H*0.08;
+    } else {
+      x=rng()*SKY_W;
+      y=rng()*SKY_H;
+    } 
+    
+    x=x|0; y=y|0;
+    if(x<0||x>=SKY_W||y<0||y>=SKY_H) continue; 
+    
+    const gx=(x/cellSize)|0, gy=(y/cellSize)|0; 
+    let bad=false; 
+    for(let dx=-1; dx<=1&&!bad; dx++){
+      for(let dy=-1; dy<=1&&!bad; dy++){ 
+        const k=gkey(gx+dx,gy+dy);
+        const idx=grid.get(k); 
+        if(idx!==undefined){
+          const s=stars[idx];
+          const ddx=s.x-x, ddy=s.y-y;
+          if(ddx*ddx+ddy*ddy < minSep*minSep) bad=true;
+        } 
+      }
+    }
+    
+    if(bad) continue; 
+    
+    const u=rng();
+    const mag=0.5+6.0*Math.pow(u,0.42); 
+    const br=Math.max(0.04,1.0-(mag-0.5)/6.5); 
+    let cr=255,cg=255,cb=255; 
+    
+    if(br>0.3){
+      const ct=rng(); 
+      if(ct<0.35){cr=255;cg=180+(rng()*40)|0;cb=140+(rng()*30)|0} 
+      else if(ct<0.55){cr=255;cg=220+(rng()*20)|0;cb=180+(rng()*40)|0} 
+      else if(ct<0.9){cr=255;cg=255;cb=255}
+      else{cr=200+(rng()*30)|0;cg=210+(rng()*30)|0;cb=255} 
+    } 
+    
+    let sz=1;
+    if(br>0.85) sz=3;
+    else if(br>0.65) sz=2;
+    
+    stars.push({x,y,br,cr,cg,cb,sz,tp:rng()*1000,tr:0.3+rng()*2,ta:0.05+(y/SKY_H)*0.3});
+    grid.set(gkey(gx,gy),stars.length-1); 
+  }
+
+  // Constellations 
+  constellations=[]; 
+  const crng=m32(seed+333); 
+  const bright=[];
+  
+  for(let i=0; i<stars.length; i++) if(stars[i].br>0.22) bright.push(i); 
+  
+  for(let i=bright.length-1; i>0; i--){
+    const j=(crng()*(i+1))|0;
+    [bright[i],bright[j]]=[bright[j],bright[i]];
+  } 
+  
+  const used=new Set();
+  const radBase=SKY_W*0.03;
+
+  for(let ci=0; ci<bright.length && constellations.length<200; ci++){ 
+    const si=bright[ci];
+    if(used.has(si)) continue;
+    if(crng()<0.45) continue; 
+    
+    const ss=stars[si];
+    const rad=radBase*(0.6+crng()*0.8);
+    const minR=rad*0.12; 
+    const near=[]; 
+    
+    for(let j=0; j<bright.length; j++){ 
+      const idx=bright[j];
+      if(idx===si||used.has(idx)) continue; 
+      const s=stars[idx];
+      const d=Math.sqrt((s.x-ss.x)**2+(s.y-ss.y)**2); 
+      if(d<rad&&d>minR) near.push({idx,d}); 
+    }
+    
+    if(near.length<1) continue; 
+    near.sort((a,b)=>a.d-b.d); 
+    const maxN=2+(crng()*7)|0;
+    const chosen=[si];
+    used.add(si);
+    const sty=crng();
+
+    if(sty<0.4){
+      let cur=si;
+      for(let k=0; k<maxN-1; k++){
+        const cs=stars[cur];
+        let bd=Infinity, bj=-1;
+        for(let n=0; n<near.length; n++){
+          if(chosen.includes(near[n].idx)) continue;
+          const s=stars[near[n].idx];
+          const d=Math.sqrt((s.x-cs.x)**2+(s.y-cs.y)**2);
+          if(d<bd && d>minR && d<rad*0.8){bd=d; bj=n;}
+        }
+        if(bj<0) break;
+        chosen.push(near[bj].idx);
+        used.add(near[bj].idx);
+        cur=near[bj].idx;
+      }
+    } else if(sty<0.6){
+      for(let k=0; k<maxN-1 && k<near.length; k++){
+        const pick=near[k].idx;
+        if(chosen.includes(pick)) continue;
+        chosen.push(pick);
+        used.add(pick);
+      }
+    } else if(sty<0.8){
+      let cur=si, lastA=crng()*Math.PI*2;
+      for(let k=0; k<maxN-1; k++){
+        const cs=stars[cur];
+        let bs=-Infinity, bj=-1;
+        for(let n=0; n<near.length; n++){
+          if(chosen.includes(near[n].idx)) continue;
+          const s=stars[near[n].idx];
+          const dx=s.x-cs.x, dy=s.y-cs.y;
+          const d=Math.sqrt(dx*dx+dy*dy);
+          if(d>rad*0.7||d<minR) continue;
+          const a=Math.atan2(dy,dx);
+          const sc=Math.sin(Math.abs(a-lastA))*2-d/rad;
+          if(sc>bs){bs=sc; bj=n;}
+        }
+        if(bj<0) break;
+        const pick=near[bj].idx;
+        const ps=stars[pick];
+        lastA=Math.atan2(ps.y-stars[cur].y, ps.x-stars[cur].x);
+        chosen.push(pick);
+        used.add(pick);
+        cur=pick;
+      }
+    } else {
+      let cur=si;
+      const chainLen=1+(crng()*3)|0;
+      for(let k=0; k<chainLen; k++){
+        const cs=stars[cur];
+        let bd=Infinity, bj=-1;
+        for(let n=0; n<near.length; n++){
+          if(chosen.includes(near[n].idx)) continue;
+          const s=stars[near[n].idx];
+          const d=Math.sqrt((s.x-cs.x)**2+(s.y-cs.y)**2);
+          if(d<bd&&d>minR){bd=d; bj=n;}
+        }
+        if(bj<0) break;
+        chosen.push(near[bj].idx);
+        used.add(near[bj].idx);
+        cur=near[bj].idx;
+      }
+      if(chosen.length>=2){
+        const branchFrom=chosen[(crng()*chosen.length)|0];
+        const bf=stars[branchFrom];
+        for(let k=0; k<2; k++){
+          let bd=Infinity, bj=-1;
+          for(let n=0; n<near.length; n++){
+            if(chosen.includes(near[n].idx)) continue;
+            const s=stars[near[n].idx];
+            const d=Math.sqrt((s.x-bf.x)**2+(s.y-bf.y)**2);
+            if(d<bd && d>minR && d<rad*0.6){bd=d; bj=n;}
+          }
+          if(bj<0) break;
+          chosen.push(near[bj].idx);
+          used.add(near[bj].idx);
+        }
+      }
+    }
+    
+    if(chosen.length<2){used.delete(si); continue;}
+
+    const edges=[];
+    if(sty<0.4){
+      for(let k=0; k<chosen.length-1; k++) edges.push([chosen[k],chosen[k+1]]);
+      if(crng()<0.25 && chosen.length>=4){
+        const f=stars[chosen[0]], l=stars[chosen[chosen.length-1]];
+        if(Math.sqrt((f.x-l.x)**2+(f.y-l.y)**2)<rad*0.9) edges.push([chosen[chosen.length-1],chosen[0]]);
+      }
+    }
+    else if(sty<0.6){
+      for(let k=1; k<chosen.length; k++) edges.push([chosen[0],chosen[k]]);
+      if(chosen.length>=4&&crng()<0.5) edges.push([chosen[1],chosen[2]]);
+      if(chosen.length>=5&&crng()<0.3) edges.push([chosen[2],chosen[3]]);
+    }
+    else if(sty<0.8){
+      for(let k=0; k<chosen.length-1; k++) edges.push([chosen[k],chosen[k+1]]);
+    }
+    else{
+      const cl=Math.min(chosen.length-1,1+(crng()*3)|0);
+      for(let k=0; k<cl; k++) edges.push([chosen[k],chosen[k+1]]);
+      const bf2=chosen[Math.min(cl,chosen.length-1)];
+      for(let k=cl+1; k<chosen.length; k++) edges.push([bf2,chosen[k]]);
+    }
+
+    let bx0=Infinity, by0=Infinity, bx1=-Infinity, by1=-Infinity;
+    for(const idx of chosen){
+      const s=stars[idx];
+      if(s.x<bx0) bx0=s.x;
+      if(s.x>bx1) bx1=s.x;
+      if(s.y<by0) by0=s.y;
+      if(s.y>by1) by1=s.y;
+    }
+    constellations.push({stars:chosen, edges, bx0, by0, bx1, by1});
+  } 
+  
+  updateHud(); 
+}
+
+function updateHud(){ 
+  const ra=((camX/SKY_W)*360).toFixed(1);
+  const dec=(90-(camY/SKY_H)*180).toFixed(1);
+  document.getElementById('hud').textContent=`STARMAP V1.0\nSEED: ${seed}\nSTARS: ${stars.length}\nCONST: ${constellations.length}\nRA: ${ra} DEC: ${dec}\nZOOM: ${zoom.toFixed(1)}X`; 
+  document.getElementById('bot').textContent=`FIELD: ${SKY_W}x${SKY_H} VIEW: ${VW}x${VH} POS: ${camX|0},${camY|0}`; 
+}
+
+function bline(buf,bw,bh,x0,y0,x1,y1,r,g,b){ 
+  x0=x0|0; y0=y0|0; x1=x1|0; y1=y1|0;
+  let dx=Math.abs(x1-x0), dy=-Math.abs(y1-y0), sx=x0<x1?1:-1, sy=y0<y1?1:-1, err=dx+dy;
+  while(true){ 
+    if(x0>=0 && x0<bw && y0>=0 && y0<bh){
+      const i=(y0*bw+x0)*4;
+      buf[i]=Math.min(255,buf[i]+r);
+      buf[i+1]=Math.min(255,buf[i+1]+g);
+      buf[i+2]=Math.min(255,buf[i+2]+b);
+    }
+    if(x0===x1 && y0===y1) break;
+    let e2=2*err;
+    if(e2>=dy){err+=dy; x0+=sx;}
+    if(e2<=dx){err+=dx; y0+=sy;} 
+  } 
+}
+
+function setPx(p,w,h,x,y,r,g,b){ 
+  if(x<0||x>=w||y<0||y>=h) return; 
+  const i=(y*w+x)*4;
+  p[i]=Math.min(255,p[i]+r);
+  p[i+1]=Math.min(255,p[i+1]+g);
+  p[i+2]=Math.min(255,p[i+2]+b);
+}
+
+function drawStar(p,w,h,sx,sy,r,g,b,sz){ 
+  if(sz<=1){ setPx(p,w,h,sx,sy,r,g,b); }
+  else if(sz<=2){
+    for(let dx=0; dx<2; dx++)
+      for(let dy=0; dy<2; dy++) setPx(p,w,h,sx+dx,sy+dy,r,g,b);
+  } else {
+    for(const[dx,dy]of[[0,0],[-1,0],[1,0],[0,-1],[0,1]]) setPx(p,w,h,sx+dx,sy+dy,r,g,b);
+  }
+}
+
+let t=0; 
+function frame(){ 
+  t+=0.016;
+  const w=VW, h=VH; 
+  const imgData=ctx.createImageData(w,h);
+  const p=imgData.data; 
+  
+  // Fill black, but full alpha
+  for(let i=3; i<p.length; i+=4) p[i]=255; 
+  
+  const hx=(camX-w/2/zoom)|0, hy=(camY-h/2/zoom)|0;
+
+  for(let c=0; c<constellations.length; c++){ 
+    const con=constellations[c];
+    const isSel=c===selectedCon; 
+    const lr=isSel?255:80, lg=isSel?85:40, lb=isSel?255:40; // Brighter selection color to fit theme
+    
+    for(let e=0; e<con.edges.length; e++){ 
+      const a=stars[con.edges[e][0]], bs=stars[con.edges[e][1]]; 
+      const ax=((a.x-hx)*zoom)|0, ay=((a.y-hy)*zoom)|0;
+      const bx=((bs.x-hx)*zoom)|0, by=((bs.y-hy)*zoom)|0;
+      
+      if((ax<-200&&bx<-200)||(ax>w+200&&bx>w+200)) continue;
+      if((ay<-200&&by<-200)||(ay>h+200&&by>h+200)) continue;
+      bline(p,w,h,ax,ay,bx,by,lr,lg,lb); 
+    } 
+  }
+
+  for(let i=0; i<stars.length; i++){ 
+    const s=stars[i];
+    const sx=((s.x-hx)*zoom)|0, sy=((s.y-hy)*zoom)|0;
+    
+    if(sx<-4||sx>=w+4||sy<-4||sy>=h+4) continue; 
+    
+    const tw=Math.sin(t*s.tr+s.tp);
+    const fl=1.0+tw*s.ta*0.5; 
+    const br=Math.max(0.03,Math.min(1.0,s.br*fl));
+    
+    drawStar(p,w,h,sx,sy,(s.cr*br)|0,(s.cg*br)|0,(s.cb*br)|0,Math.max(1,(s.sz*zoom)|0));
+  }
+
+  ctx.putImageData(imgData,0,0); 
+  updateHud();
+  requestAnimationFrame(frame); 
+}
+
+function hitTestConstellation(worldX,worldY){ 
+  let bestDist=Infinity, bestIdx=-1;
+  const threshold=40/zoom; 
+  
+  for(let c=0; c<constellations.length; c++){ 
+    const con=constellations[c];
+    if(worldX<con.bx0-threshold||worldX>con.bx1+threshold||worldY<con.by0-threshold||worldY>con.by1+threshold) continue;
+    
+    for(const idx of con.stars){
+      const s=stars[idx];
+      const d=Math.sqrt((s.x-worldX)**2+(s.y-worldY)**2);
+      if(d<threshold && d<bestDist){bestDist=d; bestIdx=c;}
+    }
+  } 
+  return bestIdx; 
+}
+
+function exportConstellation(cIdx){ 
+  const con=constellations[cIdx]; 
+  const pad=30; 
+  const cStars=con.stars.map(i=>stars[i]);
+
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity; 
+  for(const s of cStars){
+    if(s.x<x0) x0=s.x;
+    if(s.x>x1) x1=s.x;
+    if(s.y<y0) y0=s.y;
+    if(s.y>y1) y1=s.y;
+  }
+
+  const ew=Math.max(40,(x1-x0))+pad*2; 
+  const eh=Math.max(40,(y1-y0))+pad*2; 
+  const sz=Math.max(ew,eh); 
+  const offX=(sz-ew)/2; const offY=(sz-eh)/2;
+
+  const scale=Math.max(2,Math.min(10,Math.floor(512/sz))); 
+  const pw=sz*scale, ph=sz*scale;
+
+  const ec=document.getElementById('exportCvs'); 
+  ec.width=pw; ec.height=ph; 
+  const maxDisp=320;
+  
+  if(pw>maxDisp){
+    ec.style.width=maxDisp+'px';
+    ec.style.height=(ph*(maxDisp/pw))+'px';
+  } else {
+    ec.style.width=pw+'px';
+    ec.style.height=ph+'px';
+  }
+
+  const ectx=ec.getContext('2d'); 
+  const eid=ectx.createImageData(pw,ph); 
+  const ep=eid.data; 
+
+  // === THE FIX IS HERE ===
+  // We calculate thickness based on the final canvas size (pw).
+  // This guarantees that when the Glyphboard shrinks/grows them all 
+  // to the same typing height, their line thicknesses match EXACTLY.
+  const baseSize = Math.max(pw, ph);
+  const thick = Math.max(2, Math.ceil(baseSize * 0.035)); // Lines are 3.5% of total size
+
+  function eSetPxAlpha(x,y,r,g,b,a){ 
+    if(x<0||x>=pw||y<0||y>=ph) return; 
+    const i=(y*pw+x)*4; 
+    const sa=a/255; const da=ep[i+3]/255;
+    const oa=sa+da*(1-sa); 
+    if(oa===0) return; 
+    
+    ep[i]=Math.min(255,((r*sa+ep[i]*da*(1-sa))/oa)|0);
+    ep[i+1]=Math.min(255,((g*sa+ep[i+1]*da*(1-sa))/oa)|0);
+    ep[i+2]=Math.min(255,((b*sa+ep[i+2]*da*(1-sa))/oa)|0);
+    ep[i+3]=Math.min(255,(oa*255)|0); 
+  }
+
+  function eSetBlock(cx,cy,r,g,b,radius){ 
+    const r2=radius*radius; 
+    for(let dy=-radius; dy<=radius; dy++){
+      for(let dx=-radius; dx<=radius; dx++){
+        if(dx*dx+dy*dy<=r2) eSetPxAlpha(cx+dx,cy+dy,r,g,b,255); 
+      }
+    } 
+  }
+
+  function eThickLine(lx0,ly0,lx1,ly1,r,g,b){ 
+    lx0=(lx0*scale)|0; ly0=(ly0*scale)|0; lx1=(lx1*scale)|0; ly1=(ly1*scale)|0; 
+    let dx=Math.abs(lx1-lx0), dy=-Math.abs(ly1-ly0); 
+    let sx=lx0<lx1?1:-1, sy=ly0<ly1?1:-1, err=dx+dy; 
+    
+    while(true){
+      eSetBlock(lx0,ly0,r,g,b,thick); 
+      if(lx0===lx1 && ly0===ly1) break; 
+      let e2=2*err;
+      if(e2>=dy){err+=dy; lx0+=sx;}
+      if(e2<=dx){err+=dx; ly0+=sy;} 
+    } 
+  }
+
+  // Draw thick lines 
+  for(const edge of con.edges){ 
+    const a=stars[edge[0]], b=stars[edge[1]]; 
+    const ax=(a.x-x0)+pad+offX, ay=(a.y-y0)+pad+offY; 
+    const bx=(b.x-x0)+pad+offX, by=(b.y-y0)+pad+offY;
+    eThickLine(ax,ay,bx,by,255,255,255); 
+  }
+
+  // Draw star dots (slightly larger than the line thickness to make nice joints)
+  const dotR = Math.max(3, Math.ceil(baseSize * 0.045)); 
+  for(const s of cStars){ 
+    const sx=((s.x-x0)+pad+offX)*scale|0; 
+    const sy=((s.y-y0)+pad+offY)*scale|0; 
+    eSetBlock(sx,sy,255,255,255,dotR); 
+  }
+
+  ectx.putImageData(eid,0,0);
+
+  document.getElementById('exportTitle').textContent='CONSTELLATION #'+cIdx;
+  document.getElementById('exportInfo').textContent=`${con.stars.length} STARS | NORMALIZED THICKNESS`;
+  document.getElementById('exportPanel').style.display='block'; 
+}
+
+document.getElementById('btnSave').addEventListener('click',()=>{ 
+  const ec=document.getElementById('exportCvs'); 
+  const link=document.createElement('a');
+  link.download=`CONSTELLATION_${selectedCon}_SEED${seed}.png`;
+  link.href=ec.toDataURL('image/png'); 
+  link.click(); 
+});
+
+document.getElementById('btnClose').addEventListener('click',()=>{
+  document.getElementById('exportPanel').style.display='none';
+  selectedCon=-1; 
+});
+
+function resize(){
+  VW=window.innerWidth; 
+  VH=window.innerHeight; 
+  cvs.width=VW; 
+  cvs.height=VH;
+}
+
+let dragging=false, dragX=0, dragY=0, dragMoved=false;
+cvs.addEventListener('mousedown',e=>{
+  dragging=true; dragX=e.clientX; dragY=e.clientY; dragMoved=false;
+});
+
+window.addEventListener('mousemove',e=>{ 
+  if(!dragging) return;
+  const dx=e.clientX-dragX, dy=e.clientY-dragY;
+  if(Math.abs(dx)>3 || Math.abs(dy)>3) dragMoved=true; 
+  camX-=dx/zoom; camY-=dy/zoom;
+  
+  if(camX<0) camX+=SKY_W;
+  if(camX>=SKY_W) camX-=SKY_W;
+  camY=Math.max(0,Math.min(SKY_H,camY));
+  
+  dragX=e.clientX; dragY=e.clientY; 
+});
+
+window.addEventListener('mouseup',e=>{ 
+  if(!dragMoved && dragging){ 
+    const hx=(camX-VW/2/zoom), hy=(camY-VH/2/zoom); 
+    const worldX=hx+e.clientX/zoom, worldY=hy+e.clientY/zoom; 
+    const hit=hitTestConstellation(worldX,worldY);
+    if(hit>=0){
+      selectedCon=hit;
+      exportConstellation(hit);
+    } else {
+      selectedCon=-1;
+      document.getElementById('exportPanel').style.display='none';
+    }
+  } 
+  dragging=false; 
+});
+
+let touchX=0, touchY=0, touchMoved=false;
+cvs.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  const tc=e.touches[0];
+  touchX=tc.clientX; touchY=tc.clientY; touchMoved=false;
+},{passive:false});
+
+cvs.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  touchMoved=true;
+  const tc=e.touches[0];
+  camX-=(tc.clientX-touchX)/zoom;
+  camY-=(tc.clientY-touchY)/zoom;
+  if(camX<0) camX+=SKY_W;
+  if(camX>=SKY_W) camX-=SKY_W;
+  camY=Math.max(0,Math.min(SKY_H,camY));
+  touchX=tc.clientX; touchY=tc.clientY;
+},{passive:false});
+
+cvs.addEventListener('touchend',e=>{
+  if(!touchMoved){
+    const hx=(camX-VW/2/zoom), hy=(camY-VH/2/zoom);
+    const worldX=hx+touchX/zoom, worldY=hy+touchY/zoom;
+    const hit=hitTestConstellation(worldX,worldY);
+    if(hit>=0){
+      selectedCon=hit;
+      exportConstellation(hit);
+    } else {
+      selectedCon=-1;
+      document.getElementById('exportPanel').style.display='none';
+    }
+  }
+});
+
+window.addEventListener('keydown',e=>{ 
+  const spd=20/zoom;
+  if(e.key==='ArrowLeft') camX-=spd;
+  if(e.key==='ArrowRight') camX+=spd;
+  if(e.key==='ArrowUp') camY-=spd;
+  if(e.key==='ArrowDown') camY+=spd;
+  if(e.key==='='||e.key==='+') zoom=Math.min(6,zoom*1.2);
+  if(e.key==='-') zoom=Math.max(0.3,zoom/1.2);
+  if(e.key==='g'||e.key==='G') generate();
+  if(e.key==='Escape'){
+    selectedCon=-1;
+    document.getElementById('exportPanel').style.display='none';
+  }
+  
+  if(camX<0) camX+=SKY_W;
+  if(camX>=SKY_W) camX-=SKY_W;
+  camY=Math.max(0,Math.min(SKY_H,camY));
+});
+
+window.addEventListener('wheel',e=>{
+  if(e.deltaY<0) zoom=Math.min(6,zoom*1.15);
+  else zoom=Math.max(0.3,zoom/1.15);
+},{passive:true});
+
+resize();
+window.addEventListener('resize',resize); 
+generate();
+frame();
+</script>
+</body>
+</html>
