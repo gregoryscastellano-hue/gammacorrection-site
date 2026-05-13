@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>STARMAP // GLYPHBOARD</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Courier New", Courier, monospace; font-weight:900; text-transform:uppercase; }
+body { background:#000; color:#55FF55; min-height:100vh; display:flex; flex-direction:column; }
+
+#navbar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  border-bottom: 4px solid #FFFF55;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+#back-btn {
+  background: #AA0000;
+  color: #FFFFFF;
+  border: none;
+  border-right: 4px solid #FFFF55;
+  padding: 10px 16px;
+  font-family: "Courier New", monospace;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+}
+#back-btn:hover { background: #FF55FF; color: #000; }
+
+.tab {
+  background: #c0c0c0;
+  color: #000080;
+  border: none;
+  border-right: 3px solid #808080;
+  padding: 10px 20px;
+  font-family: "Courier New", monospace;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+}
+.tab:hover { background: #FFFF55; color: #AA0000; }
+.tab.active {
+  background: #000;
+  color: #55FF55;
+  border-bottom: 3px solid #55FF55;
+  text-shadow: 0 0 8px #55FF55;
+}
+
+#title-area {
+  margin-left: auto;
+  padding: 0 16px;
+  color: #55FFFF;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 6px #55FFFF;
+}
+
+#frame-container {
+  flex: 1;
+  position: relative;
+}
+
+#frame-container iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+iframe.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div id="navbar">
+  <button id="back-btn" onclick="window.location.href='index.html'">◄ BACK</button>
+  <button class="tab active" data-target="starmap" onclick="switchTab(this)">☆ STARMAP</button>
+  <button class="tab" data-target="glyphboard" onclick="switchTab(this)">⌨ GLYPHBOARD</button>
+  <span id="title-area">CONSTELLATION WRITING SYSTEM</span>
+</div>
+
+<div id="frame-container">
+  <iframe id="frame-starmap" src="starmap-generator.html"></iframe>
+  <iframe id="frame-glyphboard" src="glyphboard-communicator.html" class="hidden"></iframe>
+</div>
+
+<script>
+function switchTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const target = el.dataset.target;
+  document.getElementById('frame-starmap').classList.toggle('hidden', target !== 'starmap');
+  document.getElementById('frame-glyphboard').classList.toggle('hidden', target !== 'glyphboard');
+}
+</script>
+</body>
+</html>
