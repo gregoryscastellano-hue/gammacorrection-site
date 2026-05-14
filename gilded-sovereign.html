@@ -66,6 +66,57 @@
             background: linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.03));
         }
 
+        .logbook.leviathan-mode {
+            background: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            transform: rotate(0deg);
+        }
+
+        .logbook.leviathan-mode::after {
+            background: none;
+        }
+
+        .logbook.leviathan-mode h1 {
+            color: #e8d5c0;
+            border-bottom-color: rgba(232, 213, 192, 0.2);
+            text-shadow: 0 0 30px rgba(160, 60, 60, 0.4);
+        }
+
+        .logbook.leviathan-mode .scroll-content {
+            color: #d4c4aa;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .logbook.leviathan-mode .scroll-content::-webkit-scrollbar-thumb {
+            background: rgba(180, 80, 60, 0.6);
+        }
+
+        .logbook.leviathan-mode .scroll-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .stamp.leviathan-mode {
+            display: none;
+        }
+
+        .leviathan-text {
+            font-family: 'Pirata One', system-ui;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #8b2252, #c44536, #e8d5c0, #c44536, #8b2252);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: divineShift 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 6px rgba(196, 69, 54, 0.4));
+            display: block;
+            margin: 16px 0;
+            text-transform: uppercase;
+        }
+
         h1 {
             font-family: 'Pirata One', system-ui;
             font-size: 3.5rem;
@@ -112,6 +163,54 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        .diary-entry {
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 16px 0;
+            padding: 14px 20px;
+            border-left: 3px solid #5c4a2a;
+            background: rgba(92, 74, 42, 0.06);
+            color: #3a2e1c;
+            position: relative;
+        }
+
+        .diary-entry::before {
+            content: "⚓";
+            position: absolute;
+            top: -8px;
+            left: -12px;
+            font-size: 0.9rem;
+            font-style: normal;
+        }
+
+        .form-procedure {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin: 10px 0;
+            padding: 10px 16px;
+            background: rgba(44, 36, 26, 0.04);
+            border: 1px solid rgba(44, 36, 26, 0.15);
+            color: #3a2e1c;
+        }
+
+        .form-stage {
+            font-family: 'Pirata One', system-ui;
+            font-size: 1.3rem;
+            color: #5c1a1a;
+            margin: 18px 0 6px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px dashed #5c1a1a;
+            letter-spacing: 0.5px;
+        }
+
+        .form-penalty {
+            font-size: 1.05rem;
+            margin: 4px 0 4px 20px;
+            color: #5c1a1a;
+            font-weight: 700;
         }
 
         .nav-buttons {
@@ -369,10 +468,299 @@
                 <p>"Leviathan's Maw. Two leagues that way." Bubbles points east.</p>
                 <p>"Adjust, my fine sail!" shouts Finnian.</p>
                 <p>Casper-Sail groans as he swivels.</p>`
+            },
+            {
+                title: "Act 1: Chapter 12",
+                act: 1,
+                html: `<p>Leviathan's Maw is the ultimate tourist trap of the sea. Ever since Leviathan was assumed to be living there, The Lemurian Coast Tourism Guild has renovated it into a shrine to branded merchandise and fast food chains. This is why Finnian demanded Zora-Ship to stop, so they could get a bite at Arrrby's.</p>
+                <p>Zora-Ship was greatly insulted by the "Welcome Adventurers!" banner. "'Welcome Adventurers'? I have spent twenty years being the terror of the Azania Coast! I have outrun Royal Frigates and navigated the Free Purge zones with a broken rudder! I am a Marauder. A Pillager. I am not a 'tourist attraction' for people who eat their roast beef in paper wrappers!"</p>
+                <p>"Shut up for a second," Finnian says as he leans out to the drive-thru. "Yeah, let me get the Kraken Rings Melt, and a side of Barnacle Bites. Mermaid, you want anything?"</p>
+                <p>"I think we should focus on catching the Leviathan." says Bubbles deadpan.</p>
+                <p>"Look, I'm just saying, that old man won't know the difference between the real head and the one they sell at the gift shop. Let's do a bait and switch." says Finnian as he reaches over for the greasy bag.</p>
+                <p>Pepe spies it and demands tribute. "¡Oye! Don't be greedy, el perezoso! One for you, two for Pepe! It is the Law of the Jungle!"</p>
+                <p>From his barrel, Theodore was fixated on the logistics of parking. "Glub—cough—Finnian! Cease your mastication at once! You have steered this... this composite sentient entity into a Zone 4-A: Restricted Commercial Loading Dock According to the Lemurian Coast Tourism Guild's Manual of Curbside Etiquette, Section 19: No sentient vessel exceeding forty tons shall remain stationary in a 'Rapid-Service Lane' for more than the duration of a standard transaction!"</p>
+                <p>"Alright, alright, fine. Let's park in front of the gift shop. Everyone on board for scamming the guy?"</p>
+                <p>"No," says Bubbles. "Let's ask someone where the real Leviathan is."</p>
+                <p>As they walked off Zora-Ship's tongue, they were immediately swallowed by the spectacle. They passed by a "100% Authentic Leviathan Skull" although it was clearly made out of plaster of Paris, reinforced with chicken wire, and coated in a thick, glossy layer of marine-grade house paint, all of which was obvious to Theodore. From the barrel being wheeled by Bubbles on a handcart as she flops forward, Theodore shouts "Glub—Abomination! Finnian, look at the porosity! Leviathan bone should have a density of at least 1.4 grams per cubic centimeter. That... that tragedy of a landmark is clearly a hollow-core composite of industrial gesso! I can see the seams of the mold! It violates Form 89-F: Misrepresentation of Natural Curiosities!"</p>
+                <p>To their left, a row of gift shops stretched as far as the eye could see. They saw the Leviathan Loot Emporium, featuring plush Leviathans in three sizes: Tiny Terror, Cuddly Cataclysm, and Apocalypse Deluxe, right next to The Official (Authorized) Leviathan Tooth Shop, where every tooth looked suspiciously identical. To the right, a crowd had gathered around a massive banner labeled: "SEE THE LEVIATHAN (Terms and conditions apply)".</p>
+                <p>Bubbles noticed it. "Let's check it out."</p>
+                <p>Finnian sighed. "The fake skull is right there! The old man won't know the difference. Guy probably doesn't even know what year it is!"</p>
+                <p>"Estáfalo! I'm with el perezoso here!" squawked Pepe.</p>
+                <p>The group begins arguing next to the Genuine Barnacle Boutique. From the dock, Zora-Ship and Casper-Sail watch as Finnian raises his hands in anger, then storms off to ask about the price of the skull.</p>
+                <p>"By the blood-soaked tides of the Azania, if that barnacle-brained lubber tries to haul that onto my deck, I'll split my own seams and let the salt-brine claim us all before I play the part of a floating carnival wagon!"</p>
+                <p>"Oh, darling, do lower the mast-pressure! You'll give yourself a stress fracture. Though I must agree, the aesthetic here is... aggressively pedestrian. Did you see the font on that banner? Papyrus? In a maritime sanctuary? It's a decorative crime. And Finnian... he's actually haggling over the price of a toy. My silk is literally curling at the edges from the sheer lack of refinement."</p>`
+            },
+            {
+                title: "Act 1: Chapter 13",
+                act: 1,
+                html: `<p>"Step right up! The one and only tour of Leviathan's maw in the Lemurian Sea! Step right up!" shouts the smooth-talking salesman in a checkered shirt. "You, mermaid! Child of Atargatis! See the beast of Chaos! The beast only God can subdue!"</p>
+                <p>Bubbles doesn't like crowds. She responds nervously. "Okay. Can we reserve a tour? It's me, this guy in the barrel, him, and the parrot."</p>
+                <p>"Oh, baby, you don't just reserve a tour! First we have to go through the screening process. Checking for Monomania, Ahabian Fixations, and, most crucially, Compulsive Narrative Archery! We can't have tourists trying to write their own tragic ending inside the exhibit. It's bad for the upholstery!" He hands her a brochure. She looks down. It reads,</p>
+                <p><em>"Nothing on earth is his equal—a creature without fear. He looks down on all that are haughty; he is king over all that are proud." -Job 41:33-34.</em></p>
+                <p>Next to that is a clipart of a sea monster. Below it reads,</p>
+                <p><em>"Do you want to see the great Beast that represents the watery chaos of creation? Do you dream of subduing disorder and taming the World? Then, this tour is for you! Ride on The Tempter's Wake with our very own trained Mephistophelean acting troupe! Feel the very sensation of making a Faustian Bargain and being driven to madness by a beast that can't be caught!*"</em></p>
+                <p>She looks down at the asterisk.</p>
+                <p><em>"*Leviathan Tours LTD is not responsible for permanent obsession and mutiny. Please take out a Starbuckian Insurance Claim before riding The Tempter's Wake."</em></p>
+                <p>Theodore grabs the pamphlet from her hands, getting it soaking wet.</p>
+                <p>"Glub—Preposterous! Bubbles, do not sign a single stroke! This checkered scoundrel is peddling a Statutory Phantom! The 'Starbuckian Claim' has been an administrative nullity since the Treaty of the Tainted Tallow in 1702! Section 4-Alpha of that very treaty explicitly disbarred the binding nature of all 'Prudential Cautions' and 'Reasonable Reservations' at sea! The Crown realized that allowing a First Mate to insure against the 'Inscrutable Malice' of a Leviathan created a Conflict of Liability. You cannot insure a soul against a metaphor, you charlatan! It's an actuarial impossibility!"</p>
+                <p>"Nonsense! This barrel man has not read into the Cape of Good Hope Settlement of 1714! It's legally binding!" The salesman flashes a pearly white smile. "Now, my fine obsessive adventurers! If you really want to see the Beast, step right into the screening hold!"</p>
+                <p>"I won't have it! This charlatan doesn't know what he's peddling! The Royal Crown declared the Cape of Good Hope Settlement null and void in 1715! It turned 'Obsession' into a Deductible Expense! Every two-bit pirate with a wooden leg was filing for 'Soul-Crushing Vengeance Reimbursement.' The Royal Treasury was being emptied to fund private grudges against fish! It was fiscal anarchy!"</p>
+                <p>"Good sir, I can spend all day debating the Cape of Good Hope settlement with you! But you'll miss the Three Day Chase!" the salesman says as he combs his hair.</p>
+                <p>"Just let it go, Theodore. We still need to get to Scupper's Rot." Bubbles sighed, throwing her weight against the handcart and awkwardly side-flopping her way through the gawking crowd, the cart's rusted wheels squealing in protest.</p>
+                <p>"Fine, but Her Majesty's Government will hear of this! This tourist deathtrap will be shut down in a New York Minute, once the proper transatlantic filing latency is accounted for!"</p>
+                <p>Finnian walks back to the crew. "The guy said he didn't like his tone." He points at Pepe. "I'm leaving a very bad review on RumRater!"</p>`
+            },
+            {
+                title: "Act 1: Chapter 14",
+                act: 1,
+                html: `<p>The pirate psychologist holds up a paper with an inkblot on it. The crew sits across from him, with Theodore analyzing the authenticity of the "Tortuga Medical" degree on the wall. "Arrr, what does this remind ye of?"</p>
+                <p>"It is a flagrant violation of the Her Majesty's Paperweight Standards of 1842! The opacity is inconsistent!" shouts Theodore immediately.</p>
+                <p>"You tonto! That is clearly oro blanco!" corrects Pepe.</p>
+                <p>"Uh, it looks like a napkin from Arrrby's with a stain on it." mumbles Finnian.</p>
+                <p>"Is it an anchor?" asks Bubbles.</p>
+                <p>The pirate psychologist makes a note on the parchment in front of him and proceeds to hold up a smudged mirror with a picture of the ocean taped to it and continues. "Arr, look into this here mirror." He watches as the crew reacts.</p>
+                <p>Finnian flexes. "Storm-Wrecker in the flesh! Looking good!"</p>
+                <p>"Yer name be Steinberg, aye?"</p>
+                <p>Finnian sighs. "Well, that's my birth name. But I got the name from my loyal crew during a horrible storm when I steered us to safety!"</p>
+                <p>The pirate psychologist makes another note. "Do ye see yerself as wee and insignificant?" he asks the group.</p>
+                <p>"¡Insignificante! I am Pepe el Magnífico! I am the king of the jungle and the terror of the drive-thru! One for you, ten for Pepe! That is the math of a giant!" squawks Pepe.</p>
+                <p>"Sir, I am a Senior Auditor for the Gilded Sovereign! My authority is derived directly from the Crown! I am the human embodiment of the Nautical Standardization Act! I am not 'insignificant'; I am a High-Priority Administrative Asset!" Theodore tries to cross his arms but the barrel is too small.</p>
+                <p>"I... I think I'm just a mermaid who wants to go home. Is that insignificant?" says Bubbles.</p>
+                <p>"Now, I be saying some statements. Tell me how ye feel." He looks down at the paper in front of him, still holding the mirror. "The Leviathan doesn't hate ye; it doesn't even know ye be there. Ye be mathematically insignificant."</p>
+                <p>"Again, I am a Senior Auditor for the Gilded Sovereign! My significance is notarized in triplicate!" Theodore yells. "I demand you strike the word 'insignificant' from the official psychiatric ledger at once! We are leaving!"</p>
+                <p>Bubbles ignores him. "I think that's true. Some things are just bigger than us, and that's okay. Take my Goddess for example. She cursed all of us. But we are just part of her plan now. We got to get something for her and we need to do this ride to follow through. So that's why we're doing this."</p>
+                <p>"Arrr, I be cursed by Hermes to be a psychologist. Ye be alright, just be keeping an eye on that there barrel rat. Proceed to the deck."</p>`
+            },
+            {
+                title: "Act 1: Chapter 15",
+                act: 1,
+                html: `<p>If Zora-Ship is a hazard to biology, The Tempter's Wake is a hazard to good taste. The bulwarks are made of fake plastic whale teeth, and the wheel is in the shape of a cartoon sea monster's face. The Try-works, the massive brick furnace, was a complete facade, complete with painted-on fire. A door painted go-away green is nested into its side, providing a place for the cast members to quickly change their costumes.</p>
+                <p>The lead actor, Captain Vengeance, steps forward. "Hark! Ye pilgrims of the brine! Look ye upon this brick-work furnace, aye, the very crucible of our tormented souls! We seek the Beast of Green, the Verdant Destroyer that snatched my limb as if it were a common chicken wing!" He has both arms, but for the act, he's hiding one in his shirt.</p>
+                <p>Finnian pulls a camera out of his satchel and takes a picture.</p>
+                <p>"Avast! Ye land-bound spirits with your tiny, glowing boxes! Extinguish the False Lightning of the Pharisee! Think ye that the Green Beast can be captured in a spark of phosphor? To flash your 'strobe' is to challenge the very Inscrutable Malice of the Deep! It blinds the Harpooner's soul and, more importantly, it reflects off the Industrial Gesso of the Maw, revealing the seams of our shared delusion! Keep your 'Flash' in the scabbard, or I shall lash your thumbs to the mast of Permanent Exclusion!" shouts the Captain.</p>
+                <p>"Get a load of this guy. Who does he think he is?" Finnian whispers to a pimple-faced young cast member with tattoos drawn on his skin by marker.</p>
+                <p>"Uh, that is Captain Vengeance. He's, uh, lost his mind to the chaos. But no flash photography, seriously."</p>
+                <p>Finnian blows out air from his mouth. "Psh, whatever."</p>
+                <p>"Hearken, ye wandering spirits! See ye the Bulwarks of Salvation? Beyond this plastic line lies the Churning Maw of the Infinite! Keep your fleshy appendages, aye, every finger and every toe, within the sanctified perimeter of the Tempter's Wake! To reach out is to invite the 'Inscrutable Malice' of the Deep to take a souvenir! Think ye that the Beast distinguishes between a tourist's hand and a harpooner's bait? Nay! If ye value the symmetry of your limbs, tether them to your core as if they were lashed to a Sinking Coffin! The Abyss hungers for 'unauthorized protrusions'!" shouts the Captain again.</p>
+                <p>He gets closer to Bubbles and whispers. "Seriously, keep the barrel-man's elbows inside the yellow line. If a 'limb' hits a structural support beam in the Tunnel, the sensor trips, the 'Three Day Chase' shuts down for an hour, and I have to file a Section 4-A Injury Report with the Tourism Guild."</p>
+                <p>"Cast off the lines of Sanity! Cut the umbilical of the Shore! We weigh anchor into the Gulp of the Great Void! Look ye one last time upon the sun, for where we go, there be only the 'Inner Midnight' of the Beast! We sail not for gold, nor for glory, but for the Final Audit of the Soul! To the mainmast with your hopes! To the bilge with your fears! The Tempter's Wake shall not rest until the White Wall of the Infinite is breached by our puny, plastic lance! AWAY! INTO THE PHARYNX!"</p>
+                <p>The boat begins to depart from the dock slowly. A Leviathan costume clad man exits from the go-away green door with a tray of Barnacle Bites.</p>
+                <p>"Don't mind if I do!" Finnian says.</p>
+                <p>Muffled by the costume, the man says "That'll be 3 doubloons."</p>
+                <p>Finnian checks his pocket and shrugs. "Damn, I left my wallet in the pirate's office after he checked my ID. Do you do credit?"</p>
+                <p>This catches the attention of the Captain. "Credit?! Think ye that the Great Leviathan of the Lemurian Sea accepts the ethereal promises of a land-lubbing bank?! We sail into the Void of Indebtedness, where the only currency is soul-fire and blood! To ask for 'Credit' in the Pharynx of Fate is to spit in the eye of Destiny itself! The Beast of Chaos does not recognize your 'Interest Rates' or your 'Monthly Statements'! If ye have not the Hard Coin of the Realm, then ye shall fast upon the bitter salt of your own insignificance!"</p>
+                <p>"Jeez dude. This is getting annoying." says Finnian.</p>`
+            },
+            {
+                title: "Act 1: Chapter 16",
+                act: 1,
+                html: `<p>Theodore is vibrating with rage so strongly the barrel is shaking.</p>
+                <p>"Glub—UNACCEPTABLE! Captain, you stand upon a Culpable Fiction! This 'Try-works' is a hollow shell of deceptive masonry! According to the Statute of Structural Integrity (1684), a furnace must be capable of sustaining a thermal load, not serving as a dressing room for a man in a rubber blowhole! You are broadcasting False Caloric Intent! It is a breach of the Public Trust in Combustion! And furthermore, to claim a 'Final Audit of the Soul' while refusing a Standardized Ledger of Credit is the height of Mercantile Hypocrisy! If this is a 'Void of Indebtedness,' I demand to see the Escrow Accou-"</p>
+                <p>The Captain's patience is at his limit. He had been hearing Theodore's complaints since the boat departed.</p>
+                <p>"SILENCE, YE BOTTOM-FEEDING SCRIBE! LEAVE THE ESCROW TO THE SHARKS AND THE AUDITS TO THE ABYSS!" He reaches out with his one visible hand and grabs the rim of Theodore's barrel, tilting it backward until Theodore is staring straight up at the ceiling. "Think ye that the Verdant Destroyer waits for a notarized permit before he swallows the sun?! Nay! We enter the Maelstrom of No Return, where the only 'Escrow' is the marrow in your bones and the only 'Standardized Ledger' is written in the Soot of the Damned!"</p>
+                <p>Theodore turns to the Leviathan costumed man. "And you are currently in violation of Her Majesty's Sanitary Mandate for Deep-Sea Sustenance!"</p>
+                <p>The Captain breaks character. "Oh, for Atargatis' sake! Shut up already!"</p>
+                <p>"Ahem. Hark! The air grows thick with the Stench of the Unfathomable! Look ye to the starboard bow, where the plastic waves turn to froth and fury! We have reached the Coordinates of the Forbidden! There! In the darkness where light goes to die! THE VERDANT DESTROYER RISES!"</p>
+                <p>They all turn around. A large green tailfin, its rusty hinges creaking, is seen momentarily through the waves, but it quickly re-submerges.</p>
+                <p>Finnian steps towards it. "I, Finnian Storm-Breaker, shall slay the Beast and bring back its head!"</p>
+                <p>The Captain is completely done with the character at this point. "Sir, please. I said keep your arms and legs in the vehicle at all times."</p>
+                <p>It's too late. Finnian has already jumped into the ocean.</p>
+                <p>"Estúpido! You are getting my-glub-plumage we-" shouts Pepe through the water before Finnian completely dives under.</p>
+                <p>The Captain facepalms hard. "We have a Category 4 'Ahabian' Breach! Gary, shut down the hydraulics!"</p>
+                <p>Finnian doesn't return for a while. As the boat comes to a lurching stop, Theodore says, "Captain, cease your gesticulations at once! We are no longer in a 'Three Day Chase'; we are in a Pre-Litigation Discovery Phase! Finnian has officially transitioned from a 'Guest' to a 'Submerged Unregistered Asset.' Under the Nautical Negligence Act of 1833, the moment his boots, which I might add were not Non-Slip Certified, left this hollow deck, the liability shifted from 'General Tourism Risk' to 'Gross Institutional Failure'!"</p>
+                <p>Eventually, after much anticipation and resentment from the crew, Finnian pops his head out of the water. "I almost got it! Damn thing is fast! I grazed it! I grazed it!"</p>
+                <p>"Tonta de mayor orden! You almost drowned Pepe el Magnífico!" says Pepe, spitting out salt water.</p>
+                <p>As the thin safety lifelines come down, Pepe notices a manic force in Finnian's eyes. As the branded Leviathan Tours LTD threads are attached to Finnian's back, the Threads of Fate are snapped.</p>`
+            },
+            {
+                title: "Act 1: Chapter 17",
+                act: 1,
+                html: `<p>"It's been three days! We haven't eaten in so long!" shouts Bubbles.</p>
+                <p>The Zora-Ship groans as they circle The Drowned King's Reach for the 10th time.</p>
+                <p>"The Leviathan is out here! I know it! I will have the Beast's head!" Finnian yells manically, his 5 o'clock shadow vibrating as he spits.</p>
+                <p>"There is no Leviathan! It's a tourist trap! It was fake!" Bubbles tries to get through to him.</p>
+                <p>"Glub—CEASE! Finnian! You are in flagrant, secondary-tier violation of Form 666-MAD: The Affidavit of Total Captainous Derangement and Disregard for Cognitive Equilibrium!" Theodore tries to say, but Finnian isn't listening.</p>
+                <p>Finnian stops navigation and climbs up into the Crow's Nest, causing the mass of Arrrby's wrappers to spill out. He frantically writes in his gift shop autograph book with a Leviathan branded pen.</p>
+                <div class="diary-entry">"The sun is a bleached skull in the heavens, mocking the hollow ribs of this sentient hulk. We tread the Drowned King's Reach not as sailors, but as ghosts bound to a recursive wheel of our own spinning. My crew—if such a collection of damp misery can be called a crew—is a mutinous choir of the small-minded.<br><br>There is the Fish-Maid, whose belly cries out for the pottage of the shore, forgetting that the only true meat is the iron-fleshed Beast that lurks beneath the brine. She speaks of 'Starvation,' as if the soul could be fed by anything less than the Great Head of the Destroyer!<br><br>And the Barrel-Fiend! That brine-soaked imp of the counting-house! He shrieks of 'Forms', as if the Leviathan cares for the opacity of a man's parchment! He invokes Form 666-MAD. Fool! My mind is a Tabernacle of the Great Green Terror! To be 'Sane' in this Churning Void is the only true madness!"</div>
+                <p>As he frantically etches the screed, Pepe is trying and failing to fly off of his shoulder.</p>
+                <p>"¡SOCORRO! ¡AYÚDAME! You are a manicero, a peanut-brained merchant of delusions! I must be removed from estúpida's shoulder at once!"</p>
+                <p>Casper-Sail coughs. "Darlings, I must insist on a cessation of this... this cyclical monotony! My silk is literally weeping at the hems!"</p>
+                <p>Zora-Ship's voice rumbles through the timber. "You want a 'Final Audit of the Soul'? I'll give you a Structural Collapse of the Ego! Casper is weeping silk, the bird is shrieking for crackers, and the Auditor is turning into a pickled herring in that barrel! HEAVE TO, or I swear by Atargatis, I will snap my own keel just to hear the silence!"</p>
+                <p>"If you snap your keel, I shall curse Atargatis with my last breath! We will have eternal domain in Davy Jones' Locker!" Finnian shouts madly.</p>
+                <p>"Please, Finnian! Please, we don't need the three thousand doubloons!" Bubbles cries out.</p>
+                <p>Finnian quiets and looks around at the ocean around them. He grabs his autograph book and continues writing.</p>
+                <div class="diary-entry">"The ocean is not a mother, nor is she a grave. She is a Hollow Ledger of blue glass, vast and terrifyingly vacant. I look upon the waves and see only the Unwritten Margin of the World.<br><br>The Fish-Maid cries for bread, and the Scribe-in-the-Barrel shrieks for his 'Notarized Sanity,' but they do not see the Great White Silence that lies beneath the foam. The water does not care for our 'Three-Day Chase' or the 'Mechanical Mutiny' of this wooden carcass. It is a vast, rolling Indifference."</div>
+                <p>He breathes deeply. "Avast, the Head is already mine!"</p>
+                <p>Bubbles whispers to Theodore. "He's completely lost it. We need to mutiny him."</p>
+                <p>Theodore reaches out of the barrel and speaks slowly. "According to the Nautical Standardization Act of 1802, Section 11-B: The Cessation of Rational Command, the moment a Captain declares a Goddess to be a 'Punctuation Mark,' his Sovereignty is Automatically Forfeited. I am hereby invoking Form 0-REVENGE: The Final Settlement of Interpersonal Hostility and Emergency Transition of Executive Power."</p>`
+            },
+            {
+                title: "Act 1: Chapter 18",
+                act: 1,
+                html: `<div class="form-procedure">In the Gilded Sovereign's Supplemental Code of Conduct (Hostile Maritime Edition), Form 0-REVENGE: Final Settlement of Interpersonal Hostility and Emergency Transition of Executive Power is a 4 and a ½ stage process.</div>
+
+                <p class="form-stage">Stage 1 — The Declaration of Insolvency</p>
+                <div class="form-procedure">If the Captain refers to the sea as a "Hollow Ledger" or "Pharynx," he has defaulted on his mental mortgage. This criteria has already been met. Therefore, if the Gilded Sovereign representative shouts the Oral Notice of Receivership, Stage 2 can be proceeded to.</div>
+
+                <p class="form-stage">Stage 2 — The Physical Partitioning of Assets</p>
+                <div class="form-procedure">Now, Form 0-REVENGE: Final Settlement of Interpersonal Hostility and Emergency Transition of Executive Power actually has contingencies if a passenger is cosmically entangled to the offending officer. Section 2-Beta: Contingencies for Indivisible Biological Liabilities must be invoked by the Gilded Sovereign representative. He must legally declare the offending officer (Finnian) to be the Host Asset and the fused passenger (Pepe) to be the Involuntary Attachment.</div>
+
+                <p>"Glub—HEARKEN! By the authority vested in me by the Gilded Sovereign's Supplemental Code of Conduct (Hostile Maritime Edition), I hereby execute Section 2-Beta: Contingencies for Indivisible Biological Liabilities!"</p>
+
+                <div class="form-procedure">When that is done, the result is that Pepe is granted Temporary Power of Attorney over Finnian's limbs. If the parrot wants to fly to Scupper's Rot, Finnian's shoulder is legally obligated to follow.<br><br>Section 2.4 "The Furniture Protocol" states that if the Fused Officer remains in a state of "Ahabian Catatonia," he is reclassified from Personnel to Fixed Galley Equipment. The Kinetic Executor is authorized to treat Finnian as a "Human Bollard". In the event that the Kinetic Executor is of the Merfolk persuasion, she is legally reclassified as Living Counterweight and is instructed to flop her tail over the Primary Drive-Shaft (Zora's neck), to dampen the vibrations of the Host Asset (Finnian).<br><br>In the event of the Host Asset grabbing the Non-Sanctioned Kinetic Nuisance (Black Maggie), the Gilded Sovereign's Supplemental Code of Conduct triggers a specific, catastrophic regulatory event known as The Conflict of Incompatible Intent. According to Section 4.9: Behavioral Feedback of Errant Hardware, if a "Statutory Phantom" tries to aim a weapon with a "mind of its own," the two madnesses begin to argue.</div>
+
+                <p>"Shoot, damn harpoon! My crew is attacking!"</p>
+                <p>"I don't feel like it right now. Try asking again later."</p>
+
+                <p class="form-stage">Stage 3 — The Formal Nullification of Narrative Pretension</p>
+                <div class="form-procedure">This actually worked out in the crew's favor. Therefore, Stage 3 can be proceeded to. Stage 3 is The Formal Nullification of Narrative Pretension (otherwise known as: The Statutory Eviction of the Alter-Ego). The self-appointed alias (Storm-Wrecker) must be exorcised and replaced with "Asset #402: Unregistered Human Debris." By removing the name, the Gilded Sovereign representative removes the "Narrative Protection." Finnian is no longer a protagonist; he is a Liability in a Striped Shirt.</div>
+
+                <p>"Glub—BEGONE, 'STORM-WRECKER'! I RECOGNIZE ONLY STEINBERG, UNIT #402! YOUR PROSE IS A LIABILITY, AND YOUR ALIAS IS UNAUTHORIZED FICTION!"</p>
+
+                <div class="form-procedure">This section also calls for the nullification of The Manifest of Subjective Delusions & Unauthorized Mythos (Finnian's diary screed). It is legally reclassified as Exhibit C: Evidence of Cognitive Default. The Kinetic Executor is authorized to treat the charcoal ledger as Hazardous Waste.</div>
+
+                <p>"It smells really bad."</p>
+
+                <div class="form-procedure">Once the name and manifest are stripped, the Subject enters a state of Anatomical Transparency. The result, Finnian is no longer a "Captain"; he is a Displaced Biological Occupant. He has no more right to the Quarterdeck than a stray barnacle or a discarded Arrrby's wrapper.</div>
+
+                <p class="form-stage">Stage 4 — The Settlement of Grudges</p>
+                <div class="form-procedure">Therefore, Stage 4 can be proceeded to, the settlement of grudges. This is the Retroactive Billing of the deposed Captain for every minute of psychological distress caused during the "Three-Day Chase." From the bunghole of the barrel, the Gilded Sovereign representative can begin the tally of the Indebtedness Decree.</div>
+
+                <p class="form-penalty">Recursive Circular Navigation — Gross Waste of Environmental Kinetic Energy — 500 doubloons</p>
+                <p class="form-penalty">Unauthorized Use of "Pharynx" — Linguistic Vandalism (Tier 1) — 150 doubloons</p>
+                <p class="form-penalty">Metaphorical Insolvency — Misrepresentation of Natural Law — 300 doubloons</p>
+                <p class="form-penalty">Grooming Negligence — Breach of the Standardized Whisker-Length Act — 50 doubloons</p>
+                <p class="form-penalty">General Ahabian Nuisance — Subjective Emotional Tort — 1,000 doubloons</p>
+
+                <p>"Glub—Steinberg! Unit #402! Your 'Final Audit of the Soul' has returned a Deficit of Character! You are hereby billed for Two Thousand Doubloons of Pure Irritation! Your 'Storm-Wrecker' ego has been liquidated to pay for the salt-damage to my spectacles! Stage 4 is EXECUTED!"</p>
+
+                <div class="form-procedure">In the event of Asset #402 forgetting his wallet in the pirate psychologist's office and is deemed unable to pay, this is classified as Section 7.2: Premeditated Fiscal Evasion via Memory Lapse. A soul crushing contingency known as The Indentured Narrative Clause is invoked. Since he cannot pay with coin, he must pay with Kinetic Output. Asset #402 is stripped of his right to "sit and stare into the void," and is legally transformed into a Bipedal Engine. The Kinetic Executor is authorized to lash a rope to his waist and force him to "Tread the Wheel" or "Scrub the Barnacles" until the 2,000-doubloon debt is amortized at a rate of 1 copper per 1,000 strokes. If Asset #402 attempts to speak in Moby-Dick prose or use a "cool" alias before the 2,000 doubloons are cleared, he is hit with an Instant Compounding Interest Penalty of 50%. He must remain "Unit #402: The Unregistered Human Debris" until his fiscal standing is restored.</div>
+
+                <p class="form-stage">Stage 4½ — The Mirror's Silence</p>
+                <div class="form-procedure">The half step can finally be proceeded to, the Mirror's Silence. This is the moment where the "Storm-Wrecker" mask is dissolved by the mundane. The ship falls into an eerie silence. The only sound is the rhythmic, agonizingly boring slosh of water against the hull. The "Great White Silence" the asset formerly known as Finnian wrote about is replaced by the Great Grey Boredom.</div>
+
+                <p>Asset #402 looks at his hands. He realizes they aren't the hands of a legend; they are just hands. He realizes that the "Inscrutable Malice" of the sea was actually just a Lack of Proper Maintenance and a Missed Lunch.</p>
+
+                <div class="form-procedure">However, the final step of the half step is cut short, as it always is, before the recontextualization of the narrative can take place. The reason being is that the real Leviathan suddenly emerged from the deep.</div>`
+            },
+            {
+                title: "Chapter 19",
+                act: 1,
+                leviathan: true,
+                html: `<p>The members of the crew each have a unique relationship with time. Theodore likes to do things on the dot, the Asset previously known as Finnian likes to do things whenever he wants, Casper-Sail and Zora-Ship bend time to their schedules, Bubbles has no conception of time, and Pepe views time as something to be sacrificed for oro blanco.</p>
+                <p><span class="leviathan-text">But the Leviathan is Time. It is Entropy.</span></p>
+                <p>Asset #402 feels the Great Grey Boredom change once again. This time, it becomes The Ashen Infinite, a terrifying ancient weight that pulls heavily on his mind and soul.</p>
+                <p>The Beast is a horrifying mass of scales and fins. Everywhere the crew looked, the totality of their vision was filled with abyssal jade features of horrifying magnitude. The fangs of the Beast dripped with the flotsam of epochs long passed. It lets out a ferocious roar that burrows deep into the core of each of them.</p>
+                <p>Theodore has no form for this. Asset #402 has no dramatic dialogue for this.</p>
+                <p>"Run for your lives!" shouts Bubbles. But it's too late. The Beast grabs Zora-Ship like a puny clam.</p>
+                <p>"I'm out of here!" shouts Black Maggie as it jumps into the ocean.</p>
+                <p>In one fell swoop, Zora-Ship is consumed by the gaping maw of the Beast.</p>`
+            },
+            {
+                title: "Chapter 20",
+                act: 1,
+                leviathan: true,
+                html: `<p>Darkness. The crew closes their eyes, but it's darker when they are open than when they are closed. Silence. The crew tries to scream, but when they are silent the noise is louder.</p>
+                <p>The flotsam falls past them at a dizzying pace. A Viking longship flutters by their eyes, but its path is intercepted by a Roman trireme. Three caravel ships flying the Spanish flag are caught in an ethereal vortex. A lifeboat with the skeleton of a tiger and a young boy still holding on falls into the abyss. A military patrol boat is frozen in time, its inhabitants stuck in an endless loop of firing at nothing, still waiting for the enemy to appear over the horizon. A fishing boat fights turbulent air, descending and ascending at a violent pace.</p>
+                <p>The crew falls and falls. The sight and sound and smell is overwhelmingly quiet, yet deafening to the senses.</p>
+                <p>After an instant, or centuries, Zora-Ship finally hits the ground.</p>
+                <p>"Well… glub… I say…cough.. Form 00…VOID…certificate… absolute displacement…" Theodore tries to spit out.</p>
+                <p>No one else says anything for a while. A bony rail-thin man sitting on a pile of shipwrecks watches as they slowly get up and look around.</p>
+                <p>"Where… are… we?" sputters Bubbles, who is flopping like a fish.</p>
+                <p>The man continues watching as they get acquainted with their surroundings. They reached out toward the "wall", a pulsating barrier of static and flesh. The moment their skin grazed it, it burned like raw electricity, forcing them to violently recoil.</p>
+                <p>"El infierno… lazy one…has gotten us killed." Pepe groans.</p>
+                <p>"I just wanted…to have…something…real." says Asset #402.</p>
+                <p>The man rises. He walks steadfastly without dubiety over to them.</p>
+                <p>"You!" he calls out, in a voice harsh and stern. "Who have you disgraced?"</p>
+                <p>"Excuse… me?" asks Bubbles.</p>
+                <p>"Who. Have. You. Disgraced? It's a simple question. What deity?"</p>
+                <p>"We haven't disgraced anyone." says Bubbles.</p>
+                <p>The man laughs coldly. "That's a riot. Look at you. You have that bird stuck to his shoulder, a bureaucrat in a barrel, and your ship is a woman. So who have you disgraced?"</p>
+                <p>"I am not just a woman!" Zora's voice rumbles through the deck, vibrating the very shipwrecks they stand on. "I am the Zora-Ship! I have outrun the Royal Navy on a broken rudder!"</p>
+                <p>"Yeah, yeah. See how far that gets you down here," the man says.</p>
+                <p>"It was el perezoso! I am just a bird of the jungle, a victim of poor leadership and a lack of snacks!" Pepe deflects.</p>
+                <p>"Poseidon? Zeus? Could be the work of Loki."</p>
+                <p>"It was Atargatis, okay. They destroyed her shrine. I just happened to be there." says Bubbles.</p>
+                <p>"Yeah, you just happened to be there. And I just happened to abandon my post. Listen, fish lady, there is no 'happened' with the gods. They'll curse anyone and everyone. And if you try to resist, this is what happens to you." He gestures to the vast pit of despair around him.</p>`
+            },
+            {
+                title: "Chapter 21",
+                act: 1,
+                leviathan: true,
+                html: `<p>The thin man gestures around to the one thing the crew didn't notice in the chaos. There are dozens and dozens of bottles spilling out from the shipwreck onto the floor.</p>
+                <p>"You see this? This is my life's worth. Everything I had, my position, my family, it's meaningless now. All I have is these bottles. You know what I do with these bottles? I put notes in them, then I throw them down to the small intestine. They go into the ocean. Then people write back. And everything everywhere eventually gets consumed by this Beast. It's inescapable. So I read the responses, then I do the process all over again."</p>
+                <p>"Wh-what do you write?" asks Bubbles.</p>
+                <p>"I write the truth! That the Gods are cruel and arbitrary! That they cursed me for 'happenstance', just like they cursed you for 'happenstance'! That the Universe is a sick joke, and we're the punchline!"</p>
+                <p>Bubbles picks one up and reads it. She's overwhelmed with the vitriol contained within. She puts it back carefully.</p>
+                <p>"Some trireme captain from the Punic Wars tried to argue that Neptune actually cares about 'piety.' I tore his argument apart."</p>
+                <p>Bubbles looks at the man. She sees his frail arms shake and tremor. It makes her sad, but before she can dwell on it, she is interrupted by Theodore.</p>
+                <p>"You are sending inter-intestinal correspondence without a Form 9-MAIL: Standardized Maritime Postal Seal? This is a logistical anarchy! The Sovereign will not be mocked by unorganized glass bottles!"</p>
+                <p>"Oh just stop. The Queen is another cruel and unjust goddess. You are but a slave to the prison of your own mind. Do you really think any of that matters anymore? We are in Hell, Sheol, Hades, Duat! There is no Queen down here!"</p>
+                <p>"Well, sir, I must firmly correct you there! Under the Universal Jurisdiction Mandate of 1792, the Queen's authority does not stop at the shoreline, nor does it terminate at the esophagus of a prehistoric vertebrate!" says Theodore.</p>
+                <p>The conversation rings in Asset #402's ears. "I… did.. this." he mutters to himself.</p>
+                <p>The thin man hears it. "No, you didn't. They did! They created us as their playthings, and playtime is unsupervised."</p>
+                <p>"Do not speak to him, you... you Amateur Ontologist! Asset #402 is currently undergoing Narrative Liquidation and Categorical Re-assignment! His sense of 'self' is a strictly regulated government byproduct!"</p>
+                <p>"You're using bureaucratic speak to mask a fundamental existential dread. Your soul cries out for order but there is none! There is only divine whim!"</p>
+                <p>Theodore is aghast. "I've had enough of this! I am a representative of the Gilded Sovereign, and by that, Her Majesty's Government! I am establishing order in this God-forsaken bowel!" He tries but can't get out of his barrel.</p>
+                <p>"Bubbles! We must go to the hold at once, and begin construction of The Provisional Sub-Basin Magistrate's Kiosk!"</p>
+                <p>Bubbles, just wanting to escape the situation and her sadness, obliges.</p>
+                <p>"You can't red-tape your way out of the Infinite Plan!" shouts the thin man as they leave, the water spilling from the barrel as Bubbles wheels it over the wreckage of a luxury passenger liner.</p>`
+            },
+            {
+                title: "Act 1: Chapter 22",
+                act: 1,
+                crown: true,
+                html: `<p>"Theodore, darling…this 'Kiosk' is an architectural crime. You've used driftwood oak for the counter and rotted trireme cedar for the shelving? It's a muddle of textures! And the 'Official Notice' you've etched into that Leviathan scale? The kerning is atrocious. If we are to be digested by a primordial entity of entropy, must we do it in a booth that looks like a failed lemonade stand from the provinces?" says Casper-Sail, seeing the fruits of Theodore's labor.</p>
+                <p>The Provisional Sub-Basin Magistrate's Kiosk, after much deliberation and argument, was finished. Because it was built by a man in a barrel using the only available resources in the Abyss, that being wood from shipwrecks, Casper-Sail's objections are entirely accurate.</p>
+                <p>It's a small, cramped, and entirely unnecessary wooden booth positioned directly in the middle of the Leviathan's stomach ground, featuring a waist-high counter, a small slot for "Incoming Grievances," and a sign hand-painted in squid ink.</p>
+                <p>Theodore used an old anchor chain to mark off a 5x5 foot square, and anyone entering this square is legally considered to be "On Crown Soil" and must remove their hat. He also took the scattered messages-in-bottles on the ground and arranged them in neat rows, labeling them "Unprocessed External Correspondence: Pending Audit."</p>
+                <p>Bubbles is incredibly annoyed because for the past couple of Stomach Grumbles, the unit of time the crew has been forced to use, she has been ordered around by Theodore to gather materials and construct the building to his exact specifications.</p>
+                <p>"Bubbles, I demand you wheel me over to the counter at once!" Theodore commands from The Sovereign H.M.S. Cask of Sovereign Jurisdiction (the barrel).</p>
+                <p>She sighs and begins to wheel him over. "Are we done yet?"</p>
+                <p>"Yes, you may take your allocated break for the Grumble, according to the Gilded Sovereign's Manual of Sub-Aquatic Labor & Servitude."</p>
+                <p>Bubbles flops away, hoping to find a quiet pyloric valve so she can finally nap.</p>
+                <p>"Now then, I must begin The Preliminary Audit of Nihilistic Despair!" Theodore says, turning his attention to the thin man's bottle collection. He uncorks a vintage message from the "Pile of Existential Dread" and holds it up to the bioluminescent glow of a nearby gastric gland. Using a dried piece of kelp, he redlines the typos and meticulously marks them void according to Section 9-C: Unauthorized Distribution of Metaphysical Melancholy.</p>
+                <p>"You are a sad man. I believe Schopenhau-Arrr said something about this." The thin man grabs one of his voided messages.</p>
+                <p>"The life of our body is only a continually checked process of dying, an ever-deferred death," the thin man affirms solemnly, holding the voided parchment to his chest. "Every breath we draw wards off the death that is constantly intruding upon us. The history of every life is a history of suffering—for, as a rule, every life is a continual struggle for existence itself, with the certainty of a final shipwreck."</p>
+                <p>"Cease your philosophical ramblings at once! You are on Crown Soil! I am officially citing you under The Royal Decree of Intellectual Sanitation & Metaphysical Littering of 1712!"</p>
+                <p>"Stating that this is crown soil does not make it so. You have no more right to issue a citation than this Beast has to turn you into excrement." the thin man counters.</p>
+                <p>"Glub—Incorrect! Your ignorance of The Jurisdictional Expansion Act of 1604 is staggering, even for a nihilist! Under Section 4-Delta: The Continuity of Governance, wherever a Senior Auditor of the Crown establishes a Permanent Administrative Hub, such as this Kiosk, that territory is immediately annexed as a Provisional Crown Colony! The Leviathan's stomach is not a void; it is currently an Unincorporated Overseas Territory!"</p>
+                <p>Theodore points a trembling finger at Asset #402. "And as for my authority to issue citations? You forget that Asset #402 is a captured Pirate of the Realm! Under the Privateer Conscription Mandate, any pirate seized by a Crown Officer and reclassified as 'Human Debris' becomes a De Facto State Representative for the purpose of maintaining decorum! Asset #402, arrest him under The Act of Intellectual Vagrancy of 1704!"</p>
+                <p>Asset #402, his ego dissolved along with his conception of time itself, and desperately searching for any kind of function in an unforgiving universe, obliges.</p>`
+            },
+            {
+                title: "Act 1: Chapter 23",
+                act: 1,
+                crown: true,
+                html: `<p>"¡Qué vergüenza! The terror of the drive-thru is now a municipal errand boy! You have been promoted from a pirate to a paperweight!" Pepe squawks from Asset #402's shoulder as Asset #402 approaches the thin man.</p>
+                <p>"You have the right to remain silent. Anything you say can and will be used against you in a maritime court." Asset #402 says aggressively.</p>
+                <p>"This is just ridiculous. I - ow!"</p>
+                <p>The thin man is slammed to the wall of the kiosk.</p>
+                <p>"You have the right to an attorney. If you cannot afford one, one will be provided for you."</p>
+                <p>"Who will be my attorney?! There is no legal system in a Beast's digestive system! This is a complete farce!"</p>
+                <p>"Glub—Cease your histrionics, Prisoner! The Crown does not leave its subjects, even the intellectually vagrant ones, without the shield of the Law!" Theodore proclaims, the bioluminescent glow of the gastric glands reflecting off his spectacles. "Under The Public Defender & Kinetic Asset Consolidation Act of 1798, in territories where the population of qualified barristers is precisely zero, the Special Envoy is legally required to assume the mantle of Court-Appointed Solicitor! Therefore, Asset #402 is now your Attorney! He shall represent your 'Despair' with the same mechanical efficiency with which he currently represents my 'Bailiff'!"</p>
+                <p>"This is absurd! I don't recognize this authority!" The screams of protest are drowned out by the grumble of the stomach.</p>
+                <p>"As another Grumble has passed, the mandatory holding period has ended! The Court can begin its session!" Theodore proclaims.</p>
+                <p>From his barrel, Theodore begins the procedure. "Order! Order in the Esophagus! Asset #402, please provide your opening statement."</p>
+                <p>Asset #402 is just happy to have a function. He strides confidently to the thin man. "Let me consult with my client first." He begins trying to whisper to the man, but Pepe collides with the man's nose. The thin man yells, ignoring the invitation of the whisper. "This is a kangaroo court! You have proved my point! You have created a 'government' based on nothing! You have no more claim to reality than the gods themselves!"</p>
+                <p>"Bailiff, please remind the defense attorney that he must keep his client from yelling in the court procedure, lest he be tried with contempt of court under the Act of 1715." The barrel judge demands.</p>
+                <p>"Hey, get your client under control!" Asset #402 demands. Asset #402 responds. "This is judicial overreach! My client is clearly suffering from acute distress! I move for a mistrial!" Asset #402 barks back, "The court has rules for a reason, you ambulance chaser! Keep him under control or I will deal with him myself!"</p>
+                <p>"Order! Order! What is your opening statement!" Theodore interrupts.</p>
+                <p>"I move to strike my client's outbursts from the record! He was not read his rights properly upon arrest, was threatened by the bailiff, and he is clearly suffering from madness! He is incompetent to stand trial!"</p>
+                <p>"Glub—Motion Denied! Under The Statutory Sanity & Cognitive Minimums Act of 1702, 'Madness' is only a valid defense if the defendant can no longer distinguish between a Standardized Regulation and a Gastric Delusion! Your client was heard, in a clear, baritone, and grammatically acceptable voice, quoting Schopenhauerian doctrine! A man who can navigate the complex syntax of German Pessimism is legally capable of standing trial for it!"</p>
+                <p>Theodore slams his whale-rib gavel down, narrowly missing his own ink-well of squid bile.</p>
+                <p>"Furthermore," Theodore bellows, pointing at Asset #402, "to ensure there is no 'Hostile Legal Environment,' I am hereby invoking Section 12-Gamma: The Intra-Personal Oversight Clause!</p>
+                <p>"Asset #402, I am officially declaring you the Third-Party Auditor of Your Own Conduct! You are now legally required to observe your actions as a Bailiff, cross-reference them with your duties as a Solicitor, and file a Form 99-Z: Internal Conflict Resolution Report every three Heart-Thumps! If you find that you are overreaching against yourself, you must issue a Formal Reprimand to your own Left Arm and report it to the Kiosk immediately!"</p>
+                <p>Asset #402 immediately files a motion against himself. "The bailiff has clearly violated the Use of Force Policy! My client cannot be tried under these conditions!"</p>
+                <p>Asset #402 files a motion against this motion. "Your Honor! I move to Quash the Defense's Motion to Strike! This is clearly a Dilatory Tactic designed to obstruct the Gastric Audit!"</p>
+                <p>Asset #402 files a motion against this motion to quash the motion. "Your Honor! As the Court-Appointed Third-Party Auditor, I hereby move to Vacate the Prosecution's Motion to Quash! Upon internal review of my own conduct, I have found that the Prosecutor-Persona is currently engaged in Regulatory Gaslighting! By attempting to quash the Defense-Persona's legitimate grievance, the Prosecution is creating an Internal Audit Imbalance! I move to stay the Quash, reinstate the Strike, and launch a Formal Investigation into my own Sincerity! My left hand can no longer trust my right hand's filing cabinet!"</p>
+                <p>"Make it stop! Make it stop!" the thin man screams, covering his ears with his hands.</p>`
             }
         ];
 
         let currentChapter = 0;
+        let leviathanMode = false;
+        let woodMode = false;
 
         function renderChapter() {
             const ch = chapters[currentChapter];
@@ -382,17 +770,35 @@
             document.getElementById('prevBtn').style.display = currentChapter === 0 ? 'none' : 'inline-block';
             document.getElementById('nextBtn').style.display = currentChapter === chapters.length - 1 ? 'none' : 'inline-block';
 
-            // Toggle Zora-Ship mode for Act 1+
             const logbook = document.querySelector('.logbook');
             const stamp = document.querySelector('.stamp');
-            if (ch.act >= 1) {
+
+            // Reset all modes
+            logbook.classList.remove('zora-mode', 'leviathan-mode');
+            stamp.classList.remove('zora-mode', 'leviathan-mode');
+
+            if (ch.leviathan) {
+                logbook.classList.add('leviathan-mode');
+                stamp.classList.add('leviathan-mode');
+                stamp.innerHTML = 'THE<br>MAW<br>OPENS';
+                leviathanMode = true;
+                woodMode = false;
+            } else if (ch.crown) {
+                logbook.classList.add('zora-mode');
+                stamp.classList.add('zora-mode');
+                stamp.innerHTML = 'OFFICIAL<br>KIOSK<br>SEAL';
+                leviathanMode = false;
+                woodMode = true;
+            } else if (ch.act >= 1) {
                 logbook.classList.add('zora-mode');
                 stamp.classList.add('zora-mode');
                 stamp.innerHTML = 'OFFICIAL<br>ZORA-SHIP<br>SEAL';
+                leviathanMode = false;
+                woodMode = false;
             } else {
-                logbook.classList.remove('zora-mode');
-                stamp.classList.remove('zora-mode');
                 stamp.innerHTML = 'OFFICIAL<br>SOVEREIGN<br>SEAL';
+                leviathanMode = false;
+                woodMode = false;
             }
         }
 
@@ -472,16 +878,15 @@
         }
 
         // Wind Waker palette
-        const FOAM   = [200, 240, 255];  // light cyan foam
-        const BLUE1  = [26, 163, 232];   // main blue
-        const BLUE2  = [18, 130, 195];   // shadow blue
-        const BLUE3  = [12, 105, 168];   // deep shadow
+        const FOAM   = [200, 240, 255];
+        const BLUE1  = [26, 163, 232];
+        const BLUE2  = [18, 130, 195];
+        const BLUE3  = [12, 105, 168];
 
-        function render(time) {
+        function renderOcean(time) {
             const t = time * 0.0001;
             const imgData = ctx.createImageData(w, h);
             const data = imgData.data;
-
             const noiseScale = 0.035;
             const drift = t * 3;
             const driftY = t * 1.5;
@@ -490,47 +895,189 @@
                 for (let x = 0; x < w; x++) {
                     const nx = x * noiseScale + drift;
                     const ny = y * noiseScale + driftY;
-
-                    // Primary blob noise
                     const n = fbm(nx, ny, 3);
-                    
-                    // Secondary detail noise for shadow shapes within blobs  
                     const n2 = fbm(nx * 1.8 + 50, ny * 1.8 + 50, 2);
-
-                    // Tertiary noise for edge wobble
                     const n3 = noise2D(nx * 0.7 + 100, ny * 0.7 + 100);
+                    const idx = (y * w + x) * 4;
+                    let r, g, b;
+                    const threshold = 0.42 + n3 * 0.06;
+                    if (n < threshold) {
+                        r = FOAM[0]; g = FOAM[1]; b = FOAM[2];
+                    } else if (n < threshold + 0.04) {
+                        r = BLUE2[0]; g = BLUE2[1]; b = BLUE2[2];
+                    } else {
+                        if (n2 > 0.55) { r = BLUE3[0]; g = BLUE3[1]; b = BLUE3[2]; }
+                        else { r = BLUE1[0]; g = BLUE1[1]; b = BLUE1[2]; }
+                    }
+                    data[idx] = r; data[idx+1] = g; data[idx+2] = b; data[idx+3] = 255;
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function renderChaos(time) {
+            const t = time * 0.00008;
+            const imgData = ctx.createImageData(w, h);
+            const data = imgData.data;
+            const cx = w * 0.5;
+            const cy = h * 0.5;
+            const maxR = Math.sqrt(cx * cx + cy * cy);
+
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const dx = x - cx;
+                    const dy = y - cy;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx);
+                    const normDist = dist / maxR;
+
+                    // Swirl distortion - increases toward center
+                    const swirl = t * 12 + normDist * 8 + angle;
+                    const warpX = Math.cos(swirl) * dist * 0.04;
+                    const warpY = Math.sin(swirl) * dist * 0.04;
+
+                    // Layered noise at warped coordinates
+                    const nx = (x + warpX) * 0.05 + t * 5;
+                    const ny = (y + warpY) * 0.05 + t * 3;
+                    const n1 = fbm(nx, ny, 4);
+                    const n2 = fbm(nx * 2.2 + 77, ny * 2.2 + 77, 3);
+                    const n3 = noise2D(nx * 0.6 + t * 8, ny * 0.6);
+
+                    // Spiral bands
+                    const spiral = (angle + t * 4 + n1 * 3 + normDist * 6) % (Math.PI * 2);
+                    const band = Math.sin(spiral * 3) * 0.5 + 0.5;
 
                     const idx = (y * w + x) * 4;
                     let r, g, b;
 
-                    // Threshold for blob vs foam
-                    const threshold = 0.42 + n3 * 0.06;
-                    
-                    if (n < threshold) {
-                        // Foam / light water between blobs
-                        r = FOAM[0]; g = FOAM[1]; b = FOAM[2];
-                    } else if (n < threshold + 0.04) {
-                        // Edge of blob - slightly darker outline
-                        r = BLUE2[0]; g = BLUE2[1]; b = BLUE2[2];
+                    if (band < 0.2) {
+                        // Deep void - near black with violet
+                        r = 12 + n2 * 15;
+                        g = 4 + n2 * 8;
+                        b = 18 + n2 * 25;
+                    } else if (band < 0.4) {
+                        // Dark crimson currents
+                        r = 55 + n1 * 50;
+                        g = 8 + n1 * 12;
+                        b = 15 + n2 * 25;
+                    } else if (band < 0.6) {
+                        // Bruised violet
+                        r = 40 + n2 * 35;
+                        g = 10 + n1 * 15;
+                        b = 45 + n1 * 50;
+                    } else if (band < 0.8) {
+                        // Ashen bone flash
+                        const flash = n3 > 0.6 ? 1 : 0;
+                        r = 30 + n1 * 40 + flash * 80;
+                        g = 18 + n1 * 20 + flash * 60;
+                        b = 22 + n2 * 30 + flash * 40;
                     } else {
-                        // Inside blob
-                        if (n2 > 0.55) {
-                            // Shadow mark inside blob
-                            r = BLUE3[0]; g = BLUE3[1]; b = BLUE3[2];
-                        } else {
-                            // Main blue
-                            r = BLUE1[0]; g = BLUE1[1]; b = BLUE1[2];
-                        }
+                        // Rust and dried blood
+                        r = 70 + n1 * 45;
+                        g = 12 + n2 * 15;
+                        b = 8 + n1 * 18;
                     }
 
-                    data[idx] = r;
-                    data[idx + 1] = g;
-                    data[idx + 2] = b;
-                    data[idx + 3] = 255;
+                    // Vortex darkening toward center
+                    const vortexDark = Math.min(1, normDist * 1.5 + 0.15);
+                    r = Math.floor(r * vortexDark);
+                    g = Math.floor(g * vortexDark);
+                    b = Math.floor(b * vortexDark);
+
+                    data[idx] = r; data[idx+1] = g; data[idx+2] = b; data[idx+3] = 255;
                 }
             }
-
             ctx.putImageData(imgData, 0, 0);
+        }
+
+        function renderWood(time) {
+            const t = time * 0.00002;
+            const imgData = ctx.createImageData(w, h);
+            const data = imgData.data;
+
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const idx = (y * w + x) * 4;
+
+                    // Plank structure - horizontal bands
+                    const plankH = 12;
+                    const plankY = y % plankH;
+                    const plankIdx = Math.floor(y / plankH);
+
+                    // Plank gap (dark line between planks)
+                    if (plankY === 0) {
+                        data[idx] = 8; data[idx+1] = 5; data[idx+2] = 3; data[idx+3] = 255;
+                        continue;
+                    }
+
+                    // Each plank has a unique seed offset
+                    const plankSeed = perm[plankIdx & 255] * 0.1;
+
+                    // Wood grain - stretched horizontal noise
+                    const grain = fbm(x * 0.08 + plankSeed, y * 0.015 + plankSeed * 3, 3);
+                    const grain2 = noise2D(x * 0.03 + plankSeed + 50, y * 0.01 + 50);
+
+                    // Knot holes - occasional dark circles
+                    const knotN = noise2D(x * 0.02 + plankSeed * 7, plankIdx * 2.5);
+                    const isKnot = knotN > 0.78;
+
+                    // Rot patches - greenish/dark decay
+                    const rot = fbm(x * 0.04 + 200 + t * 0.5, y * 0.04 + 200, 2);
+                    const isRot = rot > 0.62;
+
+                    // Nail/bolt spots
+                    const nailX = (x + perm[plankIdx & 255]) % 40;
+                    const nailY = plankY;
+                    const isNail = nailX < 2 && nailY > 4 && nailY < 8 && (plankIdx % 3 === 0);
+
+                    let r, g, b;
+
+                    if (isNail) {
+                        // Rusted nail
+                        r = 45 + grain * 15;
+                        g = 28 + grain * 8;
+                        b = 12;
+                    } else if (isKnot) {
+                        // Dark knot hole
+                        r = 15 + grain * 10;
+                        g = 10 + grain * 6;
+                        b = 5 + grain * 4;
+                    } else if (isRot) {
+                        // Rotting green-brown decay
+                        r = 30 + grain * 20;
+                        g = 35 + grain * 25;
+                        b = 15 + grain * 10;
+                    } else {
+                        // Base wood - weathered brown with grain variation
+                        const warmth = grain2 * 0.3;
+                        r = Math.floor(50 + grain * 45 + warmth * 20);
+                        g = Math.floor(32 + grain * 30 + warmth * 10);
+                        b = Math.floor(16 + grain * 18);
+
+                        // Slight per-plank color shift for variety
+                        const plankTint = (perm[(plankIdx * 3) & 255] / 255) * 15 - 7;
+                        r = Math.max(0, Math.min(255, r + plankTint));
+                        g = Math.max(0, Math.min(255, g + plankTint * 0.5));
+                    }
+
+                    // Water stain darkening in patches
+                    const stain = noise2D(x * 0.02 + 300, y * 0.02 + 300);
+                    if (stain > 0.6) {
+                        r = Math.floor(r * 0.7);
+                        g = Math.floor(g * 0.7);
+                        b = Math.floor(b * 0.75);
+                    }
+
+                    data[idx] = r; data[idx+1] = g; data[idx+2] = b; data[idx+3] = 255;
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function render(time) {
+            if (leviathanMode) { renderChaos(time); }
+            else if (woodMode) { renderWood(time); }
+            else { renderOcean(time); }
             requestAnimationFrame(render);
         }
 
