@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>~ GAMMA CORRECTION ~</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
@@ -34,23 +36,25 @@
         /* --- THE BONZI ANOMALY --- */
         #bonzi-surfer {
             position: fixed;
-            top: -300px; 
+            top: -300px;
             left: -300px;
             width: 180px;
-            z-index: 10000; 
-            pointer-events: none; 
+            z-index: 10000;
+            pointer-events: none;
             image-rendering: pixelated;
             filter: drop-shadow(0 0 15px #aa00ff);
         }
 
+        /* The source image faces left, so travelling right needs the flip
+           and travelling left needs the unflipped original. */
         @keyframes flyRight {
-            from { transform: translate(-200px, 100vh) rotate(15deg) scaleX(1); }
-            to { transform: translate(120vw, -300px) rotate(-15deg) scaleX(1); }
+            from { transform: translate(-200px, 100vh) rotate(-15deg) scaleX(-1); }
+            to   { transform: translate(120vw, -300px) rotate(15deg)  scaleX(-1); }
         }
 
         @keyframes flyLeft {
-            from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(-1); }
-            to { transform: translate(-300px, -300px) rotate(15deg) scaleX(-1); }
+            from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(1); }
+            to   { transform: translate(-300px, -300px) rotate(15deg) scaleX(1); }
         }
 
         /* --- CREATOR STATION LAYOUT --- */
@@ -59,7 +63,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 15px; 
+            gap: 15px;
             margin-bottom: 30px;
             flex-wrap: nowrap;
         }
@@ -76,7 +80,7 @@
             background: #000;
             border: 2px solid #777;
             padding: 5px;
-            width: 140px; 
+            width: 140px;
             text-align: center;
             image-rendering: pixelated;
             font-family: 'VT323', monospace;
@@ -96,7 +100,7 @@
             border: 1px inset #555;
         }
 
-        .v-bar { width: 10px; height: 30%; transition: height 0.1s; } 
+        .v-bar { width: 10px; height: 30%; transition: height 0.1s; }
         .v-red { background: #ff0000; }
         .v-orange { background: #ff7700; }
         .v-yellow { background: #ffff00; }
@@ -164,162 +168,154 @@
             padding: 2px;
             text-decoration: none;
         }
+
+        /* Every portal GIF now animates, and hovering the LABEL animates it
+           too, so the whole portal is one target instead of just the image. */
+        .portal img {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .portal a:hover img,
+        .portal a:focus img {
+            transform: scale(1.15) rotate(-6deg);
+            filter: drop-shadow(0 0 25px #ffffff);
+        }
+        .portal a:focus { outline: 2px solid #ffffff; outline-offset: 2px; }
+
         .badge-bar img { height: 35px; margin: 0 3px; }
 
         #project-rerun { left: 5%; top: 5%; }
         #project-voyager { right: 5%; top: 5%; }
-        #project-fire { left: 50%; bottom: 5%; transform: translateX(-50%); } 
-        #project-harvest { left: 5%; bottom: 5%; } 
-        
+        #project-fire { left: 50%; bottom: 5%; transform: translateX(-50%); }
+        #project-harvest { left: 5%; bottom: 5%; }
+
         #project-gravel { left: 15%; top: 20%; }
         #project-gravel img {
             width: 50px; filter: drop-shadow(0 0 15px #00FF00); image-rendering: pixelated;
         }
 
-        /* --- DOWNLOADS PORTAL (MOVED) --- */
-        #project-download { 
-            right: 15%; 
-            bottom: 20%; 
-            z-index: 1001; 
-        }
+        #project-download { right: 15%; bottom: 20%; z-index: 1001; }
         #project-download img {
-            width: 90px; 
-            filter: drop-shadow(0 0 15px #00ffff); 
-            image-rendering: pixelated; 
-            transition: 0.3s;
+            width: 90px;
+            filter: drop-shadow(0 0 15px #00ffff);
+            image-rendering: pixelated;
         }
-        #project-download img:hover { 
-            filter: drop-shadow(0 0 25px #ffffff);
-            transform: scale(1.1);
-        }
-        #project-download .portal-text { 
-            color: #00ffff; 
-            border: 1px solid #00ffff; 
+        #project-download .portal-text {
+            color: #00ffff;
+            border: 1px solid #00ffff;
             font-weight: bold;
             text-transform: uppercase;
         }
 
         #project-trumpagotchi { right: 25%; top: 18%; z-index: 1001; }
         #project-trumpagotchi img {
-            width: 75px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated; transition: transform 0.2s;
+            width: 75px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated;
         }
-        #project-trumpagotchi img:hover { transform: scale(1.1) rotate(5deg); }
         #project-trumpagotchi .portal-text { color: #ffd700; border: 1px solid #ffd700; font-weight: bold; }
 
         #project-needle { right: 5%; bottom: 5%; z-index: 1001; }
         #project-needle img {
-            width: 70px; filter: drop-shadow(0 0 15px #00ffff); image-rendering: pixelated; transition: transform 0.3s ease-in-out;
+            width: 70px; filter: drop-shadow(0 0 15px #00ffff); image-rendering: pixelated;
         }
-        #project-needle img:hover { filter: drop-shadow(0 0 20px #ffffff); transform: scale(1.1) rotate(-10deg); }
+        /* The needle spins the other way, for character. */
+        #project-needle a:hover img { transform: scale(1.15) rotate(20deg); }
 
-        /* --- BOARD GAME MULTIVERSE PORTAL --- */
         #project-boardgame { left: 25%; bottom: 15%; z-index: 1001; }
         #project-boardgame img {
             width: 85px; filter: drop-shadow(0 0 15px #ff00ff); image-rendering: pixelated;
         }
         #project-boardgame .portal-text { color: #ff00ff; border: 1px solid #ff00ff; }
 
-     #project-constellation { 
-    right: 25%; /* Shifting left by increasing the distance from the right edge */
-    top: 55%; 
-    z-index: 1001; 
-}
-#project-constellation img:hover { 
-    filter: drop-shadow(0 0 25px #ffffff); 
-    transform: scale(1.2) rotate(15deg); 
-    transition: 0.3s;
-}
+        #project-guestbook { left: 40%; top: 45%; z-index: 1001; }
+        #project-guestbook img {
+            width: 70px; filter: drop-shadow(0 0 15px #ff69b4); image-rendering: pixelated;
+        }
+        #project-guestbook .portal-text { color: #ff69b4; border: 1px solid #ff69b4; }
 
-        /* --- GILDED SOVEREIGN PORTAL --- */
         #project-sovereign { right: 10%; top: 35%; z-index: 1001; }
         #project-sovereign img {
-            width: 110px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated; transition: 0.4s;
+            width: 110px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated;
         }
-        #project-sovereign img:hover { transform: translateY(-10px) rotate(3deg); filter: drop-shadow(0 0 25px #ffffff); }
+        /* The ship rises on a swell instead of spinning. */
+        #project-sovereign a:hover img { transform: translateY(-12px) rotate(4deg) scale(1.05); }
         #project-sovereign .portal-text { color: #ffd700; border: 1px solid #ffd700; font-style: italic; }
 
+        /* ============================================================
+           MOBILE
+           Portals leave fixed positioning and become a scrollable grid.
+           ============================================================ */
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+                padding-top: 10px;
+            }
+
+            h1 {
+                font-size: clamp(22px, 7vw, 42px);
+                text-align: center;
+            }
+
+            .station-container { flex-wrap: wrap; }
+
+            #bonzi-surfer { width: 110px; }
+
+            #portal-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+                width: 92%;
+                margin: 20px auto 40px;
+            }
+
+            .portal {
+                position: static;
+                width: auto;
+                transform: none !important;
+                display: flex;
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+
+            .portal a {
+                display: block;
+                padding: 10px;
+                min-height: 44px;
+            }
+
+            .portal img {
+                width: auto !important;
+                height: 65px;
+            }
+
+            .badge-bar {
+                text-align: center;
+                max-width: 92%;
+                margin-bottom: 30px;
+            }
+            .badge-bar img { margin: 3px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001s !important;
+                transition-duration: 0.001s !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <img id="bonzi-surfer" src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349" alt="Surfer">
-    
-    <div id="project-rerun" class="portal">
-        <a href="rerun-for-the-reaper.html" style="text-decoration: none;">
-            <p class="portal-text" style="color: #aa00ff; border: 1px solid #aa00ff;">a rerun for the reaper</p>
-            <img src="https://blob.gifcities.org/gifcities/5RXTFQ3IKKOZ6T4OKLGLHNXB3CFSDPOR.gif" style="width: 90px; filter: drop-shadow(0 0 15px #aa00ff); image-rendering: pixelated;">
-        </a>
-    </div>
-
-    <div id="project-voyager" class="portal">
-        <a href="go-johnny-go.html" style="text-decoration: none;">
-            <p class="portal-text" style="color: #00ffcc; border: 1px solid #00ffcc;">go, johnny, go</p>
-            <img src="https://blob.gifcities.org/gifcities/UVLWMVYYNLLZLBVBM7QJ7KAVI6PG7YKQ.gif" style="width: 100px; filter: drop-shadow(0 0 15px #00ffcc); image-rendering: pixelated;">
-        </a>
-    </div>
-
-    <div id="project-fire" class="portal">
-        <a href="eternal-recurrence.html" style="text-decoration: none;">
-            <p class="portal-text" style="color: #ff3300; border: 1px solid #ff3300;">eternal recurrence</p>
-            <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif" style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;">
-        </a>
-    </div>
-
-    <div id="project-download" class="portal">
-        <a href="downloads.html" style="text-decoration: none;">
-            <p class="portal-text">downloadable games</p>
-            <img src="https://web.archive.org/web/20090728113332im_/http://www.geocities.com/moerew/arcade_game_zap_md_clr.gif" alt="Download">
-        </a>
-    </div>
-
-    <div id="project-harvest" class="portal">
-        <a href="the-empty-harvest.html" style="text-decoration: none;">
-            <p class="portal-text" style="color: #ffd700; border: 1px solid #ffd700;">the empty harvest</p>
-            <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif" style="width: 80px; filter: drop-shadow(0 0 10px #ffd700); image-rendering: pixelated;">
-        </a>
-    </div>
-
-    <div id="project-gravel" class="portal">
-        <a href="gravelball-embed.html" style="text-decoration: none;">
-            <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">gravelball arcade</p>
-            <img src="https://blob.gifcities.org/gifcities/X7FOET5RZQNERLX2UHD53VZABMKTMXSU.gif" alt="Gravelball">
-        </a>
-    </div>
-
-    <div id="project-trumpagotchi" class="portal">
-        <a href="trumpagotchi.html" style="text-decoration: none;">
-            <p class="portal-text">trumpagotchi</p>
-            <img src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif" alt="Trumpagotchi">
-        </a>
-    </div>
-
-    <div id="project-needle" class="portal">
-        <a href="hitting-the-needle.html" style="text-decoration: none;">
-            <p class="portal-text" style="color: #00ffff; border: 1px solid #00ffff;">hitting the needle</p>
-            <img src="https://blob.gifcities.org/gifcities/7ON6Q53YQVJ47TFNH2BL6XKUFHMGT2J5.gif" alt="Needle">
-        </a>
-    </div>
-
-    <div id="project-boardgame" class="portal">
-        <a href="board-game-multiverse.html" style="text-decoration: none;">
-            <p class="portal-text">board game multiverse</p>
-            <img src="https://blob.gifcities.org/gifcities/5HGKFNMUZTRZK2UQY5TTDPB3RJT3NEGU.gif" alt="Board Game">
-        </a>
-    </div>
-
-   
-
-    <div id="project-sovereign" class="portal">
-        <a href="gilded-sovereign.html" style="text-decoration: none;">
-            <p class="portal-text">the gilded sovereign</p>
-            <img src="https://blob.gifcities.org/gifcities/DPCQTFRF6KDCO76ZHKLXYSFSDITWOBKR.gif" alt="Ship">
-        </a>
-    </div>
+    <img id="bonzi-surfer"
+         src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349"
+         alt="Bonzi Buddy surfing across the screen"
+         onerror="this.style.display='none'">
 
     <h1>gamma correction</h1>
 
     <div class="station-container">
         <div class="creator-station">
-            <img id="archivist-img" src="https://web.archive.org/web/20091027110940/http://geocities.com/le_graphics/clipart/animated/computer-type.gif" alt="Station">
+            <img id="archivist-img"
+                 src="https://web.archive.org/web/20091027110940im_/http://geocities.com/le_graphics/clipart/animated/computer-type.gif"
+                 alt="An animated computer terminal"
+                 onerror="this.style.display='none'">
         </div>
 
         <div class="netscape-player-small">
@@ -332,12 +328,12 @@
                 <div class="v-bar v-blue"></div>
             </div>
             <div class="control-deck-small">
-                <button class="win95-btn-small" onclick="stopAudio()">■</button>
-                <button class="win95-btn-small" onclick="playAudio()">▶</button>
-                <button class="win95-btn-small" onclick="pauseAudio()">II</button>
+                <button class="win95-btn-small" onclick="stopAudio()" title="Stop">■</button>
+                <button class="win95-btn-small" onclick="playAudio()" title="Play">▶</button>
+                <button class="win95-btn-small" onclick="pauseAudio()" title="Pause">II</button>
             </div>
             <audio id="main-theme" loop>
-                <source src="Pilotredsun- Fat Cat.mp3" type="audio/mpeg">
+                <source src="Pilotredsun-%20Fat%20Cat.mp3" type="audio/mpeg">
             </audio>
         </div>
     </div>
@@ -350,15 +346,126 @@
         </div>
     </div>
 
+    <!-- All portals live in this wrapper. On desktop they stay position:fixed
+         and ignore it entirely. On mobile it becomes the grid. -->
+    <div id="portal-grid">
+
+        <div id="project-rerun" class="portal">
+            <a href="rerun-for-the-reaper.html" style="text-decoration: none;">
+                <p class="portal-text" style="color: #aa00ff; border: 1px solid #aa00ff;">a rerun for the reaper</p>
+                <img src="https://blob.gifcities.org/gifcities/5RXTFQ3IKKOZ6T4OKLGLHNXB3CFSDPOR.gif"
+                     alt="a rerun for the reaper"
+                     style="width: 90px; filter: drop-shadow(0 0 15px #aa00ff); image-rendering: pixelated;"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-voyager" class="portal">
+            <a href="go-johnny-go.html" style="text-decoration: none;">
+                <p class="portal-text" style="color: #00ffcc; border: 1px solid #00ffcc;">go, johnny, go</p>
+                <img src="https://blob.gifcities.org/gifcities/UVLWMVYYNLLZLBVBM7QJ7KAVI6PG7YKQ.gif"
+                     alt="go, johnny, go"
+                     style="width: 100px; filter: drop-shadow(0 0 15px #00ffcc); image-rendering: pixelated;"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-fire" class="portal">
+            <a href="eternal-recurrence.html" style="text-decoration: none;">
+                <p class="portal-text" style="color: #ff3300; border: 1px solid #ff3300;">eternal recurrence</p>
+                <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif"
+                     alt="eternal recurrence"
+                     style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-download" class="portal">
+            <a href="downloads.html" style="text-decoration: none;">
+                <p class="portal-text">downloadable games</p>
+                <img src="https://web.archive.org/web/20090728113332im_/http://www.geocities.com/moerew/arcade_game_zap_md_clr.gif"
+                     alt="downloadable games"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-harvest" class="portal">
+            <a href="the-empty-harvest.html" style="text-decoration: none;">
+                <p class="portal-text" style="color: #ffd700; border: 1px solid #ffd700;">the empty harvest</p>
+                <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif"
+                     alt="the empty harvest"
+                     style="width: 80px; filter: drop-shadow(0 0 10px #ffd700); image-rendering: pixelated;"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-gravel" class="portal">
+            <a href="gravelball-embed.html" style="text-decoration: none;">
+                <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">gravelball arcade</p>
+                <img src="https://blob.gifcities.org/gifcities/X7FOET5RZQNERLX2UHD53VZABMKTMXSU.gif"
+                     alt="gravelball arcade"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-trumpagotchi" class="portal">
+            <a href="trumpagotchi.html" style="text-decoration: none;">
+                <p class="portal-text">trumpagotchi</p>
+                <img src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif"
+                     alt="trumpagotchi"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-needle" class="portal">
+            <a href="hitting-the-needle.html" style="text-decoration: none;">
+                <p class="portal-text" style="color: #00ffff; border: 1px solid #00ffff;">hitting the needle</p>
+                <img src="https://blob.gifcities.org/gifcities/7ON6Q53YQVJ47TFNH2BL6XKUFHMGT2J5.gif"
+                     alt="hitting the needle"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-boardgame" class="portal">
+            <a href="board-game-multiverse.html" style="text-decoration: none;">
+                <p class="portal-text">board game multiverse</p>
+                <img src="https://blob.gifcities.org/gifcities/5HGKFNMUZTRZK2UQY5TTDPB3RJT3NEGU.gif"
+                     alt="board game multiverse"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <div id="project-sovereign" class="portal">
+            <a href="gilded-sovereign.html" style="text-decoration: none;">
+                <p class="portal-text">the gilded sovereign</p>
+                <img src="https://blob.gifcities.org/gifcities/DPCQTFRF6KDCO76ZHKLXYSFSDITWOBKR.gif"
+                     alt="the gilded sovereign"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+        <!-- Needs a Supabase project configured in guestbook.html before it
+             will show entries. Delete this block if you're not using it yet. -->
+        <div id="project-guestbook" class="portal">
+            <a href="guestbook.html" style="text-decoration: none;">
+                <p class="portal-text">sign my guestbook</p>
+                <img src="https://blob.gifcities.org/gifcities/5RXTFQ3IKKOZ6T4OKLGLHNXB3CFSDPOR.gif"
+                     alt="sign my guestbook"
+                     onerror="this.style.display='none'">
+            </a>
+        </div>
+
+    </div>
+
     <div class="badge-bar">
-        <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif">
-        <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif">
+        <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif" alt="Internet Explorer badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif" alt="AOL Instant Messenger badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif" alt="Welcome badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif" alt="Netscape Now badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif" alt="Access ranking badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif" alt="Sega Online badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif" alt="Freeware badge" onerror="this.style.display='none'">
+        <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif" alt="Active Worlds badge" onerror="this.style.display='none'">
     </div>
 
     <script>
@@ -369,23 +476,23 @@
             bonzi.style.animation = (direction === 0) ? "flyRight 8s linear forwards" : "flyLeft 8s linear forwards";
             setTimeout(() => {
                 bonzi.style.animation = "none";
-                setTimeout(summonBonzi, 30000); 
-            }, 8500); 
+                setTimeout(summonBonzi, 30000);
+            }, 8500);
         }
         setTimeout(summonBonzi, 30000);
 
         const fatCat = document.getElementById("main-theme");
         const bars = document.querySelectorAll(".v-bar");
-        function playAudio() { 
+        function playAudio() {
             fatCat.play().catch(e => console.log("Blocked"));
             bars.forEach(bar => bar.classList.add("visualizing"));
         }
-        function pauseAudio() { 
+        function pauseAudio() {
             fatCat.pause();
             bars.forEach(bar => bar.classList.remove("visualizing"));
         }
-        function stopAudio() { 
-            fatCat.pause(); fatCat.currentTime = 0; 
+        function stopAudio() {
+            fatCat.pause(); fatCat.currentTime = 0;
             bars.forEach(bar => bar.classList.remove("visualizing"));
         }
     </script>
