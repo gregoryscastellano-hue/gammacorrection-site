@@ -142,15 +142,10 @@ h1 {
 .nav .off { color: var(--dim); }
 .nav .next { text-align: right; }
 
-.chapter { max-width: 64ch; border-top: 2px solid var(--cyan); padding-top: 24px; }
+.chapter { max-width: 64ch; border-top: 2px solid var(--cyan); margin-top: 24px; padding-top: 24px; }
 .chapter p { margin: 0 0 24px; }
 .chapter p:last-child { margin-bottom: 0; }
 .chapter + .nav { border-top: 2px solid var(--cyan); margin-top: 24px; }
-
-/* ---- footer ------------------------------------------------------ */
-
-footer { color: var(--dim); margin-top: 24px; }
-footer kbd { font: inherit; color: var(--cyan); }
 
 #library { display: none; }
 
@@ -179,7 +174,6 @@ footer kbd { font: inherit; color: var(--cyan); }
 <main>
   <h1 id="sitetitle"></h1>
   <div id="view"></div>
-  <footer id="hint"></footer>
 </main>
 
 <div class="crt"></div>
@@ -188,6 +182,32 @@ footer kbd { font: inherit; color: var(--cyan); }
 <div id="library">
 
 <section data-title="Book 1" data-cover="covers/book1.png">
+
+  <article>
+The stars are beautiful, aren't they? Reminds me of sporadic development. Scattered buildings built haphazardly along roads with no grand plan behind them. People deciding to build houses wherever they please, wasting resources and creating inefficiency out of sheer convenience. Usually, the thought would bother me, but looking up at the stars, seeing how they're placed along the sky with no discernable pattern, I feel at peace. Some things just don't need to be planned.
+
+Marisa's dead body is right here. She's in algor mortis. I only have a little bit of time before it reaches rigor mortis. It wouldn't change anything, but that's when it will really hit me.
+
+I take a look at the entrenching tool resting in my survey kit. Funny. The only time any of it has actually come in handy. I grab the tool with my free hand. The other's still gripping tightly to my prismatic compass. Getting on my knees, I begin excavating the spoil. I'm not thinking of anything in particular. It's just mechanical.
+
+The soil is well graded. It's ironic. The clearing here, right next to the downstream river, secluded and quiet. It's the absolute perfect spot for a hydro-electric station. I'll never tell the COR or the Cardónians, of course.
+
+The hole looks big enough. I grab her body. It's not warm anymore. That's the algor mortis. With moderate effort, but major stress on my legs, I drop her into the hole.
+
+Getting on my knees again, I push the spoil over her with my tool. I take one last look at her face before covering it up. She still looks beautiful.
+
+I grab her copy of the Dictation from the ship. I don't know how to use this thing. I don't usually deal with poetry. Flipping through the pages, I think that there has to be some kind of funeral rite in here. My eyes glance over the page marked Requiescats. That's gotta be it. I flip through it until I found one I like, then clear my throat and begin to read aloud.
+
+And it was so that like the Architect above, there is one of the deceased who his children loved. And like the Architect above we do not forget, we honor their life so their creation may be beget.
+
+I also take my flask out of my coat pocket and pour it on the made ground. I don't know why I do it, but I do.
+
+Then I take out my field book.
+
+15 vi 27. Ontembaar, N. 118° to point of rocks. Ground unsuitable.
+
+I get back in the boat and leave. Following the stars for navigation. Despite their random placement, or maybe because of it, they still have use.
+  </article>
 
   <article>
 It all started in Krios of '27. That was when the COR sent me to Ontembaar. I got word from my superior Enguerrand Badeaux. He walked into my office with the stride of a man who felt he could reshape the world with his word alone.
@@ -257,7 +277,6 @@ const books = [...document.querySelectorAll("#library section")].map((sec, b) =>
 }));
 
 const view = document.getElementById("view");
-const hint = document.getElementById("hint");
 document.getElementById("sitetitle").textContent = SITE_TITLE;
 document.title = SITE_TITLE;
 
@@ -268,7 +287,6 @@ function renderShelf() {
       <span class="title">${esc(b.title)}</span>
       <span class="count">${b.chapters.length} chapter${b.chapters.length === 1 ? "" : "s"}</span>
     </a>`).join("") + `</div>`;
-  hint.innerHTML = "";
 }
 
 function renderChapter(book, ch) {
@@ -287,10 +305,9 @@ function renderChapter(book, ch) {
     </div>`;
 
   view.innerHTML =
-    `<a class="back" href="#">&laquo; ${esc(book.title)}</a>` + nav +
+    `<a class="back" href="#">&laquo; ${esc(book.title)}</a>` +
     `<div class="chapter">${ch.paras.map(p => `<p>${esc(p)}</p>`).join("")}</div>` +
     nav;
-  hint.innerHTML = `<kbd>&larr; &rarr;</kbd> chapter &nbsp; <kbd>b</kbd> shelf`;
 }
 
 let here = null;
