@@ -129,11 +129,13 @@ h1 {
 
 .nav {
   display: grid;
-  grid-template-columns: 9ch 1fr 9ch;
+  grid-template-columns: 1fr auto 1fr;
   align-items: start;
-  gap: 0 1ch;
+  gap: 0 2ch;
   padding: 24px 0;
 }
+
+.nav > * { min-width: 0; }
 
 .nav .where { text-align: center; color: var(--white); }
 .nav .where .named { display: block; color: var(--yellow); }
@@ -142,7 +144,7 @@ h1 {
 .nav .off { color: var(--dim); }
 .nav .next { text-align: right; }
 
-.chapter { max-width: 64ch; border-top: 2px solid var(--cyan); margin-top: 24px; padding-top: 24px; }
+.chapter { max-width: 64ch; border-top: 2px solid var(--cyan); padding-top: 24px; }
 .chapter p { margin: 0 0 24px; }
 .chapter p:last-child { margin-bottom: 0; }
 .chapter + .nav { border-top: 2px solid var(--cyan); margin-top: 24px; }
@@ -296,18 +298,20 @@ function renderChapter(book, ch) {
   const next = ch.n < book.chapters.length
     ? `<a class="next" href="#b${book.n}c${ch.n + 1}">next &rarr;</a>`
     : `<span class="next off">next &rarr;</span>`;
-  const nav = `
+
+  const head = `
     <div class="nav">
-      ${prev}
+      <a class="back" href="#">&laquo; ${esc(book.title)}</a>
       <span class="where">Chapter ${ch.n} of ${book.chapters.length}${
         ch.title ? `<span class="named">${esc(ch.title)}</span>` : ""}</span>
-      ${next}
+      <span></span>
     </div>`;
 
-  view.innerHTML =
-    `<a class="back" href="#">&laquo; ${esc(book.title)}</a>` +
+  const foot = `<div class="nav">${prev}<span></span>${next}</div>`;
+
+  view.innerHTML = head +
     `<div class="chapter">${ch.paras.map(p => `<p>${esc(p)}</p>`).join("")}</div>` +
-    nav;
+    foot;
 }
 
 let here = null;
