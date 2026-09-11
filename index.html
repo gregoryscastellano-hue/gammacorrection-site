@@ -147,6 +147,14 @@ h1 {
 .chapter { max-width: 64ch; border-top: 2px solid var(--cyan); padding-top: 24px; }
 .chapter p { margin: 0 0 24px; }
 .chapter p:last-child { margin-bottom: 0; }
+
+.chapter blockquote {
+  margin: 0 0 24px;
+  padding-left: 2ch;
+  border-left: 2px solid var(--cyan);
+  color: var(--white);
+}
+.chapter blockquote p { margin: 0; }
 .chapter + .nav { border-top: 2px solid var(--cyan); margin-top: 24px; }
 
 #library { display: none; }
@@ -200,7 +208,7 @@ Getting on my knees again, I push the spoil over her with my tool. I take one la
 
 I grab her copy of the Dictation from the ship. I don't know how to use this thing. I don't usually deal with poetry. Flipping through the pages, I think that there has to be some kind of funeral rite in here. My eyes glance over the page marked Requiescats. That's gotta be it. I flip through it until I found one I like, then clear my throat and begin to read aloud.
 
-And it was so that like the Architect above, there is one of the deceased who his children loved. And like the Architect above we do not forget, we honor their life so their creation may be beget.
+> And it was so that like the Architect above, there is one of the deceased who his children loved. And like the Architect above we do not forget, we honor their life so their creation may be beget.
 
 I also take my flask out of my coat pocket and pour it on the made ground. I don't know why I do it, but I do.
 
@@ -291,6 +299,24 @@ function renderShelf() {
     </a>`).join("") + `</div>`;
 }
 
+// A line beginning with "> " is something a character is reading or
+// quoting. Consecutive quoted lines become one block, so verse keeps
+// its line breaks.
+function prose(paras) {
+  let out = "", run = [];
+  const flush = () => {
+    if (!run.length) return;
+    out += `<blockquote>${run.map(l => `<p>${esc(l)}</p>`).join("")}</blockquote>`;
+    run = [];
+  };
+  for (const line of paras) {
+    if (line.startsWith(">")) run.push(line.replace(/^>\s?/, ""));
+    else { flush(); out += `<p>${esc(line)}</p>`; }
+  }
+  flush();
+  return out;
+}
+
 function renderChapter(book, ch) {
   const prev = ch.n > 1
     ? `<a class="prev" href="#b${book.n}c${ch.n - 1}">&larr; prev</a>`
@@ -310,7 +336,7 @@ function renderChapter(book, ch) {
   const foot = `<div class="nav">${prev}<span></span>${next}</div>`;
 
   view.innerHTML = head +
-    `<div class="chapter">${ch.paras.map(p => `<p>${esc(p)}</p>`).join("")}</div>` +
+    `<div class="chapter">${prose(ch.paras)}</div>` +
     foot;
 }
 
