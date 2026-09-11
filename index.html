@@ -1,490 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>~ GAMMA CORRECTION ~</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stories</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%23000'/><rect x='1.5' y='1.5' width='5' height='5' fill='none' stroke='%2300AAAA'/></svg>">
 
-    <meta name="description" content="An archive of beautiful, stupid, and sacred things. Games, oracles, and mythologies from a personal multiverse.">
-<meta property="og:title" content="gamma correction">
-<meta property="og:description" content="An archive of beautiful, stupid, and sacred things.">
-<meta property="og:image" content="https://gammacorrection.com/images/preview.png">
-<meta property="og:url" content="https://gammacorrection.com/">
-<meta name="twitter:card" content="summary_large_image">
+<!-- ===================================================================
+     HOW TO ADD TO THIS
 
-    <style>
-        body {
-            background-image: url('https://64.media.tumblr.com/d9573aea3bf4d7386b42ddd516ea1ce6/147bfebdf112f180-78/s250x400/6895a383d6d2b83a717218a904480bd772fcc875.gif');
-            background-repeat: repeat;
-            background-attachment: fixed;
-            color: #ffffff;
-            font-family: "Courier New", monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding-top: 20px;
-            overflow-x: hidden;
-        }
+     Everything lives in the LIBRARY block near the bottom of this file.
+     One <section> per book, one <article> per chapter inside it.
 
-        h1 {
-            font-family: "Comic Sans MS", cursive;
-            font-size: 42px;
-            color: #00FF00;
-            text-shadow: 3px 3px #ff00ff;
-            margin: 10px 0;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 5px 20px;
-            border: 2px double #00FF00;
-        }
+     A new chapter — paste this at the END of a book's section:
 
-        /* --- THE BONZI ANOMALY --- */
-        #bonzi-surfer {
-            position: fixed;
-            top: -300px;
-            left: -300px;
-            width: 180px;
-            z-index: 10000;
-            pointer-events: none;
-            image-rendering: pixelated;
-            filter: drop-shadow(0 0 15px #aa00ff);
-        }
+       <article>
+     Your chapter goes here.
 
-        /* The source image faces left, so travelling right needs the flip
-           and travelling left needs the unflipped original. */
-        @keyframes flyRight {
-            from { transform: translate(-200px, 100vh) rotate(-15deg) scaleX(-1); }
-            to   { transform: translate(120vw, -300px) rotate(15deg)  scaleX(-1); }
-        }
+     One line is one paragraph. Blank lines are ignored, so space the
+     source out however you like. Indent as much as you want, the
+     leading whitespace is stripped. Text only.
 
-        @keyframes flyLeft {
-            from { transform: translate(110vw, 100vh) rotate(-15deg) scaleX(1); }
-            to   { transform: translate(-300px, -300px) rotate(15deg) scaleX(1); }
-        }
+     One catch: write &lt; instead of a bare < character.
+       </article>
 
-        /* --- CREATOR STATION LAYOUT --- */
-        .station-container {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: nowrap;
-        }
+     A new book — paste this after the last </section>:
 
-        .creator-station img {
-            height: 100px;
-            width: auto;
-            border: 2px double #00FF00;
-            padding: 5px;
-            background-color: #000;
-        }
+       <section data-title="Book 2" data-cover="covers/book2.png">
+       <article>
+     Chapter one of book two.
+       </article>
+       </section>
 
-        .netscape-player-small {
-            background: #000;
-            border: 2px solid #777;
-            padding: 5px;
-            width: 140px;
-            text-align: center;
-            image-rendering: pixelated;
-            font-family: 'VT323', monospace;
-        }
+     Chapters are numbered automatically. Add data-title="Name" to an
+     <article> to give a chapter a name as well as a number.
 
-        .player-header-small { border-bottom: 1px solid #444; margin-bottom: 5px; }
-        .gold-text-small { color: #d4af37; font-size: 14px; letter-spacing: 1px; }
+     COVERS are 96 x 144 pixels, EGA 16. The page draws them at x2, so
+     192 x 288 on screen. To work at x4 the way the game art is drawn,
+     paint at 384 x 576 with a 4-pixel brush and run downscale.py over
+     it. covers/cover-template-4x.png is a blank at that size.
+     covers/placeholder.png is the checkered stand-in.
+     =================================================================== -->
 
-        .visualizer-small {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 1px;
-            height: 30px;
-            background: #111;
-            margin-bottom: 5px;
-            border: 1px inset #555;
-        }
+<style>
+@font-face {
+  font-family: "PxPlus IBM BIOS";
+  src: url("PxPlus_IBM_BIOS.ttf") format("truetype");
+  font-display: block;
+}
 
-        .v-bar { width: 10px; height: 30%; transition: height 0.1s; }
-        .v-red { background: #ff0000; }
-        .v-orange { background: #ff7700; }
-        .v-yellow { background: #ffff00; }
-        .v-green { background: #00ff00; }
-        .v-blue { background: #0000ff; }
+:root {
+  --black:   #000000;
+  --grey:    #AAAAAA;
+  --dim:     #555555;
+  --white:   #FFFFFF;
+  --cyan:    #00AAAA;
+  --cyan-br: #55FFFF;
+  --green:   #55FF55;
+  --yellow:  #FFFF55;
+}
 
-        @keyframes barJump {
-            0% { height: 30%; }
-            50% { height: 100%; }
-            100% { height: 30%; }
-        }
+* { box-sizing: border-box; }
 
-        .visualizing { animation: barJump 0.5s infinite alternate; }
-        .v-bar:nth-child(1) { animation-duration: 0.4s; }
-        .v-bar:nth-child(2) { animation-duration: 0.7s; }
-        .v-bar:nth-child(3) { animation-duration: 0.5s; }
-        .v-bar:nth-child(4) { animation-duration: 0.9s; }
-        .v-bar:nth-child(5) { animation-duration: 0.6s; }
+html { background: var(--black); }
 
-        .win95-btn-small {
-            background: #c0c0c0;
-            border: 2px outset #fff;
-            width: 30px;
-            height: 20px;
-            cursor: pointer;
-            font-size: 10px;
-        }
-        .win95-btn-small:active { border: 2px inset #fff; }
+body {
+  margin: 0;
+  padding: 24px 16px 64px;
+  background: var(--black);
+  color: var(--grey);
+  font-family: "PxPlus IBM BIOS", ui-monospace, monospace;
+  font-size: 16px;          /* the 8px cell at x2 — keep to 8, 16 or 24 */
+  line-height: 24px;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: geometricPrecision;
+}
 
-        /* --- WINDOW --- */
-        .window {
-            background: #c0c0c0;
-            border: 3px outset #ffffff;
-            width: 85%;
-            max-width: 600px;
-            box-shadow: 6px 6px 0px #000000;
-            margin-bottom: 20px;
-        }
-        .title-bar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            color: white;
-            padding: 2px 8px;
-            font-weight: bold;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .content {
-            background: #ffffff;
-            color: #000000;
-            padding: 15px;
-            border: 2px inset #808080;
-            margin: 4px;
-            line-height: 1.4;
-            font-size: 14px;
-        }
+/* phosphor bleed, in whatever colour the text already is */
+body :is(h1, p, span, a) {
+  text-shadow: 0 0 6px color-mix(in srgb, currentColor 40%, transparent);
+}
 
-        /* --- PORTAL SYSTEM --- */
-        .portal { position: fixed; text-align: center; width: 120px; z-index: 1000; }
-        .portal-text {
-            font-family: 'Comic Sans MS';
-            font-size: 12px;
-            margin-bottom: 5px;
-            background: rgba(0,0,0,0.8);
-            padding: 2px;
-            text-decoration: none;
-        }
+main { width: 72ch; max-width: 100%; margin: 0 auto; }
 
-        /* Every portal GIF now animates, and hovering the LABEL animates it
-           too, so the whole portal is one target instead of just the image. */
-        .portal img {
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-        .portal a:hover img,
-        .portal a:focus img {
-            transform: scale(1.15) rotate(-6deg);
-            filter: drop-shadow(0 0 25px #ffffff);
-        }
-        .portal a:focus { outline: 2px solid #ffffff; outline-offset: 2px; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
 
-        .badge-bar img { height: 35px; margin: 0 3px; }
+h1 {
+  margin: 0 0 8px;
+  font-size: inherit;
+  font-weight: normal;
+  color: var(--cyan-br);
+  border-bottom: 2px solid var(--cyan);
+  padding-bottom: 8px;
+}
 
-        #project-rerun { left: 5%; top: 5%; }
-        #project-voyager { right: 5%; top: 5%; }
-        #project-fire { left: 50%; bottom: 5%; transform: translateX(-50%); }
-        #project-harvest { left: 5%; bottom: 5%; }
+/* ---- shelf ------------------------------------------------------- */
 
-        #project-gravel { left: 15%; top: 20%; }
-        #project-gravel img {
-            width: 50px; filter: drop-shadow(0 0 15px #00FF00); image-rendering: pixelated;
-        }
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 192px);
+  gap: 32px 24px;
+  justify-content: start;
+  padding-top: 24px;
+}
 
-        #project-download { right: 15%; bottom: 20%; z-index: 1001; }
-        #project-download img {
-            width: 90px;
-            filter: drop-shadow(0 0 15px #00ffff);
-            image-rendering: pixelated;
-        }
-        #project-download .portal-text {
-            color: #00ffff;
-            border: 1px solid #00ffff;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+.book img {
+  display: block;
+  width: 192px;
+  height: 288px;
+  image-rendering: pixelated;
+}
 
-        #project-trumpagotchi { right: 25%; top: 18%; z-index: 1001; }
-        #project-trumpagotchi img {
-            width: 75px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated;
-        }
-        #project-trumpagotchi .portal-text { color: #ffd700; border: 1px solid #ffd700; font-weight: bold; }
+.book .title { display: block; color: var(--white); margin-top: 8px; }
+.book .count { display: block; color: var(--dim); }
 
-        #project-needle { right: 5%; bottom: 5%; z-index: 1001; }
-        #project-needle img {
-            width: 70px; filter: drop-shadow(0 0 15px #00ffff); image-rendering: pixelated;
-        }
-        /* The needle spins the other way, for character. */
-        #project-needle a:hover img { transform: scale(1.15) rotate(20deg); }
+.book:hover img,
+.book:focus-visible img { outline: 2px solid var(--green); outline-offset: 4px; }
+.book:hover .title,
+.book:focus-visible .title { color: var(--green); }
+.book:focus-visible { outline: none; }
 
-        #project-boardgame { left: 25%; bottom: 15%; z-index: 1001; }
-        #project-boardgame img {
-            width: 85px; filter: drop-shadow(0 0 15px #ff00ff); image-rendering: pixelated;
-        }
-        #project-boardgame .portal-text { color: #ff00ff; border: 1px solid #ff00ff; }
+/* ---- reader ------------------------------------------------------ */
 
-        #project-sovereign { right: 10%; top: 35%; z-index: 1001; }
-        #project-sovereign img {
-            width: 110px; filter: drop-shadow(0 0 15px #ffd700); image-rendering: pixelated;
-        }
-        /* The ship rises on a swell instead of spinning. */
-        #project-sovereign a:hover img { transform: translateY(-12px) rotate(4deg) scale(1.05); }
-        #project-sovereign .portal-text { color: #ffd700; border: 1px solid #ffd700; font-style: italic; }
+.back { color: var(--cyan); }
+.back:hover { color: var(--green); }
 
-        /* ============================================================
-           MOBILE
-           Portals leave fixed positioning and become a scrollable grid.
-           ============================================================ */
-        @media (max-width: 768px) {
-            body {
-                background-attachment: scroll;
-                padding-top: 10px;
-            }
+.nav {
+  display: grid;
+  grid-template-columns: 9ch 1fr 9ch;
+  align-items: start;
+  gap: 0 1ch;
+  padding: 24px 0;
+}
 
-            h1 {
-                font-size: clamp(22px, 7vw, 42px);
-                text-align: center;
-            }
+.nav .where { text-align: center; color: var(--white); }
+.nav .where .named { display: block; color: var(--yellow); }
+.nav a { color: var(--cyan); }
+.nav a:hover { color: var(--green); }
+.nav .off { color: var(--dim); }
+.nav .next { text-align: right; }
 
-            .station-container { flex-wrap: wrap; }
+.chapter { max-width: 64ch; border-top: 2px solid var(--cyan); padding-top: 24px; }
+.chapter p { margin: 0 0 24px; }
+.chapter p:last-child { margin-bottom: 0; }
+.chapter + .nav { border-top: 2px solid var(--cyan); margin-top: 24px; }
 
-            #bonzi-surfer { width: 110px; }
+/* ---- footer ------------------------------------------------------ */
 
-            #portal-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 18px;
-                width: 92%;
-                margin: 20px auto 40px;
-            }
+footer { color: var(--dim); margin-top: 24px; }
+footer kbd { font: inherit; color: var(--cyan); }
 
-            .portal {
-                position: static;
-                width: auto;
-                transform: none !important;
-                display: flex;
-                flex-direction: column-reverse;
-                align-items: center;
-            }
+#library { display: none; }
 
-            .portal a {
-                display: block;
-                padding: 10px;
-                min-height: 44px;
-            }
+/* ---- CRT --------------------------------------------------------- */
 
-            .portal img {
-                width: auto !important;
-                height: 65px;
-            }
+.crt {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 50%,
+      rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%),
+    repeating-linear-gradient(to bottom,
+      rgba(0,0,0,0)    0px, rgba(0,0,0,0)    1px,
+      rgba(0,0,0,0.32) 1px, rgba(0,0,0,0.32) 2px);
+}
 
-            .badge-bar {
-                text-align: center;
-                max-width: 92%;
-                margin-bottom: 30px;
-            }
-            .badge-bar img { margin: 3px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.001s !important;
-                transition-duration: 0.001s !important;
-            }
-        }
-    </style>
+@media (max-width: 1220px) {
+  body { font-size: 12px; line-height: 18px; }
+}
+</style>
 </head>
 <body>
-    <img id="bonzi-surfer"
-         src="https://i.redd.it/do-you-guys-ever-realize-v0-6gk197n3r6kc1.png?width=200&format=png&auto=webp&s=4534d6d26bfb45fe6c76f636b500d33a0f2b8349"
-         alt="Bonzi Buddy surfing across the screen"
-         onerror="this.style.display='none'">
 
-    <h1>gamma correction</h1>
+<main>
+  <h1 id="sitetitle"></h1>
+  <div id="view"></div>
+  <footer id="hint"></footer>
+</main>
 
-    <div class="station-container">
-        <div class="creator-station">
-            <img id="archivist-img"
-                 src="https://blob.gifcities.org/gifcities/5A6PQDBUJGN3XC6ACQ7XSXAF6AZJEWEA.gif"
-                 alt="An animated computer terminal"
-                 onerror="this.style.display='none'">
-        </div>
+<div class="crt"></div>
 
-        <div class="netscape-player-small">
-            <div class="player-header-small"><span class="gold-text-small">◀ SOUND ▶</span></div>
-            <div class="visualizer-small">
-                <div class="v-bar v-red"></div>
-                <div class="v-bar v-orange"></div>
-                <div class="v-bar v-yellow"></div>
-                <div class="v-bar v-green"></div>
-                <div class="v-bar v-blue"></div>
-            </div>
-            <div class="control-deck-small">
-                <button class="win95-btn-small" onclick="stopAudio()" title="Stop">■</button>
-                <button class="win95-btn-small" onclick="playAudio()" title="Play">▶</button>
-                <button class="win95-btn-small" onclick="pauseAudio()" title="Pause">II</button>
-            </div>
-            <audio id="main-theme" loop>
-                <source src="Pilotredsun-%20Fat%20Cat.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-    </div>
 
-    <div class="window">
-        <div class="title-bar"><span>Gammacorrection.exe - VOLUME_I_MANIFESTO</span><span>[?] [X]</span></div>
-        <div class="content">
-            <b>I am the Archivist of my own beautiful, stupid, and sacred multiverse.</b>
-            <p>My work lives on the razor's edge between the Sacred and the Profane. I create sacred texts about pathetic characters, and I build grand mythologies out of profane jokes.</p>
-        </div>
-    </div>
+<div id="library">
 
-    <!-- All portals live in this wrapper. On desktop they stay position:fixed
-         and ignore it entirely. On mobile it becomes the grid. -->
-    <div id="portal-grid">
+<section data-title="Book 1" data-cover="covers/book1.png">
 
-        <div id="project-rerun" class="portal">
-            <a href="rerun-for-the-reaper.html" style="text-decoration: none;">
-                <p class="portal-text" style="color: #aa00ff; border: 1px solid #aa00ff;">a rerun for the reaper</p>
-                <img src="https://blob.gifcities.org/gifcities/5RXTFQ3IKKOZ6T4OKLGLHNXB3CFSDPOR.gif"
-                     alt="a rerun for the reaper"
-                     style="width: 90px; filter: drop-shadow(0 0 15px #aa00ff); image-rendering: pixelated;"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+  <article>
+It all started in Krios of '27. That was when the COR sent me to Ontembaar. I got word from my superior Enguerrand Badeaux. He walked into my office with the stride of a man who felt he could reshape the world with his word alone.
 
-        <div id="project-voyager" class="portal">
-            <a href="go-johnny-go.html" style="text-decoration: none;">
-                <p class="portal-text" style="color: #00ffcc; border: 1px solid #00ffcc;">go, johnny, go</p>
-                <img src="https://blob.gifcities.org/gifcities/UVLWMVYYNLLZLBVBM7QJ7KAVI6PG7YKQ.gif"
-                     alt="go, johnny, go"
-                     style="width: 100px; filter: drop-shadow(0 0 15px #00ffcc); image-rendering: pixelated;"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+"Dabinett, have you been drinking?" he asked, the disgust in his tone palpable.
 
-        <div id="project-fire" class="portal">
-            <a href="eternal-recurrence.html" style="text-decoration: none;">
-                <p class="portal-text" style="color: #ff3300; border: 1px solid #ff3300;">eternal recurrence</p>
-                <img src="https://blob.gifcities.org/gifcities/2AK2RIKUM2HTTBRIFI5W3KRWQWWDQXAT.gif"
-                     alt="eternal recurrence"
-                     style="width: 60px; filter: drop-shadow(0 0 10px #ff3300); image-rendering: pixelated;"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+I had. I felt no reason to lie to him.
 
-        <div id="project-download" class="portal">
-            <a href="downloads.html" style="text-decoration: none;">
-                <p class="portal-text">downloadable games</p>
-                <img src="https://blob.gifcities.org/gifcities/5CPDYXWFRPZQIO6UYOIXKK7TGE2V6FVP.gif"
-                     alt="downloadable games"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+"Yes."
 
-        <div id="project-harvest" class="portal">
-            <a href="the-empty-harvest.html" style="text-decoration: none;">
-                <p class="portal-text" style="color: #ffd700; border: 1px solid #ffd700;">the empty harvest</p>
-                <img src="https://blob.gifcities.org/gifcities/NXLX5BJYCKFTCHTBMQHHIUPT3BLGYKZ7.gif"
-                     alt="the empty harvest"
-                     style="width: 80px; filter: drop-shadow(0 0 10px #ffd700); image-rendering: pixelated;"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+Enguerrand's face didn't change. "I know. You're a slave to your impulses."
 
-        <div id="project-gravel" class="portal">
-            <a href="gravelball-embed.html" style="text-decoration: none;">
-                <p class="portal-text" style="color: #00FF00; border: 1px solid #00FF00;">gravelball arcade</p>
-                <img src="https://blob.gifcities.org/gifcities/X7FOET5RZQNERLX2UHD53VZABMKTMXSU.gif"
-                     alt="gravelball arcade"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+This was his way of trying to reshape the world, specifically my behavior. He always thought appealing to the tradition of the Tanner thinker Glædwine was the best way to get through to me. It wasn't, and I could clearly see through it.
 
-        <div id="project-trumpagotchi" class="portal">
-            <a href="trumpagotchi.html" style="text-decoration: none;">
-                <p class="portal-text">trumpagotchi</p>
-                <img src="https://blob.gifcities.org/gifcities/7ZSOXANPI7SSSJOESCTBXB22OE4XWQ6X.gif"
-                     alt="trumpagotchi"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+"There's beauty in being a slave. You're fed, you have shelter. What's a little manual labor?"
 
-        <div id="project-needle" class="portal">
-            <a href="hitting-the-needle.html" style="text-decoration: none;">
-                <p class="portal-text" style="color: #00ffff; border: 1px solid #00ffff;">hitting the needle</p>
-                <img src="https://blob.gifcities.org/gifcities/7ON6Q53YQVJ47TFNH2BL6XKUFHMGT2J5.gif"
-                     alt="hitting the needle"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+Clearly wanting to change the subject, Enguerrand proceeded. "They want you to go to Ontembaar. The Council is making a proclamation soon about the mandate."
 
-        <div id="project-boardgame" class="portal">
-            <a href="board-game-multiverse.html" style="text-decoration: none;">
-                <p class="portal-text">board game multiverse</p>
-                <img src="https://blob.gifcities.org/gifcities/5HGKFNMUZTRZK2UQY5TTDPB3RJT3NEGU.gif"
-                     alt="board game multiverse"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+"Why do they want me?" I smiled. I just liked to hear him say it.
 
-        <div id="project-sovereign" class="portal">
-            <a href="gilded-sovereign.html" style="text-decoration: none;">
-                <p class="portal-text">the gilded sovereign</p>
-                <img src="https://blob.gifcities.org/gifcities/DPCQTFRF6KDCO76ZHKLXYSFSDITWOBKR.gif"
-                     alt="the gilded sovereign"
-                     onerror="this.style.display='none'">
-            </a>
-        </div>
+Enguerrand's eyelid twitched. "They want you on the ground to plan the Cardónian city."
 
-    </div>
+"What about Henri? Surely the Cardónians want a city with some le montagnard influence?"
 
-    <div class="badge-bar">
-        <img src="https://static.wixstatic.com/media/f56de5_74d888573cf94e40975ce9c14e324a8c~mv2.gif" alt="Internet Explorer badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_29ec72d264f24234870eff6ca8254bde~mv2.gif" alt="AOL Instant Messenger badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_0a97faf980f04a64a1a2d218f2d22bd0~mv2.gif" alt="Welcome badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_ecc9e339ee7844ffa7f1a872d799e583~mv2.gif" alt="Netscape Now badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_0cc8c2e6fd8e4371a0ed9b9444ffa283~mv2.gif" alt="Access ranking badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_8e13810174f34e40a73bdda96396b45c~mv2.gif" alt="Sega Online badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_bea2b46fbbae4cc1a5296967337b8705~mv2.gif" alt="Freeware badge" onerror="this.style.display='none'">
-        <img src="https://static.wixstatic.com/media/f56de5_903a74c323d3460d82f0aaed74bb397f~mv2.gif" alt="Active Worlds badge" onerror="this.style.display='none'">
-    </div>
+Enguerrand was livid. "They want you."
 
-    <script>
-        function summonBonzi() {
-            const bonzi = document.getElementById("bonzi-surfer");
-            const direction = Math.floor(Math.random() * 2);
-            bonzi.style.top = Math.floor(Math.random() * 70 + 10) + "%";
-            bonzi.style.animation = (direction === 0) ? "flyRight 8s linear forwards" : "flyLeft 8s linear forwards";
-            setTimeout(() => {
-                bonzi.style.animation = "none";
-                setTimeout(summonBonzi, 30000);
-            }, 8500);
-        }
-        setTimeout(summonBonzi, 30000);
+"Why?"
 
-        const fatCat = document.getElementById("main-theme");
-        const bars = document.querySelectorAll(".v-bar");
-        function playAudio() {
-            fatCat.play().catch(e => console.log("Blocked"));
-            bars.forEach(bar => bar.classList.add("visualizing"));
-        }
-        function pauseAudio() {
-            fatCat.pause();
-            bars.forEach(bar => bar.classList.remove("visualizing"));
-        }
-        function stopAudio() {
-            fatCat.pause(); fatCat.currentTime = 0;
-            bars.forEach(bar => bar.classList.remove("visualizing"));
-        }
-    </script>
+Enguerrand was already at the door. "You're to be at the docks at 0500. Don't oversleep."
+
+I took a look at the map on my wall. Ontembaar is three weeks by ship from Linolia. I don't like ships. They're so unplanned. A hundred and ten people on average, all trapped together in a metal rookery. Nevertheless, they wanted me, like Enguerrand said. I could have never resisted the siren call of having tens of thousands all using my plans. A beautifully calibrated machine that could not exist without me.
+
+I began packing my tools.
+  </article>
+
+</section>
+
+</div>
+
+
+<script>
+/* ===== CONFIG ===================================================== */
+const SITE_TITLE = "Stories";
+/* ================================================================== */
+
+function dedent(text) {
+  let lines = text.replace(/\t/g, "    ").split("\n");
+  while (lines.length && !lines[0].trim()) lines.shift();
+  while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+  const pad = lines.filter(l => l.trim())
+    .reduce((m, l) => Math.min(m, l.match(/^ */)[0].length), Infinity);
+  return lines.map(l => l.slice(pad));
+}
+
+const esc = s => s.replace(/[&<>"]/g, c =>
+  ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+
+const books = [...document.querySelectorAll("#library section")].map((sec, b) => ({
+  n:        b + 1,
+  title:    sec.dataset.title || `Book ${b + 1}`,
+  cover:    sec.dataset.cover || "covers/placeholder.png",
+  chapters: [...sec.querySelectorAll("article")].map((art, c) => ({
+    n:     c + 1,
+    title: art.dataset.title || "",
+    paras: dedent(art.textContent).filter(l => l.trim())
+  }))
+}));
+
+const view = document.getElementById("view");
+const hint = document.getElementById("hint");
+document.getElementById("sitetitle").textContent = SITE_TITLE;
+document.title = SITE_TITLE;
+
+function renderShelf() {
+  view.innerHTML = `<div class="shelf">` + books.map(b => `
+    <a class="book" href="#b${b.n}c1">
+      <img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}" width="96" height="144">
+      <span class="title">${esc(b.title)}</span>
+      <span class="count">${b.chapters.length} chapter${b.chapters.length === 1 ? "" : "s"}</span>
+    </a>`).join("") + `</div>`;
+  hint.innerHTML = "";
+}
+
+function renderChapter(book, ch) {
+  const prev = ch.n > 1
+    ? `<a class="prev" href="#b${book.n}c${ch.n - 1}">&larr; prev</a>`
+    : `<span class="prev off">&larr; prev</span>`;
+  const next = ch.n < book.chapters.length
+    ? `<a class="next" href="#b${book.n}c${ch.n + 1}">next &rarr;</a>`
+    : `<span class="next off">next &rarr;</span>`;
+  const nav = `
+    <div class="nav">
+      ${prev}
+      <span class="where">Chapter ${ch.n} of ${book.chapters.length}${
+        ch.title ? `<span class="named">${esc(ch.title)}</span>` : ""}</span>
+      ${next}
+    </div>`;
+
+  view.innerHTML =
+    `<a class="back" href="#">&laquo; ${esc(book.title)}</a>` + nav +
+    `<div class="chapter">${ch.paras.map(p => `<p>${esc(p)}</p>`).join("")}</div>` +
+    nav;
+  hint.innerHTML = `<kbd>&larr; &rarr;</kbd> chapter &nbsp; <kbd>b</kbd> shelf`;
+}
+
+let here = null;
+
+function route() {
+  const m = location.hash.match(/^#b(\d+)c(\d+)$/);
+  const book = m && books[+m[1] - 1];
+  const ch   = book && book.chapters[+m[2] - 1];
+  if (ch) { here = { book, ch }; renderChapter(book, ch); }
+  else    { here = null; renderShelf(); }
+  window.scrollTo(0, 0);
+}
+
+addEventListener("hashchange", route);
+route();
+
+addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (!here) return;
+  const { book, ch } = here;
+
+  if (e.key === "ArrowLeft" && ch.n > 1) {
+    location.hash = `b${book.n}c${ch.n - 1}`;
+  } else if (e.key === "ArrowRight" && ch.n < book.chapters.length) {
+    location.hash = `b${book.n}c${ch.n + 1}`;
+  } else if (e.key === "b" || e.key === "Escape") {
+    history.pushState("", "", location.pathname);
+    route();
+  } else return;
+  e.preventDefault();
+});
+</script>
 </body>
 </html>
