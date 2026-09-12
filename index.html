@@ -35,10 +35,10 @@
      Chapters are numbered automatically. Add data-title="Name" to an
      <article> to give a chapter a name as well as a number.
 
-     COVERS are 96 x 144 pixels, EGA 16. The page draws them at x2, so
-     192 x 288 on screen. To work at x4 the way the game art is drawn,
-     paint at 384 x 576 with a 4-pixel brush and run downscale.py over
-     it. covers/cover-template-4x.png is a blank at that size.
+     COVERS are 256 x 384 pixels, EGA 16, shown 1:1. To work at x4 the
+     way the game art is drawn, paint at 1024 x 1536 with a 4-pixel
+     brush and run downscale.py over it.
+     covers/cover-template-4x.png is a blank at that size.
      covers/placeholder.png is the checkered stand-in.
      =================================================================== -->
 
@@ -100,7 +100,7 @@ h1 {
 
 .shelf {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 192px);
+  grid-template-columns: repeat(auto-fill, 256px);
   gap: 32px 24px;
   justify-content: start;
   padding-top: 24px;
@@ -108,8 +108,8 @@ h1 {
 
 .book img {
   display: block;
-  width: 192px;
-  height: 288px;
+  width: 256px;
+  height: 384px;
   image-rendering: pixelated;
 }
 
@@ -191,7 +191,7 @@ h1 {
 
 <div id="library">
 
-<section data-title="Book 1" data-cover="covers/book1.png">
+<section data-title="Made Ground" data-cover="covers/book1.png">
 
   <article>
 The stars are beautiful, aren't they? Reminds me of sporadic development. Scattered buildings built haphazardly along roads with no grand plan behind them. People deciding to build houses wherever they please, wasting resources and creating inefficiency out of sheer convenience. Usually, the thought would bother me, but looking up at the stars, seeing how they're placed along the sky with no discernable pattern, I feel at peace. Some things just don't need to be planned.
@@ -214,7 +214,7 @@ I also take my flask out of my coat pocket and pour it on the made ground. I don
 
 Then I take out my field book.
 
-> 15 vi 27. Ontembaar, N. 118° to point of rocks. Ground unsuitable.
+15 vi 27. Ontembaar, N. 118° to point of rocks. Ground unsuitable.
 
 I get back in the boat and leave. Following the stars for navigation. Despite their random placement, or maybe because of it, they still have use.
   </article>
@@ -293,7 +293,7 @@ document.title = SITE_TITLE;
 function renderShelf() {
   view.innerHTML = `<div class="shelf">` + books.map(b => `
     <a class="book" href="#b${b.n}c1">
-      <img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}" width="96" height="144">
+      <img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}" width="256" height="384">
       <span class="title">${esc(b.title)}</span>
       <span class="count">${b.chapters.length} chapter${b.chapters.length === 1 ? "" : "s"}</span>
     </a>`).join("") + `</div>`;
